@@ -10,16 +10,24 @@ import shelve
 
 db = shelve.open("shelve.db")
 class Egg:
-    def __init__(self, nome):
+    def __init__(self, nome, boh):
         self.nome = nome
-
+        self.peso = "poco"
+        self.boh = boh
+    def settaNuoviAttributi(self, boh):
+        self.peso = "poco"
+        self.boh = boh
+        
 #egg = Egg ("bianco")
 #Print (egg.nome)
 #db["uovo"] = egg
 altro = db["uovo"]
 print (altro.nome)
+altro.settaNuoviAttributi("boh")
+print (altro.peso)
+print (altro.boh)
 db.close()
-
+quit()
 # Hello world is just one line of code
 # print() outputs data to the screen
 print("Hello World")
