@@ -27,7 +27,7 @@ altro.settaNuoviAttributi("boh")
 print (altro.peso)
 print (altro.boh)
 db.close()
-quit()
+
 # Hello world is just one line of code
 # print() outputs data to the screen
 print("Hello World")
