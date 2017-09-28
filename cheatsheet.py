@@ -6,6 +6,20 @@ import random
 import sys
 import os
 
+import shelve
+
+db = shelve.open("shelve.db")
+class Egg:
+    def __init__(self, nome):
+        self.nome = nome
+
+#egg = Egg ("bianco")
+#Print (egg.nome)
+#db["uovo"] = egg
+altro = db["uovo"]
+print (altro.nome)
+db.close()
+
 # Hello world is just one line of code
 # print() outputs data to the screen
 print("Hello World")
@@ -312,6 +326,20 @@ print(newNum) # interesting
 newNum = subNumbers(1, 4)
 print(newNum)
 
+def prende_tupla (*cosa):
+    print (cosa)
+
+def prende_dict (**cosa):
+    print (cosa)
+
+prende_tupla ("ciao", 27, 1.1)
+prende_dict (primo="ciao")
+
+print (sys.argv)
+print (len(sys.argv))
+for argomento in sys.argv:
+    print (argomento)
+
 # USER INPUT -------------
 print('What is your name?')
 
@@ -523,11 +551,17 @@ spot.multiple_sounds(0)
 spot.multiple_sounds(-1)
 spot.multiple_sounds()
 
-zero = 0
+zero = 1
 try:
   10 / zero
+  raise
 except:
-  print ("niente panico, divisione per zero")
+    print ("niente panico, eccezione sollevata da raise")
+    print (sys.exc_info())
+else:
+    print ("tutto ok")
+finally:
+    print ("comunque scrivi questo alla fine")
 
 totale = "totale "
 tutto = totale + str(zero)
