@@ -185,6 +185,9 @@ print(len(super_villains))
 # Get the value for the passed key
 print(super_villains.get("Pied Piper"))
 
+if True:
+  pass  # usato come nop, NOP, no operation
+
 # Get a list of dictionary keys
 print(super_villains.keys())
 
@@ -528,7 +531,7 @@ except:
 
 totale = "totale "
 tutto = totale + str(zero)
-
+print (int ("1997"))
 numeri = set ([1, 7, 3, 1])  # no duplicati, no ordine (set)
 
 print (numeri)
