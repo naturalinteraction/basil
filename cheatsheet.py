@@ -32,7 +32,7 @@ print (dir (num))
 # A variable name can contain letters, numbers, or _
 # but can't start with a number
 
-# There are 5 data types Numbers, Strings, List, Tuple, Dictionary
+# There are 5 data types Numbers, Strings, List, Tuple, Dictionary (piu' i set)
 # You can store any of them in the same variable
 
 name = 15
@@ -136,8 +136,11 @@ print(max(to_do_list))
 # Get the minimum item in list
 print(min(to_do_list))
 
+print (grocery_list.pop()) # estrae ultimo se indice e' omesso
+print (grocery_list) # nuova lista senza ultimo
+
 # TUPLES -------------
-# Values in a tuple can't change like lists
+# Values in a tuple can't change like lists (sono immutable)
 
 pi_tuple = (3, 1, 4, 1, 5, 9)
 
