@@ -582,4 +582,25 @@ print (sette)
 numeri = numeri - sette  # coi set si puo' fare
 print (numeri)
 
+def interrogate(item):
+    print ()
+    import pdb
+    culo = 7
+    # pdb.set_trace() # c = continue, step per andare avanti di una riga, nome variabile per vederne il valore
+    culo = 8
+    if hasattr(item, "__name__"):
+        print ("name: ", item.__name__)
+    if hasattr(item, "__class__"):
+        print ("class: ", item.__class__.__name__)
+    print ("type: ", type(item))
+    print ("value: ", repr(item))
+    print ("callable: ", callable(item))
+    if hasattr(item, '__doc__'):
+        doc = getattr(item, '__doc__')
+        # doc = doc.strip()
+        print ('doc: ', doc)
+interrogate(numeri)
+interrogate(Dog)
+interrogate(spot)
+interrogate(addNumbers)
 
