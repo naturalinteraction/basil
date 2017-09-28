@@ -502,11 +502,29 @@ class AnimalTesting:
 test_animals = AnimalTesting()
 
 test_animals.get_type(cat)
+
 test_animals.get_type(spot)
 
 spot.multiple_sounds(4)
 spot.multiple_sounds(0)
 spot.multiple_sounds(-1)
 spot.multiple_sounds()
+
+zero = 0
+try:
+  10 / zero
+except:
+  print ("niente panico, divisione per zero")
+
+totale = "totale "
+tutto = totale + str(zero)
+
+numeri = set ([1, 7, 3, 1])  # no duplicati, no ordine (set)
+
+print (numeri)
+sette = set ([7])
+print (sette)
+numeri = numeri - sette  # coi set si puo' fare
+print (numeri)
 
 
