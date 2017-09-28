@@ -10,6 +10,11 @@ import os
 # print() outputs data to the screen
 print("Hello World")
 
+print (dir (random))
+print (type (random))
+print (type (random.choice))
+print (dir (random.choice))
+
 '''
 This is a multi-line comment
 '''
@@ -21,6 +26,8 @@ print(name)
 
 num = 37.3
 print (num)
+print (type (num))
+print (dir (num))
 
 # A variable name can contain letters, numbers, or _
 # but can't start with a number
