@@ -433,6 +433,10 @@ print(text_in_file)
 # Delete the file
 os.remove("test.txt")
 
+with open('output.txt', 'w') as f:
+    f.write('Hi there!') # chiude automaticamente all'uscita dal blocco, grazie a with
+os.remove('output.txt')
+
 def factorial (number) :
   if (number > 1) :
     return number * factorial (number - 1)
