@@ -612,6 +612,11 @@ interrogate(addNumbers)
 AWS_ACCESS_KEY_ID = os.environ['AWSAccessKeyId']
 AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
 
+import time
+name_with_datetime = time.strftime("uploads/vis_%Y_%m_%d-%H_%M.png")
+print (name_with_datetime)
+
+
 import boto
 import boto.s3
 from boto.s3.key import Key
@@ -637,9 +642,7 @@ def percent_cb(complete, total):
 
 
 k = Key(bucket)
-k.key = 'test3.png'
+k.key = name_with_datetime
 k.set_contents_from_filename(testfile,
     cb=percent_cb, num_cb=10)
-
-
 
