@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List</title>
+</head>
+<body>
+
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.18.min.js"></script>
+<script type="text/javascript">
+  // read-only access
+  AWS.config.credentials = new AWS.Credentials('AKIAJBAIVATLRRRAF26Q', 'I0JF9uLEarjGEmmLPWYY3aF3C4b6s6EhGR9/vHGZ');
+
+  // Configure your region
+  AWS.config.region = 'eu-west-1';
+</script>
+
+<div id="status"></div>
+<ul id="objects"></ul>
+
+<script type="text/javascript">
+  var bucket = new AWS.S3({params: {Bucket: 'natural-interaction'}});
+  bucket.listObjects(function (err, data) {
+    if (err) {
+      document.getElementById('status').innerHTML =
+        'Could not load objects from S3 bucket';
+    } else {
+      document.getElementById('status').innerHTML =
+        'Loaded ' + data.Contents.length + ' items from S3 bucket';
+      for (var i = 0; i < data.Contents.length; i++) {
+        document.getElementById('objects').innerHTML +=
+          '<li>' + 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + data.Contents[i].Key + '</li>';
+      }
+    }
+  });
+</script>
+
+
+
+</body>
+</html>
