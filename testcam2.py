@@ -11,8 +11,43 @@ camera.framerate = 5
 rawCapture = PiRGBArray(camera, size=(1600, 1200))
  
 # allow the camera to warmup
-time.sleep(0.1)
- 
+time.sleep(4)
+
+print (camera.iso)  # With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
+print (camera.analog_gain)
+print (camera.awb_mode)
+print (camera.awb_gains)
+print (camera.brightness)
+print (camera.contrast)
+print (camera.digital_gain)
+print (camera.drc_strength)
+print (camera.exposure_mode)
+print (camera.exposure_compensation)
+print (camera.exposure_speed)
+print (camera.meter_mode)
+print (camera.saturation)
+print (camera.sharpness)
+print (camera.shutter_speed)
+print (camera.zoom)
+
+'''
+0
+1395/256
+auto
+(Fraction(3, 4), Fraction(191, 256))
+50
+0
+317/256
+off
+auto
+0
+62941
+average
+0
+0
+0
+(0.0, 0.0, 1.0, 1.0)
+'''
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image, then initialize the timestamp
