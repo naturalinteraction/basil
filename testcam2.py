@@ -13,6 +13,16 @@ rawCapture = PiRGBArray(camera, size=(1600, 1200))
 # allow the camera to warmup
 time.sleep(4)
 
+
+camera.brightness = 70  # 0..100
+camera.contrast = 70  # 0..100
+camera.awb_mode = 'off'
+# The awb options are: off, auto, sunlight, cloudy, shade, tungsten, fluorescent, incandescent, flash, and horizon. The default is auto
+camera.awb_gains = (0.5, 0.5)
+camera.exposure_mode = 'night'
+# The options are: off, auto, night, nightpreview, backlight, spotlight, sports, snow, beach, verylong, fixedfps, antishake, and fireworks. The default is auto
+
+
 print (camera.iso)  # With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
 print (camera.analog_gain)
 print (camera.awb_mode)
@@ -29,6 +39,7 @@ print (camera.saturation)
 print (camera.sharpness)
 print (camera.shutter_speed)
 print (camera.zoom)
+
 
 '''
 0
