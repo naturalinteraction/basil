@@ -59,7 +59,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cv2.imshow("Frame", image)
 	# show = False
         key = cv2.waitKey(1) & 0xFF
- 
+        
+        if key < 255: print (key)
+        if key == 82: print ("up")
+        if key == 84: print ("down")
+        if key == 81: print ("left")
+        if key == 83:  print ("right")
+
 	# clear the stream in preparation for the next frame
 	rawCapture.truncate(0)
  
