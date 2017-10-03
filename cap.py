@@ -48,6 +48,10 @@ print (camera.shutter_speed)  # microseconds, or 0 which indicates that the spee
 
 show = True
 
+valori_iso = [100, 200, 320, 400, 500, 640, 800]
+indice_iso = 0
+print(len(valori_iso))
+
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image, then initialize the timestamp
@@ -60,12 +64,21 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# show = False
         key = cv2.waitKey(1) & 0xFF
         
-        if key < 255: print (key)
+        #if key < 255: print (key)
         if key == 82: print ("up")
         if key == 84: print ("down")
-        if key == 81: print ("left")
-        if key == 83:  print ("right")
-
+        if key == 81: 
+            print ("left")
+            if indice_iso > 0:
+              indice_iso-=1
+            print (valori_iso[indice_iso])
+            camera.iso = valori_iso[indice_iso]
+        if key == 83:
+            print ("right")
+            if indice_iso < len(valori_iso)-1:
+              indice_iso+=1
+            print (valori_iso[indice_iso])
+            camera.iso = valori_iso[indice_iso]
 	# clear the stream in preparation for the next frame
 	rawCapture.truncate(0)
  
