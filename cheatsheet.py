@@ -631,7 +631,7 @@ print (location)
 #bucket = conn.create_bucket(bucket_name, location = 'EU')
 bucket = conn.get_bucket(bucket_name)
 
-testfile = "samples/opencv-logo.png"
+testfile = "./opencv-logo.png"
 print (testfile)
 print (bucket_name)
 
