@@ -11,8 +11,7 @@ camera.framerate = 5
 rawCapture = PiRGBArray(camera, size=(1600, 1200))
  
 # allow the camera to warmup
-time.sleep(2)
-
+time.sleep(1)
 
 camera.brightness = 50  
 camera.contrast = 50  
@@ -47,9 +46,7 @@ print (camera.shutter_speed)  # microseconds, or 0 which indicates that the spee
 # print('--- ZOOM')
 # print (camera.zoom)  # (x, y, w, h)
 
-'''
-
-'''
+show = True
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -58,8 +55,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	image = frame.array
  
 	# show the frame
-	cv2.imshow("Frame", image)
-	key = cv2.waitKey(1) & 0xFF
+	if show:
+            cv2.imshow("Frame", image)
+	# show = False
+        key = cv2.waitKey(1) & 0xFF
  
 	# clear the stream in preparation for the next frame
 	rawCapture.truncate(0)
