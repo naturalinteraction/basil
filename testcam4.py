@@ -54,8 +54,14 @@ def run():
         camera.resolution = (int(1.33 * x), x)
         # Various optional camera settings below:
         camera.framerate = 5
+
+        camera.brightness = 50  
+        camera.contrast = 50  
+        camera.saturation = 90 
+        camera.sharpness = 30
         camera.awb_mode = 'off'
-        camera.awb_gains = (0.5, 0.5)
+        camera.awb_gains = (0.9, 1.0)
+        camera.iso = 100
 
         # Need to sleep to give the camera time to get set up properly
         time.sleep(1)

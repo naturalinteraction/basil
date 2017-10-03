@@ -11,54 +11,46 @@ camera.framerate = 5
 rawCapture = PiRGBArray(camera, size=(1600, 1200))
  
 # allow the camera to warmup
-time.sleep(4)
+time.sleep(2)
 
 
-camera.brightness = 70  # 0..100
-camera.contrast = 70  # 0..100
+camera.brightness = 50  
+camera.contrast = 50  
+camera.saturation = 90 
+camera.sharpness = 30
 camera.awb_mode = 'off'
-# The awb options are: off, auto, sunlight, cloudy, shade, tungsten, fluorescent, incandescent, flash, and horizon. The default is auto
-camera.awb_gains = (0.5, 0.5)
-camera.exposure_mode = 'night'
-# The options are: off, auto, night, nightpreview, backlight, spotlight, sports, snow, beach, verylong, fixedfps, antishake, and fireworks. The default is auto
+camera.awb_gains = (0.9, 1.0)
+camera.iso = 100
+camera.exposure_mode = 'off'
+camera.exposure_compensation = +3
 
+print('--- ISO AWB')
+print (camera.iso)  # valid values are 100, 200, 320, 400, 500, 640, 800 With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
+print (camera.awb_mode)  # The awb options are: off, auto, sunlight, cloudy, shade, tungsten, fluorescent, incandescent, flash, and horizon. The default is auto
+print (camera.awb_gains) # with awbmode off, (red, blue) tuple, between 0.0 and 8.0. Typical values for the gains are between 0.9 and 1.9
 
-print (camera.iso)  # With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
-print (camera.analog_gain)
-print (camera.awb_mode)
-print (camera.awb_gains)
-print (camera.brightness)
-print (camera.contrast)
-print (camera.digital_gain)
-print (camera.drc_strength)
-print (camera.exposure_mode)
-print (camera.exposure_compensation)
-print (camera.exposure_speed)
-print (camera.meter_mode)
-print (camera.saturation)
-print (camera.sharpness)
-print (camera.shutter_speed)
-print (camera.zoom)
+print('--- BRI CON SAT SHARP')
+print (camera.brightness) # 0..100
+print (camera.contrast) # 0..100
+print (camera.saturation)  # integer between -100 and 100
+print (camera.sharpness)  # integer between -100 and 100
 
+# print('--- DRC')
+# print (camera.drc_strength) # off, low, medium, high
+
+print('--- EXPOSURE')
+print (camera.exposure_mode) # The options are: off, auto, night, nightpreview, backlight, spotlight, sports, snow, beach, verylong, fixedfps, antishake, and fireworks. The default is auto
+print (camera.exposure_compensation)  # -25 to +25, default 0
+print (camera.meter_mode)  # for exposure: average, spot, matrix, backlit
+print (camera.shutter_speed)  # microseconds, or 0 which indicates that the speed will be automatically determined by the auto-exposure algorithm
+
+# print('--- ZOOM')
+# print (camera.zoom)  # (x, y, w, h)
 
 '''
-0
-1395/256
-auto
-(Fraction(3, 4), Fraction(191, 256))
-50
-0
-317/256
-off
-auto
-0
-62941
-average
-0
-0
-0
-(0.0, 0.0, 1.0, 1.0)
+
 '''
+
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image, then initialize the timestamp
