@@ -12,15 +12,15 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
 # allow the camera to warmup
 time.sleep(1)
 
-camera.brightness = 50  
-camera.contrast = 50  
-camera.saturation = 90 
-camera.sharpness = 30
-camera.awb_mode = 'off'
-camera.awb_gains = (0.9, 1.0)
-camera.iso = 100
-camera.exposure_mode = 'off'
-camera.exposure_compensation = +3
+#camera.brightness = 50  
+#camera.contrast = 50  
+#camera.saturation = 90 
+#camera.sharpness = 30
+camera.awb_mode = 'auto'
+#camera.awb_gains = (0.9, 1.0)
+#camera.iso = 100
+camera.exposure_mode = 'auto'
+#camera.exposure_compensation = 25
 
 print('--- ISO AWB')
 print (camera.iso)  # valid values are 100, 200, 320, 400, 500, 640, 800 With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
