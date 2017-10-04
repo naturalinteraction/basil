@@ -1,4 +1,3 @@
-# import the necessary packages
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
@@ -6,9 +5,9 @@ import cv2
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (1600, 1200)
-camera.framerate = 5
-rawCapture = PiRGBArray(camera, size=(1600, 1200))
+camera.resolution = (1280, 1024)
+camera.framerate = 3
+rawCapture = PiRGBArray(camera, size=camera.resolution)
  
 # allow the camera to warmup
 time.sleep(1)
