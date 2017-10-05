@@ -17,7 +17,8 @@ class CameraProperties(object):
                   'Contrast' : range(0, 100+1),
                   'Saturation' : range(-100, +100+1),               
                   'Sharpness' : range(-100, +100+1),
-                  'Shutter Speed' : numpy.arange(1000, 60000, 1000)
+                  'Shutter Speed' : numpy.arange(1000, 60000, 1000),
+                  'DRC Strength' : ['off', 'low', 'medium', 'high']    
                  }
     # indices of the currently selected camera properties' values
     values_indices = dict(zip(properties.keys(), [0] * len(properties)))

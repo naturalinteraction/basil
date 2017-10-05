@@ -15,13 +15,13 @@ def PrintFullCameraState():
     print("exposure mode", camera.exposure_mode) # The default is auto
     print("exposure compensation", camera.exposure_compensation)
     print("meter mode", camera.meter_mode)  # for exposure
-    # still not in the menu:
-    print("DRC strength", camera.drc_strength) # off, low, medium, high
-    print('exposure speed', camera.exposure_speed)
     print("shutter speed", camera.shutter_speed)  # microseconds, or 0 which indicates that the speed will be automatically determined by the auto-exposure algorithm
-    print("zoom", camera.zoom)  # (x, y, w, h)
-    print("analog gain", camera.analog_gain)
-    print("digital gain", camera.digital_gain)
+    print("DRC strength", camera.drc_strength) # off, low, medium, high
+    # still not in the menu:
+    print("zoom", camera.zoom)  # (x, y, w, h) not interesting at the moment
+    print('exposure speed', camera.exposure_speed) # READONLY
+    print("analog gain", camera.analog_gain) # READONLY
+    print("digital gain", camera.digital_gain) # READONLY
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -81,7 +81,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         
         #if key < 255: print (key)
         if key == 82: print ("up")
-        if key == 84: print ("down")
+        if key == 84: 
+            print ("down")
+            camera.drc_strength = 'high'
+            camera.shutter_speed = 59000
         if key == 81: 
             print ("left")
             if indice_iso > 0:
