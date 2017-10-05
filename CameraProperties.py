@@ -7,7 +7,7 @@ class CameraProperties(object):
                   'Exposure Compensation' : range(-25, +25+1)
                  }
     # indices of the currently selected camera properties' values
-    values_indices = dict(zip(properties.keys(), [1] * len(properties)))
+    values_indices = dict(zip(properties.keys(), [0] * len(properties)))
     # index of the currently selected camera property
     property_index = 0
 
@@ -18,8 +18,13 @@ class CameraProperties(object):
         name = self.CurrentPropertyName()
         return self.properties[name][self.values_indices[name]]
 
+    def PrintAllProperties(self):
+        for name in self.properties.keys():
+            value = self.properties[name][self.values_indices[name]]
+            print("%s = %s" % (name, value))
+
     def PrintCurrentProperty(self):
-        print("%s is %s" % (self.CurrentPropertyName(), self.CurrentPropertyValue()))
+        print("%s = %s" % (self.CurrentPropertyName(), self.CurrentPropertyValue()))
 
     def IncValue(self):
         name = self.CurrentPropertyName()
@@ -71,3 +76,5 @@ if True:
     cp.Save()
     cp.PrintCurrentProperty()
     print(cp.values_indices) 
+    print(cp.values_indices) 
+    cp.PrintAllProperties()

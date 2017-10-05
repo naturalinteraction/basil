@@ -4,7 +4,7 @@ A repo for my own experiments.
 
 
 - [x] Set shutter speed
-- [ ] Print all camera properties
+- [x] Print all camera properties
 - [x] Save/Load camera properties
 - [ ] Arrow keys select property and change its value
 - [ ] Detect camera hardware version (trying to set highest resolution?)
