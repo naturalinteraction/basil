@@ -1,0 +1,11 @@
+(dp0
+S'ISO'
+p1
+I1
+sS'Exposure Mode'
+p2
+I2
+sS'Exposure Compensation'
+p3
+I49
+s.

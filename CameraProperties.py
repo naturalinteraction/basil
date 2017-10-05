@@ -1,4 +1,4 @@
-import shelve
+import pickle
 
 class CameraProperties(object):
     # camera properties
@@ -38,28 +38,21 @@ class CameraProperties(object):
     def DecProperty(self):
         if self.property_index > 0:
             self.property_index -= 1
-    
+
+    def Save(self):
+        with open('camera-properties.pkl', 'wb') as f:
+            pickle.dump(self.values_indices, f, 0)
+
     def Load(self):
-        she = shelve.open("camera-properties.shelve")        
-        self = she["cp"]
-        she.close()
-
-def LoadCameraProperties():
-    she = shelve.open("camera-properties.shelve")        
-    temp = she["cp"]
-    she.close()
-    return temp
-
-def SaveCameraProperties(cp):
-    she = shelve.open("camera-properties.shelve")        
-    she["cp"] = cp
-    she.close()
+        with open('camera-properties.pkl', 'rb') as f:
+            self.values_indices = pickle.load(f)
 
 if True:
-    cp = LoadCameraProperties ()  # CameraProperties()
+    cp = CameraProperties ()
     print(cp.values_indices) 
     cp.PrintCurrentProperty()
-    
+    cp.Load()
+    print(cp.values_indices) 
     cp.IncProperty()
     cp.PrintCurrentProperty()
     cp.IncProperty()
@@ -75,6 +68,6 @@ if True:
     cp.IncValue()
     cp.PrintCurrentProperty()
     print(cp.values_indices) 
-    SaveCameraProperties(cp)
+    cp.Save()
     cp.PrintCurrentProperty()
     print(cp.values_indices) 
