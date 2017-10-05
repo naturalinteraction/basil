@@ -1,11 +1,38 @@
 (dp0
-S'ISO'
+S'Saturation'
 p1
-I1
-sS'Exposure Mode'
+I0
+sS'AWB Red Gain'
 p2
-I2
-sS'Exposure Compensation'
+I0
+sS'Brightness'
 p3
-I49
+I0
+sS'Exp Meter Mode'
+p4
+I0
+sS'Sharpness'
+p5
+I0
+sS'AWB Mode'
+p6
+I0
+sS'Shutter Speed'
+p7
+I0
+sS'ISO'
+p8
+I0
+sS'Exposure Mode'
+p9
+I0
+sS'AWB Blue Gain'
+p10
+I0
+sS'Exp Compensation'
+p11
+I50
+sS'Contrast'
+p12
+I0
 s.

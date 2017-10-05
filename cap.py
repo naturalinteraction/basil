@@ -3,20 +3,21 @@ from picamera import PiCamera
 import time
 import cv2
 
-def PrintCameraProperties():
+def PrintFullCameraState():
     print("-----------------------------------------------------------")
-    print("ISO", camera.iso)  # valid values are 100, 200, 320, 400, 500, 640, 800 With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
-    print("AWB mode", camera.awb_mode)  # The awb options are: off, auto, sunlight, cloudy, shade, tungsten, fluorescent, incandescent, flash, and horizon. The default is auto
-    print("AWB gains", camera.awb_gains) # with awbmode off, (red, blue) tuple, between 0.0 and 8.0. Typical values for the gains are between 0.9 and 1.9
-    print("brightness", camera.brightness) # 0..100
-    print("constrast", camera.contrast) # 0..100
-    print("saturation", camera.saturation)  # integer between -100 and 100
-    print("sharpness", camera.sharpness)  # integer between -100 and 100
+    print("ISO", camera.iso)  # With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
+    print("AWB mode", camera.awb_mode)  # The default is auto
+    print("AWB gains", camera.awb_gains) # with awbmode off, (red, blue) tuple  Typical values for the gains are between 0.9 and 1.9
+    print("brightness", camera.brightness)
+    print("constrast", camera.contrast)
+    print("saturation", camera.saturation)
+    print("sharpness", camera.sharpness)
+    print("exposure mode", camera.exposure_mode) # The default is auto
+    print("exposure compensation", camera.exposure_compensation)
+    print("meter mode", camera.meter_mode)  # for exposure
+    # still not in the menu:
     print("DRC strength", camera.drc_strength) # off, low, medium, high
-    print("exposure mode", camera.exposure_mode) # The options are: off, auto, night, nightpreview, backlight, spotlight, sports, snow, beach, verylong, fixedfps, antishake, and fireworks. The default is auto
-    print("exposure compensation", camera.exposure_compensation)  # -25 to +25, default 0
     print('exposure speed', camera.exposure_speed)
-    print("meter mode", camera.meter_mode)  # for exposure: average, spot, matrix, backlit
     print("shutter speed", camera.shutter_speed)  # microseconds, or 0 which indicates that the speed will be automatically determined by the auto-exposure algorithm
     print("zoom", camera.zoom)  # (x, y, w, h)
     print("analog gain", camera.analog_gain)
@@ -76,7 +77,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         # show = False
         key = cv2.waitKey(1) & 0xFF
         
-        PrintCameraProperties()
+        PrintFullCameraState()
         
         #if key < 255: print (key)
         if key == 82: print ("up")

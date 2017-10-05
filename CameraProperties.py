@@ -1,10 +1,23 @@
 import pickle
+import numpy
 
 class CameraProperties(object):
     # camera properties
-    properties = {'ISO' : [100, 200],
-                  'Exposure Mode' : ['off', 'auto', 'night'],
-                  'Exposure Compensation' : range(-25, +25+1)
+    properties = {'ISO' : [0, 100, 200, 320, 400, 500, 640, 800],
+                  'Exposure Mode' : ['off', 'auto', 'night', 'nightpreview', 'backlight', 
+                                     'spotlight', 'sports', 'snow', 'beach', 'verylong', 
+                                     'fixedfps', 'antishake', 'fireworks'],
+                  'AWB Mode' : ['off', 'auto', 'sunlight', 'cloudy', 'shade', 'tungsten', 
+                                'fluorescent', 'incandescent', 'flash', 'horizon'],
+                  'AWB Red Gain' : numpy.arange(0.0, 8.0, 0.2),
+                  'AWB Blue Gain' : numpy.arange(0.0, 8.0, 0.2),
+                  'Exp Compensation' : range(-25, +25+1),
+                  'Exp Meter Mode' : ['average', 'spot', 'matrix', 'backlit'],
+                  'Brightness' : range(0, 100+1),               
+                  'Contrast' : range(0, 100+1),
+                  'Saturation' : range(-100, +100+1),               
+                  'Sharpness' : range(-100, +100+1),
+                  'Shutter Speed' : numpy.arange(1000, 60000, 1000)
                  }
     # indices of the currently selected camera properties' values
     values_indices = dict(zip(properties.keys(), [0] * len(properties)))
@@ -56,7 +69,7 @@ if True:
     cp = CameraProperties ()
     print(cp.values_indices) 
     cp.PrintCurrentProperty()
-    cp.Load()
+    #cp.Load()
     print(cp.values_indices) 
     cp.IncProperty()
     cp.PrintCurrentProperty()
