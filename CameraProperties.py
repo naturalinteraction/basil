@@ -1,3 +1,5 @@
+import shelve
+
 class CameraProperties(object):
     # camera properties
     properties = {'ISO' : [100, 200],
@@ -5,7 +7,7 @@ class CameraProperties(object):
                   'Exposure Compensation' : range(-25, +25+1)
                  }
     # indices of the currently selected camera properties' values
-    values_indices = dict(zip(properties.keys(), [0] * len(properties)))
+    values_indices = dict(zip(properties.keys(), [1] * len(properties)))
     # index of the currently selected camera property
     property_index = 0
 
@@ -36,11 +38,28 @@ class CameraProperties(object):
     def DecProperty(self):
         if self.property_index > 0:
             self.property_index -= 1
+    
+    def Load(self):
+        she = shelve.open("camera-properties.shelve")        
+        self = she["cp"]
+        she.close()
 
-#test
+def LoadCameraProperties():
+    she = shelve.open("camera-properties.shelve")        
+    temp = she["cp"]
+    she.close()
+    return temp
+
+def SaveCameraProperties(cp):
+    she = shelve.open("camera-properties.shelve")        
+    she["cp"] = cp
+    she.close()
+
 if True:
-    cp = CameraProperties()
+    cp = LoadCameraProperties ()  # CameraProperties()
+    print(cp.values_indices) 
     cp.PrintCurrentProperty()
+    
     cp.IncProperty()
     cp.PrintCurrentProperty()
     cp.IncProperty()
@@ -53,3 +72,9 @@ if True:
     cp.PrintCurrentProperty()
     cp.DecProperty()
     cp.PrintCurrentProperty()
+    cp.IncValue()
+    cp.PrintCurrentProperty()
+    print(cp.values_indices) 
+    SaveCameraProperties(cp)
+    cp.PrintCurrentProperty()
+    print(cp.values_indices) 
