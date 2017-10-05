@@ -16,17 +16,16 @@ class CameraProperties(object):
         name = self.CurrentPropertyName()
         return self.properties[name][self.values_indices[name]]
 
-    def IncIndex(self, ind, lis):
-        if ind < (len(lis) - 1):
-            ind += 1
-        return ind
+    def IncIndex(self):
+        if self.property_index < (len(self.properties) - 1):
+            self.property_index += 1
 
     def PrintProperty(self):
         print(self.CurrentPropertyName(), ' is ', self.CurrentPropertyValue())    
 
 cp = CameraProperties()
 cp.PrintProperty()
-cp.property_index = cp.IncIndex(cp.property_index, cp.properties)
+cp.IncIndex()
 cp.PrintProperty()
-cp.property_index = cp.IncIndex(cp.property_index, cp.properties)
+#cp.property_index = cp.IncIndex(cp.property_index, cp.properties)
 cp.PrintProperty()
