@@ -17,7 +17,7 @@ class CameraProperties(object):
         return self.properties[name][self.values_indices[name]]
 
     def PrintCurrentProperty(self):
-        print(self.CurrentPropertyName(), ' is ', self.CurrentPropertyValue())    
+        print("%s is %s" % (self.CurrentPropertyName(), self.CurrentPropertyValue()))
 
     def IncValue(self):
         name = self.CurrentPropertyName()
@@ -37,17 +37,19 @@ class CameraProperties(object):
         if self.property_index > 0:
             self.property_index -= 1
 
-cp = CameraProperties()
-cp.PrintCurrentProperty()
-cp.IncProperty()
-cp.PrintCurrentProperty()
-cp.IncProperty()
-cp.PrintCurrentProperty()
-for n in range(0, 100):
-    cp.IncValue()
-cp.IncProperty()
-cp.PrintCurrentProperty()
-cp.DecValue()
-cp.PrintCurrentProperty()
-cp.DecProperty()
-cp.PrintCurrentProperty()
+#test
+if True:
+    cp = CameraProperties()
+    cp.PrintCurrentProperty()
+    cp.IncProperty()
+    cp.PrintCurrentProperty()
+    cp.IncProperty()
+    cp.PrintCurrentProperty()
+    for n in range(0, 100):
+        cp.IncValue()
+    cp.IncProperty()
+    cp.PrintCurrentProperty()
+    cp.DecValue()
+    cp.PrintCurrentProperty()
+    cp.DecProperty()
+    cp.PrintCurrentProperty()
