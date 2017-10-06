@@ -97,8 +97,13 @@ class CameraProperties(object):
              self.cam.awb_gains = g
     
     def FreezeExposureAWB(self):
-        if self.PropertyOnCamera('ISO') == 0:  # todo: also auto awb and expo
-            print('Set ISO to a non-zero value first. Doing nothing.')
+        if (self.PropertyOnCamera('ISO') == 0
+        or self.PropertyOnCamera('AWB Mode') != 'auto'
+        or self.PropertyOnCamera('Exposure Mode') != 'auto'):
+            print('Set ISO to a non-zero value first. Set Exposure Mode and AWB Mode to "auto". Doing this for you now. Freeze again in a few, please.')
+            self.cam.iso = 100
+            self.cam.exposure_mode = 'auto'
+            self.cam.awb_mode = 'auto'
             return
         self.cam.shutter_speed = self.cam.exposure_speed
         self.cam.exposure_mode = 'off'
@@ -118,12 +123,12 @@ class CameraProperties(object):
         print('*' * 20)
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
-            print("%s = %s <%s>" % (name, value, self.PropertyOnCamera(name)))
+            print("%s  %s <%s>" % (name, value, self.PropertyOnCamera(name)))
         print('Exp Speed (READONLY) <%s>' % (int (self.cam.exposure_speed)))
         print('*' * 20)
         
     def PrintCurrentProperty(self):
-        print("%s = %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName())))
+        print("%s   %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName())))
 
     def IncValue(self):
         name = self.CurrentPropertyName()
