@@ -6,7 +6,8 @@ A repo for my own experiments.
 - [x] Set shutter speed
 - [x] Print all camera properties
 - [x] Save/Load camera properties
-- [ ] Arrow keys select property and change its value
+- [x] Arrow keys select property and change its value
+- [ ] Get/Set camera property value by name
 - [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
 - [ ] Decide whether to use same resolution for both models
 - [ ] Set optimal camera properties programmatically
@@ -14,10 +15,10 @@ A repo for my own experiments.
 - [ ] Save image locally
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3
-- [ ] [POSTPONED] Detect camera hardware version (trying to set highest resolution?)
-- [ ] [POSTPONED] Detect camera presence
-- [ ] [POSTPONED] Camera on/off (250mA, no continuous mode)
-- [ ] [POSTPONED] Detect if scene is static
+- [ ] ~~Detect camera hardware version (trying to set highest resolution?)~~
+- [ ] ~~Detect camera presence~~
+- [ ] ~~Camera on/off (250mA, no continuous mode)~~
+- [ ] ~~Detect if scene is static~~
 
 Creating image of SD card:
 ```
