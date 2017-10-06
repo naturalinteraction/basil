@@ -2,10 +2,6 @@ import pickle
 import numpy
 from picamera import PiCamera
 
-# unused:
-#    camera.zoom  # (x, y, w, h) not interesting at the moment
-#    float(camera.analog_gain) # READONLY
-#    float(camera.digital_gain) # READONLY
 
 class CameraProperties(object):
     # camera properties
@@ -95,7 +91,12 @@ class CameraProperties(object):
              g = list(self.cam.awb_gains)
              g[1] = value 
              self.cam.awb_gains = g
-    
+
+    def SetAllPropertiesOnCamera(self):
+        for name in self.properties.keys():
+            value = self.properties[name][self.values_indices[name]]
+            self.SetPropertyOnCamera(name, value)
+
     def FreezeExposureAWB(self):
         if (self.PropertyOnCamera('ISO') == 0
         or self.PropertyOnCamera('AWB Mode') != 'auto'
@@ -124,7 +125,10 @@ class CameraProperties(object):
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
             print("%s  %s <%s>" % (name, value, self.PropertyOnCamera(name)))
-        print('Exp Speed (READONLY) <%s>' % (int (self.cam.exposure_speed)))
+        print('Exp Speed (READONLY) <%s>' % (int(self.cam.exposure_speed)))
+        # print('Zoom (READONLY) <%s>' % self.cam.zoom)
+        print('Analog Gain (READONLY) <%s>' % float(self.cam.analog_gain))
+        print('Digital Gain (READONLY) <%s>' % float(self.cam.digital_gain))
         print('*' * 20)
         
     def PrintCurrentProperty(self):
