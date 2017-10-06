@@ -29,6 +29,17 @@ class CameraProperties(object):
     
     def __init__(self, camera):
         self.cam = camera
+    
+    def GetProperty(self, name):
+        if name == 'DRC Strength':
+             return self.cam.drc_strength
+        # 'Brightness', 'ISO', 'Exp Compensation', 'Contrast', 'Saturation', 'AWB Red Gain', 'Exp Meter Mode', 'Sharpness', 'AWB Mode', 'Shutter Speed', 'Exposure Mode', 'AWB Blue Gain'
+        
+    def SetProperty(self, name, value):
+        print('Setting %s to %s' % (name, value))
+        if name == 'DRC Strength':
+             self.cam.drc_strength = value
+        # 'Brightness', 'ISO', 'Exp Compensation', 'Contrast', 'Saturation', 'AWB Red Gain', 'Exp Meter Mode', 'Sharpness', 'AWB Mode', 'Shutter Speed', 'Exposure Mode', 'AWB Blue Gain'
         
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
@@ -41,7 +52,7 @@ class CameraProperties(object):
         print('*' * 16)
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
-            print("%s = %s" % (name, value))
+            print("%s = %s <%s>" % (name, value, self.GetProperty(name)))
         print('Exp Speed (READONLY) = %s' % (int (self.cam.exposure_speed)))
         print('*' * 16)
         

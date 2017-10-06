@@ -74,20 +74,21 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         # show = False
         key = cv2.waitKey(1) & 0xFF
         
-        
-        
         # if key < 255: print (key)
         
         if key == ord('s'):
           cp.Save()
     
+        if key == 10:  # enter
+          cp.SetProperty(cp.CurrentPropertyName(), cp.CurrentPropertyValue())
+          
         if key == ord('c'):
           cp.PrintCurrentProperty()
     
-        if key == ord('a'):
+        if key == 225: # left shift
           cp.PrintAllProperties()
     
-        if key == ord('u'):
+        if key == 9:  # tab
           PrintFullCameraState()
           
         if key == 82:  # up
