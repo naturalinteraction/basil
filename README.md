@@ -7,7 +7,7 @@ A repo for my own experiments.
 - [x] Print all camera properties
 - [x] Save/Load camera properties
 - [x] Arrow keys select property and change its value
-- [ ] Get/Set camera property value by name
+- [x] Get/Set camera property value by name
 - [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
 - [ ] Decide whether to use same resolution for both models
 - [ ] Set optimal camera properties programmatically

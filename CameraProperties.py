@@ -2,6 +2,11 @@ import pickle
 import numpy
 from picamera import PiCamera
 
+# unused:
+#    camera.zoom  # (x, y, w, h) not interesting at the moment
+#    float(camera.analog_gain) # READONLY
+#    float(camera.digital_gain) # READONLY
+
 class CameraProperties(object):
     # camera properties
     properties = {'ISO' : [0, 100, 200, 320, 400, 500, 640, 800],
@@ -10,15 +15,15 @@ class CameraProperties(object):
                                      'fixedfps', 'antishake', 'fireworks'],
                   'AWB Mode' : ['off', 'auto', 'sunlight', 'cloudy', 'shade', 'tungsten', 
                                 'fluorescent', 'incandescent', 'flash', 'horizon'],
-                  'AWB Red Gain' : numpy.arange(0.0, 8.0, 0.2),
-                  'AWB Blue Gain' : numpy.arange(0.0, 8.0, 0.2),
-                  'Exp Compensation' : range(-25, +25+1),
+                  'AWB Red Gain' : numpy.arange(0.0, 8.0, 0.1),
+                  'AWB Blue Gain' : numpy.arange(0.0, 8.0, 0.1),
+                  'Exp Compensation' : numpy.arange(-25, +25+1, 5),
                   'Exp Meter Mode' : ['average', 'spot', 'matrix', 'backlit'],
-                  'Brightness' : range(0, 100+1),               
-                  'Contrast' : range(0, 100+1),
-                  'Saturation' : range(-100, +100+1),               
-                  'Sharpness' : range(-100, +100+1),
-                  'Shutter Speed' : numpy.arange(1000, 60000, 1000),
+                  'Brightness' : numpy.arange(0, 100+1, 10),               
+                  'Contrast' : numpy.arange(0, 100+1, 10),
+                  'Saturation' : numpy.arange(-100, +100+1, 10),               
+                  'Sharpness' : numpy.arange(-100, +100+1, 10),
+                  'Shutter Speed' : numpy.arange(0, 80000, 5000),
                   'DRC Strength' : ['off', 'low', 'medium', 'high']    
                  }
     # indices of the currently selected camera properties' values
@@ -59,7 +64,7 @@ class CameraProperties(object):
              return float(self.cam.awb_gains[1])
         
     def SetProperty(self, name, value):
-        print('Setting %s to %s' % (name, value))
+        print('Attempting to set %s to %s' % (name, value))
         if name == 'DRC Strength':
              self.cam.drc_strength = value
         if name == 'Brightness':

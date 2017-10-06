@@ -3,27 +3,6 @@ from picamera import PiCamera
 from picamera.array import PiRGBArray
 import time
 import cv2
-
-def PrintFullCameraState():
-    print("-----------------------------------------------------------")
-    print("ISO", int(camera.iso))  # With iso settings other than 0 (auto), the exposure_mode property becomes non-functional.
-    print("AWB mode", camera.awb_mode)  # The default is auto
-    print("AWB gains", float(camera.awb_gains[0]), float(camera.awb_gains[1])) # with awbmode off, (red, blue) tuple  Typical values for the gains are between 0.9 and 1.9
-    print("brightness", camera.brightness)
-    print("constrast", camera.contrast)
-    print("saturation", camera.saturation)
-    print("sharpness", camera.sharpness)
-    print("exposure mode", camera.exposure_mode) # The default is auto
-    print("exposure compensation", camera.exposure_compensation)
-    print("meter mode", camera.meter_mode)  # for exposure
-    print("shutter speed", int(camera.shutter_speed))  # microseconds, or 0 which indicates that the speed will be automatically determined by the auto-exposure algorithm
-    print("DRC strength", camera.drc_strength) # off, low, medium, high
-    # still not in the menu:
-    print("zoom", camera.zoom)  # (x, y, w, h) not interesting at the moment
-    print('exposure speed', int(camera.exposure_speed)) # READONLY
-    print("analog gain", float(camera.analog_gain)) # READONLY
-    print("digital gain", float(camera.digital_gain)) # READONLY
-    print("-----------------------------------------------------------")
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -89,7 +68,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
           cp.PrintAllProperties()
     
         if key == 9:  # tab
-          PrintFullCameraState()
+          cp.PrintAllProperties()
           
         if key == 82:  # up
             cp.DecProperty()
