@@ -3,6 +3,8 @@
 A repo for my own experiments.
 
 
+## Tasks
+
 - [x] Set shutter speed
 - [x] Print all camera properties
 - [x] Save/Load camera properties
@@ -20,17 +22,17 @@ A repo for my own experiments.
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
 
-Creating image of SD card:
+## Creating image of SD card:
 ```
 sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc
 ```
 
-Copying image to SD card:
+## Copying image to SD card:
 ```
 sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc
 ```
 
-Checking `dd` progress:
+## Checking `dd` progress:
 ```
 sudo kill -USR1 $(pgrep ^dd)
 ```
