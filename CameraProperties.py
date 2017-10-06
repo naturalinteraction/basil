@@ -33,7 +33,30 @@ class CameraProperties(object):
     def GetProperty(self, name):
         if name == 'DRC Strength':
              return self.cam.drc_strength
-        # 'Brightness', 'ISO', 'Exp Compensation', 'Contrast', 'Saturation', 'AWB Red Gain', 'Exp Meter Mode', 'Sharpness', 'AWB Mode', 'Shutter Speed', 'Exposure Mode', 'AWB Blue Gain'
+        if name == 'Brightness':
+             return self.cam.brightness
+        if name == 'ISO':
+             return self.cam.iso
+        if name == 'Exp Compensation':
+             return self.cam.exposure_compensation
+        if name == 'Contrast':
+             return self.cam.contrast
+        if name == 'AWB Red Gain':
+             return float(self.cam.awb_gains[0])
+        if name == 'Exp Meter Mode':
+             return self.cam.meter_mode
+        if name == 'Sharpness':
+             return self.cam.sharpness
+        if name == 'Saturation':
+             return self.cam.saturation
+        if name == 'AWB Mode':
+             return self.cam.awb_mode
+        if name == 'Shutter Speed':
+             return self.cam.shutter_speed
+        if name == 'Exposure Mode':
+             return self.cam.exposure_mode
+        if name == 'AWB Blue Gain':
+             return float(self.cam.awb_gains[1])
         
     def SetProperty(self, name, value):
         print('Setting %s to %s' % (name, value))
