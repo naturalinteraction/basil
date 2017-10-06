@@ -35,7 +35,7 @@ class CameraProperties(object):
     def __init__(self, camera):
         self.cam = camera
     
-    def GetProperty(self, name):
+    def PropertyOnCamera(self, name):
         if name == 'DRC Strength':
              return self.cam.drc_strength
         if name == 'Brightness':
@@ -63,7 +63,7 @@ class CameraProperties(object):
         if name == 'AWB Blue Gain':
              return float(self.cam.awb_gains[1])
         
-    def SetProperty(self, name, value):
+    def SetPropertyOnCamera(self, name, value):
         print('Attempting to set %s to %s' % (name, value))
         if name == 'DRC Strength':
              self.cam.drc_strength = value
@@ -97,7 +97,7 @@ class CameraProperties(object):
              self.cam.awb_gains = g
     
     def FreezeExposureAWB(self):
-        if self.GetProperty('ISO') == 0:
+        if self.PropertyOnCamera('ISO') == 0:  # todo: also auto awb and expo
             print('Set ISO to a non-zero value first. Doing nothing.')
             return
         self.cam.shutter_speed = self.cam.exposure_speed
@@ -118,12 +118,12 @@ class CameraProperties(object):
         print('*' * 20)
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
-            print("%s = %s <%s>" % (name, value, self.GetProperty(name)))
+            print("%s = %s <%s>" % (name, value, self.PropertyOnCamera(name)))
         print('Exp Speed (READONLY) <%s>' % (int (self.cam.exposure_speed)))
         print('*' * 20)
         
     def PrintCurrentProperty(self):
-        print("%s = %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.GetProperty(self.CurrentPropertyName())))
+        print("%s = %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName())))
 
     def IncValue(self):
         name = self.CurrentPropertyName()

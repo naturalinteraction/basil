@@ -58,7 +58,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
           cp.FreezeExposureAWB()
 
         if key == 10:  # enter
-          cp.SetProperty(cp.CurrentPropertyName(), cp.CurrentPropertyValue())
+          cp.SetPropertyOnCamera(cp.CurrentPropertyName(), cp.CurrentPropertyValue())
           
         if key == ord('c'):
           cp.PrintCurrentProperty()
