@@ -62,8 +62,35 @@ class CameraProperties(object):
         print('Setting %s to %s' % (name, value))
         if name == 'DRC Strength':
              self.cam.drc_strength = value
-        # 'Brightness', 'ISO', 'Exp Compensation', 'Contrast', 'Saturation', 'AWB Red Gain', 'Exp Meter Mode', 'Sharpness', 'AWB Mode', 'Shutter Speed', 'Exposure Mode', 'AWB Blue Gain'
-        
+        if name == 'Brightness':
+             self.cam.brightness = value
+        if name == 'ISO':
+             self.cam.iso = value
+        if name == 'Exp Compensation':
+             self.cam.exposure_compensation = value
+        if name == 'Contrast':
+             self.cam.contrast = value
+        if name == 'AWB Red Gain':
+             g = list(self.cam.awb_gains)
+             g[0] = value     
+             self.cam.awb_gains = g
+        if name == 'Exp Meter Mode':
+             self.cam.meter_mode = value
+        if name == 'Sharpness':
+             self.cam.sharpness = value
+        if name == 'Saturation':
+             self.cam.saturation = value
+        if name == 'AWB Mode':
+             self.cam.awb_mode = value
+        if name == 'Shutter Speed':
+             self.cam.shutter_speed = value
+        if name == 'Exposure Mode':
+             self.cam.exposure_mode = value
+        if name == 'AWB Blue Gain':
+             g = list(self.cam.awb_gains)
+             g[1] = value 
+             self.cam.awb_gains = g
+    
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
 
@@ -72,15 +99,15 @@ class CameraProperties(object):
         return self.properties[name][self.values_indices[name]]
 
     def PrintAllProperties(self):
-        print('*' * 16)
+        print('*' * 20)
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
             print("%s = %s <%s>" % (name, value, self.GetProperty(name)))
-        print('Exp Speed (READONLY) = %s' % (int (self.cam.exposure_speed)))
-        print('*' * 16)
+        print('Exp Speed (READONLY) <%s>' % (int (self.cam.exposure_speed)))
+        print('*' * 20)
         
     def PrintCurrentProperty(self):
-        print("%s = %s" % (self.CurrentPropertyName(), self.CurrentPropertyValue()))
+        print("%s = %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.GetProperty(self.CurrentPropertyName())))
 
     def IncValue(self):
         name = self.CurrentPropertyName()
