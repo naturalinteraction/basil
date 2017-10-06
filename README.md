@@ -8,10 +8,10 @@ A repo for my own experiments.
 - [x] Save/Load camera properties
 - [x] Arrow keys select property and change its value
 - [x] Get/Set camera property value by name
-- [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
-- [ ] Decide whether to use same resolution for both models
 - [ ] Set optimal camera properties programmatically
 - [ ] Preview on/off
+- [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
+- [ ] Decide whether to use same resolution for both models
 - [ ] Save image locally
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3
