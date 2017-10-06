@@ -28,19 +28,15 @@ camera.drc_strength = 'high'
 '''
 1. Set ISO to the desired value
 2. Wait a few seconds for the automatic gain control to settle
-3. Now fix the values:
-       - camera.shutter_speed = camera.exposure_speed
-       - camera.exposure_mode = 'off'
-       - g = camera.awb_gains
-       - camera.awb_mode = 'off'
-       - camera.awb_gains = g
+3. FreezeExposureAWB()
 '''
 
 show = True
 
 cp = CameraProperties (camera)
 cp.Load()
-
+cp.PrintAllProperties()
+cp.PrintCurrentProperty()
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image, then initialize the timestamp
@@ -57,7 +53,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         
         if key == ord('s'):
           cp.Save()
-    
+        
+        if key == ord('f'):
+          cp.FreezeExposureAWB()
+
         if key == 10:  # enter
           cp.SetProperty(cp.CurrentPropertyName(), cp.CurrentPropertyValue())
           

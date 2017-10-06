@@ -96,6 +96,17 @@ class CameraProperties(object):
              g[1] = value 
              self.cam.awb_gains = g
     
+    def FreezeExposureAWB(self):
+        if self.GetProperty('ISO') == 0:
+            print('Set ISO to a non-zero value first. Doing nothing.')
+            return
+        self.cam.shutter_speed = self.cam.exposure_speed
+        self.cam.exposure_mode = 'off'
+        g = self.cam.awb_gains
+        self.cam.awb_mode = 'off'
+        self.cam.awb_gains = g
+        print('Exposure and AWB frozen.')
+
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
 

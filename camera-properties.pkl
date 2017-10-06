@@ -4,37 +4,37 @@ p1
 I0
 sS'Saturation'
 p2
-I0
+I11
 sS'AWB Red Gain'
 p3
-I0
+I13
 sS'Brightness'
 p4
-I0
+I5
 sS'Exp Meter Mode'
 p5
 I0
 sS'Sharpness'
 p6
-I0
+I10
 sS'AWB Mode'
 p7
-I0
+I1
 sS'Shutter Speed'
 p8
 I0
 sS'ISO'
 p9
-I7
+I4
 sS'Exposure Mode'
 p10
-I0
+I1
 sS'AWB Blue Gain'
 p11
-I0
+I13
 sS'Exp Compensation'
 p12
-I0
+I6
 sS'Contrast'
 p13
 I0
