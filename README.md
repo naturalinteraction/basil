@@ -19,5 +19,22 @@ A repo for my own experiments.
 - [ ] [POSTPONED] Camera on/off (250mA, no continuous mode)
 - [ ] [POSTPONED] Detect if scene is static
 
+Creating image of SD card:
+```
+sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc
+```
+
+Copying image to SD card:
+```
+sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc
+```
+
+Checking `dd` progress:
+```
+sudo kill -USR1 $(pgrep ^dd)
+```
+
+
+
 
 
