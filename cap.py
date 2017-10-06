@@ -1,8 +1,8 @@
-from picamera.array import PiRGBArray
+from CameraProperties import CameraProperties
 from picamera import PiCamera
+from picamera.array import PiRGBArray
 import time
 import cv2
-from CameraProperties import CameraProperties
 
 def PrintFullCameraState():
     print("-----------------------------------------------------------")
@@ -45,23 +45,21 @@ camera.exposure_mode = 'auto'
 camera.exposure_compensation = 25
 #camera.shutter_speed = 54510L
 camera.drc_strength = 'high'
+
 '''
-# Set ISO to the desired value
-camera.iso = 100
-# Wait for the automatic gain control to settle
-sleep(2)
-# Now fix the values
-camera.shutter_speed = camera.exposure_speed
-camera.exposure_mode = 'off'
-g = camera.awb_gains
-camera.awb_mode = 'off'
-camera.awb_gains = g
-# Finally, take several photos with the fixed settings
+1. Set ISO to the desired value
+2. Wait a few seconds for the automatic gain control to settle
+3. Now fix the values:
+       - camera.shutter_speed = camera.exposure_speed
+       - camera.exposure_mode = 'off'
+       - g = camera.awb_gains
+       - camera.awb_mode = 'off'
+       - camera.awb_gains = g
 '''
 
 show = True
 
-cp = CameraProperties ()
+cp = CameraProperties (camera)
 cp.Load()
 
 # capture frames from the camera

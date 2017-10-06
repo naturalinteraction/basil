@@ -1,5 +1,6 @@
 import pickle
 import numpy
+from picamera import PiCamera
 
 class CameraProperties(object):
     # camera properties
@@ -24,7 +25,11 @@ class CameraProperties(object):
     values_indices = dict(zip(properties.keys(), [0] * len(properties)))
     # index of the currently selected camera property
     property_index = 0
-
+    cam = None
+    
+    def __init__(self, camera):
+        self.cam = camera
+        
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
 
@@ -33,10 +38,13 @@ class CameraProperties(object):
         return self.properties[name][self.values_indices[name]]
 
     def PrintAllProperties(self):
+        print('*' * 16)
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
             print("%s = %s" % (name, value))
-
+        print('Exp Speed (READONLY) = %s' % (int (self.cam.exposure_speed)))
+        print('*' * 16)
+        
     def PrintCurrentProperty(self):
         print("%s = %s" % (self.CurrentPropertyName(), self.CurrentPropertyValue()))
 
