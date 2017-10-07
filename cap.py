@@ -14,9 +14,10 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
  
 show = True
 
-cp = CameraProperties (camera)
+cp = CameraProperties(camera)
 cp.Load()
 
+last_picture_taken_ticks = -1  # todo: read this from disk
 just_started = True
 previous_digital_gain = -1.0
 previous_analog_gain = -1.0
@@ -42,9 +43,21 @@ def PrintHelp():
     print('S - Save')
     print('D - Disable Display')
     print('H - Help')
-    # todo: P - ...
+    print('P - Take Picture Now')
     print('ESC - Exit')
     print('*' * 10)
+
+def TakePicture(img):
+    global last_picture_taken_ticks
+    localtime = time.localtime(time.time())
+    print("Local current time :", localtime)
+    gmtime = time.gmtime(time.time())
+    print("Current UTC time :", gmtime)
+    print('Saving pic')
+    name_with_datetime = time.strftime("cache/test_%Y_%m_%d-%H_%M.png")
+    print (name_with_datetime)
+    cv2.imwrite(name_with_datetime, img) 
+    last_picture_taken_ticks = time.time()  # todo: write this to disk
 
 # allow the camera to warmup
 print('Wait...')
@@ -69,7 +82,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 show = False
                 print('Display disabled.')
         else:
-          pass  # todo: check time and take picture automatically
+          if (time.time() - last_picture_taken_ticks) > 60.0:
+              #print(localtime.tm_year)
+              #print(localtime.tm_mon)
+              #print(localtime.tm_mday)
+              #print(localtime.tm_hour)
+              #print(localtime.tm_min)
+              #print(localtime.tm_sec)
+              TakePicture(image)
         
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
@@ -93,8 +113,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.FreezeExposureAWB()
 
         if key == ord('p'):
-            pass  # todo: force take picture with meaningful filename
-            # cv2.imwrite('cache/test.png', image)  # test
+            TakePicture(image)
 
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(),
@@ -126,4 +145,5 @@ camera.close()
 print('Camera closed.')
 cv2.destroyAllWindows()
 print('Windows destroyed.')
-TestS3()
+
+# TestS3()

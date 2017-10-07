@@ -12,24 +12,6 @@ def TestS3():
     name_with_datetime = time.strftime("uploads/vis_%Y_%m_%d-%H_%M.png")
     print (name_with_datetime)
 
-    ticks = time.time()
-    print ("Number of ticks since 12:00am, January 1, 1970:", ticks)
-    time.sleep(1)
-    print ("Number of ticks since 12:00am, January 1, 1970:", time.time())
-
-    localtime = time.localtime(time.time())
-    print ("Local current time :", localtime)
-    gmtime = time.gmtime(time.time())
-    print ("utc current time :", gmtime)
-
-    print(localtime.tm_year)
-    print(localtime.tm_mon)
-    print(localtime.tm_mday)
-    print(localtime.tm_hour)
-    print(localtime.tm_min)
-    print(localtime.tm_sec)
-    print(time.time() - ticks)
-
     bucket_name = 'natural-interaction'
     conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
                            AWS_SECRET_ACCESS_KEY) 
