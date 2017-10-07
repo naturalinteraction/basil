@@ -56,7 +56,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# show the frame
 	if show:
             cv2.imshow("cap  |  av@naturalinteraction.org", image)
-        
+
         if just_started:
             UpdateGainDistance()
             if gain_distance < 0.05:
@@ -67,7 +67,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 show = False
                 print('Display disabled.')
                 
-        key = cv2.waitKey(1) & 0xFF
+        key = cv2.waitKey(50) & 0xFF  # milliseconds
         
         if (key < 255 and key != ord('d')):
             # print (key)
