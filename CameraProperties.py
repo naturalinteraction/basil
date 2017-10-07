@@ -96,7 +96,10 @@ class CameraProperties(object):
         for name in self.properties.keys():
             value = self.properties[name][self.values_indices[name]]
             self.SetPropertyOnCamera(name, value)
-
+        value_r = self.properties['AWB Red Gain'][self.values_indices['AWB Red Gain']]
+        value_b = self.properties['AWB Blue Gain'][self.values_indices['AWB Blue Gain']]
+        self.cam.awb_gains = (value_r, value_b)
+            
     def FreezeExposureAWB(self):
         if (self.PropertyOnCamera('ISO') == 0
         or self.PropertyOnCamera('AWB Mode') != 'auto'
