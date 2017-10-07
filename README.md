@@ -12,12 +12,14 @@ A repo for my own experiments.
 - [x] Get/Set camera property value by name
 - [x] Set optimal camera properties programmatically
 - [x] Preview on/off
-- [x] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
 - [ ] Save image locally
+- [ ] Include resolution and notes in filenames
+- [ ] Save camera properties, local and UTC datetime along with image
+- [ ] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
 - [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
-- [ ] Decide whether to use same resolution for both models
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3
+- [ ] ~~Decide whether to use same resolution for both models~~
 - [ ] ~~Detect camera hardware version (trying to set highest resolution?)~~
 - [ ] ~~Detect camera presence~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
