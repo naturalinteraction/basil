@@ -11,9 +11,6 @@ camera.resolution = (1280, 1024)
 camera.framerate = 3
 rawCapture = PiRGBArray(camera, size=camera.resolution)
  
-# allow the camera to warmup
-time.sleep(2)
-
 show = True
 
 cp = CameraProperties (camera)
@@ -31,17 +28,26 @@ def UpdateGainDistance():
     gain_distance += math.fabs(camera.analog_gain - previous_analog_gain)
     previous_digital_gain = previous_digital_gain * .8 + .2 * camera.digital_gain
     previous_analog_gain = previous_analog_gain * .8 + .2 * camera.analog_gain
-    print('analog %s  digital %s distance %s' % (float(camera.analog_gain), float(camera.digital_gain), gain_distance))
+    print('analog %s  digital %s distance %s' % (float(camera.analog_gain),
+                                                 float(camera.digital_gain),
+                                                 gain_distance))
 
 def PrintHelp():
+    print('*' * 10)
     print('TAB - Print All Properties')
     print('Arrow Keys - Navigate Properties And Values')
     print('Enter - Set Current Property')
     print('F - Freeze')
     print('S - Save')
+    print('D - Disable Display')
     print('H - Help')
-    
-            
+    print('ESC - Exit')
+    print('*' * 10)
+
+# allow the camera to warmup
+print('Wait...')
+time.sleep(2)
+      
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image
@@ -49,8 +55,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
  
 	# show the frame
 	if show:
-            cv2.imshow("Frame", image)
-        # show = False
+            cv2.imshow("cap  |  av@naturalinteraction.org", image)
         
         if just_started:
             UpdateGainDistance()
@@ -59,12 +64,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 cp.SetAllPropertiesOnCamera()
                 PrintHelp()
                 cp.PrintCurrentProperty()
+                show = False
                     
         key = cv2.waitKey(1) & 0xFF
         
-        if key < 255:
-            pass
+        if (key < 255 and key != ord('d')):
             # print (key)
+            if show == False:
+              print('Display enabled.')
+              show = True
+        
+        if key == ord('d'):
+            print('Display disabled.')
+            show = False
         
         if key == ord('h'):
             PrintHelp()
@@ -76,7 +88,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.FreezeExposureAWB()
 
         if key == 10:  # enter
-            cp.SetPropertyOnCamera(cp.CurrentPropertyName(), cp.CurrentPropertyValue())
+            cp.SetPropertyOnCamera(cp.CurrentPropertyName(),
+                                   cp.CurrentPropertyValue())
     
         if key == 9:  # tab
             cp.PrintAllProperties()
