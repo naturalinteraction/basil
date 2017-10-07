@@ -35,7 +35,7 @@ def TestS3():
                            AWS_SECRET_ACCESS_KEY) 
     location='EU'
     # bucket = conn.create_bucket(bucket_name, location = 'EU')
-    bucket = conn.get_bucket(bucket_name)
+    bucket = conn.get_bucket(bucket_name, validate=False)
 
     testfile = "./launch.png"
     print (testfile)
