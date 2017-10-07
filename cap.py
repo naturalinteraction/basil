@@ -4,6 +4,7 @@ from picamera.array import PiRGBArray
 import time
 import cv2
 import math
+import UtilityS3
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -41,6 +42,7 @@ def PrintHelp():
     print('S - Save')
     print('D - Disable Display')
     print('H - Help')
+    # todo: P - ...
     print('ESC - Exit')
     print('*' * 10)
 
@@ -66,7 +68,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 cp.PrintCurrentProperty()
                 show = False
                 print('Display disabled.')
-                
+        else:
+          pass  # todo: check time and take picture automatically
+        
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
         if (key < 255 and key != ord('d')):
@@ -88,13 +92,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == ord('f'):
             cp.FreezeExposureAWB()
 
+        if key == ord('p'):
+            pass  # todo: force take picture with meaningful filename
+            # cv2.imwrite('cache/test.png', image)  # test
+
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(),
                                    cp.CurrentPropertyValue())
     
         if key == 9:  # tab
             cp.PrintAllProperties()
-            cv2.imwrite('cache/test.png', image)  # test
             
         if key == 82:  # up
             cp.DecProperty()
@@ -119,3 +126,4 @@ camera.close()
 print('Camera closed.')
 cv2.destroyAllWindows()
 print('Windows destroyed.')
+TestS3()
