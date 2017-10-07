@@ -23,33 +23,51 @@ just_started = True
 previous_digital_gain = -1.0
 previous_analog_gain = -1.0
 
+def UpdateGainDistance():
+    global gain_distance
+    global previous_analog_gain
+    global previous_digital_gain
+    gain_distance = math.fabs(camera.digital_gain - previous_digital_gain)
+    gain_distance += math.fabs(camera.analog_gain - previous_analog_gain)
+    previous_digital_gain = previous_digital_gain * .8 + .2 * camera.digital_gain
+    previous_analog_gain = previous_analog_gain * .8 + .2 * camera.analog_gain
+    print('analog %s  digital %s distance %s' % (float(camera.analog_gain), float(camera.digital_gain), gain_distance))
+
+def PrintHelp():
+    print('TAB - Print All Properties')
+    print('Arrow Keys - Navigate Properties And Values')
+    print('Enter - Set Current Property')
+    print('F - Freeze')
+    print('S - Save')
+    print('H - Help')
+    
+            
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
-	# grab the raw NumPy array representing the image, then initialize the timestamp
-	# and occupied/unoccupied text
+	# grab the raw NumPy array representing the image
 	image = frame.array
  
 	# show the frame
 	if show:
             cv2.imshow("Frame", image)
         # show = False
-        key = cv2.waitKey(1) & 0xFF
         
         if just_started:
-            gain_distance = math.fabs(camera.digital_gain - previous_digital_gain)
-            gain_distance += math.fabs(camera.analog_gain - previous_analog_gain)
-            previous_digital_gain = previous_digital_gain * .8 + .2 * camera.digital_gain
-            previous_analog_gain = previous_analog_gain * .8 + .2 * camera.analog_gain
-            print('analog %s  digital %s distance %s' % (float(camera.analog_gain), float(camera.digital_gain), gain_distance))
+            UpdateGainDistance()
             if gain_distance < 0.05:
                 just_started = False
                 cp.SetAllPropertiesOnCamera()
+                PrintHelp()
                 cp.PrintCurrentProperty()
                     
+        key = cv2.waitKey(1) & 0xFF
+        
         if key < 255:
             pass
-            # just_started = False
             # print (key)
+        
+        if key == ord('h'):
+            PrintHelp()
         
         if key == ord('s'):
             cp.Save()
@@ -59,15 +77,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(), cp.CurrentPropertyValue())
-          
-        if key == ord('c'):
-            cp.PrintCurrentProperty()
-    
-        if key == 225: # left shift
-            just_started = False
-            cp.SetAllPropertiesOnCamera()
-            cp.PrintAllProperties()
-            cp.PrintCurrentProperty()
     
         if key == 9:  # tab
             cp.PrintAllProperties()
@@ -90,5 +99,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# if the `q` or ESC key was pressed, break from the loop
 	if key == ord('q') or key == 27:
 		break
+		
 camera.close()
 print('Camera closed.')
