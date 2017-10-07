@@ -65,7 +65,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 PrintHelp()
                 cp.PrintCurrentProperty()
                 show = False
-                    
+                print('Display disabled.')
+                
         key = cv2.waitKey(1) & 0xFF
         
         if (key < 255 and key != ord('d')):
@@ -93,7 +94,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     
         if key == 9:  # tab
             cp.PrintAllProperties()
-          
+            cv2.imwrite('cache/test.png', image)  # test
+            
         if key == 82:  # up
             cp.DecProperty()
         
@@ -115,3 +117,5 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		
 camera.close()
 print('Camera closed.')
+cv2.destroyAllWindows()
+print('Windows destroyed.')
