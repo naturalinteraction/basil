@@ -4,7 +4,7 @@ from picamera.array import PiRGBArray
 import time
 import cv2
 import math
-import UtilityS3
+from UtilityS3 import TestS3
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
