@@ -64,7 +64,7 @@ time.sleep(1)
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
 	# grab the raw NumPy array representing the image
-	image = frame.array
+	image = frame.array  # todo: maybe we can avoid this if not just started and not showing and not taking the picture
  
 	# show the frame
 	if show:
