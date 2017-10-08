@@ -51,8 +51,8 @@ def PrintHelp():
 def TakePicture(img, res):
     print('Saving picture.')
     note = os.environ['BASIL_NOTE']
-    filename = 'cache/' + note + '_' + str (res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.png")
-    print (filename)
+    filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.png")
+    print(filename)
     cv2.imwrite(filename, img) 
     global last_picture_taken_ticks
     last_picture_taken_ticks = time.time()  # todo: write this to disk
@@ -60,6 +60,8 @@ def TakePicture(img, res):
 # allow the camera to warmup
 print('Wait...')
 time.sleep(1)
+
+cv2.namedWindow('cap')  # , cv2.WINDOW_NORMAL)
       
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
@@ -68,7 +70,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
  
 	# show the frame
 	if show:
-            cv2.imshow("cap  |  av@naturalinteraction.org", image)
+            cv2.imshow('cap', image)
 
         if just_started:
             UpdateGainDistance()
@@ -91,7 +93,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
         if (key < 255 and key != ord('d')):
-            # print (key)
+            # print(key)
             if show == False:
               print('Display enabled.')
               show = True
