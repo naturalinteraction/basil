@@ -132,6 +132,8 @@ class CameraProperties(object):
         # print('Zoom (READONLY) <%s>' % self.cam.zoom)
         print('Analog Gain (READONLY) <%s>' % float(self.cam.analog_gain))
         print('Digital Gain (READONLY) <%s>' % float(self.cam.digital_gain))
+        zoo = self.cam.zoom
+        print('Zoom <%s, %s, %s, %s>' % (zoo[0], zoo[1], zoo[2], zoo[3]))
         print('*' * 20)
         
     def PrintCurrentProperty(self):

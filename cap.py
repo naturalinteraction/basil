@@ -46,6 +46,7 @@ def PrintHelp():
     print('H - Help')
     print('P - Take Picture Now')
     print('ESC - Exit')
+    print('Z - Zoom To Focus')
     print('*' * 10)
 
 def TakePicture(img, res):
@@ -61,7 +62,7 @@ def TakePicture(img, res):
 print('Wait...')
 time.sleep(1)
 
-cv2.namedWindow('cap')  # , cv2.WINDOW_NORMAL)
+cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
       
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
@@ -121,6 +122,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == 9:  # tab
             cp.PrintAllProperties()
             
+        if key == ord('z'):    
+            if camera.zoom[0] == 0.0:
+                camera.zoom = (0.333, 0.333, 0.333, 0.333)
+            else:
+                camera.zoom = (0.0, 0.0, 1.0, 1.0)
+                   
         if key == 82:  # up
             cp.DecProperty()
         
