@@ -2,6 +2,7 @@ from CameraProperties import CameraProperties
 from picamera import PiCamera
 from picamera.array import PiRGBArray
 import time
+import os
 import cv2
 import math
 from UtilityS3 import TestS3
@@ -47,16 +48,13 @@ def PrintHelp():
     print('ESC - Exit')
     print('*' * 10)
 
-def TakePicture(img):
+def TakePicture(img, res):
+    print('Saving picture.')
+    note = os.environ['BASIL_NOTE']
+    filename = 'cache/' + note + '_' + str (res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.png")
+    print (filename)
+    cv2.imwrite(filename, img) 
     global last_picture_taken_ticks
-    localtime = time.localtime(time.time())
-    print("Local current time :", localtime)
-    gmtime = time.gmtime(time.time())
-    print("Current UTC time :", gmtime)
-    print('Saving pic')
-    name_with_datetime = time.strftime("cache/test_%Y_%m_%d-%H_%M.png")
-    print (name_with_datetime)
-    cv2.imwrite(name_with_datetime, img) 
     last_picture_taken_ticks = time.time()  # todo: write this to disk
 
 # allow the camera to warmup
@@ -83,13 +81,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 print('Display disabled.')
         else:
           if (time.time() - last_picture_taken_ticks) > 60.0:
+              #localtime = time.localtime(time.time())
+              #gmtime = time.gmtime(time.time())
               #print(localtime.tm_year)
               #print(localtime.tm_mon)
               #print(localtime.tm_mday)
               #print(localtime.tm_hour)
               #print(localtime.tm_min)
               #print(localtime.tm_sec)
-              TakePicture(image)
+              TakePicture(image, camera.resolution)
         
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
@@ -113,7 +113,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.FreezeExposureAWB()
 
         if key == ord('p'):
-            TakePicture(image)
+            TakePicture(image, camera.resolution)
 
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(),

@@ -12,8 +12,8 @@ A repo for my own experiments.
 - [x] Get/Set camera property value by name
 - [x] Set optimal camera properties programmatically
 - [x] Preview on/off
-- [ ] Save image locally
-- [ ] Include resolution and notes in filenames
+- [ ] Save image locally, timely
+- [x] Include resolution and notes in filenames
 - [ ] Save camera properties, local and UTC datetime along with image
 - [ ] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
 - [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
