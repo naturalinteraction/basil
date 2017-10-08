@@ -9,8 +9,8 @@ from UtilityS3 import TestS3
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (1280, 1024)
-camera.framerate = 3
+camera.resolution = (2112, 1568) # (2000, 1504)  # (2592, 1952)  # (1640, 1232)
+camera.framerate = 5
 rawCapture = PiRGBArray(camera, size=camera.resolution)
  
 show = True
@@ -59,7 +59,7 @@ def TakePicture(img, res):
 
 # allow the camera to warmup
 print('Wait...')
-time.sleep(2)
+time.sleep(4)
       
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
@@ -75,21 +75,18 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             if gain_distance < 0.05:
                 just_started = False
                 cp.SetAllPropertiesOnCamera()
+                # todo: do the rest after one second or so...
                 PrintHelp()
                 cp.PrintCurrentProperty()
                 show = False
                 print('Display disabled.')
         else:
-          if (time.time() - last_picture_taken_ticks) > 60.0:
-              #localtime = time.localtime(time.time())
-              #gmtime = time.gmtime(time.time())
-              #print(localtime.tm_year)
-              #print(localtime.tm_mon)
-              #print(localtime.tm_mday)
-              #print(localtime.tm_hour)
-              #print(localtime.tm_min)
-              #print(localtime.tm_sec)
-              TakePicture(image, camera.resolution)
+          ticks = time.time()
+          if (ticks - last_picture_taken_ticks) > 61.0:
+              localtime = time.localtime(ticks) # gmtime for UTC
+              if localtime.tm_min == 46:  # one per hour
+                  # if localtime.tm_hour == 10:  # one per day
+                  TakePicture(image, camera.resolution)
         
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
