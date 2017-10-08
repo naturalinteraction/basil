@@ -14,7 +14,8 @@ A repo for my own experiments.
 - [x] Preview on/off
 - [x] Save image locally, timely
 - [x] Include resolution and notes in filenames
-- [ ] Save camera properties, local and UTC datetime along with image
+- [ ] Save camera properties, and the date and time the process started (or number of hours since it started), along with image
+- [ ] Print date and time the process started when TAB is pressed
 - [ ] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
 - [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
 - [ ] Manage network failures (upload queue)
