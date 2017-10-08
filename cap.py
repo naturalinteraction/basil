@@ -9,7 +9,7 @@ from UtilityS3 import TestS3
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (2160, 1632) # (2112, 1568) (2000, 1504) (1920, 1088) (1640, 1232)
+camera.resolution = (2592, 1952) # (2160, 1632) (2112, 1568) (2000, 1504) (1920, 1088) (1640, 1232)
 camera.framerate = 5
 rawCapture = PiRGBArray(camera, size=camera.resolution)
  
@@ -62,7 +62,7 @@ print('Wait...')
 time.sleep(1)
       
 # capture frames from the camera
-for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
 	# grab the raw NumPy array representing the image
 	image = frame.array
  
