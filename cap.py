@@ -63,7 +63,7 @@ def TakePicture(img, cam):
     # add EXIF keywords
     exif = ExifEditor(filename)
     # exif.addKeyword('tre')
-    exif.addKeywords([git_hash, git_commit_message_pretty, time_process_started_string], 'shutter_speed = ' + str(cam.shutter_speed))
+    exif.addKeywords([git_hash, git_commit_message_pretty, time_process_started_string, 'shutter_speed = ' + str(cam.shutter_speed)])
     print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
 
