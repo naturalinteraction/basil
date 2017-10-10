@@ -7,6 +7,7 @@ import cv2
 import math
 import subprocess
 from UtilityS3 import UploadFileToS3
+from pyexif import ExifEditor
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -55,9 +56,15 @@ def TakePicture(img, res):
     note = os.environ['BASIL_NOTE']
     filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
-    cv2.imwrite(filename, img) 
+    cv2.imwrite(filename, img)
     global last_picture_taken_ticks
     last_picture_taken_ticks = time.time()  # todo: write this to disk
+    # add EXIF keywords
+    exif = ExifEditor(filename)
+    # exif.addKeyword('tre')
+    exif.addKeywords([git_commit_message, time_process_started_string])
+    print('getKeywords', exif.getKeywords())
+    print('getTag Keywords', exif.getTag("Keywords"))
 
 # allow the camera to warmup
 print('Wait...')
