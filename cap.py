@@ -51,8 +51,9 @@ def PrintHelp():
     print('Z - Zoom To Focus')
     print('*' * 10)
 
-def TakePicture(img, res):
+def TakePicture(img, cam):
     print('Saving picture.')
+    res = cam.resolution
     note = os.environ['BASIL_NOTE']
     filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
@@ -62,7 +63,7 @@ def TakePicture(img, res):
     # add EXIF keywords
     exif = ExifEditor(filename)
     # exif.addKeyword('tre')
-    exif.addKeywords([git_commit_message_pretty, time_process_started_string])
+    exif.addKeywords([git_hash, git_commit_message_pretty, time_process_started_string], 'shutter_speed = ' + cam.shutter_speed)
     print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
 
@@ -107,7 +108,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               localtime = time.localtime(ticks) # gmtime for UTC
               if localtime.tm_min == 19:  # one per hour
                   # if localtime.tm_hour == 10:  # one per day
-                  TakePicture(image, camera.resolution)
+                  TakePicture(image, camera)
         
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
@@ -131,7 +132,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.FreezeExposureAWB()
 
         if key == ord('p'):
-            TakePicture(image, camera.resolution)
+            TakePicture(image, camera)
 
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(),
