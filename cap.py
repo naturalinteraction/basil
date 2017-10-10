@@ -5,6 +5,7 @@ import time
 import os
 import cv2
 import math
+import subprocess
 from UtilityS3 import UploadFileToS3
     
 # initialize the camera and grab a reference to the raw camera capture
@@ -61,6 +62,13 @@ def TakePicture(img, res):
 # allow the camera to warmup
 print('Wait...')
 time.sleep(1)
+
+git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+print(git_hash)
+git_commit_message = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
+print(git_commit_message)
+
+time_process_started = time.time()
 
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
       
@@ -121,6 +129,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     
         if key == 9:  # tab
             cp.PrintAllProperties()
+            print(git_hash)
+            print(git_commit_message)
+            print((time.time() - time_process_started) / (1000.0))
+
             
         if key == ord('z'):    
             if camera.zoom[0] == 0.0:

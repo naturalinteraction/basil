@@ -620,7 +620,8 @@ print(lista[0])
 
 from pyexif import ExifEditor
 exif = ExifEditor(lista[0])
-#exif.addKeyword('una keyword')
+#exif.addKeyword('tre')
+#exif.addKeywords(['uno', 'due'])
 print('getkeywords', exif.getKeywords())
 print('gettag keywords', exif.getTag("Keywords"))
 
@@ -632,4 +633,12 @@ print(return_code)
 
 #os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
 #print(glob.glob("cache/*.txt"))
+
+import subprocess
+git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+print(git_hash)
+
+git_commit_message = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
+print(git_commit_message)
+
 
