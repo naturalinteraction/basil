@@ -132,7 +132,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print(git_hash)
             print(git_commit_message)
             uptime_minutes = int((time.time() - time_process_started) / (60.0))
-            print('uptime minutes: %s', % uptime_minutes)
+            print('uptime minutes: %s' % uptime_minutes)
             print('*' * 20)
 
             
