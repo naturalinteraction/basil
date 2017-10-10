@@ -52,7 +52,7 @@ def PrintHelp():
 def TakePicture(img, res):
     print('Saving picture.')
     note = os.environ['BASIL_NOTE']
-    filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.png")
+    filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
     cv2.imwrite(filename, img) 
     global last_picture_taken_ticks
@@ -87,7 +87,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
           ticks = time.time()
           if (ticks - last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks) # gmtime for UTC
-              if localtime.tm_min == 46:  # one per hour
+              if localtime.tm_min == 19:  # one per hour
                   # if localtime.tm_hour == 10:  # one per day
                   TakePicture(image, camera.resolution)
         
