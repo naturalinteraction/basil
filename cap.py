@@ -63,9 +63,9 @@ def TakePicture(img, res):
 print('Wait...')
 time.sleep(1)
 
-git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-print(git_hash)
-git_commit_message = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
+# git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+# print(git_hash)
+git_commit_message = subprocess.check_output(["git", "log", "-1"]).strip()  # , "--pretty=%B"
 print(git_commit_message)
 
 time_process_started = time.time()
@@ -130,7 +130,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     
         if key == 9:  # tab
             cp.PrintAllProperties()
-            print(git_hash)
+            # print(git_hash)
             print(git_commit_message)
             uptime_minutes = int((time.time() - time_process_started) / (60.0))
             print(time_process_started_string) 
