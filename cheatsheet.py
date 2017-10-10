@@ -608,3 +608,12 @@ interrogate(Dog)
 interrogate(spot)
 interrogate(addNumbers)
 
+
+# for listing png files in cache, and renaming them to uploaded after they're sent to S3
+import glob
+print(glob.glob("cache/*.txt"))
+os.rename('pyalsaaudio-0.8.4/TODO', 'cache/TODO.txt')
+print(glob.glob("cache/*.txt"))
+os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
+print(glob.glob("cache/*.txt"))
+
