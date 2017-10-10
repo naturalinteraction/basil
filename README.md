@@ -15,7 +15,7 @@ A repo for my own experiments.
 - [x] Save image locally, timely
 - [x] Include resolution and notes in filenames
 - [x] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
-- [ ] Save camera properties, and the date and time the process started (or number of hours since it started), along with image
+- [ ] Save camera properties, and the date and time the process started (or number of hours since it started) in EXIF
 - [ ] Print date and time the process started when TAB is pressed
 - [ ] Determine best resolution for both camera versions (done for latest model)
 - [ ] Manage network failures (upload queue)

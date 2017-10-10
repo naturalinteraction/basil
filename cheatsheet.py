@@ -620,11 +620,9 @@ print(lista[0])
 
 from pyexif import ExifEditor
 exif = ExifEditor(lista[0])
-exif.addKeyword('una keyword')
-#exif.setTag('prova', 'valore')
+#exif.addKeyword('una keyword')
 print('getkeywords', exif.getKeywords())
 print('gettag keywords', exif.getTag("Keywords"))
-#print('gettag prova', exif.getTag("prova"))
 
 '''
 from UtilityS3 import UploadFileToS3
