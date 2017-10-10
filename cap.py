@@ -5,7 +5,7 @@ import time
 import os
 import cv2
 import math
-from UtilityS3 import TestS3
+from UtilityS3 import UploadFileToS3
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -152,4 +152,4 @@ print('Camera closed.')
 cv2.destroyAllWindows()
 print('Windows destroyed.')
 
-# TestS3()
+# UploadFileToS3('somefile.txt')

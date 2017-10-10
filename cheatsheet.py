@@ -613,7 +613,13 @@ interrogate(addNumbers)
 import glob
 print(glob.glob("cache/*.txt"))
 os.rename('pyalsaaudio-0.8.4/TODO', 'cache/TODO.txt')
-print(glob.glob("cache/*.txt"))
+lista = glob.glob("cache/*.txt")
+print(lista)
+print(lista[0])
+
+# from UtilityS3 import UploadFileToS3
+# UploadFileToS3(lista[0])
+
 os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
 print(glob.glob("cache/*.txt"))
 
