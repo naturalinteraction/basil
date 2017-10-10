@@ -611,11 +611,20 @@ interrogate(addNumbers)
 
 # for listing png files in cache, and renaming them to uploaded after they're sent to S3
 import glob
-print(glob.glob("cache/*.txt"))
-os.rename('pyalsaaudio-0.8.4/TODO', 'cache/TODO.txt')
-lista = glob.glob("cache/*.txt")
+#print(glob.glob("cache/*.txt"))
+#os.rename('pyalsaaudio-0.8.4/TODO', 'cache/TODO.txt')
+
+lista = glob.glob("cache/*.jpg")
 print(lista)
 print(lista[0])
+
+from pyexif import ExifEditor
+exif = ExifEditor(lista[0])
+exif.addKeyword('una keyword')
+#exif.setTag('prova', 'valore')
+print('getkeywords', exif.getKeywords())
+print('gettag keywords', exif.getTag("Keywords"))
+#print('gettag prova', exif.getTag("prova"))
 
 '''
 from UtilityS3 import UploadFileToS3
@@ -623,6 +632,6 @@ return_code = UploadFileToS3(lista[0])
 print(return_code)
 '''
 
-os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
-print(glob.glob("cache/*.txt"))
+#os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
+#print(glob.glob("cache/*.txt"))
 
