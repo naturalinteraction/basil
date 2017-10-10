@@ -577,7 +577,7 @@ finally:
 
 totale = "totale "
 tutto = totale + str(zero)
-print (int ("1997"))
+print (int("1997"))
 numeri = set ([1, 7, 3, 1])  # no duplicati, no ordine (set)
 
 print (numeri)
@@ -617,8 +617,11 @@ lista = glob.glob("cache/*.txt")
 print(lista)
 print(lista[0])
 
-# from UtilityS3 import UploadFileToS3
-# UploadFileToS3(lista[0])
+'''
+from UtilityS3 import UploadFileToS3
+return_code = UploadFileToS3(lista[0])
+print(return_code)
+'''
 
 os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
 print(glob.glob("cache/*.txt"))

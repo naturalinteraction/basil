@@ -17,7 +17,7 @@ A repo for my own experiments.
 - [x] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
 - [ ] Save camera properties, and the date and time the process started (or number of hours since it started), along with image
 - [ ] Print date and time the process started when TAB is pressed
-- [ ] Determine best resolution for both camera versions (set focus and take multiple test pics)
+- [ ] Determine best resolution for both camera versions (done for latest model)
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3
 - [ ] ~~Decide whether to use same resolution for both models~~
