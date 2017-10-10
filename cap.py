@@ -131,7 +131,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.PrintAllProperties()
             print(git_hash)
             print(git_commit_message)
-            print((time.time() - time_process_started) / (1000.0))
+            uptime_minutes = int((time.time() - time_process_started) / (60.0))
+            print('uptime minutes: %s', % uptime_minutes)
+            print('*' * 20)
 
             
         if key == ord('z'):    
