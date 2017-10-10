@@ -62,7 +62,7 @@ def TakePicture(img, res):
     # add EXIF keywords
     exif = ExifEditor(filename)
     # exif.addKeyword('tre')
-    exif.addKeywords([git_commit_message, time_process_started_string])
+    exif.addKeywords([git_commit_message_pretty, time_process_started_string])
     print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
 
@@ -70,10 +70,12 @@ def TakePicture(img, res):
 print('Wait...')
 time.sleep(1)
 
-# git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-# print(git_hash)
+git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+print(git_hash)
 git_commit_message = subprocess.check_output(["git", "log", "-1"]).strip()  # , "--pretty=%B"
 print(git_commit_message)
+git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
+print(git_commit_message_pretty)
 
 time_process_started = time.time()
 time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
