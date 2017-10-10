@@ -8,7 +8,7 @@ import os
 
 import shelve
 
-db = shelve.open("shelve.db")
+#db = shelve.open("shelve.db")
 class Egg:
     def __init__(self, nome, boh):
         self.nome = nome
@@ -21,12 +21,13 @@ class Egg:
 #egg = Egg ("bianco")
 #Print (egg.nome)
 #db["uovo"] = egg
-altro = db["uovo"]
+#altro = db["uovo"]
+altro = egg
 print (altro.nome)
 altro.settaNuoviAttributi("boh")
 print (altro.peso)
 print (altro.boh)
-db.close()
+#db.close()
 
 # Hello world is just one line of code
 # print() outputs data to the screen

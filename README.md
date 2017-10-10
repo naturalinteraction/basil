@@ -3,7 +3,7 @@
 A repo for my own experiments.
 
 
-#### Tasks
+#### Tasks cap.py
 
 - [x] Set shutter speed
 - [x] Print all camera properties
@@ -20,7 +20,7 @@ A repo for my own experiments.
 - [x] Print source code version when TAB is pressed
 - [x] Print date and time the process started (plus uptime) when TAB is pressed
 - [ ] Add all camera properties to EXIF
-- [ ] Determine best resolution for both camera versions (done for latest model)
+- [ ] Determine best resolution for both camera versions (done for latest model: 2592x1952)
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3
 - [ ] ~~Decide whether to use same resolution for both models~~
@@ -44,7 +44,22 @@ sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc
 sudo kill -USR1 $(pgrep ^dd)
 ```
 
+#### VNC for Chrome:
+<https://chrome.google.com/webstore/detail/vnc®-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla>
 
 
+#### Mount Pi:
+```
+sshfs pi@or**.ddns.net:basil pi
+```
 
+#### Unmount Pi:
+```
+fusermount -u pi
+```
+
+#### Password
+```
+sshpass -p G*******0 ssh pi@or**.ddns.net 'bash -s' < do.sh
+```
 
