@@ -16,10 +16,10 @@ A repo for my own experiments.
 - [x] Include resolution and notes in filenames
 - [x] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
 - [ ] Add camera properties to EXIF
-- [ ] Add uptime hours to EXIF
-- [ ] Add source code version 
-- [ ] Print source code version when TAB is pressed
-- [ ] Print date and time the process started (plus uptime hours) when TAB is pressed
+- [ ] Add uptime to EXIF
+- [ ] Add source code version to EXIF
+- [x] Print source code version when TAB is pressed
+- [x] Print date and time the process started (plus uptime) when TAB is pressed
 - [ ] Determine best resolution for both camera versions (done for latest model)
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3

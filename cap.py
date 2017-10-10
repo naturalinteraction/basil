@@ -69,6 +69,7 @@ git_commit_message = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]
 print(git_commit_message)
 
 time_process_started = time.time()
+time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
 
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
       
@@ -132,7 +133,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print(git_hash)
             print(git_commit_message)
             uptime_minutes = int((time.time() - time_process_started) / (60.0))
-            print('uptime minutes: %s' % uptime_minutes)
+            print(time_process_started_string) 
+            print(time.strftime("now %Y/%m/%d %H:%M"))
+            print('uptime minutes %s' % uptime_minutes)
             print('*' * 20)
 
             
