@@ -18,7 +18,7 @@ class Egg:
         self.peso = "poco"
         self.boh = boh
         
-#egg = Egg ("bianco")
+egg = Egg ("bianco", 'mah')
 #Print (egg.nome)
 #db["uovo"] = egg
 #altro = db["uovo"]
@@ -619,17 +619,13 @@ lista = glob.glob("cache/*.jpg")
 print(lista)
 print(lista[0])
 
-'''
 from pyexif import ExifEditor
-# add EXIF keywords
 exif = ExifEditor(lista[0])
-# exif.addKeyword('tre')
-exif.addKeywords(['uno', 'due', 'tre'])
-exif.setTag('Artist', 'Alex')
+# exif.setTag('Artist', 'Alex')
 print('getKeywords', exif.getKeywords())
 print('getTag Keywords', exif.getTag("Keywords"))
 print('getTag Artist', exif.getTag("Artist"))
-
+'''
 # upload
 from UtilityS3 import UploadFileToS3
 uploaded = UploadFileToS3(lista[0])
