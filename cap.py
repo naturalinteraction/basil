@@ -11,10 +11,19 @@ from pyexif import ExifEditor
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (2592, 1952) # (2160, 1632) (2112, 1568) (2000, 1504) (1920, 1088) (1640, 1232)
+# (2560, 1920) for camera v1.3
 camera.framerate = 5
-rawCapture = PiRGBArray(camera, size=camera.resolution)
- 
+try:
+    camera.resolution = (2592, 1952) # (2160, 1632) (2112, 1568) (2000, 1504) (1920, 1088) (1640, 1232)
+except:
+    camera.resolution = (2560, 1920)
+    print('old camera version')
+else:
+    print('new camera version')
+finally:
+    print(camera.resolution)
+    rawCapture = PiRGBArray(camera, size=camera.resolution)
+     
 show = True
 
 cp = CameraProperties(camera)

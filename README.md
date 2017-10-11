@@ -20,11 +20,11 @@ A repo for my own experiments.
 - [x] Print source code version when TAB is pressed
 - [x] Print date and time the process started (plus uptime) when TAB is pressed
 - [x] Add all camera properties to EXIF
-- [ ] Determine best resolution for both camera versions (done for latest model: 2592x1952)
+- [x] Determine best resolution for both camera versions
 - [ ] Manage network failures (upload queue)
 - [ ] Upload image to S3
-- [ ] ~~Decide whether to use same resolution for both models~~
-- [ ] ~~Detect camera hardware version (trying to set highest resolution?)~~
+- [x] Decide whether to use same resolution for both models
+- [x] Detect camera hardware version
 - [ ] ~~Detect camera presence~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
