@@ -7,7 +7,7 @@ inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE,alsaaudio.PCM_NONBLOCK)
 
 inp.setchannels(1)
 inp.setrate(8000)  # 16000
-inp.setformat(alsaaudio.PCM_FORMAT_U8)  # PCM_FORMAT_S16_LE
+inp.setformat(alsaaudio.PCM_FORMAT_U8)  # PCM_FORMAT_S16_LE for ubuntu
 inp.setperiodsize(160)
 
 while True:
@@ -15,6 +15,6 @@ while True:
     l,data = inp.read()
     if l:
         # Return the maximum of the absolute value of all samples in a fragment.
-        volume = audioop.max(data, 1)
+        volume = audioop.max(data, 1) # 2 for ubuntu
         print(volume)
     time.sleep(.001)
