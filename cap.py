@@ -77,11 +77,11 @@ def TakePicture(img, cam):
                       'cam.saturation = ' + str(cam.saturation),
                       'cam.exposure_mode = ' + str(cam.exposure_mode),
                       'cam.awb_mode = ' + str(cam.awb_mode),
-                      'cam.awb_gains[0] = ' + str(cam.awb_gains[0]),
-                      'cam.awb_gains[1] = ' + str(cam.awb_gains[1]),
+                      'cam.awb_gains[0] = ' + str(float(cam.awb_gains[0])),
+                      'cam.awb_gains[1] = ' + str(float(cam.awb_gains[1])),
                       'cam.exposure_speed = ' + str(cam.exposure_speed),
-                      'cam.analog_gain = ' + str(cam.analog_gain),
-                      'cam.digital_gain = ' + str(cam.digital_gain),
+                      'cam.analog_gain = ' + str(float(cam.analog_gain)),
+                      'cam.digital_gain = ' + str(float(cam.digital_gain)),
                       'cam.zoom = ' + str(cam.zoom[0]) + ' ' + str(cam.zoom[1]) + ' ' + str(cam.zoom[2]) + ' ' + str(cam.zoom[3]) 
                      ])
     print('getKeywords', exif.getKeywords())
