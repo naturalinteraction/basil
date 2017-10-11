@@ -63,7 +63,27 @@ def TakePicture(img, cam):
     # add EXIF keywords
     exif = ExifEditor(filename)
     # exif.addKeyword('tre')
-    exif.addKeywords([git_hash, git_commit_message_pretty, time_process_started_string, 'shutter_speed = ' + str(cam.shutter_speed)])
+    exif.addKeywords([git_hash,
+                      git_commit_message_pretty,
+                      time_process_started_string,
+                      'cam.shutter_speed = ' + str(cam.shutter_speed),
+                      'cam.drc_strength = ' + str(cam.drc_strength),
+                      'cam.brightness = ' + str(cam.brightness),
+                      'cam.iso = ' + str(cam.iso),
+                      'cam.exposure_compensation = ' + str(cam.exposure_compensation),
+                      'cam.contrast = ' + str(cam.contrast),
+                      'cam.meter_mode = ' + str(cam.meter_mode),
+                      'cam.sharpness = ' + str(cam.sharpness),
+                      'cam.saturation = ' + str(cam.saturation),
+                      'cam.exposure_mode = ' + str(cam.exposure_mode),
+                      'cam.awb_mode = ' + str(cam.awb_mode),
+                      'cam.awb_gains[0] = ' + str(cam.awb_gains[0]),
+                      'cam.awb_gains[1] = ' + str(cam.awb_gains[1]),
+                      'cam.exposure_speed = ' + str(cam.exposure_speed),
+                      'cam.analog_gain = ' + str(cam.analog_gain),
+                      'cam.digital_gain = ' + str(cam.digital_gain)
+                      'cam.zoom = ' + str(cam.zoom[0]) + ' ' + str(cam.zoom[1]) + ' ' + str(cam.zoom[2]) + ' ' + str(cam.zoom[3]) 
+                     ])
     print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
 
