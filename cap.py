@@ -8,6 +8,8 @@ import math
 import subprocess
 from UtilityS3 import UploadFileToS3
 from pyexif import ExifEditor
+import glob
+import shutil
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -61,6 +63,10 @@ def PrintHelp():
     print('*' * 10)
 
 def TakePicture(img, cam):
+    print('Before saving picture, let me attempt to upload three files in cache.')
+    AttemptUpload()
+    AttemptUpload()
+    AttemptUpload()
     print('Saving picture.')
     res = cam.resolution
     note = os.environ['BASIL_NOTE']
@@ -93,8 +99,24 @@ def TakePicture(img, cam):
                       'cam.digital_gain = ' + str(float(cam.digital_gain)),
                       'cam.zoom = ' + str(cam.zoom[0]) + ' ' + str(cam.zoom[1]) + ' ' + str(cam.zoom[2]) + ' ' + str(cam.zoom[3]) 
                      ])
-    print('getKeywords', exif.getKeywords())
+    # print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
+    AttemptUpload()  # after taking the picture, immediately attempt to upload it
+    
+    
+def AttemptUpload():
+    print('Attempting upload.')
+    images_in_cache = glob.glob("cache/*.jpg")
+    if len(images_in_cache) < 1:
+        print('No images in cache. Nothing to do.')
+        return
+    uploaded = UploadFileToS3(images_in_cache[0])
+    if uploaded == True:
+        print('Upload succeeded. Moving image out of cache.')
+        shutil.move(images_in_cache[0], "uploaded/") 
+    else:
+        print('There was a problem uploading. Nothing done.')
+
 
 # allow the camera to warmup
 print('Wait...')

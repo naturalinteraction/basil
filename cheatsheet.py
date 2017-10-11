@@ -608,35 +608,3 @@ interrogate(numeri)
 interrogate(Dog)
 interrogate(spot)
 interrogate(addNumbers)
-
-
-# for listing png files in cache, and renaming them to uploaded after they're sent to S3
-import glob
-#print(glob.glob("cache/*.txt"))
-#os.rename('pyalsaaudio-0.8.4/TODO', 'cache/TODO.txt')
-
-lista = glob.glob("cache/*.jpg")
-print(lista)
-print(lista[0])
-
-from pyexif import ExifEditor
-exif = ExifEditor(lista[0])
-# exif.setTag('Artist', 'Alex')
-print('getKeywords', exif.getKeywords())
-print('getTag Keywords', exif.getTag("Keywords"))
-print('getTag Artist', exif.getTag("Artist"))
-'''
-# upload
-from UtilityS3 import UploadFileToS3
-uploaded = UploadFileToS3(lista[0])
-print(uploaded)
-if uploaded == True:
-    os.rename... 
-
-shutil.move works for directories. You can use relative path shutil.move(f.name, "tmp/") 
-'''
-
-#os.rename('cache/TODO.txt', 'pyalsaaudio-0.8.4/TODO')
-#print(glob.glob("cache/*.txt"))
-
-

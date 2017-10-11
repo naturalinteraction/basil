@@ -21,8 +21,8 @@ A repo for my own experiments.
 - [x] Print date and time the process started (plus uptime) when TAB is pressed
 - [x] Add all camera properties to EXIF
 - [x] Determine best resolution for both camera versions
-- [ ] Manage network failures (upload queue)
-- [ ] Upload image to S3
+- [x] Manage network failures (upload queue)
+- [x] Upload image to S3
 - [x] Decide whether to use same resolution for both models
 - [x] Detect camera hardware version
 - [ ] ~~Detect camera presence~~
