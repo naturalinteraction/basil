@@ -19,16 +19,16 @@ p6
 I10
 sS'AWB Mode'
 p7
-I0
+I1
 sS'Shutter Speed'
 p8
-I13
+I0
 sS'ISO'
 p9
-I4
+I0
 sS'Exposure Mode'
 p10
-I0
+I1
 sS'AWB Blue Gain'
 p11
 I13
