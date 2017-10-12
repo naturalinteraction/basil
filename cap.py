@@ -206,7 +206,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == ord('p'):
             if just_started == False:
                 TakePicture(image, camera)
-            else
+            else:
                 print('hold on, cowboy!')
 
         if key == 10:  # enter
