@@ -3,6 +3,15 @@
 A repo for my own experiments.
 
 
+#### Tasks dip.py
+
+- [ ] List all pictures on S3
+- [ ] Check if file exists with import os.path and os.path.isfile(filename)
+- [ ] Download pictures that are not here yet
+- [ ] Group images that start with the same 'note'
+- [ ] Open downloaded images
+
+
 #### Tasks cap.py
 
 - [x] Set shutter speed
@@ -25,7 +34,7 @@ A repo for my own experiments.
 - [x] Upload image to S3
 - [x] Decide whether to use same resolution for both models
 - [x] Detect camera hardware version
-- [ ] ~~Detect camera presence~~
+- [ ] ~~Detect camera presence (can be easily done)~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
 
