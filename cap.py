@@ -10,6 +10,7 @@ from UtilityS3 import UploadFileToS3
 from pyexif import ExifEditor
 import glob
 import shutil
+import pickle
     
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -31,7 +32,26 @@ show = True
 cp = CameraProperties(camera)
 cp.Load()
 
-last_picture_taken_ticks = -1  # todo: read this from disk
+def SaveLastPictureTicks():
+    with open('last-picture-taken-ticks.pkl', 'wb') as f:
+        pickle.dump(last_picture_taken_ticks, f, 0)
+    print('Saved time of last picture.')
+    print(last_picture_taken_ticks)
+
+def LoadLastPictureTicks():
+    global last_picture_taken_ticks
+    with open('last-picture-taken-ticks.pkl', 'rb') as f:
+        last_picture_taken_ticks = pickle.load(f)
+    print('Loaded time of last picture.')
+    print(last_picture_taken_ticks)
+  
+last_picture_taken_ticks = -1
+try:
+    LoadLastPictureTicks()
+except:
+    print('Could not load time of last picture.')
+    print(last_picture_taken_ticks)
+
 just_started = True
 previous_digital_gain = -1.0
 previous_analog_gain = -1.0
@@ -74,7 +94,8 @@ def TakePicture(img, cam):
     print(filename)
     cv2.imwrite(filename, img)
     global last_picture_taken_ticks
-    last_picture_taken_ticks = time.time()  # todo: write this to disk
+    last_picture_taken_ticks = time.time()
+    SaveLastPictureTicks()
     # add EXIF keywords
     exif = ExifEditor(filename)
     # exif.addKeyword('tre')
