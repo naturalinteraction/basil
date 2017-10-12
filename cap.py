@@ -53,6 +53,8 @@ except:
     print(last_picture_taken_ticks)
 
 just_started = True
+just_started_but_done = False
+
 previous_digital_gain = -1.0
 previous_analog_gain = -1.0
 
@@ -164,16 +166,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	if show:
             cv2.imshow('cap', image)
 
+        if (just_started and just_started_but_done):
+            PrintHelp()
+            cp.PrintCurrentProperty()
+            show = False
+            print('Display disabled.')
+            just_started = False
+            just_started_but_done = False
+
         if just_started:
             UpdateGainDistance()
             if gain_distance < 0.05:
-                just_started = False
                 cp.SetAllPropertiesOnCamera()
-                # todo: do the rest after one second or so...
-                PrintHelp()
-                cp.PrintCurrentProperty()
-                show = False
-                print('Display disabled.')
+                just_started_but_done = True                
         else:
           ticks = time.time()
           if (ticks - last_picture_taken_ticks) > 61.0:
