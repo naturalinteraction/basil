@@ -1,5 +1,0 @@
-include *.py
-include CHANGES
-include TODO
-include LICENSE
-recursive-include doc *.html *.gif *.png *.css *.py *.rst *.js *.json  Makefile
