@@ -158,7 +158,7 @@ cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
 	# grab the raw NumPy array representing the image
-	image = frame.array  # todo: maybe we can avoid this if not just started and not showing and not taking the picture
+	image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
  
 	# show the frame
 	if show:
@@ -177,7 +177,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         else:
           ticks = time.time()
           if (ticks - last_picture_taken_ticks) > 61.0:
-              localtime = time.localtime(ticks) # gmtime for UTC
+              localtime = time.localtime(ticks)  # gmtime for UTC
               if localtime.tm_min == 19:  # one per hour
                   # if localtime.tm_hour == 10:  # one per day
                   TakePicture(image, camera)
@@ -204,7 +204,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.FreezeExposureAWB()
 
         if key == ord('p'):
-            TakePicture(image, camera)
+            if just_started == False:
+                TakePicture(image, camera)
+            else
+                print('hold on, cowboy!')
 
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(),
