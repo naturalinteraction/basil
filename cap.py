@@ -13,7 +13,12 @@ import shutil
 import pickle
     
 # initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
+try:
+    camera = PiCamera()
+except:
+    print('No camera. Exiting.')
+    quit()
+
 # (2560, 1920) for camera v1.3
 camera.framerate = 5
 try:

@@ -34,7 +34,7 @@ A repo for my own experiments.
 - [x] Upload image to S3
 - [x] Decide whether to use same resolution for both models
 - [x] Detect camera hardware version
-- [ ] ~~Detect camera presence (can be easily done)~~
+- [x] Detect camera presence
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
 
