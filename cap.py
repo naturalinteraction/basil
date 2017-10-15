@@ -105,9 +105,7 @@ def TakePicture(img, cam):
     SaveLastPictureTicks()
     # add EXIF keywords
     exif = ExifEditor(filename)
-    # exif.addKeyword('tre')
-    exif.addKeywords([git_hash,
-                      git_commit_message_pretty,
+    keywords =       [git_hash,
                       time_process_started_string,
                       'shutter_speed=' + str(cam.shutter_speed),
                       'drc_strength=' + str(cam.drc_strength),
@@ -125,8 +123,10 @@ def TakePicture(img, cam):
                       'exposure_speed=' + str(cam.exposure_speed),
                       'analog_gain=' + str(float(cam.analog_gain)),
                       'digital_gain=' + str(float(cam.digital_gain)),
-                      'zoom=' + str(cam.zoom[0]) + ' ' + str(cam.zoom[1]) + ' ' + str(cam.zoom[2]) + ' ' + str(cam.zoom[3]) 
-                     ])
+                      'zoom=' + str(cam.zoom[3])
+                     ]
+    print(keywords)
+    exif.addKeywords(keywords)
     # print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
     AttemptUpload()  # after taking the picture, immediately attempt to upload it
