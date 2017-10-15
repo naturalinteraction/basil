@@ -72,3 +72,12 @@ fusermount -u pi
 sshpass -p G*******0 ssh pi@or**.ddns.net 'bash -s' < do.sh
 ```
 
+#### Sensors
+```
+blueshift	wifi: 192.168.0.6	eth: dhcp
+redshift	wifi: 192.168.0.7	eth: dhcp
+noir	wifi: 192.168.0.8	eth: dhcp
+visible	wifi: 192.168.0.9	eth: dhcp
+```
+
+
