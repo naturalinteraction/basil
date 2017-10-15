@@ -109,23 +109,23 @@ def TakePicture(img, cam):
     exif.addKeywords([git_hash,
                       git_commit_message_pretty,
                       time_process_started_string,
-                      'cam.shutter_speed = ' + str(cam.shutter_speed),
-                      'cam.drc_strength = ' + str(cam.drc_strength),
-                      'cam.brightness = ' + str(cam.brightness),
-                      'cam.iso = ' + str(cam.iso),
-                      'cam.exposure_compensation = ' + str(cam.exposure_compensation),
-                      'cam.contrast = ' + str(cam.contrast),
-                      'cam.meter_mode = ' + str(cam.meter_mode),
-                      'cam.sharpness = ' + str(cam.sharpness),
-                      'cam.saturation = ' + str(cam.saturation),
-                      'cam.exposure_mode = ' + str(cam.exposure_mode),
-                      'cam.awb_mode = ' + str(cam.awb_mode),
-                      'cam.awb_gains[0] = ' + str(float(cam.awb_gains[0])),
-                      'cam.awb_gains[1] = ' + str(float(cam.awb_gains[1])),
-                      'cam.exposure_speed = ' + str(cam.exposure_speed),
-                      'cam.analog_gain = ' + str(float(cam.analog_gain)),
-                      'cam.digital_gain = ' + str(float(cam.digital_gain)),
-                      'cam.zoom = ' + str(cam.zoom[0]) + ' ' + str(cam.zoom[1]) + ' ' + str(cam.zoom[2]) + ' ' + str(cam.zoom[3]) 
+                      'shutter_speed=' + str(cam.shutter_speed),
+                      'drc_strength=' + str(cam.drc_strength),
+                      'brightness=' + str(cam.brightness),
+                      'iso=' + str(cam.iso),
+                      'exposure_compensation=' + str(cam.exposure_compensation),
+                      'contrast=' + str(cam.contrast),
+                      'meter_mode=' + str(cam.meter_mode),
+                      'sharpness=' + str(cam.sharpness),
+                      'saturation=' + str(cam.saturation),
+                      'exposure_mode=' + str(cam.exposure_mode),
+                      'awb_mode=' + str(cam.awb_mode),
+                      'awb_gains[r]=' + str(float(cam.awb_gains[0])),
+                      'awb_gains[b]=' + str(float(cam.awb_gains[1])),
+                      'exposure_speed=' + str(cam.exposure_speed),
+                      'analog_gain=' + str(float(cam.analog_gain)),
+                      'digital_gain=' + str(float(cam.digital_gain)),
+                      'zoom=' + str(cam.zoom[0]) + ' ' + str(cam.zoom[1]) + ' ' + str(cam.zoom[2]) + ' ' + str(cam.zoom[3]) 
                      ])
     # print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
@@ -141,7 +141,10 @@ def AttemptUpload():
     uploaded = UploadFileToS3(images_in_cache[0])
     if uploaded == True:
         print('Upload succeeded. Moving image out of cache.')
-        shutil.move(images_in_cache[0], "uploaded/") 
+        try:
+            shutil.move(images_in_cache[0], "uploaded/")
+        except:
+            print('could not move image: file already exists')
     else:
         print('There was a problem uploading. Nothing done.')
 
