@@ -79,5 +79,5 @@ redshift	wifi: 192.168.0.7	eth: DHCP
 noir		wifi: 192.168.0.8	eth: DHCP
 visible		wifi: 192.168.0.9	eth: DHCP
 ```
-
+Focus set at 350mm.
 
