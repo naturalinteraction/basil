@@ -99,7 +99,9 @@ def TakePicture(img, cam):
     note = os.environ['BASIL_NOTE']
     filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
-    cv2.imwrite(filename, img)
+    # cv2.imwrite(filename + '_quality95.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), 95])  # up to 100, default 95
+    cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
+    # cv2.imwrite(filename + '.png', img)  # test: save PNG as well
     global last_picture_taken_ticks
     last_picture_taken_ticks = time.time()
     SaveLastPictureTicks()
