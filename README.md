@@ -81,3 +81,5 @@ visible		wifi: 192.168.0.9	eth: DHCP
 ```
 Focus set at 350mm.
 
+#### Autostart
+Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
