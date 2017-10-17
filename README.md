@@ -10,7 +10,7 @@ A repo for my own experiments.
 - [ ] Download pictures that are not here yet
 - [ ] Group images that start with the same 'note'
 - [ ] Open downloaded images
-
+- [ ] Examine timelapses
 
 #### Tasks cap.py
 
@@ -35,6 +35,8 @@ A repo for my own experiments.
 - [x] Decide whether to use same resolution for both models
 - [x] Detect camera hardware version
 - [x] Detect camera presence
+- [ ] Update git repo, start and stop cap.py, reboot and shutdown remotely via script on the 4 sensors at once
+- [ ] Start cap.py at boot
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
 
@@ -69,7 +71,8 @@ fusermount -u pi
 
 #### Password
 ```
-sshpass -p G*******0 ssh pi@or**.ddns.net 'bash -s' < do.sh
+sshpass -p ********* ssh pi@or**.ddns.net 'bash -s' < do.sh
+sshpass -p ********* ssh pi@192.168.0.9 'cd /home/pi/basil ; git pull ; sudo /sbin/shutdown now'
 ```
 
 #### Sensors
