@@ -37,22 +37,23 @@ show = True
 cp = CameraProperties(camera)
 cp.Load()
 
-def SaveLastPictureTicks():
+def SaveLastPictureTicks(ticks):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
-        pickle.dump(last_picture_taken_ticks, f, 0)
+        pickle.dump(ticks, f, 0)
     print('Saved time of last picture.')
-    print(last_picture_taken_ticks)
+    print(ticks)
 
 def LoadLastPictureTicks():
-    global last_picture_taken_ticks
     with open('last-picture-taken-ticks.pkl', 'rb') as f:
-        last_picture_taken_ticks = pickle.load(f)
+        ticks = pickle.load(f)
     print('Loaded time of last picture.')
-    print(last_picture_taken_ticks)
+    print(ticks)
+    return ticks
   
 last_picture_taken_ticks = -1
 try:
-    LoadLastPictureTicks()
+    last_picture_taken_ticks = LoadLastPictureTicks()
+    print(last_picture_taken_ticks)
 except:
     print('Could not load time of last picture.')
     print(last_picture_taken_ticks)
@@ -60,20 +61,22 @@ except:
 just_started = True
 just_started_but_done = False
 
-previous_digital_gain = -1.0
+gain_distance = -1.0
 previous_analog_gain = -1.0
+previous_digital_gain = -1.0
 
 def UpdateGainDistance():
-    global gain_distance
-    global previous_analog_gain
-    global previous_digital_gain
-    gain_distance = math.fabs(camera.digital_gain - previous_digital_gain)
-    gain_distance += math.fabs(camera.analog_gain - previous_analog_gain)
-    previous_digital_gain = previous_digital_gain * .8 + .2 * camera.digital_gain
-    previous_analog_gain = previous_analog_gain * .8 + .2 * camera.analog_gain
+    gdi = gain_distance
+    pag = previous_analog_gain
+    pdg = previous_digital_gain
+    gdi = math.fabs(camera.digital_gain - pdg)
+    gdi += math.fabs(camera.analog_gain - pag)
+    pdg = pdg * .8 + .2 * camera.digital_gain
+    pag = pag * .8 + .2 * camera.analog_gain
     print('analog %s  digital %s distance %s' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
-                                                 gain_distance))
+                                                 gdi))
+    return gdi, pag, pdg
 
 def PrintHelp():
     print('*' * 10)
@@ -102,9 +105,8 @@ def TakePicture(img, cam):
     # cv2.imwrite(filename + '_quality95.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), 95])  # up to 100, default 95
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)  # test: save PNG as well
-    global last_picture_taken_ticks
-    last_picture_taken_ticks = time.time()
-    SaveLastPictureTicks()
+    ticks = time.time()
+    SaveLastPictureTicks(ticks)
     # add EXIF keywords
     exif = ExifEditor(filename)
     keywords =       [git_hash,
@@ -132,7 +134,8 @@ def TakePicture(img, cam):
     # print('getKeywords', exif.getKeywords())
     print('getTag Keywords', exif.getTag("Keywords"))
     AttemptUpload()  # after taking the picture, immediately attempt to upload it
-    
+    print(ticks)
+    return ticks
     
 def AttemptUpload():
     print('Attempting upload.')
@@ -185,7 +188,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             just_started_but_done = False
 
         if just_started:
-            UpdateGainDistance()
+            gain_distance, previous_analog_gain, previous_digital_gain = UpdateGainDistance()
             if gain_distance < 0.05:
                 cp.SetAllPropertiesOnCamera()
                 just_started_but_done = True                
@@ -195,7 +198,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               localtime = time.localtime(ticks)  # gmtime for UTC
               if localtime.tm_min == 19:  # one per hour
                   # if localtime.tm_hour == 10:  # one per day
-                  TakePicture(image, camera)
+                  last_picture_taken_ticks = TakePicture(image, camera)
+                  print(last_picture_taken_ticks)
+                  print(ticks)
         
         key = cv2.waitKey(50) & 0xFF  # milliseconds
         
@@ -220,7 +225,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == ord('p'):
             if just_started == False:
-                TakePicture(image, camera)
+                last_picture_taken_ticks = TakePicture(image, camera)
+                print(last_picture_taken_ticks)
+                print(ticks)
             else:
                 print('hold on, cowboy!')
 
