@@ -36,6 +36,8 @@ A repo for my own experiments.
 - [x] Detect camera hardware version
 - [x] Detect camera presence
 - [ ] Remove all uses of 'global'
+- [ ] Must unzoom before taking picture
+- [ ] Must disable preview automatically (when taking picture)
 - [ ] Update git repo, start and stop cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [x] Start cap.py at boot
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
