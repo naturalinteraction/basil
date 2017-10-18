@@ -199,6 +199,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if localtime.tm_min == 19:  # one per hour
                   # if localtime.tm_hour == 10:  # one per day
                   last_picture_taken_ticks = TakePicture(image, camera)
+                  print('Turning zoom off.')
+                  camera.zoom = (0.0, 0.0, 1.0, 1.0)  # will not take effect immediately, but at least next one will be ok
+                  print('Disabling display.')
+                  show = False
                   print(last_picture_taken_ticks)
                   print(ticks)
         

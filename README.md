@@ -36,11 +36,11 @@ A repo for my own experiments.
 - [x] Detect camera hardware version
 - [x] Detect camera presence
 - [x] Remove all uses of 'global'
-- [ ] Must unzoom before taking picture
-- [ ] Must disable preview automatically (when taking picture)
-- [ ] Update git repo, start and stop cap.py, reboot and shutdown remotely via script on the 4 sensors at once
-- [ ] Possibly freeze awb but not iso, expo, shutter
+- [x] Unzoom when taking picture
+- [x] Disable preview automatically (when taking picture)
 - [x] Start cap.py at boot
+- [ ] Update git repo, start and stop cap.py, reboot and shutdown remotely via script on the 4 sensors at once
+- [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
 
