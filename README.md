@@ -39,10 +39,12 @@ A repo for my own experiments.
 - [x] Unzoom when taking picture
 - [x] Disable preview automatically (when taking picture)
 - [x] Start cap.py at boot
-- [ ] Update git repo, start and stop cap.py, reboot and shutdown remotely via script on the 4 sensors at once
+- [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is static~~
+- [ ] ~~Detect if scene is dark~~
+
 
 #### Creating image of SD card:
 ```
