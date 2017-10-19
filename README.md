@@ -8,9 +8,8 @@ A repo for my own experiments.
 - [x] List all pictures on S3
 - [x] Check if local file exists
 - [x] Download pictures that are not here yet
-- [ ] Group images that start with the same 'note'
+- [ ] Group images with the same 'note'
 - [ ] Open downloaded images
-- [ ] Examine timelapses
 
 #### Tasks cap.py
 
