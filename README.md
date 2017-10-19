@@ -5,7 +5,7 @@ A repo for my own experiments.
 
 #### Tasks dip.py
 
-- [ ] List all pictures on S3
+- [x] List all pictures on S3
 - [ ] Check if file exists with import os.path and os.path.isfile(filename)
 - [ ] Download pictures that are not here yet
 - [ ] Group images that start with the same 'note'
@@ -42,7 +42,7 @@ A repo for my own experiments.
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
-- [ ] ~~Detect if scene is static~~
+- [ ] ~~Detect if scene is not static~~
 - [ ] ~~Detect if scene is dark~~
 
 
