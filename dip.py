@@ -3,7 +3,7 @@ import os
 import cv2
 import math
 import subprocess
-from UtilityS3 import ListFilesInCacheOnS3
+from S3 import ListFilesInCacheOnS3
 from pyexif import ExifEditor
 import glob
 import shutil
@@ -19,7 +19,11 @@ print(git_commit_message_pretty)
 # cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 # cv2.imshow('dip', image)
 
-ListFilesInCacheOnS3()
+files = ListFilesInCacheOnS3()
+for f in files:
+    replaced = f.replace('cache/', 'downloaded/')
+    print(replaced)
+print(len(files))
 
 # cv2.destroyAllWindows()
 # print('Windows destroyed.')

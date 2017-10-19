@@ -44,6 +44,8 @@ def ListFilesInCacheOnS3():
 
     bucket_name = 'natural-interaction'
 
+    result = []
+
     try:
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
                                AWS_SECRET_ACCESS_KEY) 
@@ -56,12 +58,11 @@ def ListFilesInCacheOnS3():
         files = bucket.list(prefix='cache')  # cache/
         
         for key in files: 
-            print(key.key)
-        
+            result.append(key.key)
+            
     except:
         print ("list cache on S3 error")
         print (sys.exc_info())
-        return False
 
-    return True
+    return result
 

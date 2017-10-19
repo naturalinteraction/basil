@@ -6,7 +6,7 @@ import os
 import cv2
 import math
 import subprocess
-from UtilityS3 import UploadFileToS3
+from S3 import UploadFileToS3
 from pyexif import ExifEditor
 import glob
 import shutil
