@@ -6,8 +6,8 @@ A repo for my own experiments.
 #### Tasks dip.py
 
 - [x] List all pictures on S3
-- [ ] Check if file exists with import os.path and os.path.isfile(filename)
-- [ ] Download pictures that are not here yet
+- [x] Check if local file exists
+- [x] Download pictures that are not here yet
 - [ ] Group images that start with the same 'note'
 - [ ] Open downloaded images
 - [ ] Examine timelapses
