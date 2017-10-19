@@ -36,7 +36,7 @@ thisisapain = 'XgcgcR/GC1GgN4CF9f';
         'Loaded ' + data.Contents.length + ' items from S3 bucket';
       for (var i = 0; i < data.Contents.length; i++) {
         document.getElementById('objects').innerHTML +=
-          '<li>' + 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + data.Contents[i].Key + '</li>';
+          '<li><a href=' + 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + data.Contents[i].Key + '>' + data.Contents[i].Key + '</a></li>';
       }
     }
   });
