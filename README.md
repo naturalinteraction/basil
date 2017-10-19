@@ -92,8 +92,8 @@ Focus set at 350mm.
 #### Autostart
 Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
 
-#### Timelapse from Images
-'''
+#### Timelapse
+```
 ffmpeg -r 7 -pattern_type glob -i '*.jpg' -s hd480 -vcodec libx264 timelapse.mp4
 # 7 fps, other options include hd720, hd1080
-'''
+```
