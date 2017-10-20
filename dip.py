@@ -25,10 +25,13 @@ files = ListFilesInCacheOnS3()
 for f in files:
     replaced = f.replace('cache/', 'downloaded/')
     if os.path.isfile(replaced):
-        print('skipping %s' % f)
+        print('skipping download of %s' % f)
     else:
         print('attempting download of %s' % f)
         DownloadFileFromCacheOnS3(f, replaced)
+    image = cv2.imread(replaced)
+    average = cv2.mean(image)[0:3]
+    print(average)
 
 # cv2.destroyAllWindows()
 # print('Windows destroyed.')
