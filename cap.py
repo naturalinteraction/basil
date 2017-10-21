@@ -156,7 +156,7 @@ def AttemptUpload():
 
 # allow the camera to warmup
 print('Wait...')
-time.sleep(1)
+time.sleep(2)
 
 git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
 print(git_hash)
