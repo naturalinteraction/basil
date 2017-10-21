@@ -154,6 +154,7 @@ def AttemptUpload():
         print('There was a problem uploading. Nothing done.')
 
 
+print(os.environ['BASIL_NOTE'])
 # allow the camera to warmup
 print('Wait...')
 time.sleep(2)
@@ -178,6 +179,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# show the frame
 	if show:
             cv2.imshow('cap', image)
+        key = cv2.waitKey(25) & 0xFF  # milliseconds
 
         if (just_started and just_started_but_done):
             PrintHelp()
@@ -196,8 +198,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
           ticks = time.time()
           if (ticks - last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
-              if localtime.tm_min == 19:  # one per hour
-                  # if localtime.tm_hour == 10:  # one per day
+              if localtime.tm_min == 00:  # one per hour
+                  # if localtime.tm_hour == 10:  # one per day, at 10am
                   last_picture_taken_ticks = TakePicture(image, camera)
                   print('Turning zoom off.')
                   camera.zoom = (0.0, 0.0, 1.0, 1.0)  # will not take effect immediately, but at least next one will be ok
@@ -205,8 +207,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   show = False
                   print(last_picture_taken_ticks)
                   print(ticks)
-        
-        key = cv2.waitKey(50) & 0xFF  # milliseconds
         
         if (key < 255 and key != ord('d')):
             # print(key)
@@ -273,6 +273,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
  
 	# if the `q` or ESC key was pressed, break from the loop
 	if key == ord('q') or key == 27:
+                print('exiting')
 		break
 		
 camera.close()
