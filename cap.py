@@ -11,6 +11,8 @@ from pyexif import ExifEditor
 import glob
 import shutil
 import pickle
+
+campaign = '2'
     
 # initialize the camera and grab a reference to the raw camera capture
 try:
@@ -100,7 +102,7 @@ def TakePicture(img, cam):
     print('Saving picture.')
     res = cam.resolution
     note = os.environ['BASIL_NOTE']
-    filename = 'cache/' + note + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
+    filename = 'cache/' + note + '-' + campaign + '_' + str(res[0]) + 'x' + str(res[1]) + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
     # cv2.imwrite(filename + '_quality95.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), 95])  # up to 100, default 95
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
