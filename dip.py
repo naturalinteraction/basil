@@ -18,6 +18,8 @@ print(git_commit_message)
 git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
 print(git_commit_message_pretty)
 
+print(cv2.__version__)
+
 # cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 # cv2.imshow('dip', image)
 
