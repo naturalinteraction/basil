@@ -1,61 +1,57 @@
-from __future__ import print_function  # per potere usare la print () con end='' di Python 3
+from __future__ import print_function  # provides Python 3's print() with end=''
 
-# import is used to make specialty functions available
-# These are called modules
+# import these modules
 import random
 import sys
 import os
-
 import shelve
 
-#db = shelve.open("shelve.db")
-class Egg:
-    def __init__(self, nome, boh):
-        self.nome = nome
-        self.peso = "poco"
-        self.boh = boh
-    def settaNuoviAttributi(self, boh):
-        self.peso = "poco"
-        self.boh = boh
-        
-egg = Egg ("bianco", 'mah')
-#Print (egg.nome)
-#db["uovo"] = egg
-#altro = db["uovo"]
-altro = egg
-print (altro.nome)
-altro.settaNuoviAttributi("boh")
-print (altro.peso)
-print (altro.boh)
-#db.close()
+# db = shelve.open("shelve.db")
 
-# Hello world is just one line of code
-# print() outputs data to the screen
+class Egg:
+    def __init__(self, nah, boh):
+        self.name = nah
+        self.weight = "little"
+        self.boom = boh
+    def setNewAttributes(self, boh):
+        self.weight = "little"
+        self.boom = boh
+        
+egg = Egg ("white", 'meh')
+# print (egg.name)
+# db["ovo"] = egg
+# other = db["ovo"]
+other = egg
+print(other.name)
+other.setNewAttributes("boh")
+print(other.weight)
+print(other.boom)
+# db.close()
+
 print("Hello World")
 
-print (dir (random))
-print (type (random))
-print (type (random.choice))
-print (dir (random.choice))
+print (dir(random))
+print (type(random))
+print (type(random.choice))
+print (dir(random.choice))
 
 '''
 This is a multi-line comment
 '''
 
-# A variable is a place to store values
-# Its name is like a label for that value
+# variable
 name = "Derek"
 print(name)
 
 num = 37.3
-print (num)
-print (type (num))
-print (dir (num))
+print(num)
+print(type(num))
+print(dir(num))
 
 # A variable name can contain letters, numbers, or _
 # but can't start with a number
 
-# There are 5 data types Numbers, Strings, List, Tuple, Dictionary (piu' i set)
+# There are 5 main data types Numbers, Strings, List, Tuple, Dictionary (and set)
 # You can store any of them in the same variable
 
 name = 15
@@ -91,8 +87,7 @@ print(quote + multi_line_quote)
 print("%s %s %s" % ('I like the quote', quote, multi_line_quote))
 
 # To keep from printing newlines use end=""
-# print("I don't like ",end="") # non gli piace a Python 2.7
-print("I don't like ",end="") # grazie a import future in cima al file, usiamo la print () di Python 3
+print("I don't like ",end="")
 print("newlines")
 
 # You can print a string multiple times with *
@@ -103,7 +98,7 @@ print('\n' * 5)
 # Each value has an index with the first one starting at 0
 
 grocery_list = ['Juice', 'Tomatoes', 'Potatoes', "Bananas"]
-print('The first item is', grocery_list[0])  # ecco
+print('The first item is', grocery_list[0])  # here
 
 # You can change the value stored in a list box
 grocery_list[0] = "Green Juice"
@@ -127,7 +122,7 @@ grocery_list.append('onions')
 print(to_do_list)
 
 # Insert item at given index
-grocery_list.insert (1, "Pickle") # in seconda posizione
+grocery_list.insert (1, "Pickle") # in 2nd position
 
 print (grocery_list)
 
@@ -159,25 +154,23 @@ print(max(to_do_list))
 # Get the minimum item in list
 print(min(to_do_list))
 
-print (grocery_list.pop()) # estrae ultimo se indice e' omesso
-print (grocery_list) # nuova lista senza ultimo
+print(grocery_list.pop()) # last one if no index passed as argument
+print(grocery_list) # new list without the last element
 
 # TUPLES -------------
-# Values in a tuple can't change like lists (sono immutable)
+# Values in a tuple can't change like lists (immutable)
 
 pi_tuple = (3, 1, 4, 1, 5, 9)
 
-
-print (pi_tuple)
+print(pi_tuple)
 
 # Convert tuple into a list
 new_list = list(pi_tuple)
-print (new_list)
+print(new_list)
 
 # Convert a list into a tuple
 new_tuple = tuple(grocery_list)
-print (new_tuple)
-
+print(new_tuple)
 
 print (len(pi_tuple))
 print (min(pi_tuple))
@@ -209,7 +202,7 @@ print(len(super_villains))
 print(super_villains.get("Pied Piper"))
 
 if True:
-  pass  # usato come nop, NOP, no operation
+  pass  # nop, NOP, no operation
 
 # Get a list of dictionary keys
 print(super_villains.keys())
@@ -228,7 +221,7 @@ print(super_villains.values())
 
 age = 30
 if age > 16 :
-  print('You are old enough to drive')  # indentazione di minimo 1 spazio
+    print('You are old enough to drive')  # indentation 4 spaces
 
 # Use an if statement if you want to execute different code regardless
 # of whether the condition ws met or not
@@ -335,19 +328,19 @@ print(newNum) # interesting
 newNum = subNumbers(1, 4)
 print(newNum)
 
-def prende_tupla (*cosa):
-    print (cosa)
+def takes_tuple (*what):
+    print(what)
 
-def prende_dict (**cosa):
-    print (cosa)
+def takes_dict (**what):
+    print(what)
 
-prende_tupla ("ciao", 27, 1.1)
-prende_dict (primo="ciao")
+takes_tuple("ciao", 27, 1.1)
+takes_dict(first="ciao")
 
-print (sys.argv)
-print (len(sys.argv))
-for argomento in sys.argv:
-    print (argomento)
+print(sys.argv)
+print(len(sys.argv))
+for argument in sys.argv:
+    print(argument)
 
 # USER INPUT -------------
 print('What is your name?')
@@ -418,7 +411,7 @@ print(test_file.mode)
 print(test_file.name)
 
 # Write text to a file with a newline
-test_file.write(bytes("Write me to the file\n"))# non gli piace , 'UTF-8'))
+test_file.write(bytes("Write me to the file\n"))
 
 # Close the file
 test_file.close()
@@ -435,18 +428,18 @@ print(text_in_file)
 os.remove("test.txt")
 
 with open('output.txt', 'w') as f:
-    f.write('Hi there!') # chiude automaticamente all'uscita dal blocco, grazie a with
+    f.write('Hi there!') # because of with, file is closed implicitly at the end of the block
 os.remove('output.txt')
 
-def factorial (number) :
-  if (number > 1) :
-    return number * factorial (number - 1)
-  return 1
+def factorial(number) :
+    if (number > 1) :
+        return number * factorial(number - 1)
+    return 1
 
 for i in range (0, 7) :
-  print (i, "    ", factorial (i))
+    print(i, "    ", factorial (i))
 
-print ()
+print()
 
 # CLASSES AND OBJECTS -------------
 # The concept of OOP allows us to model real world things using code
@@ -569,42 +562,41 @@ try:
   10 / zero
   raise
 except:
-    print ("niente panico, eccezione sollevata da raise")
+    print ("no panic: exception raised")
     print (sys.exc_info())
 else:
-    print ("tutto ok")
+    print ("all good")
 finally:
-    print ("comunque scrivi questo alla fine")
+    print ("whatever the case, print this")
 
-totale = "totale "
-tutto = totale + str(zero)
-print (int("1997"))
-numeri = set ([1, 7, 3, 1])  # no duplicati, no ordine (set)
-
-print (numeri)
-sette = set ([7])
-print (sette)
-numeri = numeri - sette  # coi set si puo' fare
-print (numeri)
+total = "total "
+all = total + str(zero)
+print(int("1997"))
+numbers = set ([1, 7, 3, 1])  # no duplicates, not sorted (set)
+print(numbers)
+sette = set([7])
+print(sette)
+numbers = numbers - sette  # you can do this with sets
+print(numbers)
 
 def interrogate(item):
-    print ()
+    print()
     import pdb
-    culo = 7
-    # pdb.set_trace() # c = continue, step per andare avanti di una riga, nome variabile per vederne il valore
-    culo = 8
+    butt = 7
+    # pdb.set_trace() # c = continue, step go execute one line, variable name to print its value
+    butt = 8
     if hasattr(item, "__name__"):
-        print ("name: ", item.__name__)
+        print("name: ", item.__name__)
     if hasattr(item, "__class__"):
-        print ("class: ", item.__class__.__name__)
-    print ("type: ", type(item))
-    print ("value: ", repr(item))
-    print ("callable: ", callable(item))
+        print("class: ", item.__class__.__name__)
+    print("type: ", type(item))
+    print("value: ", repr(item))
+    print("callable: ", callable(item))
     if hasattr(item, '__doc__'):
         doc = getattr(item, '__doc__')
         # doc = doc.strip()
-        print ('doc: ', doc)
-interrogate(numeri)
+        print('doc: ', doc)
+interrogate(numbers)
 interrogate(Dog)
 interrogate(spot)
 interrogate(addNumbers)
