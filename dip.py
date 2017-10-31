@@ -49,10 +49,10 @@ for f in sorted(downloaded_files):
     image = cv2.imread(f)
     average = cv2.mean(image)[0:3]
     # print(average)
-    if average[0] > 30:
+    if True:  # average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
-        segment(image)
+        segment(image, -10, 10, -10, 20)
         print(time.time() - before)
         cv2.imshow('dip', image)
         if ord('p') == key:
