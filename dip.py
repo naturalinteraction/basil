@@ -55,8 +55,8 @@ for f in sorted(downloaded_files):
         xPos, yPos = 0, 0
         while xPos < imageWidth:
             while yPos < imageHeight:
-                greenness = image.item(yPos, xPos, 1) 
-                            - image.item(yPos, xPos, 0)
+                greenness = image.item(yPos, xPos, 1)  \
+                            - image.item(yPos, xPos, 0)  \
                             - image.item(yPos, xPos, 2)
                 if greenness < 0.0:
                     image.itemset((yPos, xPos, 0), 255)
