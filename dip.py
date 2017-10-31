@@ -11,6 +11,7 @@ import shutil
 import pickle
 import os.path
 import numpy as np
+from segment import segment 
     
 git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
 print(git_hash)
@@ -48,6 +49,7 @@ for f in sorted(downloaded_files):
     image = cv2.imread(f)
     average = cv2.mean(image)[0:3]
     print(average)
+    segment()
     if average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         imageWidth = image.shape[1]
