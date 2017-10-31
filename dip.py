@@ -49,26 +49,11 @@ for f in sorted(downloaded_files):
     image = cv2.imread(f)
     average = cv2.mean(image)[0:3]
     print(average)
-    segment()
     if average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        imageWidth = image.shape[1]
-        imageHeight = image.shape[0]
-        xPos, yPos = 0, 0
-        while xPos < imageWidth:
-            while yPos < imageHeight:
-                greenness = image.item(yPos, xPos, 1)  \
-                            - image.item(yPos, xPos, 0)  \
-                            - image.item(yPos, xPos, 2)
-                if greenness < 0.0:
-                    image.itemset((yPos, xPos, 0), 255)
-                    image.itemset((yPos, xPos, 1), 0)
-                    image.itemset((yPos, xPos, 2), 0)
-
-                yPos = yPos + 1
-            yPos = 0
-            xPos = xPos + 1
-
+        before = time.time()
+        segment(image)
+        print(time.time() - before)
         cv2.imshow('dip', image)
         if ord('p') == key:
             key = cv2.waitKey(0) & 0xFF  # milliseconds
