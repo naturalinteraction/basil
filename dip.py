@@ -25,8 +25,12 @@ print(cv2.ocl.haveOpenCL())
 cv2.ocl.setUseOpenCL(True)
 print(cv2.ocl.useOpenCL())
 
-# cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
-# cv2.imshow('dip', image)
+def mouseCallback(event, x, y, flags, param):
+    what = image  # hsv
+    print(what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2))
+
+cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('dip', mouseCallback)
 '''
 files = ListFilesInCacheOnS3()
 for f in files:
@@ -36,12 +40,43 @@ for f in files:
     else:
         print('attempting download of %s' % f)
         DownloadFileFromCacheOnS3(f, replaced)
-    image = cv2.imread(replaced)
+'''    
+downloaded_files = glob.glob("downloaded/visible-2_*.jpg")
+key = ''
+for f in sorted(downloaded_files):
+    print(f)
+    image = cv2.imread(f)
     average = cv2.mean(image)[0:3]
     print(average)
-    before = time.time()
-    resized = cv2.resize(image, (5000, 5000), interpolation = cv2.INTER_CUBIC)
-    print(time.time() - before)
+    if average[0] > 30:
+        # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        imageWidth = image.shape[1]
+        imageHeight = image.shape[0]
+        xPos, yPos = 0, 0
+        while xPos < imageWidth:
+            while yPos < imageHeight:
+                greenness = image.item(yPos, xPos, 1) 
+                            - image.item(yPos, xPos, 0)
+                            - image.item(yPos, xPos, 2)
+                if greenness < 0.0:
+                    image.itemset((yPos, xPos, 0), 255)
+                    image.itemset((yPos, xPos, 1), 0)
+                    image.itemset((yPos, xPos, 2), 0)
+
+                yPos = yPos + 1
+            yPos = 0
+            xPos = xPos + 1
+
+        cv2.imshow('dip', image)
+        if ord('p') == key:
+            key = cv2.waitKey(0) & 0xFF  # milliseconds
+        else:
+            key = cv2.waitKey(25) & 0xFF  # milliseconds
+
+        # if the `q` or ESC key was pressed, break from the for loop
+	if key == ord('q') or key == 27:
+                print('exiting')
+		break
 '''
 image = cv2.imread("downloaded/blueshift-2_2560x1920_2017_10_24-10_00.jpg")
 M = np.float32([[1,0,100], [0,1,50]])
@@ -66,9 +101,9 @@ def test():
 test()
 cv2.ocl.setUseOpenCL(False)
 test()
-
 # print(cv2.getBuildInformation())
+'''
 
-# cv2.destroyAllWindows()
-# print('Windows destroyed.')
+cv2.destroyAllWindows()
+print('Windows destroyed.')
 
