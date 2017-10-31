@@ -32,16 +32,17 @@ def mouseCallback(event, x, y, flags, param):
 
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
-'''
-files = ListFilesInCacheOnS3()
-for f in files:
-    replaced = f.replace('cache/', 'downloaded/')
-    if os.path.isfile(replaced):
-        print('skipping download of %s' % f)
-    else:
-        print('attempting download of %s' % f)
-        DownloadFileFromCacheOnS3(f, replaced)
-'''    
+
+if False:
+    files = ListFilesInCacheOnS3()
+    for f in files:
+        replaced = f.replace('cache/', 'downloaded/')
+        if os.path.isfile(replaced):
+            print('skipping download of %s' % f)
+        else:
+            print('attempting download of %s' % f)
+            DownloadFileFromCacheOnS3(f, replaced)
+
 downloaded_files = glob.glob("downloaded/visible-2_*.jpg")
 key = ''
 for f in sorted(downloaded_files):

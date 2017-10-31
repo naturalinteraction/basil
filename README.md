@@ -8,8 +8,11 @@ A repo for my own experiments.
 - [x] List all pictures on S3
 - [x] Check if local file exists
 - [x] Download pictures that are not here yet
-- [ ] Group images with the same 'note'
-- [ ] Open downloaded images
+- [x] Group images with the same 'note' and campaign identifier
+- [x] Open downloaded images
+- [x] Cython threshold function
+- [x] Optionally download images from S3
+- [ ] Find the right biomass segmentation algorithm
 
 #### Tasks cap.py
 
