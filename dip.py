@@ -45,10 +45,10 @@ for f in files:
 downloaded_files = glob.glob("downloaded/visible-2_*.jpg")
 key = ''
 for f in sorted(downloaded_files):
-    print(f)
+    # print(f)
     image = cv2.imread(f)
     average = cv2.mean(image)[0:3]
-    print(average)
+    # print(average)
     if average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
