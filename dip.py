@@ -33,7 +33,7 @@ def mouseCallback(event, x, y, flags, param):
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
-if False:
+if True:
     files = ListFilesInCacheOnS3()
     for f in files:
         replaced = f.replace('cache/', 'downloaded/')
@@ -46,16 +46,20 @@ if False:
 downloaded_files = glob.glob("downloaded/visible-2_*.jpg")
 key = ''
 for f in sorted(downloaded_files):
-    # print(f)
+    print(f)
     image = cv2.imread(f)
     average = cv2.mean(image)[0:3]
     # print(average)
     if True:  # average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
-        segment(image, -10, 10, -10, 20)
+        segment(image, -10, 10, -10, -20)
         print(time.time() - before)
         cv2.imshow('dip', image)
+
+        filename = f.replace('downloaded/', 'temp/')
+        cv2.imwrite(filename + '.jpeg', image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+
         if ord('p') == key:
             key = cv2.waitKey(0) & 0xFF  # milliseconds
         else:
