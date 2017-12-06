@@ -12,7 +12,7 @@ import glob
 import shutil
 import pickle
 
-campaign = 'montebe1'
+campaign = 'bianco'
     
 # initialize the camera and grab a reference to the raw camera capture
 try:

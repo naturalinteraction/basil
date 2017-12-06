@@ -85,10 +85,10 @@ sshpass -p ********* ssh pi@192.168.0.9 'cd /home/pi/basil ; git pull ; sudo /sb
 
 #### Sensors
 ```
-blueshift	wifi: 192.168.0.6	eth: DHCP
-redshift	wifi: 192.168.0.7	eth: DHCP
-noir		wifi: 192.168.0.8	eth: DHCP
-visible		wifi: 192.168.0.9	eth: DHCP
+blueshift	eth: 192.168.0.6	wifi: DHCP
+redshift	eth: 192.168.0.7	wifi: DHCP
+noir		eth: 192.168.0.8	wifi: DHCP
+visible		eth: 192.168.0.9	wifi: DHCP
 ```
 Focus set at 350mm.
 
