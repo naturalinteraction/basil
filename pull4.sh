@@ -1,8 +1,8 @@
 export COMMAND='cd /home/pi/basil ; git pull'
 
-for i in {6..9}
+for i in 10 12 14 15
 do
     echo "$i"
-    sshpass -p $BASIL_PASSWORD ssh pi@192.168.0.$i $COMMAND
+    ssh pi@192.168.1.$i $COMMAND
 done
 echo 'all done'

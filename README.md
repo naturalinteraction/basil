@@ -80,7 +80,7 @@ fusermount -u pi
 #### Password
 ```
 sshpass -p ********* ssh pi@or**.ddns.net 'bash -s' < do.sh
-sshpass -p ********* ssh pi@192.168.0.9 'cd /home/pi/basil ; git pull ; sudo /sbin/shutdown now'
+sshpass -p ********* ssh pi@192.168.1.10 'cd /home/pi/basil ; git pull ; sudo /sbin/shutdown now'
 ```
 
 #### Sensors
