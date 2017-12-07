@@ -92,6 +92,11 @@ visible		eth: 192.168.0.9	wifi: DHCP
 ```
 Focus set at 350mm.
 
+To look for local raspberries:
+```
+sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
+```
+
 #### Autostart
 Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
 
