@@ -33,8 +33,11 @@ def mouseCallback(event, x, y, flags, param):
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
+sensor = 'visible'
+campaign = 'bianco'
+
 if False:
-    files = ListFilesInCacheOnS3('cache/visible-bianco')
+    files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
     for f in files:
         replaced = f.replace('cache/', 'downloaded/')
         if os.path.isfile(replaced):
@@ -43,7 +46,7 @@ if False:
             print('attempting download of %s' % f)
             DownloadFileFromCacheOnS3(f, replaced)
 
-downloaded_files = glob.glob("downloaded/visible-bianco_*.jpg")
+downloaded_files = glob.glob('downloaded/' + sensor + '-' + campaign + '_*.jpg')
 key = ''
 for f in sorted(downloaded_files):
     print(f)
@@ -53,48 +56,22 @@ for f in sorted(downloaded_files):
     if True:  # average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
-        segment(image, -10, 10, -10, -600)
+        segment(image, -10, 10, -10, -600, 70)
         print(time.time() - before)
         cv2.imshow('dip', image)
 
         filename = f.replace('downloaded/', 'temp/')
         cv2.imwrite(filename + '.jpeg', image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
-        if ord('p') == key:
-            key = cv2.waitKey(0) & 0xFF  # milliseconds
-        else:
-            key = cv2.waitKey(25) & 0xFF  # milliseconds
+        #if ord('p') == key:
+        key = cv2.waitKey(0) & 0xFF  # milliseconds
+        #else:
+        #    key = cv2.waitKey(25) & 0xFF  # milliseconds
 
         # if the `q` or ESC key was pressed, break from the for loop
 	if key == ord('q') or key == 27:
                 print('exiting')
-		break
-'''
-image = cv2.imread("downloaded/blueshift-2_2560x1920_2017_10_24-10_00.jpg")
-M = np.float32([[1,0,100], [0,1,50]])
-rows,cols,ch = image.shape
-pts1 = np.float32([[56,65], [368,52], [28,387], [389,390]])
-pts2 = np.float32([[0,0], [300,0], [0,300], [300,300]])
-MP = cv2.getPerspectiveTransform(pts1, pts2)
-kernel = np.ones((5, 5), np.float32)/25
-
-def test():
-    before = time.time()
-    for i in range (10):    
-        resized = cv2.resize(image, (10000, 10000))
-        warped = cv2.warpAffine(image, M, (2000, 2000))
-        blur = cv2.blur(image, (5,5))
-        canned = cv2.Canny(image, 100, 200) 
-        filtered = cv2.filter2D(image, -1, kernel)
-        sobel = cv2.Sobel(image, cv2.CV_64F, 1, 1, ksize=5)
-        persp = cv2.warpPerspective(image, MP, (cols,rows))
-    print(time.time() - before, cv2.ocl.useOpenCL())
-
-test()
-cv2.ocl.setUseOpenCL(False)
-test()
-# print(cv2.getBuildInformation())
-'''
+		breakop
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
