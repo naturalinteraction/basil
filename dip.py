@@ -33,8 +33,8 @@ def mouseCallback(event, x, y, flags, param):
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
-if True:
-    files = ListFilesInCacheOnS3()
+if False:
+    files = ListFilesInCacheOnS3('cache/visible-bianco')
     for f in files:
         replaced = f.replace('cache/', 'downloaded/')
         if os.path.isfile(replaced):
@@ -43,7 +43,7 @@ if True:
             print('attempting download of %s' % f)
             DownloadFileFromCacheOnS3(f, replaced)
 
-downloaded_files = glob.glob("downloaded/visible-2_*.jpg")
+downloaded_files = glob.glob("downloaded/visible-bianco_*.jpg")
 key = ''
 for f in sorted(downloaded_files):
     print(f)
@@ -53,7 +53,7 @@ for f in sorted(downloaded_files):
     if True:  # average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
-        segment(image, -10, 10, -10, -20)
+        segment(image, -10, 10, -10, -600)
         print(time.time() - before)
         cv2.imshow('dip', image)
 

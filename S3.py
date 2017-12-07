@@ -38,7 +38,7 @@ def UploadFileToS3(filename):
 
     return True
 
-def ListFilesInCacheOnS3():
+def ListFilesInCacheOnS3(file_prefix):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
     AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
 
@@ -55,7 +55,7 @@ def ListFilesInCacheOnS3():
 
         print(bucket_name)
 
-        files = bucket.list(prefix='cache')  # cache/
+        files = bucket.list(prefix=file_prefix)  # 'cache', cache/
         
         for key in files: 
             result.append(key.key)
