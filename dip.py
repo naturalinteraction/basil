@@ -56,9 +56,20 @@ for f in sorted(downloaded_files):
     if True:  # average[0] > 30:
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
-        segment(image, -10, 10, -10, -600, 70)
+        count = segment(image, -20, 10, -10, -900, 70)
+        print('count ' + str(count))
+        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        kernel = np.ones((3, 3), np.uint8)
+        gray_image = cv2.erode(gray_image, kernel, iterations = 1)
+        # gray_image = cv2.dilate(gray_image, kernel, iterations = 2)
+        # gray_image = cv2.morphologyEx(gray_image, cv2.MORPH_OPEN, kernel)
+        # gray_image = cv2.morphologyEx(gray_image, cv2.MORPH_CLOSE, kernel)
+        count = len(cv2.findNonZero(gray_image))
+        print('count after erosion ' + str(count))
+
         print(time.time() - before)
-        cv2.imshow('dip', image)
+        cv2.imshow('dip', gray_image)
 
         filename = f.replace('downloaded/', 'temp/')
         cv2.imwrite(filename + '.jpeg', image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
@@ -71,7 +82,7 @@ for f in sorted(downloaded_files):
         # if the `q` or ESC key was pressed, break from the for loop
 	if key == ord('q') or key == 27:
                 print('exiting')
-		breakop
+		quit()
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
