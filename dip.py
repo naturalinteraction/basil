@@ -95,9 +95,9 @@ for f in sorted(downloaded_files):
         #    key = cv2.waitKey(25) & 0xFF  # milliseconds
 
         # if the `q` or ESC key was pressed, break from the for loop
-	if key == ord('q') or key == 27:
+        if key == ord('q') or key == 27:
                 print('exiting')
-		quit()
+                quit()
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')

@@ -175,11 +175,11 @@ cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
       
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
-	# grab the raw NumPy array representing the image
-	image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
+        # grab the raw NumPy array representing the image
+        image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
  
-	# show the frame
-	if show:
+        # show the frame
+        if show:
             cv2.imshow('cap', image)
         key = cv2.waitKey(25) & 0xFF  # milliseconds
 
@@ -270,13 +270,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == 83:  # right
             cp.IncValue()
  
-	# clear the stream in preparation for the next frame
-	rawCapture.truncate(0)
+        # clear the stream in preparation for the next frame
+        rawCapture.truncate(0)
  
-	# if the `q` or ESC key was pressed, break from the loop
-	if key == ord('q') or key == 27:
+        # if the `q` or ESC key was pressed, break from the loop
+        if key == ord('q') or key == 27:
                 print('exiting')
-		break
+                break
 		
 camera.close()
 print('Camera closed.')
