@@ -57,7 +57,7 @@ for f in sorted(downloaded_files):
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
         image_copy = image.copy()
-        count = segment(image_copy, -20, 10, -10, -1200, 70)
+        count = segment(image_copy, -2, 1, -1, -90, 40)
         # print('count ' + str(count))
         gray_image = cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY)
 
@@ -73,7 +73,7 @@ for f in sorted(downloaded_files):
         for cnt in contours:
             m = cv2.moments(cnt)
             area = m['m00']
-            if area <= 4000:
+            if area <= 0:
                 cv2.fillPoly(gray_image, pts = [cnt], color=(0))
 
         count = len(cv2.findNonZero(gray_image))
@@ -81,7 +81,7 @@ for f in sorted(downloaded_files):
 
         mask = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
 
-        image = cv2.addWeighted(image, 1.0, mask, 0.5, 0.0)
+        image = cv2.addWeighted(image, 1.0, mask, -0.6, 0.0)
 
         print((time.time() - before))
         cv2.imshow('dip', image)
