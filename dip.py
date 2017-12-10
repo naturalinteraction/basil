@@ -20,15 +20,15 @@ print(git_commit_message)
 git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
 print(git_commit_message_pretty)
 
-print(cv2.__version__)
+print((cv2.__version__))
 
-print(cv2.ocl.haveOpenCL())
+print((cv2.ocl.haveOpenCL()))
 cv2.ocl.setUseOpenCL(True)
-print(cv2.ocl.useOpenCL())
+print((cv2.ocl.useOpenCL()))
 
 def mouseCallback(event, x, y, flags, param):
     what = image  # hsv
-    print(what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2))
+    print((what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
 
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
@@ -41,9 +41,9 @@ if False:
     for f in files:
         replaced = f.replace('cache/', 'downloaded/')
         if os.path.isfile(replaced):
-            print('skipping download of %s' % f)
+            print(('skipping download of %s' % f))
         else:
-            print('attempting download of %s' % f)
+            print(('attempting download of %s' % f))
             DownloadFileFromCacheOnS3(f, replaced)
 
 downloaded_files = glob.glob('downloaded/' + sensor + '-' + campaign + '_*.jpg')
@@ -77,13 +77,13 @@ for f in sorted(downloaded_files):
                 cv2.fillPoly(gray_image, pts = [cnt], color=(0))
 
         count = len(cv2.findNonZero(gray_image))
-        print('count after fill ' + str(count))
+        print(('count after fill ' + str(count)))
 
         mask = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
 
         image = cv2.addWeighted(image, 1.0, mask, 0.5, 0.0)
 
-        print(time.time() - before)
+        print((time.time() - before))
         cv2.imshow('dip', image)
 
         filename = f.replace('downloaded/', 'temp/')

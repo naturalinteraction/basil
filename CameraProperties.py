@@ -23,7 +23,7 @@ class CameraProperties(object):
                   'DRC Strength' : ['off', 'low', 'medium', 'high']    
                  }
     # indices of the currently selected camera properties' values
-    values_indices = dict(zip(properties.keys(), [0] * len(properties)))
+    values_indices = dict(list(zip(list(properties.keys()), [0] * len(properties))))
     # index of the currently selected camera property
     property_index = 0
     cam = None
@@ -60,7 +60,7 @@ class CameraProperties(object):
              return float(self.cam.awb_gains[1])
         
     def SetPropertyOnCamera(self, name, value):
-        print('Attempting to set %s to %s' % (name, value))
+        print(('Attempting to set %s to %s' % (name, value)))
         if name == 'DRC Strength':
              self.cam.drc_strength = value
         if name == 'Brightness':
@@ -93,7 +93,7 @@ class CameraProperties(object):
              self.cam.awb_gains = g
 
     def SetAllPropertiesOnCamera(self):
-        for name in self.properties.keys():
+        for name in list(self.properties.keys()):
             value = self.properties[name][self.values_indices[name]]
             self.SetPropertyOnCamera(name, value)
         value_r = self.properties['AWB Red Gain'][self.values_indices['AWB Red Gain']]
@@ -124,20 +124,20 @@ class CameraProperties(object):
         return self.properties[name][self.values_indices[name]]
 
     def PrintAllProperties(self):
-        print('*' * 20)
-        for name in self.properties.keys():
+        print(('*' * 20))
+        for name in list(self.properties.keys()):
             value = self.properties[name][self.values_indices[name]]
-            print("%s  %s <%s>" % (name, value, self.PropertyOnCamera(name)))
-        print('Exp Speed (READONLY) <%s>' % (int(self.cam.exposure_speed)))
+            print(("%s  %s <%s>" % (name, value, self.PropertyOnCamera(name))))
+        print(('Exp Speed (READONLY) <%s>' % (int(self.cam.exposure_speed))))
         # print('Zoom (READONLY) <%s>' % self.cam.zoom)
-        print('Analog Gain (READONLY) <%s>' % float(self.cam.analog_gain))
-        print('Digital Gain (READONLY) <%s>' % float(self.cam.digital_gain))
+        print(('Analog Gain (READONLY) <%s>' % float(self.cam.analog_gain)))
+        print(('Digital Gain (READONLY) <%s>' % float(self.cam.digital_gain)))
         zoo = self.cam.zoom
-        print('Zoom <%s, %s, %s, %s>' % (zoo[0], zoo[1], zoo[2], zoo[3]))
-        print('*' * 20)
+        print(('Zoom <%s, %s, %s, %s>' % (zoo[0], zoo[1], zoo[2], zoo[3])))
+        print(('*' * 20))
         
     def PrintCurrentProperty(self):
-        print("%s   %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName())))
+        print(("%s   %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName()))))
 
     def IncValue(self):
         name = self.CurrentPropertyName()

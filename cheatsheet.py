@@ -1,10 +1,11 @@
-from __future__ import print_function  # provides Python 3's print() with end=''
+  # provides Python 3's print() with end=''
 
 # import these modules
 import random
 import sys
 import os
 import shelve
+import collections
 
 # db = shelve.open("shelve.db")
 
@@ -205,10 +206,10 @@ if True:
   pass  # nop, NOP, no operation
 
 # Get a list of dictionary keys
-print(super_villains.keys())
+print(list(super_villains.keys()))
 
 # Get a list of dictionary values
-print(super_villains.values())
+print(list(super_villains.values()))
 
 # CONDITIONALS -------------
 # The if, else and elif statements are used to perform different
@@ -411,7 +412,7 @@ print(test_file.mode)
 print(test_file.name)
 
 # Write text to a file with a newline
-test_file.write(bytes("Write me to the file\n"))
+test_file.write(bytes("Write me to the file\n", 'utf-8'))
 
 # Close the file
 test_file.close()
@@ -591,7 +592,7 @@ def interrogate(item):
         print("class: ", item.__class__.__name__)
     print("type: ", type(item))
     print("value: ", repr(item))
-    print("callable: ", callable(item))
+    print("callable: ", isinstance(item, collections.Callable))
     if hasattr(item, '__doc__'):
         doc = getattr(item, '__doc__')
         # doc = doc.strip()

@@ -31,7 +31,7 @@ except:
 else:
     print('new camera version')
 finally:
-    print(camera.resolution)
+    print((camera.resolution))
     rawCapture = PiRGBArray(camera, size=camera.resolution)
      
 show = True
@@ -75,13 +75,13 @@ def UpdateGainDistance():
     gdi += math.fabs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
     pag = pag * .8 + .2 * camera.analog_gain
-    print('analog %s  digital %s distance %s' % (float(camera.analog_gain),
+    print(('analog %s  digital %s distance %s' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
-                                                 gdi))
+                                                 gdi)))
     return gdi, pag, pdg
 
 def PrintHelp():
-    print('*' * 10)
+    print(('*' * 10))
     print('TAB - Print All Properties')
     print('Arrow Keys - Navigate Properties And Values')
     print('Enter - Set Current Property')
@@ -92,7 +92,7 @@ def PrintHelp():
     print('P - Take Picture Now')
     print('ESC - Exit')
     print('Z - Zoom To Focus')
-    print('*' * 10)
+    print(('*' * 10))
 
 def TakePicture(img, cam):
     print('Before saving picture, let me attempt to upload three files in cache.')
@@ -134,7 +134,7 @@ def TakePicture(img, cam):
     print(keywords)
     exif.addKeywords(keywords)
     # print('getKeywords', exif.getKeywords())
-    print('getTag Keywords', exif.getTag("Keywords"))
+    print(('getTag Keywords', exif.getTag("Keywords")))
     AttemptUpload()  # after taking the picture, immediately attempt to upload it
     print(ticks)
     return ticks
@@ -156,7 +156,7 @@ def AttemptUpload():
         print('There was a problem uploading. Nothing done.')
 
 
-print(os.environ['BASIL_NOTE'])
+print((os.environ['BASIL_NOTE']))
 # allow the camera to warmup
 print('Wait...')
 time.sleep(2)
@@ -247,9 +247,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print(git_commit_message)
             uptime_minutes = int((time.time() - time_process_started) / (60.0))
             print(time_process_started_string) 
-            print(time.strftime("now     %Y/%m/%d %H:%M"))
-            print('uptime minutes %s' % uptime_minutes)
-            print('*' * 20)
+            print((time.strftime("now     %Y/%m/%d %H:%M")))
+            print(('uptime minutes %s' % uptime_minutes))
+            print(('*' * 20))
 
             
         if key == ord('z'):    

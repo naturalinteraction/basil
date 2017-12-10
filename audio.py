@@ -7,7 +7,7 @@ inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE,alsaaudio.PCM_NONBLOCK)
 
 inp.setchannels(1)
 inp.setrate(8000)  # 16000
-inp.setformat(alsaaudio.PCM_FORMAT_U8)  # PCM_FORMAT_S16_LE for laptop
+inp.setformat(alsaaudio.PCM_FORMAT_S16_LE)  # PCM_FORMAT_S16_LE for laptop, PCM_FORMAT_U8 for pi
 inp.setperiodsize(160)
 
 while True:
@@ -17,6 +17,6 @@ while True:
         l,data = inp.read()
         if l:
             # Return the maximum of the absolute value of all samples in a fragment.
-            volume += audioop.max(data, 1) # 2 for laptop
+            volume += audioop.max(data, 2) # 2 for laptop, 1 for pi
         time.sleep(0.002)
-    print(int(volume * volume / 1000.0 / 1000.0 / 2))
+    print((int(volume * volume / 1000.0 / 1000.0 / 2)))

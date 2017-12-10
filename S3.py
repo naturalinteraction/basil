@@ -32,8 +32,8 @@ def UploadFileToS3(filename):
                                      cb=percent_cb,
                                      num_cb=10)
     except:
-        print ("upload to S3 error")
-        print (sys.exc_info())
+        print("upload to S3 error")
+        print((sys.exc_info()))
         return False
 
     return True
@@ -62,7 +62,7 @@ def ListFilesInCacheOnS3(file_prefix):
             
     except:
         print ("list cache on S3 error")
-        print (sys.exc_info())
+        print((sys.exc_info()))
 
     return result
 
@@ -88,8 +88,8 @@ def DownloadFileFromCacheOnS3(key, filename):
         k.get_contents_to_filename(filename)
 
     except:
-        print ("download from S3 error")
-        print (sys.exc_info())
+        print("download from S3 error")
+        print((sys.exc_info()))
         return False
 
     return True
