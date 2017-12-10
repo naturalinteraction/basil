@@ -22,10 +22,6 @@ print(git_commit_message_pretty)
 
 print((cv2.__version__))
 
-print((cv2.ocl.haveOpenCL()))
-cv2.ocl.setUseOpenCL(True)
-print((cv2.ocl.useOpenCL()))
-
 def mouseCallback(event, x, y, flags, param):
     what = image  # hsv
     print((what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
@@ -33,10 +29,10 @@ def mouseCallback(event, x, y, flags, param):
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
-sensor = 'visible'
+sensor = 'noir'
 campaign = 'bianco'
 
-if False:
+if False:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
     for f in files:
         replaced = f.replace('cache/', 'downloaded/')
@@ -57,7 +53,7 @@ for f in sorted(downloaded_files):
         # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
         image_copy = image.copy()
-        count = segment(image_copy, -2, 1, -1, -90, 40)
+        count = segment(image_copy, -2, 1, -1, -120, 40)
         # print('count ' + str(count))
         gray_image = cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY)
 

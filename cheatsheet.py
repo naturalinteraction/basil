@@ -1,4 +1,4 @@
-  # provides Python 3's print() with end=''
+from __future__ import print_function  # provides Python 3's print() with end=''
 
 # import these modules
 import random
@@ -412,7 +412,7 @@ print(test_file.mode)
 print(test_file.name)
 
 # Write text to a file with a newline
-test_file.write(bytes("Write me to the file\n", 'utf-8'))
+test_file.write(bytes("Write me to the file\n"))  # , 'utf-8' in Python 3
 
 # Close the file
 test_file.close()
