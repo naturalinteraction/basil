@@ -107,3 +107,8 @@ Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/aut
 ffmpeg -r 7 -pattern_type glob -i '*.jpg' -s hd480 -vcodec libx264 timelapse.mp4
 # 7 fps, other options include hd720, hd1080
 ```
+
+#### Exif Keywords
+```
+exiftool -keywords <filename>
+```
