@@ -7,7 +7,7 @@ p2
 I10
 sS'AWB Red Gain'
 p3
-I13
+I10
 sS'Brightness'
 p4
 I5
@@ -19,19 +19,19 @@ p6
 I20
 sS'AWB Mode'
 p7
-I0
+I1
 sS'Shutter Speed'
 p8
-I3
+I0
 sS'ISO'
 p9
-I1
+I0
 sS'Exposure Mode'
 p10
-I0
+I1
 sS'AWB Blue Gain'
 p11
-I20
+I10
 sS'Exp Compensation'
 p12
 I5
