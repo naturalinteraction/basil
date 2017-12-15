@@ -2,6 +2,6 @@ from distutils.core import setup
 from Cython.Build import cythonize
 
 setup(
-  name = 'segmentation function',
+  name = 'segmentation functions',
   ext_modules = cythonize("segment.pyx"),
 )
