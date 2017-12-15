@@ -30,9 +30,9 @@ def mouseCallback(event, x, y, flags, param):
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
-sensor = 'visible'  # 'noir', 'visible', 'redshift', 'blueshift'
+sensor = 'visible'
 campaign = 'bianco'
-day = '2017_12_15'  # '2017_12_14', ''
+day = '2017_12_15-22_08'  # '2017_12_14', ''
 
 if True:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
@@ -61,13 +61,7 @@ for f in sorted(downloaded_files):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
         image_copy = image.copy()
-        # count = segment_linear(image_copy, 0, 1, 0, 150, 0)
-        if sensor == 'visible':
-            count = segment_target(image_copy, 39, 190, 150, 6, 3, 1, 90 * 90 * 3)  # visible
-        if sensor == 'noir':
-            count = segment_target(image_copy, 37, 170, 150, 6, 3, 1, 90 * 90 * 3)  # noir
-        if sensor == 'blueshift':
-            count = segment_target(image_copy, 34, 158, 118, 16, 3, 1, 90 * 90 * 3)  # blueshift
+        count = segment_target(image_copy, 36, 240, 166, 6, 3, 1, 90 * 90 * 3)
 
         # print('count ' + str(count))
         gray_image = cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY)
