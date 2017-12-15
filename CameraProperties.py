@@ -125,7 +125,7 @@ class CameraProperties(object):
 
     def PrintAllProperties(self):
         print(('*' * 20))
-        for name in list(self.properties.keys()):
+        for name in sorted(list(self.properties.keys())):
             value = self.properties[name][self.values_indices[name]]
             print(("%s  %s <%s>" % (name, value, self.PropertyOnCamera(name))))
         print(('Exp Speed (READONLY) <%s>' % (int(self.cam.exposure_speed))))
