@@ -32,9 +32,9 @@ cv2.setMouseCallback('dip', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
-day = '2017_12_15-22_08'  # '2017_12_14', ''
+day = '2017_12_14'  # '2017_12_14', ''
 
-if True:  # download new images from S3?
+if False:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
     if len(day) > 0:
         files = list(filter(lambda x: day in x, files))
@@ -61,7 +61,23 @@ for f in sorted(downloaded_files):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         before = time.time()
         image_copy = image.copy()
-        count = segment_target(image_copy, 36, 240, 166, 6, 3, 1, 90 * 90 * 3)
+
+        target_color_0 = 36
+        target_color_1 = 240
+        target_color_2 = 166
+
+        weight_color_0 = 6
+        weight_color_1 = 3
+        weight_color_2 = 1
+
+        segmentation_threshold = 90 * 90 * 3
+
+        count = segment_target(image_copy, target_color_0,
+                                           target_color_1,
+                                           target_color_2,
+                                           weight_color_0,
+                                           weight_color_1,
+                                           weight_color_2, segmentation_threshold)
 
         # print('count ' + str(count))
         gray_image = cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY)
@@ -74,20 +90,29 @@ for f in sorted(downloaded_files):
 
         gray_image = cv2.bitwise_not(gray_image)
 
-        im2, contours, heirarchy = cv2.findContours(gray_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        im2, contours, hierarchy = cv2.findContours(gray_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         blobs = 0
         for cnt in contours:
             m = cv2.moments(cnt)
             area = m['m00']
-            if area <= 400:
+            if area <= 4000:
                 cv2.fillPoly(gray_image, pts = [cnt], color=(0))
-                # blob_mask = np.zeros(image.shape,dtype="uint8")
                 blob_mask = np.zeros(image.shape[:2], np.uint8)
                 cv2.drawContours(blob_mask, [cnt], -1, 255, -1)
-                mean,stddev = cv2.meanStdDev(image, mask=blob_mask)
-                # print('mean ' + str(mean) + ' stddev ' + str(stddev))
-                cv2.fillPoly(image, pts = [cnt], color=(255, 0, 255))
-                blobs += 1
+                # np.where()
+                mean = cv2.mean(image, mask=blob_mask)[0:3]
+
+                color_distance = pow(mean[0] - target_color_0, 2) * weight_color_0 +  \
+                                 pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
+                                 pow(mean[2] - target_color_2, 2) * weight_color_2
+
+                if color_distance < segmentation_threshold * 2:
+                    cv2.fillPoly(image, pts = [cnt], color=(255, 0, 255))
+                    blobs += 1
+                else:
+                    print(str(blobs) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
+                    cv2.fillPoly(image, pts = [cnt], color=(255, 0, 0))
+
         print('blobs ' + str(blobs))
         # TypeError: object of type 'NoneType' has no len()
         nonzero = cv2.findNonZero(gray_image)
