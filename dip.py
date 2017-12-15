@@ -32,9 +32,9 @@ cv2.setMouseCallback('dip', mouseCallback)
 
 sensor = 'visible'  # 'noir', 'visible', 'redshift', 'blueshift'
 campaign = 'bianco'
-day = '2017_12_14'  # '2017_12_14', ''
+day = '2017_12_15'  # '2017_12_14', ''
 
-if False:  # download new images from S3?
+if True:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
     if len(day) > 0:
         files = list(filter(lambda x: day in x, files))
@@ -63,9 +63,9 @@ for f in sorted(downloaded_files):
         image_copy = image.copy()
         # count = segment_linear(image_copy, 0, 1, 0, 150, 0)
         if sensor == 'visible':
-            count = segment_target(image_copy, 36, 240, 166, 6, 3, 1, 90 * 90 * 3)  # visible
+            count = segment_target(image_copy, 39, 190, 150, 6, 3, 1, 90 * 90 * 3)  # visible
         if sensor == 'noir':
-            count = segment_target(image_copy, 31, 195, 161, 6, 3, 1, 90 * 90 * 3)  # noir
+            count = segment_target(image_copy, 37, 170, 150, 6, 3, 1, 90 * 90 * 3)  # noir
         if sensor == 'blueshift':
             count = segment_target(image_copy, 34, 158, 118, 16, 3, 1, 90 * 90 * 3)  # blueshift
 
@@ -73,7 +73,7 @@ for f in sorted(downloaded_files):
         gray_image = cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY)
 
         kernel = np.ones((3, 3), np.uint8)
-        # gray_image = cv2.erode(gray_image, kernel, iterations = 1)
+        gray_image = cv2.erode(gray_image, kernel, iterations = 1)
         # gray_image = cv2.dilate(gray_image, kernel, iterations = 2)
         # gray_image = cv2.morphologyEx(gray_image, cv2.MORPH_OPEN, kernel)
         # gray_image = cv2.morphologyEx(gray_image, cv2.MORPH_CLOSE, kernel)
@@ -81,21 +81,29 @@ for f in sorted(downloaded_files):
         gray_image = cv2.bitwise_not(gray_image)
 
         im2, contours, heirarchy = cv2.findContours(gray_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        blobs = 0
         for cnt in contours:
             m = cv2.moments(cnt)
             area = m['m00']
-            if area <= 0:
+            if area <= 400:
                 cv2.fillPoly(gray_image, pts = [cnt], color=(0))
-
+                # blob_mask = np.zeros(image.shape,dtype="uint8")
+                blob_mask = np.zeros(image.shape[:2], np.uint8)
+                cv2.drawContours(blob_mask, [cnt], -1, 255, -1)
+                mean,stddev = cv2.meanStdDev(image, mask=blob_mask)
+                # print('mean ' + str(mean) + ' stddev ' + str(stddev))
+                cv2.fillPoly(image, pts = [cnt], color=(255, 0, 255))
+                blobs += 1
+        print('blobs ' + str(blobs))
         # TypeError: object of type 'NoneType' has no len()
         nonzero = cv2.findNonZero(gray_image)
         if not(nonzero is None):
             count = len(nonzero)
             print(('count after fill ' + str(count)))
 
-        mask = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
+        show_mask = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
 
-        image = cv2.addWeighted(image, 1.0, mask, -0.9, 0.0)
+        image = cv2.addWeighted(image, 1.0, show_mask, -0.9, 0.0)
 
         print((time.time() - before))
         cv2.imshow('dip', image)

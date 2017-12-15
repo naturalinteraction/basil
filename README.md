@@ -12,7 +12,8 @@ A repo for my own experiments.
 - [x] Open downloaded images
 - [x] Cython threshold function
 - [x] Optionally download images from S3
-- [ ] Find the right biomass segmentation algorithm
+- [ ] Find biomass segmentation algorithm params automatically
+- [ ] Analyze 'holes' in biomass
 
 #### Tasks cap.py
 
@@ -42,6 +43,7 @@ A repo for my own experiments.
 - [x] Disable preview automatically (when taking picture)
 - [x] Start cap.py at boot
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
+- [ ] Find camera parameters automatically
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is not static~~
