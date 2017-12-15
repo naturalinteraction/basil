@@ -13,7 +13,8 @@ A repo for my own experiments.
 - [x] Cython threshold function
 - [x] Optionally download images from S3
 - [ ] Find biomass segmentation algorithm params automatically
-- [ ] Analyze 'holes' in biomass
+- [ ] Analyze 'holes' in biomass by comparing the average color to the average color of the outer border
+- [ ] Display and save multiple images with the discarded areas, et cetera
 
 #### Tasks cap.py
 
