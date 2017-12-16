@@ -14,6 +14,7 @@ A repo for my own experiments.
 - [x] Optionally download images from S3
 - [x] Display multiple images with the discarded areas, for debugging purposes
 - [x] Stable biomass bounding box (also useful for cropping)
+- [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance
 - [ ] Work on holes pixel-by-pixel and not as a whole (even better: consider not only holes but all peripheral regions)
 - [ ] Color analysis inside biomass, spatial frequency and histograms
 - [ ] Analyze holes in biomass by comparing the average color to the average color of the outer border
