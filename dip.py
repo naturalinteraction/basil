@@ -32,9 +32,9 @@ cv2.setMouseCallback('dip', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
-day = ''  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
+day = '2017_12_16'  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
 
-if False:  # download new images from S3?
+if True:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
     if len(day) > 0:
         files = list(filter(lambda x: day in x, files))
@@ -93,8 +93,17 @@ for f in sorted(downloaded_files):
         im2, contours, hierarchy = cv2.findContours(gray_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         blobs = 0
         for cnt in contours:
-            m = cv2.moments(cnt)
-            area = m['m00']
+            # if len(cnt) < 200:  # fast way to ignore huge blobs?
+            # m = cv2.moments(cnt)
+            # area = m['m00']
+            area = cv2.contourArea(cnt)
+            x,y,w,h = cv2.boundingRect(cnt)
+            rect_area = w * h
+            extent = float(area) / rect_area  # could be useful for the holes
+            hull = cv2.convexHull(cnt)
+            hull_area = cv2.contourArea(hull)
+            solidity = float(area)/hull_area  # could be useful for the holes and for the entire biomass?
+
             if area <= 4000:
                 cv2.fillPoly(gray_image, pts = [cnt], color=(0))
                 blob_mask = np.zeros(image.shape[:2], np.uint8)
