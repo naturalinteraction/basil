@@ -14,14 +14,14 @@ import numpy as np
 from segment import segment_linear
 from segment import segment_target
 
-git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-print(git_hash)
-git_commit_message = subprocess.check_output(["git", "log", "-1"]).strip()  # , "--pretty=%B"
-print(git_commit_message)
-git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
-print(git_commit_message_pretty)
-
-print((cv2.__version__))
+# print out debug information about current source code version and OpenCV version
+# git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
+# print(git_hash)
+# git_commit_message = subprocess.check_output(["git", "log", "-1"]).strip()  # , "--pretty=%B"
+# print(git_commit_message)
+# git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
+# print(git_commit_message_pretty)
+# print((cv2.__version__))
 
 def mouseCallback(event, x, y, flags, param):
     what = image  # hsv
@@ -34,8 +34,9 @@ sensor = 'visible'
 campaign = 'bianco'
 day = '2017_12_16'  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
 
-if True:  # download new images from S3?
+if False:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
+    # filter out based on day string
     if len(day) > 0:
         files = list(filter(lambda x: day in x, files))
     for f in files:
@@ -46,21 +47,24 @@ if True:  # download new images from S3?
             print(('attempting download of %s' % f))
             DownloadFileFromCacheOnS3(f, replaced)
 
+# list files with given prefix in directory 'downloaded/'
 downloaded_files = glob.glob('downloaded/' + sensor + '-' + campaign + '_*.jpg')
-key = ''
-
+# optionally filter out those that are not from given day/time
 if len(day) > 0:
     downloaded_files = list(filter(lambda x: day in x, downloaded_files))
 
+# last key pressed, only needed for if ord('p') == key below...
+key = ''
+
 for f in sorted(downloaded_files):
     print(f)
-    image = cv2.imread(f)
-    average = cv2.mean(image)[0:3]
+    bgr = cv2.imread(f)
+    # average = cv2.mean(bgr)[0:3]
     # print(average)
     if True:  # average[0] > 30:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-        before = time.time()
-        image_copy = image.copy()
+        hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+        # before = time.time()
+        hsv_copy = hsv.copy()
 
         target_color_0 = 36
         target_color_1 = 240
@@ -72,7 +76,7 @@ for f in sorted(downloaded_files):
 
         segmentation_threshold = 90 * 90 * 3
 
-        count = segment_target(image_copy, target_color_0,
+        count = segment_target(hsv_copy,   target_color_0,
                                            target_color_1,
                                            target_color_2,
                                            weight_color_0,
@@ -80,64 +84,70 @@ for f in sorted(downloaded_files):
                                            weight_color_2, segmentation_threshold)
 
         # print('count ' + str(count))
-        gray_image = cv2.cvtColor(image_copy, cv2.COLOR_BGR2GRAY)
+        biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
         kernel = np.ones((3, 3), np.uint8)
-        gray_image = cv2.erode(gray_image, kernel, iterations = 1)
-        # gray_image = cv2.dilate(gray_image, kernel, iterations = 2)
-        # gray_image = cv2.morphologyEx(gray_image, cv2.MORPH_OPEN, kernel)
-        # gray_image = cv2.morphologyEx(gray_image, cv2.MORPH_CLOSE, kernel)
+        biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)
+        # biomass_mask = cv2.dilate(biomass_mask, kernel, iterations = 2)
+        # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, kernel)
+        # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, kernel)
 
-        gray_image = cv2.bitwise_not(gray_image)
+        # invert mask
+        biomass_mask = cv2.bitwise_not(biomass_mask)
 
-        im2, contours, hierarchy = cv2.findContours(gray_image, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        blobs = 0
+        temp, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        holes = 0
         for cnt in contours:
             # if len(cnt) < 200:  # fast way to ignore huge blobs?
             # m = cv2.moments(cnt)
             # area = m['m00']
             area = cv2.contourArea(cnt)
+
+            # extent and solidity
             x,y,w,h = cv2.boundingRect(cnt)
             rect_area = w * h
             extent = float(area) / rect_area  # could be useful for the holes
             hull = cv2.convexHull(cnt)
             hull_area = cv2.contourArea(hull)
-            solidity = float(area)/hull_area  # could be useful for the holes and for the entire biomass?
+            solidity = float(area)/hull_area  # could be useful for the holes
 
-            if area <= 4000:
-                cv2.fillPoly(gray_image, pts = [cnt], color=(0))
-                blob_mask = np.zeros(image.shape[:2], np.uint8)
-                cv2.drawContours(blob_mask, [cnt], -1, 255, -1)
+            if area <= 4000:  # todo: parameter
+                cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))  # todo: nope, only if it is a hole
+                hole_mask = np.zeros(bgr.shape[:2], np.uint8)
+                cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
                 # np.where()
-                mean = cv2.mean(image, mask=blob_mask)[0:3]
+                mean = cv2.mean(hsv, mask=hole_mask)[0:3]
 
                 color_distance = pow(mean[0] - target_color_0, 2) * weight_color_0 +  \
                                  pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
                                  pow(mean[2] - target_color_2, 2) * weight_color_2
 
-                if color_distance < segmentation_threshold * 2:
-                    cv2.fillPoly(image, pts = [cnt], color=(255, 0, 255))
-                    blobs += 1
+                if color_distance < segmentation_threshold * 2:  # todo: parameter
+                    cv2.fillPoly(hsv, pts = [cnt], color=(255, 0, 255))
+                    holes += 1
                 else:
-                    print(str(blobs) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
-                    cv2.fillPoly(image, pts = [cnt], color=(255, 0, 0))
+                    print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
+                    cv2.fillPoly(hsv, pts = [cnt], color=(255, 0, 0))
 
-        print('blobs ' + str(blobs))
+        print('holes ' + str(holes))
+
+        # count non zero pixels in mask
         # TypeError: object of type 'NoneType' has no len()
-        nonzero = cv2.findNonZero(gray_image)
-        if not(nonzero is None):
-            count = len(nonzero)
-            print(('count after fill ' + str(count)))
+        # nonzero = cv2.findNonZero(biomass_mask)
+        # if not(nonzero is None):
+        #     count = len(nonzero)
+        #     print(('count after fill ' + str(count)))
 
-        show_mask = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2BGR)
+        show_mask = cv2.cvtColor(biomass_mask, cv2.COLOR_GRAY2BGR)
 
-        image = cv2.addWeighted(image, 1.0, show_mask, -0.9, 0.0)
+        foreground = cv2.addWeighted(hsv, 1.0, show_mask, -1.0, 0.0)
 
-        print((time.time() - before))
-        cv2.imshow('dip', image)
+        # print((time.time() - before))
+        cv2.imshow('dip', foreground)
 
-        filename = f.replace('downloaded/', 'temp/')
-        cv2.imwrite(filename + '.jpeg', image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+        # save resulting image to disk
+        # filename = f.replace('downloaded/', 'temp/')
+        # cv2.imwrite(filename + '.jpeg', image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
         #if ord('p') == key:
         key = cv2.waitKey(0) & 0xFF  # milliseconds
