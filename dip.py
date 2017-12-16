@@ -31,17 +31,17 @@ def mouseCallback(event, x, y, flags, param):
     what = biomass_mask
     print('biomass_mask ', (what.item(y, x) == 0))
 
+# debug windows
+cv2.namedWindow('refused-holes', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('refused-holes', mouseCallback)
+cv2.namedWindow('accepted-holes', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('accepted-holes', mouseCallback)
+cv2.namedWindow('background', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('background', mouseCallback)
+
 # main window
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
-
-# debug windows
-cv2.namedWindow('background', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('background', mouseCallback)
-cv2.namedWindow('accepted-holes', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('accepted-holes', mouseCallback)
-cv2.namedWindow('refused-holes', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('refused-holes', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
@@ -80,8 +80,8 @@ for f in sorted(downloaded_files):
         hsv_copy = hsv.copy()
 
         target_color_0 = 36
-        target_color_1 = 240
-        target_color_2 = 166
+        target_color_1 = 238
+        target_color_2 = 164
 
         weight_color_0 = 6
         weight_color_1 = 3
@@ -114,6 +114,9 @@ for f in sorted(downloaded_files):
         accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
         refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
 
+        ellipses = list()
+        circles = list()
+
         for cnt in contours:
             # if len(cnt) < 200:  # fast way to ignore huge blobs?
             # m = cv2.moments(cnt)
@@ -145,10 +148,14 @@ for f in sorted(downloaded_files):
                     cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                     # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
                     holes += 1
+                    if len(cnt) > 4:
+                        ellipses.append(cv2.fitEllipse(cnt))
+                    else:
+                        circles.append(cv2.minEnclosingCircle(cnt))
                 else:
                     cv2.fillPoly(refused_holes_mask, pts = [cnt], color=(255))
 
-        print('holes ' + str(holes))
+        # print('holes ' + str(holes))
 
         # count non zero pixels in mask
         # TypeError: object of type 'NoneType' has no len()
@@ -162,18 +169,34 @@ for f in sorted(downloaded_files):
         background_mask = cv2.bitwise_not(foreground_mask)
         background = cv2.addWeighted(bgr, 1.0, background_mask, -1.0, 0.0)
 
+        hole_color = (255, 255, 255)
+
+        for e in ellipses:
+            center,axes,angle = e
+            # print(center, axes, angle)
+            center = (int(center[0]), int(center[1]))
+            axes = (int(axes[0] * 0.5 + 4), int(axes[1] * 0.5 + 4))
+            cv2.ellipse(foreground, center, axes, angle, 0.0, 360.0, hole_color, 1)
+            # cv2.ellipse(foreground, e, hole_color, 1)
+
+        for c in circles:
+            center,radius = c
+            cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius) + 4, hole_color, 1)
+            # cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius), hole_color, 1)
+
         # print((time.time() - before))
-        cv2.imshow('dip', foreground)
         cv2.imshow('background', background)
         cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
         cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
+        cv2.imshow('dip', foreground)
 
         # save resulting image to disk
         # filename = f.replace('downloaded/', 'temp/')
-        # cv2.imwrite(filename + '.jpeg', image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+        # cv2.imwrite(filename + '.jpeg', foreground, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
         #if ord('p') == key:
-        key = cv2.waitKey(0) & 0xFF  # milliseconds
+        key = cv2.waitKey(20) & 0xFF  # milliseconds
+        # key = cv2.waitKey(0) & 0xFF  # milliseconds
         #else:
         #    key = cv2.waitKey(25) & 0xFF  # milliseconds
 
