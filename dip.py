@@ -35,9 +35,13 @@ def mouseCallback(event, x, y, flags, param):
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
-# debug window
+# debug windows
 cv2.namedWindow('background', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('background', mouseCallback)
+cv2.namedWindow('accepted-holes', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('accepted-holes', mouseCallback)
+cv2.namedWindow('refused-holes', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('refused-holes', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
@@ -96,7 +100,7 @@ for f in sorted(downloaded_files):
         biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
         kernel = np.ones((3, 3), np.uint8)
-        # biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)  # todo: parameter
+        biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)  # todo: parameter
         # biomass_mask = cv2.dilate(biomass_mask, kernel, iterations = 2)
         # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, kernel)
         # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, kernel)
@@ -106,6 +110,9 @@ for f in sorted(downloaded_files):
 
         temp, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         holes = 0
+        accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
+        refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
+
         for cnt in contours:
             # if len(cnt) < 200:  # fast way to ignore huge blobs?
             # m = cv2.moments(cnt)
@@ -134,11 +141,11 @@ for f in sorted(downloaded_files):
 
                 if color_distance < segmentation_threshold * 2:  # todo: parameter
                     cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))
-                    cv2.fillPoly(hsv, pts = [cnt], color=(255, 0, 255))
+                    cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
+                    # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
                     holes += 1
                 else:
-                    print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
-                    cv2.fillPoly(hsv, pts = [cnt], color=(255, 0, 0))
+                    cv2.fillPoly(refused_holes_mask, pts = [cnt], color=(255))
 
         print('holes ' + str(holes))
 
@@ -157,6 +164,8 @@ for f in sorted(downloaded_files):
         # print((time.time() - before))
         cv2.imshow('dip', foreground)
         cv2.imshow('background', background)
+        cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
+        cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
 
         # save resulting image to disk
         # filename = f.replace('downloaded/', 'temp/')
