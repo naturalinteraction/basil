@@ -88,7 +88,7 @@ for f in sorted(downloaded_files):
         weight_color_2 = 1
 
         segmentation_threshold = 90 * 90 * 3
-        segmentation_threshold_holes = segmentation_threshold * 1.5
+        segmentation_threshold_holes = segmentation_threshold * 1.7
 
         count = segment_target(hsv_copy,   target_color_0,
                                            target_color_1,
@@ -148,10 +148,11 @@ for f in sorted(downloaded_files):
                     cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                     # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
                     holes += 1
-                    if len(cnt) > 4:
-                        ellipses.append(cv2.fitEllipse(cnt))
-                    else:
-                        circles.append(cv2.minEnclosingCircle(cnt))
+                    if area > 5 * 5:
+                        if len(cnt) > 4:
+                            ellipses.append(cv2.fitEllipse(cnt))
+                        else:
+                            circles.append(cv2.minEnclosingCircle(cnt))
                 else:
                     cv2.fillPoly(refused_holes_mask, pts = [cnt], color=(255))
 
@@ -185,17 +186,18 @@ for f in sorted(downloaded_files):
             # cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius), hole_color, 1)
 
         # print((time.time() - before))
-        cv2.imshow('background', background)
-        cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
-        cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
+
+        # cv2.imshow('background', background)
+        # cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
+        # cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
         cv2.imshow('dip', foreground)
 
         # save resulting image to disk
-        # filename = f.replace('downloaded/', 'temp/')
-        # cv2.imwrite(filename + '.jpeg', foreground, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+        filename = f.replace('downloaded/', 'temp/')
+        cv2.imwrite(filename + '.jpeg', foreground, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
         #if ord('p') == key:
-        key = cv2.waitKey(20) & 0xFF  # milliseconds
+        key = cv2.waitKey(25) & 0xFF  # milliseconds
         # key = cv2.waitKey(0) & 0xFF  # milliseconds
         #else:
         #    key = cv2.waitKey(25) & 0xFF  # milliseconds
