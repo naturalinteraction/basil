@@ -45,7 +45,7 @@ cv2.setMouseCallback('refused-holes', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
-day = '2017_12_10'  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
+day = ''  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
 
 if False:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
@@ -88,6 +88,7 @@ for f in sorted(downloaded_files):
         weight_color_2 = 1
 
         segmentation_threshold = 90 * 90 * 3
+        segmentation_threshold_holes = segmentation_threshold * 1.5
 
         count = segment_target(hsv_copy,   target_color_0,
                                            target_color_1,
@@ -139,7 +140,7 @@ for f in sorted(downloaded_files):
                                  pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
                                  pow(mean[2] - target_color_2, 2) * weight_color_2
 
-                if color_distance < segmentation_threshold * 2:  # todo: parameter
+                if color_distance < segmentation_threshold_holes:
                     cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))
                     cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                     # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
