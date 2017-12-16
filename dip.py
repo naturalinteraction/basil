@@ -24,15 +24,24 @@ from segment import segment_target
 # print((cv2.__version__))
 
 def mouseCallback(event, x, y, flags, param):
-    what = image  # hsv
-    print((what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
+    what = bgr
+    print('bgr ', (what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
+    what = hsv
+    print('hsv ', (what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
+    what = biomass_mask
+    print('biomass_mask ', (what.item(y, x) == 0))
 
+# main window
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
+# debug window
+cv2.namedWindow('background', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('background', mouseCallback)
+
 sensor = 'visible'
 campaign = 'bianco'
-day = '2017_12_16'  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
+day = '2017_12_10'  # '2017_12_14', ''  # background change on th 12th, between 15.00 and 15.31
 
 if False:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
@@ -87,7 +96,7 @@ for f in sorted(downloaded_files):
         biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
         kernel = np.ones((3, 3), np.uint8)
-        biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)
+        # biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)  # todo: parameter
         # biomass_mask = cv2.dilate(biomass_mask, kernel, iterations = 2)
         # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, kernel)
         # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, kernel)
@@ -106,13 +115,14 @@ for f in sorted(downloaded_files):
             # extent and solidity
             x,y,w,h = cv2.boundingRect(cnt)
             rect_area = w * h
-            extent = float(area) / rect_area  # could be useful for the holes
+            if rect_area > 0:
+                extent = float(area) / rect_area  # could be useful for the holes
             hull = cv2.convexHull(cnt)
             hull_area = cv2.contourArea(hull)
-            solidity = float(area)/hull_area  # could be useful for the holes
+            if hull_area > 0:
+                solidity = float(area)/hull_area  # could be useful for the holes
 
-            if area <= 4000:  # todo: parameter
-                cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))  # todo: nope, only if it is a hole
+            if area < 70 * 70:  # todo: parameter
                 hole_mask = np.zeros(bgr.shape[:2], np.uint8)
                 cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
                 # np.where()
@@ -123,6 +133,7 @@ for f in sorted(downloaded_files):
                                  pow(mean[2] - target_color_2, 2) * weight_color_2
 
                 if color_distance < segmentation_threshold * 2:  # todo: parameter
+                    cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))
                     cv2.fillPoly(hsv, pts = [cnt], color=(255, 0, 255))
                     holes += 1
                 else:
@@ -138,12 +149,14 @@ for f in sorted(downloaded_files):
         #     count = len(nonzero)
         #     print(('count after fill ' + str(count)))
 
-        show_mask = cv2.cvtColor(biomass_mask, cv2.COLOR_GRAY2BGR)
-
-        foreground = cv2.addWeighted(hsv, 1.0, show_mask, -1.0, 0.0)
+        foreground_mask = cv2.cvtColor(biomass_mask, cv2.COLOR_GRAY2BGR)
+        foreground = cv2.addWeighted(bgr, 1.0, foreground_mask, -1.0, 0.0)
+        background_mask = cv2.bitwise_not(foreground_mask)
+        background = cv2.addWeighted(bgr, 1.0, background_mask, -1.0, 0.0)
 
         # print((time.time() - before))
         cv2.imshow('dip', foreground)
+        cv2.imshow('background', background)
 
         # save resulting image to disk
         # filename = f.replace('downloaded/', 'temp/')
