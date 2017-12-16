@@ -13,7 +13,9 @@ A repo for my own experiments.
 - [x] Cython threshold function
 - [x] Optionally download images from S3
 - [x] Display multiple images with the discarded areas, for debugging purposes
-- [ ] Work on holes pixel-by-pixel and not as a whole
+- [x] Stable biomass bounding box (also useful for cropping)
+- [ ] Work on holes pixel-by-pixel and not as a whole (even better: consider not only holes but all peripheral regions)
+- [ ] Color analysis inside biomass, spatial frequency and histograms
 - [ ] Analyze holes in biomass by comparing the average color to the average color of the outer border
 - [ ] Find biomass segmentation algorithm params automatically
 
@@ -106,8 +108,11 @@ Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/aut
 
 #### Timelapse
 ```
-ffmpeg -r 7 -pattern_type glob -i '*.jpg' -s hd480 -vcodec libx264 timelapse.mp4
-# 7 fps, other options include hd720, hd1080
+# 7 fps, other options include hd720, hd480
+ffmpeg -r 7 -pattern_type glob -i '*.jpeg' -s hd1080 -vcodec libx264 timelapse.mp4
+
+# with crop w:h:x:y
+ffmpeg -r 7 -pattern_type glob -i '*.jpeg' -s hd1080 -vcodec libx264 -filter:v "crop=1050:871:857:776" timelapse.mp4
 ```
 
 #### Exif Keywords

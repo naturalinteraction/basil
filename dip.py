@@ -69,6 +69,11 @@ if len(day) > 0:
 # last key pressed, only needed for if ord('p') == key below...
 key = ''
 
+min_bbx = 6666
+min_bby = 6666
+max_bbx2 = -1
+max_bby2 = -1
+
 for f in sorted(downloaded_files):
     print(f)
     bgr = cv2.imread(f)
@@ -101,7 +106,7 @@ for f in sorted(downloaded_files):
         biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
         kernel = np.ones((3, 3), np.uint8)
-        biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)  # todo: parameter
+        biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)
         # biomass_mask = cv2.dilate(biomass_mask, kernel, iterations = 2)
         # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, kernel)
         # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, kernel)
@@ -131,9 +136,9 @@ for f in sorted(downloaded_files):
             hull = cv2.convexHull(cnt)
             hull_area = cv2.contourArea(hull)
             if hull_area > 0:
-                solidity = float(area)/hull_area  # could be useful for the holes
+                solidity = float(area) / hull_area  # could be useful for the holes
 
-            if area < 70 * 70:  # todo: parameter
+            if area < 70 * 70:
                 hole_mask = np.zeros(bgr.shape[:2], np.uint8)
                 cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
                 # np.where()
@@ -158,17 +163,34 @@ for f in sorted(downloaded_files):
 
         # print('holes ' + str(holes))
 
-        # count non zero pixels in mask
-        # TypeError: object of type 'NoneType' has no len()
-        # nonzero = cv2.findNonZero(biomass_mask)
-        # if not(nonzero is None):
-        #     count = len(nonzero)
-        #     print(('count after fill ' + str(count)))
-
         foreground_mask = cv2.cvtColor(biomass_mask, cv2.COLOR_GRAY2BGR)
         foreground = cv2.addWeighted(bgr, 1.0, foreground_mask, -1.0, 0.0)
         background_mask = cv2.bitwise_not(foreground_mask)
         background = cv2.addWeighted(bgr, 1.0, background_mask, -1.0, 0.0)
+
+        # count non zero pixels in mask, and find its bounding box
+        biomass_eroded = cv2.bitwise_not(biomass_mask)
+        biomass_eroded = cv2.erode(biomass_eroded, kernel, iterations = 2) 
+        nonzero = cv2.findNonZero(biomass_eroded)
+        if not(nonzero is None):
+            count = len(nonzero)
+            print(('biomass ' + str(count)))
+            bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
+            # print(bbx, bby, bbw, bbh)
+            p1 = (int(bbx - 8), int(bby - 8))
+            p2 = (int(bbx + bbw + 8), int(bby + bbh + 8))
+            if bbx < min_bbx:
+                min_bbx = bbx
+            if bby < min_bby:
+                min_bby = bby
+            if bbw + bbx > max_bbx2:
+                max_bbx2 = bbw + bbx
+            if bbh + bby > max_bby2:
+                max_bby2 = bbh + bby
+            p1m = (int(min_bbx - 8), int(min_bby - 8))
+            p2m = (int(max_bbx2 + 8), int(max_bby2 + 8))
+            cv2.rectangle(foreground, p1m, p2m, (160, 160, 160), 2)
+            cv2.rectangle(foreground, p1, p2, (255, 255, 255), 2)
 
         hole_color = (255, 255, 255)
 
@@ -209,4 +231,8 @@ for f in sorted(downloaded_files):
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
+
+print('ffmpeg crop = ' + str(int(max_bbx2 - min_bbx + 16)) + \
+      ':' + str(int(max_bby2 - min_bby + 16)) + ':' + \
+      str(int(min_bbx - 16)) + ':' + str(int(min_bby - 16)))
 
