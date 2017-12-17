@@ -22,7 +22,7 @@ p7
 I0
 sS'Shutter Speed'
 p8
-I2
+I3
 sS'ISO'
 p9
 I1
