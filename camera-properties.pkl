@@ -31,7 +31,7 @@ p10
 I0
 sS'AWB Blue Gain'
 p11
-I22
+I23
 sS'Exp Compensation'
 p12
 I5
