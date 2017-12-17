@@ -7,7 +7,7 @@ p2
 I10
 sS'AWB Red Gain'
 p3
-I13
+I12
 sS'Brightness'
 p4
 I5
