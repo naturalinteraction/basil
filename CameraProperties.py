@@ -101,11 +101,12 @@ class CameraProperties(object):
         self.cam.awb_gains = (value_r, value_b)
             
     def FreezeExposureAWB(self):
-        if (self.PropertyOnCamera('ISO') == 0
+        if (self.PropertyOnCamera('ISO') != 0
+        or self.PropertyOnCamera('Shutter Speed') != 0
         or self.PropertyOnCamera('AWB Mode') != 'auto'
         or self.PropertyOnCamera('Exposure Mode') != 'auto'):
-            print('Set ISO to 100 and Shutter Speed to 0 first. Set Exposure Mode and AWB Mode to "auto". Doing this for you now. Freeze again in a few, please.')
-            self.cam.iso = 100
+            print('Set ISO and Shutter Speed to 0 first. Set Exposure Mode and AWB Mode to "auto". Doing this for you now. Freeze again in a few, please.')
+            self.cam.iso = 0
             self.cam.exposure_mode = 'auto'
             self.cam.awb_mode = 'auto'
             self.cam.shutter_speed = 0
@@ -115,7 +116,8 @@ class CameraProperties(object):
         g = self.cam.awb_gains
         self.cam.awb_mode = 'off'
         self.cam.awb_gains = g
-        print('Exposure Mode, Shutter Speed and AWB Mode and Gains frozen.')
+        self.cam.iso = 100
+        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen.')
 
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
