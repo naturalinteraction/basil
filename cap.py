@@ -13,7 +13,7 @@ import shutil
 import pickle
 
 campaign = 'bianco'
-    
+
 # initialize the camera and grab a reference to the raw camera capture
 try:
     camera = PiCamera()
@@ -172,7 +172,7 @@ time_process_started = time.time()
 time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
 
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
-      
+
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
         # grab the raw NumPy array representing the image
@@ -193,7 +193,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if just_started:
             gain_distance, previous_analog_gain, previous_digital_gain = UpdateGainDistance()
-            if gain_distance < 0.05:
+            if camera.analog_gain >= 1.0:
                 cp.SetAllPropertiesOnCamera()
                 just_started_but_done = True                
         else:
