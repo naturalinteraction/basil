@@ -179,10 +179,18 @@ for f in sorted(downloaded_files):
         h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
         luminance = cv2.cvtColor(foreground, cv2.COLOR_BGR2GRAY)
         for_derivation = s  # luminance
-        laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
-        sobelx = cv2.Sobel(for_derivation, cv2.CV_64F, 1, 0, ksize=3)
-        sobely = cv2.Sobel(for_derivation, cv2.CV_64F, 0, 1, ksize=3)
-        if True:
+        for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0)
+        for_derivation = cv2.GaussianBlur(for_derivation, (5, 5), 0)
+        # laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
+        mult = 5
+        if False:
+            sobelx = cv2.Sobel(for_derivation, cv2.CV_64F, 1, 0, ksize=3)
+            sobely = cv2.Sobel(for_derivation, cv2.CV_64F, 0, 1, ksize=3)
+        else:
+            sobelx = cv2.Scharr(for_derivation, cv2.CV_64F, 1, 0)
+            sobely = cv2.Scharr(for_derivation, cv2.CV_64F, 0, 1)
+            mult = 1.3
+        if False:
             abs_sobelx = np.absolute(sobelx)
             abs_sobely = np.absolute(sobely)
             abs_sobelx = np.uint8(abs_sobelx)
@@ -190,7 +198,6 @@ for f in sorted(downloaded_files):
         else:
             abs_sobelx = cv2.convertScaleAbs(sobelx)
             abs_sobely = cv2.convertScaleAbs(sobely)
-        mult = 5
         sobel = cv2.addWeighted(abs_sobelx, 0.5 * mult, abs_sobely, 0.5 * mult, 0.0)
         sobel = cv2.bitwise_and(sobel, sobel, mask=biomass_eroded)
 
