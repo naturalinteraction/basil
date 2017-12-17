@@ -93,12 +93,12 @@ sshpass -p ********* ssh pi@192.168.1.10 'cd /home/pi/basil ; git pull ; sudo /s
 
 #### Sensors
 ```
-blueshift	eth: 192.168.0.6	wifi: DHCP
-redshift	eth: 192.168.0.7	wifi: DHCP
-noir		eth: 192.168.0.8	wifi: DHCP
-visible		eth: 192.168.0.9	wifi: DHCP
+blueshift	eth: 192.168.0.6	wifi: DHCP	Pi NoIR Camera V2
+redshift	eth: 192.168.0.7	wifi: DHCP	Pi NoIR Camera V2
+noir		eth: 192.168.0.8	wifi: DHCP	Pi NoIR Camera V2
+visible		eth: 192.168.0.9	wifi: DHCP	Pi Camera Module V2
 ```
-Focus set at 350mm.
+Focus set at 350mm. Ended tests on optical filters on Dec 17th. Since that date, despite the hostname, the difference is just the camera sensor.
 
 To look for local raspberries:
 ```
