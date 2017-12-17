@@ -194,6 +194,12 @@ for f in sorted(downloaded_files):
         sobel = cv2.addWeighted(abs_sobelx, 0.5 * mult, abs_sobely, 0.5 * mult, 0.0)
         sobel = cv2.bitwise_and(sobel, sobel, mask=biomass_eroded)
 
+        # luminance histogram
+        hist = cv2.calcHist([luminance], [0], None, [64], [1,256])
+        max_hist = max(hist)
+        for i in range(len(hist)):
+            cv2.line(foreground, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (255, 255, 255), 30)
+
         # count non zero pixels in mask, and find its bounding box
         nonzero = cv2.findNonZero(biomass_eroded)
         if not(nonzero is None):
@@ -242,11 +248,11 @@ for f in sorted(downloaded_files):
         filename = f.replace('downloaded/', 'temp/')
         cv2.imwrite(filename + '.jpeg', foreground, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
-        #if ord('p') == key:
         key = cv2.waitKey(25) & 0xFF  # milliseconds
-        # key = cv2.waitKey(0) & 0xFF  # milliseconds
-        #else:
-        #    key = cv2.waitKey(25) & 0xFF  # milliseconds
+        # if ord('p') == key:
+        #     key = cv2.waitKey(0) & 0xFF  # milliseconds
+        # else:
+        #     key = cv2.waitKey(25) & 0xFF  # milliseconds
 
         # if the `q` or ESC key was pressed, break from the for loop
         if key == ord('q') or key == 27:
