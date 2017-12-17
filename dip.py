@@ -132,11 +132,14 @@ for f in sorted(downloaded_files):
             x,y,w,h = cv2.boundingRect(cnt)
             rect_area = w * h
             if rect_area > 0:
-                extent = float(area) / rect_area  # could be useful for the holes
+                extent = float(area) / rect_area  # could be useful for shape analysis
             hull = cv2.convexHull(cnt)
             hull_area = cv2.contourArea(hull)
             if hull_area > 0:
-                solidity = float(area) / hull_area  # could be useful for the holes
+                solidity = float(area) / hull_area  # could be useful for shape analysis
+            perimeter = cv2.arcLength(cnt, True)
+            if perimeter > 0:
+                jaggedness = len(cnt) / perimeter  # could be useful for shape analysis
 
             if area < 70 * 70:
                 hole_mask = np.zeros(bgr.shape[:2], np.uint8)
@@ -168,9 +171,30 @@ for f in sorted(downloaded_files):
         background_mask = cv2.bitwise_not(foreground_mask)
         background = cv2.addWeighted(bgr, 1.0, background_mask, -1.0, 0.0)
 
-        # count non zero pixels in mask, and find its bounding box
+        # exclude biomass edge
         biomass_eroded = cv2.bitwise_not(biomass_mask)
-        biomass_eroded = cv2.erode(biomass_eroded, kernel, iterations = 2) 
+        biomass_eroded = cv2.erode(biomass_eroded, kernel, iterations = 2)
+
+        # compute derivatives of foreground
+        h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
+        luminance = cv2.cvtColor(foreground, cv2.COLOR_BGR2GRAY)
+        for_derivation = s  # luminance
+        laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
+        sobelx = cv2.Sobel(for_derivation, cv2.CV_64F, 1, 0, ksize=3)
+        sobely = cv2.Sobel(for_derivation, cv2.CV_64F, 0, 1, ksize=3)
+        if True:
+            abs_sobelx = np.absolute(sobelx)
+            abs_sobely = np.absolute(sobely)
+            abs_sobelx = np.uint8(abs_sobelx)
+            abs_sobely = np.uint8(abs_sobely)
+        else:
+            abs_sobelx = cv2.convertScaleAbs(sobelx)
+            abs_sobely = cv2.convertScaleAbs(sobely)
+        mult = 5
+        sobel = cv2.addWeighted(abs_sobelx, 0.5 * mult, abs_sobely, 0.5 * mult, 0.0)
+        sobel = cv2.bitwise_and(sobel, sobel, mask=biomass_eroded)
+
+        # count non zero pixels in mask, and find its bounding box
         nonzero = cv2.findNonZero(biomass_eroded)
         if not(nonzero is None):
             count = len(nonzero)
@@ -212,7 +236,7 @@ for f in sorted(downloaded_files):
         # cv2.imshow('background', background)
         # cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
         # cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
-        cv2.imshow('dip', foreground)
+        cv2.imshow('dip', foreground)  # sobel
 
         # save resulting image to disk
         filename = f.replace('downloaded/', 'temp/')
