@@ -1,7 +1,7 @@
 import pickle
 import numpy
 from picamera import PiCamera
-
+import socket
 
 class CameraProperties(object):
     # camera properties
@@ -165,11 +165,19 @@ class CameraProperties(object):
         self.PrintCurrentProperty()
 
     def Save(self):
-        with open('camera-properties.pkl', 'wb') as f:
+        filename = 'camera-properties.pkl'
+        if socket.gethostname() == 'redshift':
+            filename = 'camera-properties-redshift.pkl'
+        print('filename', filename)
+        with open(filename, 'wb') as f:
             pickle.dump(self.values_indices, f, 0)
         print('Saved.')
 
     def Load(self):
-        with open('camera-properties.pkl', 'rb') as f:
+        filename = 'camera-properties.pkl'
+        if socket.gethostname() == 'redshift':
+            filename = 'camera-properties-redshift.pkl'
+        print('filename', filename)
+        with open(filename, 'rb') as f:
             self.values_indices = pickle.load(f)
         print('Loaded.')
