@@ -115,7 +115,7 @@ class CameraProperties(object):
         g = self.cam.awb_gains
         self.cam.awb_mode = 'off'
         self.cam.awb_gains = g
-        print('Exposure and AWB frozen.')
+        print('Exposure Mode, Shutter Speed and AWB Mode and Gains frozen.')
 
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
