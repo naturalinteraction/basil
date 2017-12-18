@@ -20,6 +20,9 @@ A repo for my own experiments.
 - [ ] Color analysis inside biomass: histograms
 - [ ] Analyze holes in biomass by comparing the average color to the average color of the outer border
 - [ ] Find biomass segmentation algorithm params automatically
+- [ ] Test CV_BGR2Lab
+- [ ] Test median blur
+
 
 #### Tasks cap.py
 
@@ -49,6 +52,8 @@ A repo for my own experiments.
 - [x] Disable preview automatically (when taking picture)
 - [x] Start cap.py at boot
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
+- [ ] Test microphone
+- [ ] Sensor color calibration
 - [ ] Find camera parameters automatically
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
