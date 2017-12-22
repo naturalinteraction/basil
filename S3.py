@@ -79,12 +79,12 @@ def DownloadFileFromCacheOnS3(key, filename):
         location='EU'
         bucket = conn.get_bucket(bucket_name, validate=False)
 
-        print(bucket_name)
+        # print(bucket_name)
 
         k = Key(bucket)
     
         k.key = key
-        print(k)
+        # print(k)
         k.get_contents_to_filename(filename)
 
     except:
