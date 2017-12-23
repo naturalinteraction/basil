@@ -1,5 +1,10 @@
 # Read data from Flower Care, tested on firmware version 2.7.0
 
+# sudo apt-get install libbluetooth-dev
+# sudo apt-get install libboost-python-dev
+# sudo apt-get install libboost-all-dev
+# pip install gattlib
+
 # 1)  sudo hcitool lescan
 # 2)  sudo python flower.py C4:7C:8D:65:C9:87
 
