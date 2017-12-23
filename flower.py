@@ -16,22 +16,31 @@
 # Soil fertility: 0 uS/cm
 
 import sys
+import string
 from gattlib import GATTRequester, GATTResponse
-from struct import *
+# from struct import *
 
 address = sys.argv[1]
 requester = GATTRequester(address)
 # Read battery and firmware version attribute
-data=requester.read_by_handle(0x0038)[0]
-battery, version = unpack('<B6s',data)
-print "Battery level:",battery,"%"
-print "Firmware version:",version
-# Enable real-time data reading
-requester.write_by_handle(0x0033, str(bytearray([0xa0, 0x1f])))
-# Read plant data
-data=requester.read_by_handle(0x0035)[0]
-temperature, sunlight, moisture, fertility = unpack('<hxIBHxxxxxx',data)
-print "Light intensity:",sunlight,"lux"
-print "Temperature:",temperature/10.,"C"
-print "Soil moisture:",moisture,"%"
-print "Soil fertility:",fertility,"uS/cm"
+try:
+    data = requester.read_by_handle(0x0038)[0]
+    battery, version = unpack('<B6s',data)
+    # version = filter(version.isalnum, string.printable)
+    print "Battery level:",battery,"%"
+    print "Firmware version:",version
+except:
+    print("battery and firmware read failed")
+
+try:
+    # Enable real-time data reading
+    requester.write_by_handle(0x0033, str(bytearray([0xa0, 0x1f])))
+    # Read plant data
+    data = requester.read_by_handle(0x0035)[0]
+    temperature, sunlight, moisture, fertility = unpack('<hxIBHxxxxxx',data)
+    print "Light intensity:",sunlight,"lux (> 1000 lux)"
+    print "Temperature:",temperature/10.,"C (17C - 26C)"
+    print "Soil moisture:",moisture,"% (35% - 90%)"
+    print "Soil fertility:",fertility,"uS/cm (200 uS/cm - 1200 uS/cm)"
+except:
+    print("sensor read failed")
