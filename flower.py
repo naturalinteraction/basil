@@ -20,23 +20,44 @@ import string
 from gattlib import GATTRequester, GATTResponse
 from struct import *
 
-address = sys.argv[1]
-try:
+def ReadFlowerCare(address):
+  try:
     requester = GATTRequester(address)
+  except:
+    return 'error', 0, 0, 0, 0, 0
+  try:
     # Read battery and firmware version attribute
     data = requester.read_by_handle(0x0038)[0]
     battery, version = unpack('<B6s',data)
     version = filter(lambda x : x in string.printable, version)
-    print("Battery level: " + str(battery) + "%")
-    print("Firmware version: " + version)
+  except:
+    return 'error', 0, 0, 0, 0, 0
+  try:
     # Enable real-time data reading
     requester.write_by_handle(0x0033, str(bytearray([0xa0, 0x1f])))
+  except:
+    return 'error', 0, 0, 0, 0, 0
+  try:
     # Read plant data
     data = requester.read_by_handle(0x0035)[0]
-    temperature, sunlight, moisture, fertility = unpack('<hxIBHxxxxxx',data)
-    print("Light intensity: " + str(sunlight) + "lux (> 1000 lux)")
-    print("Temperature: " + str(temperature / 10.0) + "C (17C - 26C)")
-    print("Soil moisture: " + str(moisture) + "% (35% - 90%)")
-    print("Soil fertility: " + str(fertility) + "uS/cm (200 uS/cm - 1200 uS/cm)")
-except:
-    print('Azz.')
+  except:
+    return 'error', 0, 0, 0, 0, 0
+  try:
+    temperature, sunlight, moisture, fertility = unpack('<hxIBHxxxxxx', data)
+    return version, battery, temperature, sunlight, moisture, fertility
+  except:
+    return 'error', 0, 0, 0, 0, 0
+
+address = sys.argv[1]
+
+version, battery, temperature, sunlight, moisture, fertility = ReadFlowerCare(address)
+
+if version != 'error':
+  print("Firmware version: " + version)
+  print("Battery level: " + str(battery) + "%")
+  print("Light intensity: " + str(sunlight) + "lux (> 1000 lux)")
+  print("Temperature: " + str(temperature / 10.0) + "C (17C - 26C)")
+  print("Soil moisture: " + str(moisture) + "% (35% - 90%)")
+  print("Soil fertility: " + str(fertility) + "uS/cm (200 uS/cm - 1200 uS/cm)")
+else:
+  print('error!')
