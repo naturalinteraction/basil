@@ -45,7 +45,7 @@ cv2.setMouseCallback('dip', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
-day = '2017_12_22'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
+day = '2017_12_23'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
 
 if False:  # download new images from S3?
     files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
