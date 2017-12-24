@@ -14,14 +14,12 @@ A repo for my own experiments.
 - [x] Optionally download images from S3
 - [x] Display multiple images with the discarded areas, for debugging purposes
 - [x] Stable biomass bounding box (also useful for cropping)
-- [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance
-- [ ] Spatial frequency analysis
-- [ ] Work on holes pixel-by-pixel and not as a whole (even better: consider not only holes but all peripheral regions)
-- [ ] Color analysis inside biomass: histograms
-- [ ] Analyze holes in biomass by comparing the average color to the average color of the outer border
-- [ ] Find biomass segmentation algorithm params automatically
 - [ ] Test CV_BGR2Lab
 - [ ] Test median blur
+- [ ] Consider not only holes but all peripheral regions, pixel-by-pixel
+- [ ] Color analysis inside biomass: histograms
+- [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance
+- [ ] Find biomass segmentation algorithm params automatically
 
 
 #### Tasks cap.py
@@ -66,15 +64,18 @@ A repo for my own experiments.
 sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc
 ```
 
+
 #### Copying image to SD card:
 ```
 sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc
 ```
 
+
 #### Checking `dd` progress:
 ```
 sudo kill -USR1 $(pgrep ^dd)
 ```
+
 
 #### VNC for Chrome:
 <https://chrome.google.com/webstore/detail/vnc®-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla>
@@ -85,16 +86,19 @@ sudo kill -USR1 $(pgrep ^dd)
 sshfs pi@or**.ddns.net:basil pi
 ```
 
+
 #### Unmount Pi:
 ```
 fusermount -u pi
 ```
+
 
 #### Password
 ```
 sshpass -p ********* ssh pi@or**.ddns.net 'bash -s' < do.sh
 sshpass -p ********* ssh pi@192.168.1.10 'cd /home/pi/basil ; git pull ; sudo /sbin/shutdown now'
 ```
+
 
 #### Sensors
 ```
@@ -110,8 +114,10 @@ To look for local raspberries:
 sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```
 
+
 #### Autostart
 Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
+
 
 #### Timelapse
 ```
@@ -121,6 +127,7 @@ ffmpeg -r 7 -pattern_type glob -i '*.jpeg' -s hd1080 -vcodec libx264 timelapse.m
 # with crop w:h:x:y
 ffmpeg -r 7 -pattern_type glob -i '*.jpeg' -s hd1080 -vcodec libx264 -filter:v "crop=1050:871:857:776" timelapse.mp4
 ```
+
 
 #### Exif Keywords
 ```
