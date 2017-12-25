@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+# http://abyz.me.uk/rpi/pigpio/
 # sudo gpiod
 
 import time
