@@ -17,7 +17,7 @@ from git import GitCommitMessage
 print(GitCommitMessage())
 print(OpenCVVersion())
 
-campaign = 'bianco'
+campaign = 'prebiagio'
     
 # initialize the camera and grab a reference to the raw camera capture
 try:
