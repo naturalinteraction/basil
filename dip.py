@@ -2,10 +2,9 @@ import time
 import os
 import cv2
 import math
-from S3 import ListFilesOnS3
-from S3 import DownloadFileFromS3
+from S3 import DownloadImagesFromS3
+from S3 import ListLocalImages
 from pyexif import ExifEditor
-import glob
 import shutil
 import pickle
 import os.path
@@ -13,9 +12,7 @@ import numpy as np
 from segment import segment_linear
 from segment import segment_target
 from git import OpenCVVersion
-from git import GitHash
 from git import GitCommitMessage
-from git import GitCommitMessagePretty
 
 # print out debug information about current source code version and OpenCV version
 print(GitCommitMessage())
@@ -43,26 +40,12 @@ cv2.setMouseCallback('dip', mouseCallback)
 
 sensor = 'visible'
 campaign = 'bianco'
-day = '2017_12_23'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
+substring = '2017_12_31'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
+prefix = 'cache/' + sensor + '-' + campaign
 
-if False:  # download new images from S3?
-    files = ListFilesOnS3('cache/' + sensor + '-' + campaign)
-    # filter out based on day string
-    if len(day) > 0:
-        files = list(filter(lambda x: day in x, files))
-    for f in files:
-        replaced = f.replace('cache/', 'downloaded/')
-        if os.path.isfile(replaced):
-            print(('skipping download of %s' % f))
-        else:
-            print(('attempting download of %s' % f))
-            DownloadFileFromS3(f, replaced)
+DownloadImagesFromS3(prefix, substring)
 
-# list files with given prefix in directory 'downloaded/'
-downloaded_files = glob.glob('downloaded/' + sensor + '-' + campaign + '_*.jpg')
-# optionally filter out those that are not from given day/time
-if len(day) > 0:
-    downloaded_files = list(filter(lambda x: day in x, downloaded_files))
+prefix = prefix.replace('cache/', 'downloaded/')
 
 # last key pressed, only needed for if ord('p') == key below...
 key = ''
@@ -72,7 +55,7 @@ min_bby = 6666
 max_bbx2 = -1
 max_bby2 = -1
 
-for f in sorted(downloaded_files):
+for f in ListLocalImages(prefix, substring):
     print(f)
     bgr = cv2.imread(f)
     # average = cv2.mean(bgr)[0:3]

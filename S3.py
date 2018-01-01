@@ -4,6 +4,7 @@ import time
 import boto
 import boto.s3
 from boto.s3.key import Key
+import glob
 
 def UploadFileToS3(filename):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
@@ -13,15 +14,12 @@ def UploadFileToS3(filename):
 
     try:
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
-                               AWS_SECRET_ACCESS_KEY) 
+                               AWS_SECRET_ACCESS_KEY)
     
         location='EU'
         # bucket = conn.create_bucket(bucket_name, location = 'EU')
         bucket = conn.get_bucket(bucket_name, validate=False)
-
         print(filename)
-        print(bucket_name)
-
         def percent_cb(complete, total):
             sys.stdout.write('.')
             sys.stdout.flush()
@@ -48,15 +46,10 @@ def ListFilesOnS3(file_prefix):
 
     try:
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
-                               AWS_SECRET_ACCESS_KEY) 
-    
+                               AWS_SECRET_ACCESS_KEY)
         location='EU'
         bucket = conn.get_bucket(bucket_name, validate=False)
-
-        print(bucket_name)
-
         files = bucket.list(prefix=file_prefix)
-        
         for key in files: 
             result.append(key.key)
             
@@ -75,23 +68,36 @@ def DownloadFileFromS3(key, filename):
     
     try:
         conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
-                               AWS_SECRET_ACCESS_KEY) 
-    
+                               AWS_SECRET_ACCESS_KEY)
         location='EU'
         bucket = conn.get_bucket(bucket_name, validate=False)
-
-        # print(bucket_name)
-
         k = Key(bucket)
-    
         k.key = key
-        # print(k)
         k.get_contents_to_filename(filename)
-
     except:
         print("download from S3 error")
         print((sys.exc_info()))
         return False
 
     return True
+
+def DownloadImagesFromS3(prefix, substring):
+    files = ListFilesOnS3(prefix)
+    # filter out based on substring
+    if len(substring) > 0:
+        files = list(filter(lambda x: substring in x, files))
+    for f in files:
+        replaced = f.replace('cache/', 'downloaded/')
+        if os.path.isfile(replaced):
+            print(('skipping download of %s' % f))
+        else:
+            print(('attempting download of %s' % f))
+            DownloadFileFromS3(f, replaced)
+
+def ListLocalImages(prefix, substring):
+    local_files = glob.glob(prefix + '_*.jpg')
+    # optionally filter out those that do not contain given substring
+    if len(substring) > 0:
+        local_files = list(filter(lambda x: substring in x, local_files))
+    return sorted(local_files)
 
