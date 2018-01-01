@@ -14,13 +14,13 @@ A repo for my own experiments.
 - [x] Optionally download images from S3
 - [x] Display multiple images with the discarded areas, for debugging purposes
 - [x] Stable biomass bounding box (also useful for cropping)
-- [ ] Test CV_BGR2Lab
+- [ ] Modularize the image processing pipeline
 - [ ] Test median blur
 - [ ] Consider not only holes but all peripheral regions, pixel-by-pixel
 - [ ] Color analysis inside biomass: histograms
 - [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance
 - [ ] Find biomass segmentation algorithm params automatically
-
+- [ ] ~~Test CV_BGR2Lab~~
 
 #### Tasks cap.py
 
@@ -51,6 +51,7 @@ A repo for my own experiments.
 - [x] Start cap.py at boot
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [ ] Test microphone
+- [ ] Test more the exposure metering modes
 - [ ] Sensor color calibration
 - [ ] Find camera parameters automatically
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
