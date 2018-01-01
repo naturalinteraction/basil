@@ -13,6 +13,10 @@ from segment import segment_linear
 from segment import segment_target
 from git import OpenCVVersion
 from git import GitCommitMessage
+from audio import AudioLevel
+
+for i in range(10):
+    print(AudioLevel())
 
 # print out debug information about current source code version and OpenCV version
 print(GitCommitMessage())
@@ -43,7 +47,7 @@ campaign = 'bianco'
 substring = '2017_12_31'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
 prefix = 'cache/' + sensor + '-' + campaign
 
-DownloadImagesFromS3(prefix, substring)
+# DownloadImagesFromS3(prefix, substring)
 
 prefix = prefix.replace('cache/', 'downloaded/')
 
