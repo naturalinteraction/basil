@@ -2,8 +2,8 @@ import time
 import os
 import cv2
 import math
-from S3 import ListFilesInCacheOnS3
-from S3 import DownloadFileFromCacheOnS3
+from S3 import ListFilesOnS3
+from S3 import DownloadFileFromS3
 from pyexif import ExifEditor
 import glob
 import shutil
@@ -46,7 +46,7 @@ campaign = 'bianco'
 day = '2017_12_23'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
 
 if False:  # download new images from S3?
-    files = ListFilesInCacheOnS3('cache/' + sensor + '-' + campaign)
+    files = ListFilesOnS3('cache/' + sensor + '-' + campaign)
     # filter out based on day string
     if len(day) > 0:
         files = list(filter(lambda x: day in x, files))
@@ -56,7 +56,7 @@ if False:  # download new images from S3?
             print(('skipping download of %s' % f))
         else:
             print(('attempting download of %s' % f))
-            DownloadFileFromCacheOnS3(f, replaced)
+            DownloadFileFromS3(f, replaced)
 
 # list files with given prefix in directory 'downloaded/'
 downloaded_files = glob.glob('downloaded/' + sensor + '-' + campaign + '_*.jpg')
