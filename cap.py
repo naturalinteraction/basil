@@ -5,12 +5,17 @@ import time
 import os
 import cv2
 import math
-import subprocess
 from S3 import UploadFileToS3
 from pyexif import ExifEditor
 import glob
 import shutil
 import pickle
+from git import OpenCVVersion
+from git import GitHash
+from git import GitCommitMessage
+
+print(GitCommitMessage())
+print(OpenCVVersion())
 
 campaign = 'bianco'
     
@@ -111,7 +116,7 @@ def TakePicture(img, cam):
     SaveLastPictureTicks(ticks)
     # add EXIF keywords
     exif = ExifEditor(filename)
-    keywords =       [git_hash,
+    keywords =       [GitHash(),
                       time_process_started_string,
                       'shutter_speed=' + str(cam.shutter_speed),
                       'drc_strength=' + str(cam.drc_strength),
@@ -160,13 +165,6 @@ print((os.environ['BASIL_NOTE']))
 # allow the camera to warmup
 print('Wait...')
 time.sleep(2)
-
-git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-print(git_hash)
-git_commit_message = subprocess.check_output(["git", "log", "-1"]).strip()  # , "--pretty=%B"
-print(git_commit_message)
-git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
-print(git_commit_message_pretty)
 
 time_process_started = time.time()
 time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
@@ -243,8 +241,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     
         if key == 9:  # tab
             cp.PrintAllProperties()
-            # print(git_hash)
-            print(git_commit_message)
+            print(GitCommitMessage())
             uptime_minutes = int((time.time() - time_process_started) / (60.0))
             print(time_process_started_string) 
             print((time.strftime("now     %Y/%m/%d %H:%M")))

@@ -2,7 +2,6 @@ import time
 import os
 import cv2
 import math
-import subprocess
 from S3 import ListFilesInCacheOnS3
 from S3 import DownloadFileFromCacheOnS3
 from pyexif import ExifEditor
@@ -13,15 +12,14 @@ import os.path
 import numpy as np
 from segment import segment_linear
 from segment import segment_target
+from git import OpenCVVersion
+from git import GitHash
+from git import GitCommitMessage
+from git import GitCommitMessagePretty
 
 # print out debug information about current source code version and OpenCV version
-# git_hash = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
-# print(git_hash)
-# git_commit_message = subprocess.check_output(["git", "log", "-1"]).strip()  # , "--pretty=%B"
-# print(git_commit_message)
-# git_commit_message_pretty = subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
-# print(git_commit_message_pretty)
-# print((cv2.__version__))
+print(GitCommitMessage())
+print(OpenCVVersion())
 
 def mouseCallback(event, x, y, flags, param):
     what = bgr
