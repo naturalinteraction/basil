@@ -83,6 +83,9 @@ def DownloadFileFromS3(key, filename):
 
 def DownloadImagesFromS3(prefix, substring):
     files = ListFilesOnS3(prefix)
+    downloaded = 0
+    skipped = 0
+    failed = 0
     # filter out based on substring
     if len(substring) > 0:
         files = list(filter(lambda x: substring in x, files))
@@ -90,9 +93,14 @@ def DownloadImagesFromS3(prefix, substring):
         replaced = f.replace('cache/', 'downloaded/')
         if os.path.isfile(replaced):
             print(('skipping download of %s' % f))
+            skipped += 1
         else:
             print(('attempting download of %s' % f))
-            DownloadFileFromS3(f, replaced)
+            if DownloadFileFromS3(f, replaced):
+                downloaded += 1
+            else:
+                failed += 1
+    return skipped,downloaded,failed
 
 def ListLocalImages(prefix, substring):
     local_files = glob.glob(prefix + '_*.jpg')

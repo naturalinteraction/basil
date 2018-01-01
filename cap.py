@@ -280,4 +280,3 @@ print('Camera closed.')
 cv2.destroyAllWindows()
 print('Windows destroyed.')
 
-# UploadFileToS3('somefile.txt')

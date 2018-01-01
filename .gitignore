@@ -105,3 +105,6 @@ ENV/
 .mypy_cache/
 
 temp
+
+downloaded/test.txt
+
