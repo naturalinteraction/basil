@@ -13,10 +13,10 @@ from segment import segment_linear
 from segment import segment_target
 from git import OpenCVVersion
 from git import GitCommitMessage
-from audio import AudioLevel
+from audio import AudioLevelLaptop
 
 for i in range(10):
-    print(AudioLevel())
+    print(AudioLevelLaptop())
 
 # print out debug information about current source code version and OpenCV version
 print(GitCommitMessage())
