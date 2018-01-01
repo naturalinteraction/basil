@@ -134,3 +134,9 @@ ffmpeg -r 7 -pattern_type glob -i '*.jpeg' -s hd1080 -vcodec libx264 -filter:v "
 ```
 exiftool -keywords <filename>
 ```
+
+#### Git
+Save username and password for 4 months:
+```
+git config --global credential.helper 'cache --timeout=10000000'
+```
