@@ -13,6 +13,7 @@ import pickle
 from git import OpenCVVersion
 from git import GitHash
 from git import GitCommitMessage
+from audio import AudioLevelPi
 
 print(GitCommitMessage())
 print(OpenCVVersion())
@@ -104,6 +105,9 @@ def TakePicture(img, cam):
     AttemptUpload()
     AttemptUpload()
     AttemptUpload()
+
+    audio_level = AudioLevelPi()
+
     print('Saving picture.')
     res = cam.resolution
     note = os.environ['BASIL_NOTE']
@@ -134,7 +138,8 @@ def TakePicture(img, cam):
                       'exposure_speed=' + str(cam.exposure_speed),
                       'analog_gain=' + str(float(cam.analog_gain)),
                       'digital_gain=' + str(float(cam.digital_gain)),
-                      'zoom=' + str(cam.zoom[3])
+                      'zoom=' + str(cam.zoom[3]),
+                      'audio=' + str(audio_level)
                      ]
     print(keywords)
     exif.addKeywords(keywords)
