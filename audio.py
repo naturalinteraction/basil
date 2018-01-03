@@ -4,8 +4,13 @@ def AudioLevel(format):
     try:
         # Open the device in nonblocking capture mode. The last argument could
         # just as well have been zero for blocking mode. Then we could have
-	    # left out the sleep call in the bottom of the loop
-        inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE,alsaaudio.PCM_NONBLOCK)
+	# left out the sleep call in the bottom of the loop
+        # print(alsaaudio.pcms())
+        # print(alsaaudio.cards())
+        if format == alsaaudio.PCM_FORMAT_S16_LE:  # select sound card automatically
+            inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE,alsaaudio.PCM_NONBLOCK)
+        else:  # select second sound card (the USB PnP microphone)
+            inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE,alsaaudio.PCM_NONBLOCK, 'whatever', 1)
         inp.setchannels(1)
         inp.setrate(8000)
         inp.setformat(format)  # PCM_FORMAT_S16_LE for laptop, PCM_FORMAT_U8 for pi
@@ -30,4 +35,3 @@ def AudioLevelPi():
 
 def AudioLevelLaptop():
     return AudioLevel(alsaaudio.PCM_FORMAT_S16_LE)
-

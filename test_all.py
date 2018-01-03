@@ -24,7 +24,7 @@ def test_GitHash():
     assert len(GitHash()) == 40
 
 def test_AudioLevelPi():
-    assert AudioLevelPi() > 0
+    assert AudioLevelPi() != 0
 
 def test_AudioLevelLaptop():
     assert AudioLevelLaptop() > 0
