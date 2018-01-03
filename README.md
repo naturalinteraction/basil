@@ -14,8 +14,8 @@ A repo for my own experiments.
 - [x] Optionally download images from S3
 - [x] Display multiple images with the discarded areas, for debugging purposes
 - [x] Stable biomass bounding box (also useful for cropping)
+- [x] Unit tests, integration tests
 - [ ] Modularize the image processing pipeline
-- [ ] Unit tests, integration tests
 - [ ] Test median blur
 - [ ] Consider not only holes but all peripheral regions, pixel-by-pixel
 - [ ] Color analysis inside biomass: histograms
@@ -51,7 +51,7 @@ A repo for my own experiments.
 - [x] Disable preview automatically (when taking picture)
 - [x] Start cap.py at boot
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
-- [ ] Test microphone
+- [x] Integrate microphone
 - [ ] Test more the exposure metering modes
 - [ ] Sensor color calibration
 - [ ] Find camera parameters automatically
