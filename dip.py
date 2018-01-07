@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import time
 import os
 import cv2
@@ -19,22 +21,22 @@ print(GitCommitMessage())
 print(OpenCVVersion())
 
 def mouseCallback(event, x, y, flags, param):
+    # todo: # do the same for each window added to the window list (store somewhere the association between a window name and the corresponding image)
     what = bgr
-    print('bgr ', (what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
+    print ('bgr', what[y,x].tolist())
     what = hsv
-    print('hsv ', (what.item(y, x, 0), what.item(y, x, 1), what.item(y, x, 2)))
+    print ('hsv', what[y,x].tolist())
     what = biomass_mask
-    print('biomass_mask ', (what.item(y, x) == 0))
+    print ('biomass_mask', what[y,x].tolist())
 
-# debug windows
+# windows
+# todo: do the same for each window
 cv2.namedWindow('refused-holes', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('refused-holes', mouseCallback)
 cv2.namedWindow('accepted-holes', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('accepted-holes', mouseCallback)
 cv2.namedWindow('background', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('background', mouseCallback)
-
-# main window
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
