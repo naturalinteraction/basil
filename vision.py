@@ -29,3 +29,9 @@ def ComputeImageDerivative(for_derivation, mask):
     sobel = cv2.bitwise_and(sobel, sobel, mask=mask)
     return sobel
 
+
+def Histogram(channel, output):
+    hist = cv2.calcHist([channel], [0], None, [64], [1,256])
+    max_hist = max(hist)
+    for i in range(len(hist)):
+        cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)

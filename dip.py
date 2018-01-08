@@ -120,13 +120,9 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
     h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
     luminance = cv2.cvtColor(foreground, cv2.COLOR_BGR2GRAY)
 
-    UpdateWindow('derivative', ComputeImageDerivative(luminance, biomass_eroded))
+    ### UpdateWindow('derivative', ComputeImageDerivative(luminance, biomass_eroded))
 
-    # luminance histogram
-    hist = cv2.calcHist([luminance], [0], None, [64], [1,256])
-    max_hist = max(hist)
-    for i in range(len(hist)):
-        cv2.line(foreground, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (255, 255, 255), 30)
+    ### Histogram(luminance, output=foreground)
 
     # count non zero pixels in mask, and find its bounding box
     nonzero = cv2.findNonZero(biomass_eroded)
