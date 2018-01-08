@@ -211,10 +211,8 @@ for f in ListLocalImages(prefix, substring):
         count = len(nonzero)
         print(('biomass ' + str(count)))
         bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
-        p1 = (int(bbx - 8), int(bby - 8))
-        p2 = (int(bbx + bbw + 8), int(bby + bbh + 8))
 
-        current_rect = rect(p1[0], p1[1], p2[0], p2[1])
+        current_rect = rect(int(bbx - 8), int(bby - 8), int(bbx + bbw + 8), int(bby + bbh + 8))
 
         try:
             crop_rect
@@ -223,7 +221,7 @@ for f in ListLocalImages(prefix, substring):
 
         crop_rect = rect_union(crop_rect, current_rect)
 
-        cv2.rectangle(foreground, p1, p2, (255, 255, 255), 2)
+        cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), (255, 255, 255), 2)
 
     hole_color = (255, 255, 255)
 
