@@ -46,12 +46,12 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
     UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
 
-    biomass_mask = Erode(biomass_mask)
+    biomass_mask = Erode(biomass_mask)  # this might remove some noise in the form of isolated pixels, a gaussian blur might work as well or better
 
-    # invert mask
+    UpdateWindow('biomass_mask', biomass_mask)  # this is still the raw mask, without the holes filled
+
+    # invert mask, so that we can analyze the holes as white blobs against a black background
     biomass_mask = cv2.bitwise_not(biomass_mask)
-
-    UpdateWindow('biomass_mask', biomass_mask)
 
     temp, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     holes = 0

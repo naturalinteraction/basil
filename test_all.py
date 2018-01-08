@@ -1,7 +1,4 @@
-from git import OpenCVVersion
-from git import GitHash
-from git import GitCommitMessage
-from git import GitCommitMessagePretty
+from utility import *
 from audio import AudioLevelPi
 from audio import AudioLevelLaptop
 from S3 import UploadFileToS3
@@ -28,7 +25,6 @@ def test_AudioLevelPi():
 
 def test_AudioLevelLaptop():
     assert AudioLevelLaptop() > 0
-
 '''
 def test_UploadFileToS3():
     assert UploadFileToS3('test.txt')
@@ -53,4 +49,3 @@ def test_ListLocalImagesAndDownloadImagesFromS3():
     assert len(ListLocalImages('downloaded/test-test', '')) == 2
     assert len(ListLocalImages('downloaded/test-test', '30')) == 1
 '''
-

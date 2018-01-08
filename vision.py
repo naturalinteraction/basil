@@ -7,6 +7,7 @@ work in progress
 '''
 def ComputeImageDerivative(for_derivation, mask):
     for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0)
+    # also checkout blur = cv2.blur(img,(5,5)) and median = cv2.medianBlur(img,5) that is supposed to be good against salt-and-pepper noise
     for_derivation = cv2.GaussianBlur(for_derivation, (5, 5), 0)
     # laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
     mult = 5
