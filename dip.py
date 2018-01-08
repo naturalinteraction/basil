@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
-from segment import segment_target
+from segment import *
 from utility import *
 from vision import *
 
@@ -24,11 +24,6 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
 
-    UpdateWindow('bgr', bgr)
-    UpdateWindow('hsv', hsv)
-
-    hsv_copy = hsv.copy()  # todo: get rid of this crap
-
     target_color_0 = 36
     target_color_1 = 238
     target_color_2 = 164
@@ -40,14 +35,16 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
     segmentation_threshold = 90 * 90 * 3
     segmentation_threshold_holes = segmentation_threshold * 1.7
 
-    count = segment_target(hsv_copy,   target_color_0,
-                                       target_color_1,
-                                       target_color_2,
-                                       weight_color_0,
-                                       weight_color_1,
-                                       weight_color_2, segmentation_threshold)
+    biomass_mask = Segment(hsv, target_color_0,
+                                target_color_1,
+                                target_color_2,
+                                weight_color_0,
+                                weight_color_1,
+                                weight_color_2, 
+                                segmentation_threshold)
 
-    biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
+    UpdateWindow('bgr', bgr)
+    UpdateWindow('hsv', hsv)
 
     biomass_mask = Erode(biomass_mask)
 
