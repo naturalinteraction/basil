@@ -49,10 +49,7 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
-    biomass_mask = cv2.erode(biomass_mask, np.ones((3, 3), np.uint8), iterations = 1)
-    # biomass_mask = cv2.dilate(biomass_mask, np.ones((3, 3), np.uint8), iterations = 2)
-    # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
-    # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+    biomass_mask = Erode(biomass_mask)
 
     # invert mask
     biomass_mask = cv2.bitwise_not(biomass_mask)
@@ -115,7 +112,8 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     # exclude biomass edge
     biomass_eroded = cv2.bitwise_not(biomass_mask)
-    biomass_eroded = cv2.erode(biomass_eroded, np.ones((3, 3), np.uint8), iterations = 2)
+
+    biomass_eroded = Erode(biomass_eroded, iterations=2)
 
     h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
     luminance = cv2.cvtColor(foreground, cv2.COLOR_BGR2GRAY)

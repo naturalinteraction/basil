@@ -35,3 +35,20 @@ def Histogram(channel, output):
     max_hist = max(hist)
     for i in range(len(hist)):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
+
+
+# kernel_size 3, 5, 7, 9, 11 ...
+def Erode(input, kernel_size=3, iterations=1):
+    return cv2.erode(input, np.ones((kernel_size, kernel_size), np.uint8), iterations)
+
+# kernel_size 3, 5, 7, 9, 11 ...
+def Dilate(input, kernel_size=3, iterations=1):
+    return cv2.dilate(input, np.ones((kernel_size, kernel_size), np.uint8), iterations)
+
+# kernel_size 3, 5, 7, 9, 11 ...
+def Dilate(input, kernel_size=3, iterations=1):
+    return cv2.dilate(input, np.ones((kernel_size, kernel_size), np.uint8), iterations)
+
+# biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))  # erode, then dilate
+# biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))  # dilate, then erode
+
