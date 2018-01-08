@@ -15,6 +15,12 @@ from segment import segment_linear
 from segment import segment_target
 from git import OpenCVVersion
 from git import GitCommitMessage
+from collections import namedtuple
+
+rect = namedtuple('rect', 'xmin ymin xmax ymax')
+
+def rect_union(a, b):
+    return rect(min(a.xmin, b.xmin), min(a.ymin, b.ymin), max(a.xmax, b.xmax), max(a.ymax, b.ymax))
 
 # print out debug information about current source code version and OpenCV version
 print(GitCommitMessage())
@@ -22,15 +28,12 @@ print(OpenCVVersion())
 
 def ProcessKeystrokes():
     key = cv2.waitKey(25) & 0xFF  # milliseconds
-
     if key not in [27, 255]:  # any key except ESC to toggle pause
         key = cv2.waitKey(0) & 0xFF  # milliseconds
-
     # if the ESC key was pressed, simply quit
     if key == 27:
         print('exiting')
         quit()
-
 
 # todo: specify, for each pipeline, the windows (and window names)
 
@@ -54,20 +57,15 @@ cv2.setMouseCallback('background', mouseCallback)
 cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('dip', mouseCallback)
 
+# todo: command line
 sensor = 'visible'
 campaign = 'bianco'
-substring = '2017_12_'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
+substring = '2017_12_31'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
 prefix = 'cache/' + sensor + '-' + campaign
 
-# DownloadImagesFromS3(prefix, substring)
+# DownloadImagesFromS3(prefix, substring)  # todo: command line
 
 prefix = prefix.replace('cache/', 'downloaded/')
-
-# todo: get rid of this crap
-min_bbx = 6666
-min_bby = 6666
-max_bbx2 = -1
-max_bby2 = -1
 
 for f in ListLocalImages(prefix, substring):
     print(f)
@@ -82,7 +80,7 @@ for f in ListLocalImages(prefix, substring):
     # if True:  # average[0] > 30:
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
     # before = time.time()
-    hsv_copy = hsv.copy()
+    hsv_copy = hsv.copy()  # todo: get rid of this crap
 
     target_color_0 = 36
     target_color_1 = 238
@@ -213,20 +211,18 @@ for f in ListLocalImages(prefix, substring):
         count = len(nonzero)
         print(('biomass ' + str(count)))
         bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
-        # print(bbx, bby, bbw, bbh)
         p1 = (int(bbx - 8), int(bby - 8))
         p2 = (int(bbx + bbw + 8), int(bby + bbh + 8))
-        if bbx < min_bbx:
-            min_bbx = bbx
-        if bby < min_bby:
-            min_bby = bby
-        if bbw + bbx > max_bbx2:
-            max_bbx2 = bbw + bbx
-        if bbh + bby > max_bby2:
-            max_bby2 = bbh + bby
-        p1m = (int(min_bbx - 8), int(min_bby - 8))
-        p2m = (int(max_bbx2 + 8), int(max_bby2 + 8))
-        cv2.rectangle(foreground, p1m, p2m, (160, 160, 160), 2)
+
+        current_rect = rect(p1[0], p1[1], p2[0], p2[1])
+
+        try:
+            crop_rect
+        except:
+            crop_rect = current_rect
+
+        crop_rect = rect_union(crop_rect, current_rect)
+
         cv2.rectangle(foreground, p1, p2, (255, 255, 255), 2)
 
     hole_color = (255, 255, 255)
@@ -245,11 +241,11 @@ for f in ListLocalImages(prefix, substring):
     # print((time.time() - before))
 
     
-
+    # todo: specify for each pipeline which windows/images must be drawn and saved to disk
     # cv2.imshow('background', background)
     # cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
     # cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
-    cv2.imshow('dip', foreground)  # sobel
+    cv2.imshow('dip', foreground)  # or sobel
 
     # save resulting image to disk
     filename = f.replace('downloaded/', 'temp/')
@@ -264,8 +260,7 @@ for f in ListLocalImages(prefix, substring):
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
-print('ffmpeg crop = ' + str(int(max_bbx2 - min_bbx + 16)) + \
-      ':' + str(int(max_bby2 - min_bby + 16)) + ':' + \
-      str(int(min_bbx - 16)) + ':' + str(int(min_bby - 16)))
-
+print('ffmpeg crop = ' + str(int(crop_rect.xmax - crop_rect.xmin)) + \
+      ':' + str(int(crop_rect.ymax - crop_rect.ymin)) + ':' + \
+      str(int(crop_rect.xmin - 8)) + ':' + str(int(crop_rect.ymin - 8)))
 
