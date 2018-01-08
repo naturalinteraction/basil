@@ -8,32 +8,28 @@ from S3 import ListLocalImages
 from segment import segment_target
 from utility import *
 
-# todo: specify, for each pipeline, the windows (and window names)
-
 def mouseCallback(event, x, y, flags, param):
-    # todo: # do the same for each window added to the window list (store somewhere the association between a window name and the corresponding image)
-    what = bgr
-    print ('bgr', what[y,x].tolist())
-    what = hsv
-    print ('hsv', what[y,x].tolist())
-    what = biomass_mask
-    print ('biomass_mask', what[y,x].tolist())
+    for w in windows.keys():
+        print (w, windows[w][y,x].tolist())
 
 # windows
-# todo: do the same for each window + moveWindow
-cv2.namedWindow('refused-holes', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('refused-holes', mouseCallback)
-cv2.namedWindow('accepted-holes', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('accepted-holes', mouseCallback)
-cv2.namedWindow('background', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('background', mouseCallback)
-cv2.namedWindow('dip', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('dip', mouseCallback)
+windows = {}
+    
+def UpdateWindow(name, image, filename=''):
+    try:
+        windows[name]
+    except:
+        windows[name] = image
+        cv2.namedWindow(name, cv2.WINDOW_NORMAL)  # moveWindow
+        cv2.setMouseCallback(name, mouseCallback)
+    cv2.imshow(name, image)
+    if len(filename) > 0:
+        cv2.imwrite(filename, image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
 # todo: command line
-sensor = 'visible'
-campaign = 'bianco'
-substring = '2017_12_31'  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
+sensor = 'visible'  # 'senape'
+campaign = 'bianco'  # 'senape'
+substring = ''  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
 prefix = 'cache/' + sensor + '-' + campaign
 
 # DownloadImagesFromS3(prefix, substring)  # todo: command line
@@ -48,8 +44,10 @@ for f in ListLocalImages(prefix, substring):
 
     # **************** todo: pipeline starts
 
-
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+
+    UpdateWindow('hsv', hsv)
+
     hsv_copy = hsv.copy()  # todo: get rid of this crap
 
     target_color_0 = 36
@@ -201,15 +199,9 @@ for f in ListLocalImages(prefix, substring):
         center,radius = c
         cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius) + 4, hole_color, 1)
 
-    # todo: specify for each pipeline which windows/images must be drawn and saved to disk
-    # cv2.imshow('background', background)
-    # cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
-    # cv2.imshow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
-    cv2.imshow('dip', foreground)  # or sobel
-
-    # save resulting image to disk
-    filename = f.replace('downloaded/', 'temp/')
-    cv2.imwrite(filename + '.jpeg', foreground, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+    # UpdateWindow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
+    # UpdateWindow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
+    UpdateWindow('dip', foreground, f.replace('downloaded/', 'temp/') + '.jpeg')
 
     # **************** todo: pipeline ends
 

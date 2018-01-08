@@ -103,7 +103,7 @@ def DownloadImagesFromS3(prefix, substring):
     return skipped,downloaded,failed
 
 def ListLocalImages(prefix, substring):
-    local_files = glob.glob(prefix + '_*.jpg')
+    local_files = glob.glob(prefix + '*.jpg')
     # optionally filter out those that do not contain given substring
     if len(substring) > 0:
         local_files = list(filter(lambda x: substring in x, local_files))
