@@ -1,39 +1,12 @@
 #!/usr/bin/python
 
 import time
-import os
 import cv2
-import math
+import numpy as np
 from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
-from pyexif import ExifEditor
-import shutil
-import pickle
-import os.path
-import numpy as np
-from segment import segment_linear
 from segment import segment_target
-from git import OpenCVVersion
-from git import GitCommitMessage
-from collections import namedtuple
-
-rect = namedtuple('rect', 'xmin ymin xmax ymax')
-
-def rect_union(a, b):
-    return rect(min(a.xmin, b.xmin), min(a.ymin, b.ymin), max(a.xmax, b.xmax), max(a.ymax, b.ymax))
-
-# print out debug information about current source code version and OpenCV version
-print(GitCommitMessage())
-print(OpenCVVersion())
-
-def ProcessKeystrokes():
-    key = cv2.waitKey(25) & 0xFF  # milliseconds
-    if key not in [27, 255]:  # any key except ESC to toggle pause
-        key = cv2.waitKey(0) & 0xFF  # milliseconds
-    # if the ESC key was pressed, simply quit
-    if key == 27:
-        print('exiting')
-        quit()
+from utility import *
 
 # todo: specify, for each pipeline, the windows (and window names)
 
@@ -47,7 +20,7 @@ def mouseCallback(event, x, y, flags, param):
     print ('biomass_mask', what[y,x].tolist())
 
 # windows
-# todo: do the same for each window
+# todo: do the same for each window + moveWindow
 cv2.namedWindow('refused-holes', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('refused-holes', mouseCallback)
 cv2.namedWindow('accepted-holes', cv2.WINDOW_NORMAL)
@@ -68,18 +41,15 @@ prefix = 'cache/' + sensor + '-' + campaign
 prefix = prefix.replace('cache/', 'downloaded/')
 
 for f in ListLocalImages(prefix, substring):
-    print(f)
+    print('processing ' + f)
     bgr = cv2.imread(f)
 
+    # before = time.time()
 
     # **************** todo: pipeline starts
 
 
-    # average = cv2.mean(bgr)[0:3]
-    # print(average)
-    # if True:  # average[0] > 30:
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
-    # before = time.time()
     hsv_copy = hsv.copy()  # todo: get rid of this crap
 
     target_color_0 = 36
@@ -100,7 +70,6 @@ for f in ListLocalImages(prefix, substring):
                                        weight_color_1,
                                        weight_color_2, segmentation_threshold)
 
-    # print('count ' + str(count))
     biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
     kernel = np.ones((3, 3), np.uint8)
@@ -121,9 +90,6 @@ for f in ListLocalImages(prefix, substring):
     circles = list()
 
     for cnt in contours:
-        # if len(cnt) < 200:  # fast way to ignore huge blobs?
-        # m = cv2.moments(cnt)
-        # area = m['m00']
         area = cv2.contourArea(cnt)
 
         # extent and solidity
@@ -218,7 +184,6 @@ for f in ListLocalImages(prefix, substring):
             crop_rect
         except:
             crop_rect = current_rect
-
         crop_rect = rect_union(crop_rect, current_rect)
 
         cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), (255, 255, 255), 2)
@@ -236,9 +201,6 @@ for f in ListLocalImages(prefix, substring):
         center,radius = c
         cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius) + 4, hole_color, 1)
 
-    # print((time.time() - before))
-
-    
     # todo: specify for each pipeline which windows/images must be drawn and saved to disk
     # cv2.imshow('background', background)
     # cv2.imshow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
@@ -249,10 +211,9 @@ for f in ListLocalImages(prefix, substring):
     filename = f.replace('downloaded/', 'temp/')
     cv2.imwrite(filename + '.jpeg', foreground, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
-
-
     # **************** todo: pipeline ends
 
+    # print((time.time() - before))
 
     ProcessKeystrokes()
 
