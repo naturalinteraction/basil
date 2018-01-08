@@ -53,3 +53,26 @@ def Dilate(input, kernel_size=3, iterations=1):
 # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))  # erode, then dilate
 # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))  # dilate, then erode
 
+
+def ContourStats(cnt):
+    area = cv2.contourArea(cnt)
+    x,y,w,h = cv2.boundingRect(cnt)
+    rect_area = w * h
+    if rect_area > 0:
+        extent = float(area) / rect_area
+    else:
+      extent = 0
+    hull = cv2.convexHull(cnt)
+    hull_area = cv2.contourArea(hull)
+    if hull_area > 0:
+        solidity = float(area) / hull_area
+    else:
+        solidity = 0
+    perimeter = cv2.arcLength(cnt, True)
+    if perimeter > 0:
+        jaggedness = len(cnt) / perimeter
+    else:
+        jaggedness = 0
+    return area,extent,solidity,jaggedness
+
+

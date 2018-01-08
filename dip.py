@@ -64,23 +64,11 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
     for cnt in contours:
         area = cv2.contourArea(cnt)
 
-        # extent and solidity
-        x,y,w,h = cv2.boundingRect(cnt)
-        rect_area = w * h
-        if rect_area > 0:
-            extent = float(area) / rect_area  # could be useful for shape analysis
-        hull = cv2.convexHull(cnt)
-        hull_area = cv2.contourArea(hull)
-        if hull_area > 0:
-            solidity = float(area) / hull_area  # could be useful for shape analysis
-        perimeter = cv2.arcLength(cnt, True)
-        if perimeter > 0:
-            jaggedness = len(cnt) / perimeter  # could be useful for shape analysis
+        ### print(ContourStats(cnt))
 
         if area < 70 * 70:
             hole_mask = np.zeros(bgr.shape[:2], np.uint8)
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
-            # np.where()
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
 
             color_distance = pow(mean[0] - target_color_0, 2) * weight_color_0 +  \
