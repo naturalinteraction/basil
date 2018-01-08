@@ -8,35 +8,15 @@ from S3 import ListLocalImages
 from segment import segment_target
 from utility import *
 
-def mouseCallback(event, x, y, flags, param):
-    for w in windows.keys():
-        print (w, windows[w][y,x].tolist())
+args = ParseArguments()
 
-# windows
-windows = {}
-    
-def UpdateWindow(name, image, filename=''):
-    try:
-        windows[name]
-    except:
-        windows[name] = image
-        cv2.namedWindow(name, cv2.WINDOW_NORMAL)  # moveWindow
-        cv2.setMouseCallback(name, mouseCallback)
-    cv2.imshow(name, image)
-    if len(filename) > 0:
-        cv2.imwrite(filename, image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+print('prefix = ', args.prefix)
+print('substring = ', args.substring)  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
 
-# todo: command line
-sensor = 'visible'  # 'senape'
-campaign = 'bianco'  # 'senape'
-substring = ''  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
-prefix = 'cache/' + sensor + '-' + campaign
+if args.download:
+    DownloadImagesFromS3('cache/' + args.prefix, args.substring)
 
-# DownloadImagesFromS3(prefix, substring)  # todo: command line
-
-prefix = prefix.replace('cache/', 'downloaded/')
-
-for f in ListLocalImages(prefix, substring):
+for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
     print('processing ' + f)
     bgr = cv2.imread(f)
 
@@ -46,6 +26,7 @@ for f in ListLocalImages(prefix, substring):
 
     hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
 
+    UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
 
     hsv_copy = hsv.copy()  # todo: get rid of this crap
@@ -78,6 +59,8 @@ for f in ListLocalImages(prefix, substring):
 
     # invert mask
     biomass_mask = cv2.bitwise_not(biomass_mask)
+
+    UpdateWindow('biomass_mask', biomass_mask)
 
     temp, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     holes = 0
@@ -211,7 +194,10 @@ for f in ListLocalImages(prefix, substring):
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
-print('ffmpeg crop = ' + str(int(crop_rect.xmax - crop_rect.xmin)) + \
-      ':' + str(int(crop_rect.ymax - crop_rect.ymin)) + ':' + \
-      str(int(crop_rect.xmin - 8)) + ':' + str(int(crop_rect.ymin - 8)))
+try:
+    print('ffmpeg crop = ' + str(int(crop_rect.xmax - crop_rect.xmin)) + \
+          ':' + str(int(crop_rect.ymax - crop_rect.ymin)) + ':' + \
+          str(int(crop_rect.xmin - 8)) + ':' + str(int(crop_rect.ymin - 8)))
+except:
+    print('no available crop_rect')
 
