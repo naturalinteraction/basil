@@ -7,6 +7,7 @@ from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
 from segment import segment_target
 from utility import *
+from vision import *
 
 args = ParseArguments()
 
@@ -48,11 +49,10 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     biomass_mask = cv2.cvtColor(hsv_copy, cv2.COLOR_BGR2GRAY)
 
-    kernel = np.ones((3, 3), np.uint8)
-    biomass_mask = cv2.erode(biomass_mask, kernel, iterations = 1)
-    # biomass_mask = cv2.dilate(biomass_mask, kernel, iterations = 2)
-    # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, kernel)
-    # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, kernel)
+    biomass_mask = cv2.erode(biomass_mask, np.ones((3, 3), np.uint8), iterations = 1)
+    # biomass_mask = cv2.dilate(biomass_mask, np.ones((3, 3), np.uint8), iterations = 2)
+    # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
 
     # invert mask
     biomass_mask = cv2.bitwise_not(biomass_mask)
@@ -115,33 +115,12 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     # exclude biomass edge
     biomass_eroded = cv2.bitwise_not(biomass_mask)
-    biomass_eroded = cv2.erode(biomass_eroded, kernel, iterations = 2)
+    biomass_eroded = cv2.erode(biomass_eroded, np.ones((3, 3), np.uint8), iterations = 2)
 
-    # compute derivatives of foreground
     h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
     luminance = cv2.cvtColor(foreground, cv2.COLOR_BGR2GRAY)
-    for_derivation = s  # luminance
-    for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0)
-    for_derivation = cv2.GaussianBlur(for_derivation, (5, 5), 0)
-    # laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
-    mult = 5
-    if False:
-        sobelx = cv2.Sobel(for_derivation, cv2.CV_64F, 1, 0, ksize=3)
-        sobely = cv2.Sobel(for_derivation, cv2.CV_64F, 0, 1, ksize=3)
-    else:
-        sobelx = cv2.Scharr(for_derivation, cv2.CV_64F, 1, 0)
-        sobely = cv2.Scharr(for_derivation, cv2.CV_64F, 0, 1)
-        mult = 1.3
-    if False:
-        abs_sobelx = np.absolute(sobelx)
-        abs_sobely = np.absolute(sobely)
-        abs_sobelx = np.uint8(abs_sobelx)
-        abs_sobely = np.uint8(abs_sobely)
-    else:
-        abs_sobelx = cv2.convertScaleAbs(sobelx)
-        abs_sobely = cv2.convertScaleAbs(sobely)
-    sobel = cv2.addWeighted(abs_sobelx, 0.5 * mult, abs_sobely, 0.5 * mult, 0.0)
-    sobel = cv2.bitwise_and(sobel, sobel, mask=biomass_eroded)
+
+    UpdateWindow('derivative', ComputeImageDerivative(luminance, biomass_eroded))
 
     # luminance histogram
     hist = cv2.calcHist([luminance], [0], None, [64], [1,256])
