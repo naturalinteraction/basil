@@ -39,11 +39,14 @@ parsing command line arguments
 def ParseArguments():
     parser = argparse.ArgumentParser(description='Process images from the sensors.')
     parser.add_argument('-p', '--prefix', default = 'visible-bianco', help='The prefix for the images.')
-    parser.add_argument('-s', '--substring', default='', help='The substring to filter the images.')
+    parser.add_argument('-s', '--substring', default='', help='The substring to filter the images (e.g. 2017_12_31).')
     parser.add_argument('-d', '--download', dest='download', action='store_const',
                         const=True, default=False,
                         help='Download images from S3 (default: no)')
-    return parser.parse_args()
+    args = parser.parse_args()
+    print('prefix = ', args.prefix)
+    print('substring = ', args.substring)  # '2017_12_31', ''  # background change on the 12th, between 15.00 and 15.31
+    return args
 
 
 '''

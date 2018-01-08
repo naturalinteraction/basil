@@ -10,9 +10,6 @@ from utility import *
 
 args = ParseArguments()
 
-print('prefix = ', args.prefix)
-print('substring = ', args.substring)  # '2017_12_22', ''  # background change on the 12th, between 15.00 and 15.31
-
 if args.download:
     DownloadImagesFromS3('cache/' + args.prefix, args.substring)
 
