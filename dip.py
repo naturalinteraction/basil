@@ -37,8 +37,9 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
 
     ### h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
-    # luminance = ToGray(foreground)
-    # UpdateWindow('derivative', ComputeImageDerivative(luminance, Erode(biomass_mask, iterations=2)))  # eroded to exclude outer edges
+    luminance = ToGray(foreground)
+    UpdateWindow('derivative', ComputeImageDerivative(GaussianBlurred(luminance, 5), Erode(biomass_mask, iterations=2)))  # eroded to exclude outer edges
+
     ### Histogram(luminance, output=foreground)
 
     #DrawEllipses(foreground, ellipses, white)

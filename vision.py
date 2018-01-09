@@ -33,8 +33,6 @@ def MedianBlurred(image, size=3):
 image derivatives
 '''
 def ComputeImageDerivative(for_derivation, mask):
-    for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0) # todo
-    for_derivation = cv2.GaussianBlur(for_derivation, (5, 5), 0) # todo
     # laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
     mult = 5
     if False:
