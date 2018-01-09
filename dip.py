@@ -5,7 +5,6 @@ import cv2
 import numpy as np
 from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
-from segment import *
 from utility import *
 from vision import *
 
@@ -14,34 +13,17 @@ args = ParseArguments()
 if args.download:
     DownloadImagesFromS3('cache/' + args.prefix, args.substring)
 
-for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
-    print('processing ' + f)
-    bgr = cv2.imread(f)
+for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
+    print('processing ' + image_file)
+    bgr = cv2.imread(image_file)
 
     # before = time.time()
 
     # **************** todo: pipeline starts
 
-    hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+    hsv = ToHSV(bgr)
 
-    target_color_0 = 36
-    target_color_1 = 238
-    target_color_2 = 164
-
-    weight_color_0 = 6
-    weight_color_1 = 3
-    weight_color_2 = 1
-
-    segmentation_threshold = 90 * 90 * 3
-    segmentation_threshold_holes = segmentation_threshold * 1.7
-
-    biomass_mask = Segment(hsv, target_color_0,
-                                target_color_1,
-                                target_color_2,
-                                weight_color_0,
-                                weight_color_1,
-                                weight_color_2, 
-                                segmentation_threshold)
+    biomass_mask = SegmentBiomass(hsv)
 
     UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
@@ -71,9 +53,19 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
 
+            target_color_0 = 36
+            target_color_1 = 238
+            target_color_2 = 164
+
+            weight_color_0 = 6
+            weight_color_1 = 3
+            weight_color_2 = 1
+
             color_distance = pow(mean[0] - target_color_0, 2) * weight_color_0 +  \
                              pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
                              pow(mean[2] - target_color_2, 2) * weight_color_2
+
+            segmentation_threshold_holes = (90 * 90 * 3) * 1.7
 
             if color_distance < segmentation_threshold_holes:
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))
@@ -136,7 +128,7 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     # UpdateWindow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
     # UpdateWindow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
-    UpdateWindow('dip', foreground, f.replace('downloaded/', 'temp/') + '.jpeg')
+    UpdateWindow('dip', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
 
     # **************** todo: pipeline ends
 

@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from segment import *
 
 
 '''
@@ -52,6 +53,30 @@ def Dilate(input, kernel_size=3, iterations=1):
 
 # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))  # erode, then dilate
 # biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))  # dilate, then erode
+
+
+def ToHSV(bgr_image):
+    return cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
+
+
+def SegmentBiomass(hsv_image):
+    target_color_0 = 36
+    target_color_1 = 238
+    target_color_2 = 164
+
+    weight_color_0 = 6
+    weight_color_1 = 3
+    weight_color_2 = 1
+
+    segmentation_threshold = 90 * 90 * 3
+
+    return         Segment(hsv_image, target_color_0,  # optionally gaussian, median or simple blur
+                                      target_color_1,
+                                      target_color_2,
+                                      weight_color_0,
+                                      weight_color_1,
+                                      weight_color_2, 
+                                      segmentation_threshold)
 
 
 def ContourStats(cnt):
