@@ -1,13 +1,23 @@
 import cv2
 import numpy as np
 from segment import *
+from collections import namedtuple
 
 
 white = (255, 255, 255)
 
 
 '''
-work in progress
+rect
+'''
+rect = namedtuple('rect', 'xmin ymin xmax ymax')
+
+def rect_union(a, b):
+    return rect(min(a.xmin, b.xmin), min(a.ymin, b.ymin), max(a.xmax, b.xmax), max(a.ymax, b.ymax))
+
+
+'''
+image derivatives
 '''
 def ComputeImageDerivative(for_derivation, mask):
     for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0)
@@ -143,6 +153,29 @@ def FillHoles(biomass_mask, bgr, hsv):
 
     # print('holes ' + str(holes))
     return accepted_holes_mask,refused_holes_mask,ellipses,circles
+
+
+crop_rect = False
+
+def UpdateBiomassBoundingBox(biomass_mask, output_image=False):
+    nonzero = cv2.findNonZero(biomass_mask)
+    if not(nonzero is None):
+        count = len(nonzero)
+        # print(('biomass count ' + str(count)))
+        bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
+        current_rect = rect(int(bbx), int(bby), int(bbx + bbw), int(bby + bbh))
+        global crop_rect
+        if crop_rect == False:
+            crop_rect = current_rect
+            print('initializing', crop_rect)
+        else:
+            print('valid', crop_rect)
+        crop_rect = rect_union(crop_rect, current_rect)
+        if output_image.__class__.__name__ == 'ndarray':
+            cv2.rectangle(output_image, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), white, 2)
+        return count,crop_rect
+    else:
+        return 0,crop_rect
 
 
 def ContourStats(cnt):

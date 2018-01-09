@@ -1,16 +1,21 @@
 import subprocess
 import cv2
-from collections import namedtuple
 import argparse
+import collections
 
 
-'''
-rect
-'''
-rect = namedtuple('rect', 'xmin ymin xmax ymax')
-
-def rect_union(a, b):
-    return rect(min(a.xmin, b.xmin), min(a.ymin, b.ymin), max(a.xmax, b.xmax), max(a.ymax, b.ymax))
+def interrogate(item):
+    if hasattr(item, "__name__"):
+        print("name: ", item.__name__)
+    if hasattr(item, "__class__"):
+        print("class: ", item.__class__.__name__)
+    print("type: ", type(item))
+    print("value: ", repr(item))
+    print("callable: ", isinstance(item, collections.Callable))
+    if hasattr(item, '__doc__'):
+        doc = getattr(item, '__doc__')
+        # doc = doc.strip()
+        print('doc: ', doc)
 
 
 '''
