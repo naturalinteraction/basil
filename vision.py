@@ -146,7 +146,7 @@ def FillHoles(biomass_mask, bgr, hsv):
                              pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
                              pow(mean[2] - target_color_2, 2) * weight_color_2
 
-            segmentation_threshold_holes = (90 * 90 * 3) * 2.4
+            segmentation_threshold_holes = (90 * 90 * 3) * 1.7
 
             if color_distance < segmentation_threshold_holes:
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
