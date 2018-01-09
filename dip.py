@@ -107,23 +107,6 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     ### Histogram(luminance, output=foreground)
 
-    # count non zero pixels in mask, and find its bounding box
-    nonzero = cv2.findNonZero(biomass_eroded)
-    if not(nonzero is None):
-        count = len(nonzero)
-        print(('biomass ' + str(count)))
-        bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
-
-        current_rect = rect(int(bbx - 8), int(bby - 8), int(bbx + bbw + 8), int(bby + bbh + 8))
-
-        try:
-            crop_rect
-        except:
-            crop_rect = current_rect
-        crop_rect = rect_union(crop_rect, current_rect)
-
-        cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), (255, 255, 255), 2)
-
     hole_color = (255, 255, 255)
 
     for e in ellipses:
@@ -136,6 +119,20 @@ for f in ListLocalImages('downloaded/' + args.prefix, args.substring):
     for c in circles:
         center,radius = c
         cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius) + 4, hole_color, 1)
+
+    nonzero = cv2.findNonZero(biomass_eroded)
+    if not(nonzero is None):
+        count = len(nonzero)
+        print(('biomass ' + str(count)))
+        bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
+        current_rect = rect(int(bbx), int(bby), int(bbx + bbw), int(bby + bbh))
+        try:
+            crop_rect
+        except:
+            crop_rect = current_rect
+        crop_rect = rect_union(crop_rect, current_rect)
+
+    cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), (255, 255, 255), 2)
 
     # UpdateWindow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
     # UpdateWindow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
@@ -152,7 +149,7 @@ print('Windows destroyed.')
 try:
     print('ffmpeg crop = ' + str(int(crop_rect.xmax - crop_rect.xmin)) + \
           ':' + str(int(crop_rect.ymax - crop_rect.ymin)) + ':' + \
-          str(int(crop_rect.xmin - 8)) + ':' + str(int(crop_rect.ymin - 8)))
+          str(int(crop_rect.xmin)) + ':' + str(int(crop_rect.ymin)))
 except:
-    print('no available crop_rect')
+    print('No available crop_rect.')
 
