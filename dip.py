@@ -23,9 +23,10 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     hsv = ToHSV(bgr)
 
-    biomass_mask = SegmentBiomass(hsv)
+    biomass_mask = SegmentBiomass(MedianBlurred(hsv, 9))
 
-    biomass_mask = Erode(biomass_mask)  # this might remove some noise in the form of isolated pixels, a gaussian blur might work as well or better
+    # erosion does not affect the edges of the image!
+    # biomass_mask = Erode(biomass_mask)  # this might remove some noise in the form of isolated pixels, a gaussian blur might work as well or better
 
     # UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
@@ -33,28 +34,28 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     # this is done after because it needs the updated biomass_mask
     foreground = MaskedImage(bgr, biomass_mask)
-    # UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
+    UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
 
     ### h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
     # luminance = ToGray(foreground)
     # UpdateWindow('derivative', ComputeImageDerivative(luminance, Erode(biomass_mask, iterations=2)))  # eroded to exclude outer edges
     ### Histogram(luminance, output=foreground)
 
-    DrawEllipses(foreground, ellipses, white)
-    DrawCircles(foreground, circles, white)
+    #DrawEllipses(foreground, ellipses, white)
+    #DrawCircles(foreground, circles, white)
 
     count,crop_rect = UpdateBiomassBoundingBox(biomass_mask, foreground)
 
     # UpdateWindow('bgr', bgr)
     # UpdateWindow('hsv', hsv)
-    # UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
-    # UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
+    UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
+    UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
     # UpdateWindow('biomass_mask FILLED', biomass_mask)
 
     ################ PIPELINE END
 
-    # print('time elapsed', time.time() - before)
+    print('time elapsed', time.time() - before)
 
     ProcessKeystrokes()
 

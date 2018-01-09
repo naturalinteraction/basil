@@ -17,12 +17,24 @@ def rect_union(a, b):
 
 
 '''
+blurs
+'''
+def GaussianBlurred(image, size=3):
+    return cv2.GaussianBlur(image, (size, size), 0)
+
+def Blurred(image, size=3):
+    return cv2.blur(image, (size, size))
+
+def MedianBlurred(image, size=3):
+    return cv2.medianBlur(image, size)  # supposed to be good against salt-and-pepper noise
+
+
+'''
 image derivatives
 '''
 def ComputeImageDerivative(for_derivation, mask):
-    for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0)
-    # also checkout blur = cv2.blur(img,(5,5)) and median = cv2.medianBlur(img,5) that is supposed to be good against salt-and-pepper noise
-    for_derivation = cv2.GaussianBlur(for_derivation, (5, 5), 0)
+    for_derivation = cv2.GaussianBlur(for_derivation, (3, 3), 0) # todo
+    for_derivation = cv2.GaussianBlur(for_derivation, (5, 5), 0) # todo
     # laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
     mult = 5
     if False:
@@ -95,7 +107,7 @@ def SegmentBiomass(hsv_image):
 
     segmentation_threshold = 90 * 90 * 3
 
-    return         Segment(hsv_image, target_color_0,  # optionally gaussian, median or simple blur
+    return         Segment(hsv_image, target_color_0,
                                       target_color_1,
                                       target_color_2,
                                       weight_color_0,
@@ -136,7 +148,7 @@ def FillHoles(biomass_mask, bgr, hsv):
                              pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
                              pow(mean[2] - target_color_2, 2) * weight_color_2
 
-            segmentation_threshold_holes = (90 * 90 * 3) * 1.7
+            segmentation_threshold_holes = (90 * 90 * 3) * 2.4
 
             if color_distance < segmentation_threshold_holes:
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))

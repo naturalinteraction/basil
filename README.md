@@ -15,8 +15,8 @@ A repo for my own experiments.
 - [x] Display multiple images with the discarded areas, for debugging purposes
 - [x] Stable biomass bounding box (also useful for cropping)
 - [x] Unit tests, integration tests
-- [ ] Modularize the image processing pipeline
-- [ ] Test median blur and blur (see ComputeImageDerivative()), might also help with Segment() (on the input image)
+- [x] Modularize the image processing pipeline
+- [x] Test median blur and blur
 - [ ] Consider not only holes but all peripheral regions, pixel-by-pixel
 - [ ] Color analysis inside biomass: histograms
 - [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance
