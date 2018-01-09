@@ -64,6 +64,16 @@ def ToHSV(bgr_image):
 def ToGray(bgr_image):
     return cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
 
+def ToThree(one_channel_image):
+    return cv2.cvtColor(one_channel_image, cv2.COLOR_GRAY2BGR)
+
+def Inverted(image):
+    return cv2.bitwise_not(image)
+
+def MaskedImage(image, mask):
+    # return cv2.multiply(image, ToThree(mask), scale = 1.0 / 255.0)
+    return cv2.bitwise_and(image, image, mask=mask)
+
 def SegmentBiomass(hsv_image):
     target_color_0 = 36
     target_color_1 = 238

@@ -31,12 +31,12 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     biomass_mask = Erode(biomass_mask)  # this might remove some noise in the form of isolated pixels, a gaussian blur might work as well or better
 
-    UpdateWindow('biomass_mask', biomass_mask)  # this is still the raw mask, without the holes filled
+    UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
-    # invert mask, so that we can analyze the holes as white blobs against a black background
-    biomass_mask = cv2.bitwise_not(biomass_mask)
+    # -------------------- HOLES BEGIN
 
-    ignored1, contours, ignored2 = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    # inverted mask, so that we can analyze the holes as white blobs against a black background
+    ignored1, contours, ignored2 = cv2.findContours(Inverted(biomass_mask), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     holes = 0
     accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
@@ -69,7 +69,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
             segmentation_threshold_holes = (90 * 90 * 3) * 1.7
 
             if color_distance < segmentation_threshold_holes:
-                cv2.fillPoly(biomass_mask, pts = [cnt], color=(0))
+                cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
                 cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                 # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
                 holes += 1
@@ -83,28 +83,21 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     # print('holes ' + str(holes))
 
-    # this is something else, different from holes, but it is done after because it needs the updated biomass_mask
-    foreground_mask = cv2.cvtColor(biomass_mask, cv2.COLOR_GRAY2BGR)
-    foreground = cv2.addWeighted(bgr, 1.0, foreground_mask, -1.0, 0.0)
-    background_mask = cv2.bitwise_not(foreground_mask)
-    background = cv2.addWeighted(bgr, 1.0, background_mask, -1.0, 0.0)
+    # -------------------- HOLES END
 
-    # exclude biomass edge
-    biomass_eroded = cv2.bitwise_not(biomass_mask)
-
-    biomass_eroded = Erode(biomass_eroded, iterations=2)
+    # this is done after because it needs the updated biomass_mask
+    foreground = MaskedImage(bgr, biomass_mask)
+    UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
 
     ### h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
-    luminance = ToGray(foreground)
-
-    UpdateWindow('derivative', ComputeImageDerivative(luminance, biomass_eroded))
-
+    ### luminance = ToGray(foreground)
+    ### UpdateWindow('derivative', ComputeImageDerivative(luminance, Erode(biomass_mask, iterations=2)))  # eroded to exclude outer edges
     ### Histogram(luminance, output=foreground)
 
     DrawEllipses(foreground, ellipses, white)
     DrawCircles(foreground, circles, white)
 
-    nonzero = cv2.findNonZero(biomass_eroded)
+    nonzero = cv2.findNonZero(biomass_mask)
     if not(nonzero is None):
         count = len(nonzero)
         print(('biomass ' + str(count)))
@@ -118,9 +111,10 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), white, 2)
 
-    # UpdateWindow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
-    # UpdateWindow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
+    UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
+    UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
     UpdateWindow('dip', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
+    UpdateWindow('biomass_mask FILLED', biomass_mask)
 
     ################ PIPELINE END
 
