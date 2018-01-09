@@ -17,16 +17,17 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     print('processing ' + image_file)
     bgr = cv2.imread(image_file)
 
-    # before = time.time()
+    before = time.time()
 
-    # **************** todo: pipeline starts
+    ################ PIPELINE BEGIN
+
+    UpdateWindow('bgr', bgr)
 
     hsv = ToHSV(bgr)
 
-    biomass_mask = SegmentBiomass(hsv)
-
-    UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
+
+    biomass_mask = SegmentBiomass(hsv)
 
     biomass_mask = Erode(biomass_mask)  # this might remove some noise in the form of isolated pixels, a gaussian blur might work as well or better
 
@@ -35,7 +36,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     # invert mask, so that we can analyze the holes as white blobs against a black background
     biomass_mask = cv2.bitwise_not(biomass_mask)
 
-    temp, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    ignored1, contours, ignored2 = cv2.findContours(biomass_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     holes = 0
     accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
@@ -82,6 +83,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     # print('holes ' + str(holes))
 
+    # this is something else, different from holes, but it is done after because it needs the updated biomass_mask
     foreground_mask = cv2.cvtColor(biomass_mask, cv2.COLOR_GRAY2BGR)
     foreground = cv2.addWeighted(bgr, 1.0, foreground_mask, -1.0, 0.0)
     background_mask = cv2.bitwise_not(foreground_mask)
@@ -92,25 +94,15 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     biomass_eroded = Erode(biomass_eroded, iterations=2)
 
-    h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
-    luminance = cv2.cvtColor(foreground, cv2.COLOR_BGR2GRAY)
+    ### h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
+    luminance = ToGray(foreground)
 
-    ### UpdateWindow('derivative', ComputeImageDerivative(luminance, biomass_eroded))
+    UpdateWindow('derivative', ComputeImageDerivative(luminance, biomass_eroded))
 
     ### Histogram(luminance, output=foreground)
 
-    hole_color = (255, 255, 255)
-
-    for e in ellipses:
-        center,axes,angle = e
-        # print(center, axes, angle)
-        center = (int(center[0]), int(center[1]))
-        axes = (int(axes[0] * 0.5 + 4), int(axes[1] * 0.5 + 4))
-        cv2.ellipse(foreground, center, axes, angle, 0.0, 360.0, hole_color, 1)
-
-    for c in circles:
-        center,radius = c
-        cv2.circle(foreground, (int(center[0]), int(center[1])), int(radius) + 4, hole_color, 1)
+    DrawEllipses(foreground, ellipses, white)
+    DrawCircles(foreground, circles, white)
 
     nonzero = cv2.findNonZero(biomass_eroded)
     if not(nonzero is None):
@@ -124,15 +116,15 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
             crop_rect = current_rect
         crop_rect = rect_union(crop_rect, current_rect)
 
-    cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), (255, 255, 255), 2)
+    cv2.rectangle(foreground, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), white, 2)
 
     # UpdateWindow('accepted-holes', cv2.bitwise_and(bgr, bgr, mask=accepted_holes_mask))
     # UpdateWindow('refused-holes', cv2.bitwise_and(bgr, bgr, mask=refused_holes_mask))
     UpdateWindow('dip', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
 
-    # **************** todo: pipeline ends
+    ################ PIPELINE END
 
-    # print((time.time() - before))
+    print('time elapsed', time.time() - before)
 
     ProcessKeystrokes()
 

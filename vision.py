@@ -3,6 +3,9 @@ import numpy as np
 from segment import *
 
 
+white = (255, 255, 255)
+
+
 '''
 work in progress
 '''
@@ -58,6 +61,8 @@ def Dilate(input, kernel_size=3, iterations=1):
 def ToHSV(bgr_image):
     return cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)
 
+def ToGray(bgr_image):
+    return cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
 
 def SegmentBiomass(hsv_image):
     target_color_0 = 36
@@ -100,4 +105,15 @@ def ContourStats(cnt):
         jaggedness = 0
     return area,extent,solidity,jaggedness
 
+def DrawEllipses(image, ellipses, color):
+    for e in ellipses:
+        center,axes,angle = e
+        center = (int(center[0]), int(center[1]))
+        axes = (int(axes[0] * 0.5 + 4), int(axes[1] * 0.5 + 4))
+        cv2.ellipse(image, center, axes, angle, 0.0, 360.0, color, 1)
+
+def DrawCircles(image, circles, color):
+    for c in circles:
+        center,radius = c
+        cv2.circle(image, (int(center[0]), int(center[1])), int(radius) + 4, color, 1)
 
