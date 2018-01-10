@@ -9,12 +9,12 @@ white = (255, 255, 255)
 
 
 '''
-rect
+rectangle
 '''
-rect = namedtuple('rect', 'xmin ymin xmax ymax')
+rectangle = namedtuple('rectangle', 'xmin ymin xmax ymax')
 
-def rect_union(a, b):
-    return rect(min(a.xmin, b.xmin), min(a.ymin, b.ymin), max(a.xmax, b.xmax), max(a.ymax, b.ymax))
+def rectangle_union(a, b):
+    return rectangle(min(a.xmin, b.xmin), min(a.ymin, b.ymin), max(a.xmax, b.xmax), max(a.ymax, b.ymax))
 
 
 '''
@@ -95,16 +95,8 @@ def MaskedImage(image, mask):
     # return cv2.multiply(image, ToThree(mask), scale = 1.0 / 255.0)
     return cv2.bitwise_and(image, image, mask=mask)
 
-def SegmentBiomass(hsv_image):
-    target_color_0 = 36
-    target_color_1 = 238
-    target_color_2 = 164
-
-    weight_color_0 = 6
-    weight_color_1 = 3
-    weight_color_2 = 1
-
-    segmentation_threshold = 90 * 90 * 3
+def SegmentBiomass(hsv_image, target_color_0, target_color_1, target_color_2,
+                              weight_color_0, weight_color_1, weight_color_2, segmentation_threshold):
 
     return         Segment(hsv_image, target_color_0,
                                       target_color_1,
@@ -166,27 +158,31 @@ def FillHoles(biomass_mask, bgr, hsv):
     return accepted_holes_mask,refused_holes_mask,ellipses,circles
 
 
-crop_rect = False
+class BoundingBox:
+    rect = None
 
-def UpdateBiomassBoundingBox(biomass_mask, output_image=False):
-    nonzero = cv2.findNonZero(biomass_mask)
-    if not(nonzero is None):
-        count = len(nonzero)
-        # print(('biomass count ' + str(count)))
-        bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
-        current_rect = rect(int(bbx), int(bby), int(bbx + bbw), int(bby + bbh))
-        global crop_rect
-        if crop_rect == False:
-            crop_rect = current_rect
-            print('initializing', crop_rect)
+    def Reset(self):
+        self.rect = None
+
+    def Update(self, biomass_mask, output_image=False):
+        nonzero = cv2.findNonZero(biomass_mask)
+        if not(nonzero is None):
+            count = len(nonzero)
+            # print(('biomass count ' + str(count)))
+            bbx,bby,bbw,bbh = cv2.boundingRect(nonzero)
+            current_rect = rectangle(int(bbx), int(bby), int(bbx + bbw), int(bby + bbh))
+            if self.rect == None:
+                self.rect = current_rect
+                # print('initializing', self.rect)
+            # else:
+            #     print('valid', self.rect)
+            self.rect = rectangle_union(self.rect, current_rect)
+            if output_image.__class__.__name__ == 'ndarray':
+                cv2.rectangle(output_image, (self.rect.xmin, self.rect.ymin),
+                                            (self.rect.xmax, self.rect.ymax), white, 2)
+            return count
         else:
-            print('valid', crop_rect)
-        crop_rect = rect_union(crop_rect, current_rect)
-        if output_image.__class__.__name__ == 'ndarray':
-            cv2.rectangle(output_image, (crop_rect.xmin, crop_rect.ymin), (crop_rect.xmax, crop_rect.ymax), white, 2)
-        return count,crop_rect
-    else:
-        return 0,crop_rect
+            return 0
 
 
 def ContourStats(cnt):

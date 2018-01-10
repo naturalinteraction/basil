@@ -14,13 +14,15 @@ args = ParseArguments()
 if args.download:
     DownloadImagesFromS3('cache/' + args.prefix, args.substring)
 
+box = BoundingBox()
+
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     # print('processing ' + image_file)
     bgr = cv2.imread(image_file)
 
     before = time.time()
 
-    Basilico(image_file, bgr)
+    Basilico(image_file, bgr, box)
 
     print('time elapsed', time.time() - before)
 
@@ -30,10 +32,10 @@ cv2.destroyAllWindows()
 print('Windows destroyed.')
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
-          + str(int(crop_rect.xmax - crop_rect.xmin)) + \
-          ':' + str(int(crop_rect.ymax - crop_rect.ymin)) + ':' + \
-          str(int(crop_rect.xmin)) + ':' + str(int(crop_rect.ymin))) + \
+          + str(int(box.rect.xmax - box.rect.xmin)) + \
+          ':' + str(int(box.rect.ymax - box.rect.ymin)) + ':' + \
+          str(int(box.rect.xmin)) + ':' + str(int(box.rect.ymin))) + \
           "' timelapse.mp4"
 except:
-    print('No available crop_rect.')
+    print('No available bounding box.')
 

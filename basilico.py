@@ -1,9 +1,21 @@
 from vision import *
 
-def Basilico(image_file, bgr):
+def Basilico(image_file, bgr, box):
+
     hsv = ToHSV(bgr)
 
-    biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5))
+    basilico_h = 36
+    basilico_s = 238
+    basilico_v = 164
+
+    weight_h = 6
+    weight_s = 3
+    weight_v = 1
+
+    segmentation_threshold = 90 * 90 * 3
+
+    biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_h, basilico_s, basilico_v,
+                                                         weight_h, weight_s, weight_v, segmentation_threshold)
     # biomass_mask = SegmentBiomass(hsv)
 
     # erosion does not affect the edges of the image!
@@ -27,7 +39,7 @@ def Basilico(image_file, bgr):
     DrawEllipses(foreground, ellipses, white)
     DrawCircles(foreground, circles, white)
 
-    count,crop_rect = UpdateBiomassBoundingBox(biomass_mask, foreground)
+    count = box.Update(biomass_mask, foreground)
 
     # UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
