@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from utility import *
 from segment import *
 from collections import namedtuple
 
