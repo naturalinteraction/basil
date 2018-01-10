@@ -107,7 +107,8 @@ def SegmentBiomass(hsv_image, target_color_0, target_color_1, target_color_2,
                                       segmentation_threshold)
 
 
-def FillHoles(biomass_mask, bgr, hsv):
+def FillHoles(biomass_mask, bgr, hsv, target_color_0, target_color_1, target_color_2,
+                                      weight_color_0, weight_color_1, weight_color_2, segmentation_threshold):
     # inverted mask, so that we can analyze the holes as white blobs against a black background
     ignored1, contours, ignored2 = cv2.findContours(Inverted(biomass_mask), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     holes = 0
@@ -127,21 +128,11 @@ def FillHoles(biomass_mask, bgr, hsv):
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
 
-            target_color_0 = 36
-            target_color_1 = 238
-            target_color_2 = 164
-
-            weight_color_0 = 6
-            weight_color_1 = 3
-            weight_color_2 = 1
-
             color_distance = pow(mean[0] - target_color_0, 2) * weight_color_0 +  \
                              pow(mean[1] - target_color_1, 2) * weight_color_1 +  \
                              pow(mean[2] - target_color_2, 2) * weight_color_2
 
-            segmentation_threshold_holes = (90 * 90 * 3) * 1.7
-
-            if color_distance < segmentation_threshold_holes:
+            if color_distance < segmentation_threshold:
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
                 cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                 # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))

@@ -20,9 +20,12 @@ def Basilico(image_file, bgr, box):
 
     # erosion does not affect the edges of the image!
     # biomass_mask = Erode(biomass_mask)  # to remove isolated pixels (noise), alternative to median blur
-    # UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
+    UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
-    accepted_holes_mask,refused_holes_mask,ellipses,circles = FillHoles(biomass_mask, bgr, hsv)
+    accepted_holes_mask,refused_holes_mask,ellipses,circles = FillHoles(biomass_mask, bgr, hsv,
+                                                                        basilico_h, basilico_s, basilico_v,
+                                                                        weight_h, weight_s, weight_v,
+                                                                        segmentation_threshold * 1.7)
 
     # this is done after because it needs the updated biomass_mask
     foreground = MaskedImage(bgr, biomass_mask)
@@ -46,4 +49,4 @@ def Basilico(image_file, bgr, box):
     # UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
     # UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
-    # UpdateWindow('biomass_mask FILLED', biomass_mask)
+    UpdateWindow('biomass_mask FILLED', biomass_mask)
