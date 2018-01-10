@@ -48,7 +48,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     count,crop_rect = UpdateBiomassBoundingBox(biomass_mask, foreground)
 
     # UpdateWindow('bgr', bgr)
-    # UpdateWindow('hsv', hsv)
+    UpdateWindow('hsv', hsv)
     # UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
     # UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
