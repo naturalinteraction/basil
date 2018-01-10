@@ -7,7 +7,9 @@ from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
 from utility import *
 from vision import *
-from basilico import *
+
+# from basilico import *
+from senape import *
 
 args = ParseArguments()
 
@@ -22,7 +24,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     before = time.time()
 
-    Basilico(image_file, bgr, box)
+    Process(image_file, bgr, box)
 
     print('time elapsed', time.time() - before)
 

@@ -1,6 +1,6 @@
 from vision import *
 
-def Basilico(image_file, bgr, box):
+def Process(image_file, bgr, box):
 
     hsv = ToHSV(bgr)
 
@@ -12,7 +12,7 @@ def Basilico(image_file, bgr, box):
 
     biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
                                                          weight_hsv, segmentation_threshold)
-    # biomass_mask = SegmentBiomass(hsv)
+    # biomass_mask = SegmentBiomass(hsv, ...)
 
     # erosion does not affect the edges of the image!
     # biomass_mask = Erode(biomass_mask)  # to remove isolated pixels (noise), alternative to median blur
@@ -29,7 +29,7 @@ def Basilico(image_file, bgr, box):
 
     # h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
     luminance = ToGray(foreground)
-    
+
     # eroded to exclude outer edges
     UpdateWindow('derivative', ComputeImageDerivative(GaussianBlurred(luminance, 5), Erode(biomass_mask, iterations=2)))
 
