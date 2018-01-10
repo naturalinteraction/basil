@@ -4,18 +4,14 @@ def Basilico(image_file, bgr, box):
 
     hsv = ToHSV(bgr)
 
-    basilico_h = 36
-    basilico_s = 238
-    basilico_v = 164
+    basilico_hsv = (36, 238, 164)
 
-    weight_h = 6
-    weight_s = 3
-    weight_v = 1
+    weight_hsv = (6, 3, 1)
 
     segmentation_threshold = 90 * 90 * 3
 
-    biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_h, basilico_s, basilico_v,
-                                                         weight_h, weight_s, weight_v, segmentation_threshold)
+    biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
+                                                         weight_hsv, segmentation_threshold)
     # biomass_mask = SegmentBiomass(hsv)
 
     # erosion does not affect the edges of the image!
@@ -23,8 +19,8 @@ def Basilico(image_file, bgr, box):
     UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
     accepted_holes_mask,refused_holes_mask,ellipses,circles = FillHoles(biomass_mask, bgr, hsv,
-                                                                        basilico_h, basilico_s, basilico_v,
-                                                                        weight_h, weight_s, weight_v,
+                                                                        basilico_hsv,
+                                                                        weight_hsv,
                                                                         segmentation_threshold * 1.7)
 
     # this is done after because it needs the updated biomass_mask
