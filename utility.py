@@ -93,6 +93,7 @@ class ColorStatistics:
     def Update(self, pixel):
         self.pixels.append(pixel)
         print(self.ComputeStats())
+        # print(np.var(self.pixels, axis=0))  # variance
 
 def LoadColorStats(filename):
     with open(filename, 'rb') as f:
