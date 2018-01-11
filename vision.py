@@ -103,19 +103,13 @@ def SegmentBiomass(hsv_image, target,
 
 def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
     # inverted mask, so that we can analyze the holes as white blobs against a black background
-    ignored1, contours, ignored2 = cv2.findContours(Inverted(biomass_mask), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    holes = 0
+    ignored, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
-
     circles = list()
-
-    for cnt in contours:
-        area = cv2.contourArea(cnt)
-
+    for index,cnt in enumerate(contours):
         # print(ContourStats(cnt))
-
-        if area < 70 * 70:
+        if hierarchy[0][index][3] >= 0 and cv2.contourArea(cnt) < 30 * 30:
             hole_mask = np.zeros(bgr.shape[:2], np.uint8)
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
@@ -127,13 +121,12 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
             if color_distance < segmentation_threshold:
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
                 cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
-                # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
-                holes += 1
+                # print(" area " + str(cv2.contourArea(cnt)) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
                 circles.append(cv2.minEnclosingCircle(cnt))
             else:
                 cv2.fillPoly(refused_holes_mask, pts = [cnt], color=(255))
+                # print("REFUSED  area " + str(cv2.contourArea(cnt)) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
 
-    # print('holes ' + str(holes))
     return accepted_holes_mask,refused_holes_mask,circles
 
 
