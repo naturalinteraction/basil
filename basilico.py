@@ -1,6 +1,6 @@
 from vision import *
 
-def Process(image_file, bgr, box):
+def RoutineBasilico(image_file, bgr, box):
 
     hsv = ToHSV(bgr)
 

@@ -48,12 +48,15 @@ def ParseArguments():
     parser = argparse.ArgumentParser(description='process images from the sensors')
     parser.add_argument('-p', '--prefix', default = 'visible-bianco', help='the prefix for the images')
     parser.add_argument('-s', '--substring', default='2017_12_31', help='the substring to filter the images')
+    parser.add_argument('-r', '--routine', default='basilico', help='the routine to process the images')
     parser.add_argument('-d', '--download', dest='download', action='store_const',
                         const=True, default=False,
                         help='download images from S3')
     args = parser.parse_args()
-    print('prefix = ', args.prefix)
-    print('substring = ', args.substring)  # '2017_12_31', ''  # background change on the 12th, between 15.00 and 15.31
+    print('prefix = ' + args.prefix)
+    print('substring = ' + args.substring)  # '2017_12_31', ''  # background change on the 12th, between 15.00 and 15.31
+    print('routine = ' + args.routine)
+    print('download = ' + str(args.download))
     return args
 
 

@@ -7,9 +7,13 @@ from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
 from utility import *
 from vision import *
-
-# from basilico import *
+from basilico import *
 from senape import *
+
+routine = {
+            'basilico' :  RoutineBasilico,
+            'senape'   :  RoutineSenape
+          }
 
 args = ParseArguments()
 
@@ -24,7 +28,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     before = time.time()
 
-    Process(image_file, bgr, box)
+    routine[args.routine](image_file, bgr, box)
 
     print(str(time.time() - before) + 's')
 

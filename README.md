@@ -52,7 +52,7 @@ A repo for my own experiments.
 - [x] Start cap.py at boot
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [x] Integrate microphone
-- [ ] Test more the exposure metering modes
+- [ ] Further test the exposure metering modes
 - [ ] Sensor color calibration
 - [ ] Find camera parameters automatically
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
