@@ -2,6 +2,7 @@ import subprocess
 import cv2
 import argparse
 import collections
+import numpy as np
 
 
 def interrogate(item):
@@ -66,15 +67,49 @@ def ProcessKeystrokes():
         print('exiting')
         quit()
 
-def mouseCallback(event, x, y, flags, param):
-    for w in windows.keys():
-        print (w, windows[w][y,x].tolist())
-
 
 '''
 windows
 '''
+
+class ColorStatistics:
+    pixels = list()
+
+    def ComputeStats(self):
+        return np.mean(self.pixels, axis=0),np.std(self.pixels, axis=0)
+
+    def Reset(self):
+        # todo: save to disk mean and stddev
+        print(self.ComputeStats())
+        print('reset')
+        self.pixels = list()
+
+    def Update(self, pixel):
+        self.pixels.append(pixel)
+        print(self.ComputeStats())
+
+#basilico
+#('mean', 36.532258064516128, 240.87096774193549, 155.45161290322579)
+#('stddev', 1.3762705793543124, 17.877255211642115, 20.630135661176425)
+#('mean', array([  36.82278481,  247.97468354,  154.82278481]))
+#('stddev', array([  1.28042214,  11.140046  ,  16.07085537]))
+#(array([  37.11111111,  240.27777778,  153.        ]), array([  1.5234788 ,  16.41071992,  30.5777697 ]))
+#bianco
+#(array([  39.63636364,   17.04545455,  207.45454545]), array([ 4.78202557,  2.82001407,  8.4138807 ]))
+#muro
+#(array([  32.5       ,   47.64285714,  181.14285714]), array([  2.58429322,   4.38515585,  10.84868091]))
+
 windows = {}
+
+hsv_stats = ColorStatistics()
+
+def mouseCallback(event, x, y, flags, param):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        #for w in windows.keys():
+        #    print (w, windows[w][y,x].tolist())
+        hsv_stats.Update(windows['hsv'][y,x].tolist())
+    if event == cv2.EVENT_RBUTTONDOWN:
+        hsv_stats.Reset()
 
 def UpdateWindow(name, image, filename=''):
     try:
@@ -86,4 +121,3 @@ def UpdateWindow(name, image, filename=''):
     cv2.imshow(name, image)
     if len(filename) > 0:
         cv2.imwrite(filename, image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
-
