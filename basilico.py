@@ -6,12 +6,7 @@ def Process(image_file, bgr, box):
 
     basilico_hsv,basilico_stddev = LoadColorStats('basilico.pkl')
     basilico_variance = basilico_stddev ** 2
-    weight_hsv = 20.0 / basilico_stddev  # todo: test this as well, without quadratic distance in Segment()
     weight_hsv = 255.0 / basilico_variance
-    print('mean', basilico_hsv)
-    print('stddev', basilico_stddev)
-    print('variance', basilico_variance)
-    print('weights', weight_hsv)   # was (6, 3, 1)
 
     segmentation_threshold = 80  # todo: guess this from the weights
 

@@ -6,7 +6,6 @@ cpdef Segment(unsigned char [:, :, :] image, unsigned char t0, unsigned char t1,
     hp = image.shape[0] - 4  # padding to exclude image edges, 4 pixels wide on all sides
     wp = image.shape[1] - 4
     result = np.zeros((h, w), np.uint8)
-    print(w0, w1, w2)  # todo: remove, debugging only
     for x in range(4, wp):
         for y in range (4, hp):
             d0 = image[y, x, 0] - t0

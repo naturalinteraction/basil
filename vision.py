@@ -98,6 +98,10 @@ def MaskedImage(image, mask):
 def SegmentBiomass(hsv_image, target,
                               weight, segmentation_threshold):
 
+    if (round(weight[0]) < 1 or round(weight[1]) < 1 or round(weight[2]) < 1 or
+        round(weight[0]) > 255 or round(weight[1]) > 255 or round(weight[2]) > 255):
+            print('error! weights are out of bounds.')
+            quit()
     return         Segment(hsv_image, round(target[0]),
                                       round(target[1]),
                                       round(target[2]),
