@@ -98,13 +98,13 @@ def MaskedImage(image, mask):
 def SegmentBiomass(hsv_image, target,
                               weight, segmentation_threshold):
 
-    return         Segment(hsv_image, target[0],
-                                      target[1],
-                                      target[2],
-                                      weight[0],
-                                      weight[1],
-                                      weight[2], 
-                                      segmentation_threshold)
+    return         Segment(hsv_image, round(target[0]),
+                                      round(target[1]),
+                                      round(target[2]),
+                                      round(weight[0]),
+                                      round(weight[1]),
+                                      round(weight[2]),
+                                      round(segmentation_threshold))
 
 
 def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
@@ -207,4 +207,3 @@ def DrawCircles(image, circles, color):
     for c in circles:
         center,radius = c
         cv2.circle(image, (int(center[0]), int(center[1])), int(radius) + 4, color, 1)
-

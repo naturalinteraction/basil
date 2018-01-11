@@ -3,6 +3,8 @@ import cv2
 import argparse
 import collections
 import numpy as np
+import sys
+import pickle
 
 
 def interrogate(item):
@@ -79,25 +81,22 @@ class ColorStatistics:
         return np.mean(self.pixels, axis=0),np.std(self.pixels, axis=0)
 
     def Reset(self):
-        # todo: save to disk mean and stddev
-        print(self.ComputeStats())
-        print('reset')
+        print('Enter filename without extension: ')
+        filename = sys.stdin.readline()
+        filename = filename.strip() + '.pkl'
+        with open(filename, 'wb') as f:
+            pickle.dump((self.ComputeStats()), f, 0)
+        print('Saved ' + filename)
+        print('Reset')
         self.pixels = list()
 
     def Update(self, pixel):
         self.pixels.append(pixel)
         print(self.ComputeStats())
 
-#basilico
-#('mean', 36.532258064516128, 240.87096774193549, 155.45161290322579)
-#('stddev', 1.3762705793543124, 17.877255211642115, 20.630135661176425)
-#('mean', array([  36.82278481,  247.97468354,  154.82278481]))
-#('stddev', array([  1.28042214,  11.140046  ,  16.07085537]))
-#(array([  37.11111111,  240.27777778,  153.        ]), array([  1.5234788 ,  16.41071992,  30.5777697 ]))
-#bianco
-#(array([  39.63636364,   17.04545455,  207.45454545]), array([ 4.78202557,  2.82001407,  8.4138807 ]))
-#muro
-#(array([  32.5       ,   47.64285714,  181.14285714]), array([  2.58429322,   4.38515585,  10.84868091]))
+def LoadColorStats(filename):
+    with open(filename, 'rb') as f:
+        return pickle.load(f)
 
 windows = {}
 

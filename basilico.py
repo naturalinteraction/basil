@@ -4,14 +4,21 @@ def Process(image_file, bgr, box):
 
     hsv = ToHSV(bgr)
 
-    basilico_hsv = (36, 238, 164)
+    basilico_hsv,basilico_stddev = LoadColorStats('basilico.pkl')
 
-    weight_hsv = (6, 3, 1)
+    basilico_variance = basilico_stddev ** 2
 
-    segmentation_threshold = 90 * 90 * 3
+    print(basilico_variance)
+
+    weight_hsv = basilico_stddev  # (6, 3, 1) todo: not quite right because we want the inverse, probably quadratic
+
+    print('bhsv', basilico_hsv)
+    print('weight hsv', weight_hsv)
+
+    segmentation_threshold = 220
 
     biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
-                                                         weight_hsv, segmentation_threshold)
+                                                         weight_hsv, segmentation_threshold * segmentation_threshold * 3)
     # biomass_mask = SegmentBiomass(hsv, ...)
 
     # erosion does not affect the edges of the image!
@@ -21,7 +28,7 @@ def Process(image_file, bgr, box):
     accepted_holes_mask,refused_holes_mask,ellipses,circles = FillHoles(biomass_mask, bgr, hsv,
                                                                         basilico_hsv,
                                                                         weight_hsv,
-                                                                        segmentation_threshold * 1.7)
+                                                                        segmentation_threshold * segmentation_threshold * 3 * 1.7)
 
     # this is done after because it needs the updated biomass_mask
     foreground = MaskedImage(bgr, biomass_mask)

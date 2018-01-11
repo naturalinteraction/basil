@@ -8,8 +8,8 @@ from S3 import ListLocalImages
 from utility import *
 from vision import *
 
-# from basilico import *
-from senape import *
+from basilico import *
+# from senape import *
 
 args = ParseArguments()
 
@@ -40,4 +40,3 @@ try:
           "' timelapse.mp4"
 except:
     print('No available bounding box.')
-
