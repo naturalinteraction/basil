@@ -1,4 +1,5 @@
 from utility import *
+from vision import *
 from audio import AudioLevelPi
 from audio import AudioLevelLaptop
 from S3 import UploadFileToS3
@@ -25,6 +26,7 @@ def test_AudioLevelPi():
 
 def test_AudioLevelLaptop():
     assert AudioLevelLaptop() > 0
+
 '''
 def test_UploadFileToS3():
     assert UploadFileToS3('test.txt')
@@ -49,3 +51,44 @@ def test_ListLocalImagesAndDownloadImagesFromS3():
     assert len(ListLocalImages('downloaded/test-test', '')) == 2
     assert len(ListLocalImages('downloaded/test-test', '30')) == 1
 '''
+
+def ProvideValidTestImage():
+    return cv2.imread('downloaded/test-test_2560x1920_2000_01_30-00_00.jpg')
+
+def test_Vision(image=ProvideValidTestImage()):
+    assert cv2.mean(image) == (139.9120194498698, 175.01678141276042, 169.36513631184897, 0.0)
+    image = ToHSV(image)
+    image = GaussianBlurred(image)
+    image = Blurred(image, size=3)
+    image = MedianBlurred(image)
+    assert((35.50775329589844, 56.24323201497396, 175.11448954264324, 0.0) == cv2.mean(image))
+    mask = SegmentBiomass(image, cv2.mean(image), (0.1, 0.2, 0.3), 100.0)
+    assert(1709141 == len(cv2.findNonZero(mask)))
+    mask = Erode(mask, 5, 2)
+    assert(1611071 == len(cv2.findNonZero(mask)))
+    ignored1, contours, ignored2 = cv2.findContours(mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    assert(ContourStats(contours[0]) == (39.0, 0.5735294117647058, 1.0, 0.11599151536825965))
+    mask = Dilate(mask, iterations=3)
+    assert(1644340 == len(cv2.findNonZero(mask)))
+    image = ToThree(mask)
+    assert((85.30816650390625, 85.30816650390625, 85.30816650390625, 0.0) == cv2.mean(image))
+    single_channel = ToGray(image)
+    assert(cv2.mean(single_channel)[0] == 85.30816650390625)
+    mask = Inverted(single_channel)
+    assert(3270860 == len(cv2.findNonZero(mask)))
+    mask = Dilate(mask)
+    image = MaskedImage(image, mask)
+    assert((1.7259918212890626, 1.7259918212890626, 1.7259918212890626, 0.0) == cv2.mean(image))
+    box = BoundingBox()
+    assert(box.rect == None)
+    mask = Inverted(mask)
+    assert(box.Update(mask) == 1611071)
+    assert(box.rect == rectangle(xmin=6, ymin=6, xmax=2554, ymax=1701))
+
+def test_ColorStatistics():
+    cs = ColorStatistics()
+    cs.Update((1, 2, 3))
+    cs.Update((4, 5, 6))
+    mean,stddev = cs.ComputeStats()
+    assert(list(mean) == [2.5,  3.5,  4.5])
+    assert(list(stddev) == [1.5,  1.5,  1.5])
