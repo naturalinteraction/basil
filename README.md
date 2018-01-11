@@ -17,9 +17,13 @@ A repo for my own experiments.
 - [x] Unit tests, integration tests
 - [x] Modularize the image processing pipeline
 - [x] Test median blur and blur
-- [ ] Consider not only holes but all peripheral regions, pixel-by-pixel
+- [ ] Holes: their color can be different from green
+- [ ] Holes: model their color?
+- [ ] Holes: model substrate color?
+- [ ] Holes: pixel-by-pixel?
+- [ ] Holes: consider their hierarchy (now there are holes and not holes all mixed)
 - [ ] Color analysis inside biomass: histograms
-- [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance
+- [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance + Canny
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] ~~Test CV_BGR2Lab~~
 
