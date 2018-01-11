@@ -4,6 +4,8 @@ def RoutineBasilico(image_file, bgr, box):
 
     hsv = ToHSV(bgr)
 
+    # print(LoadColorStats('bianco-firenze.pkl'))
+
     basilico_hsv,basilico_stddev = LoadColorStats('basilico.pkl')
     basilico_variance = basilico_stddev ** 2
     weight_hsv = 1.0 / basilico_variance
