@@ -18,7 +18,7 @@ def Process(image_file, bgr, box):
     # biomass_mask = Erode(biomass_mask)  # to remove isolated pixels (noise), alternative to median blur
     UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
-    accepted_holes_mask,refused_holes_mask,ellipses,circles = FillHoles(biomass_mask, bgr, hsv,
+    accepted_holes_mask,refused_holes_mask,circles =          FillHoles(biomass_mask, bgr, hsv,
                                                                         basilico_hsv,
                                                                         weight_hsv,
                                                                         segmentation_threshold * segmentation_threshold * 3 * 1.7)
@@ -35,14 +35,13 @@ def Process(image_file, bgr, box):
 
     # Histogram(luminance, output=foreground)
 
-    DrawEllipses(foreground, ellipses, white)
     DrawCircles(foreground, circles, white)
 
     count = box.Update(biomass_mask, foreground)
 
     # UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
-    # UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
-    # UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
+    UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
+    UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
-    # UpdateWindow('biomass_mask FILLED', biomass_mask)
+    UpdateWindow('biomass_mask FILLED', biomass_mask)

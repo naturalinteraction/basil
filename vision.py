@@ -112,38 +112,33 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
     accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
 
-    ellipses = list()
     circles = list()
 
     for cnt in contours:
         area = cv2.contourArea(cnt)
 
-        ### print(ContourStats(cnt))
+        # print(ContourStats(cnt))
 
         if area < 70 * 70:
             hole_mask = np.zeros(bgr.shape[:2], np.uint8)
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
 
-            color_distance = pow(mean[0] - target[0], 2) * weight[0] +  \
-                             pow(mean[1] - target[1], 2) * weight[1] +  \
-                             pow(mean[2] - target[2], 2) * weight[2]
+            color_distance = (mean[0] - target[0]) ** 2 * weight[0] +  \
+                             (mean[1] - target[1]) ** 2 * weight[1] +  \
+                             (mean[2] - target[2]) ** 2 * weight[2]
 
             if color_distance < segmentation_threshold:
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
                 cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                 # print(str(holes) + " area " + str(area) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
                 holes += 1
-                if area > 5 * 5:
-                    if len(cnt) > 4:
-                        ellipses.append(cv2.fitEllipse(cnt))
-                    else:
-                        circles.append(cv2.minEnclosingCircle(cnt))
+                circles.append(cv2.minEnclosingCircle(cnt))
             else:
                 cv2.fillPoly(refused_holes_mask, pts = [cnt], color=(255))
 
     # print('holes ' + str(holes))
-    return accepted_holes_mask,refused_holes_mask,ellipses,circles
+    return accepted_holes_mask,refused_holes_mask,circles
 
 
 class BoundingBox:
