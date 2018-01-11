@@ -5,17 +5,15 @@ def Process(image_file, bgr, box):
     hsv = ToHSV(bgr)
 
     basilico_hsv,basilico_stddev = LoadColorStats('basilico.pkl')
-
     basilico_variance = basilico_stddev ** 2
+    weight_hsv = 20.0 / basilico_stddev  # todo: test this as well, without quadratic distance in Segment()
+    weight_hsv = 255.0 / basilico_variance
+    print('mean', basilico_hsv)
+    print('stddev', basilico_stddev)
+    print('variance', basilico_variance)
+    print('weights', weight_hsv)   # was (6, 3, 1)
 
-    print(basilico_variance)
-
-    weight_hsv = basilico_stddev  # (6, 3, 1) todo: not quite right because we want the inverse, probably quadratic
-
-    print('bhsv', basilico_hsv)
-    print('weight hsv', weight_hsv)
-
-    segmentation_threshold = 220
+    segmentation_threshold = 80  # todo: guess this from the weights
 
     biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
                                                          weight_hsv, segmentation_threshold * segmentation_threshold * 3)
@@ -35,10 +33,10 @@ def Process(image_file, bgr, box):
     UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
 
     # h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
-    luminance = ToGray(foreground)
+    # luminance = ToGray(foreground)
 
     # eroded to exclude outer edges
-    UpdateWindow('derivative', ComputeImageDerivative(GaussianBlurred(luminance, 5), Erode(biomass_mask, iterations=2)))
+    # UpdateWindow('derivative', ComputeImageDerivative(GaussianBlurred(luminance, 5), Erode(biomass_mask, iterations=2)))
 
     # Histogram(luminance, output=foreground)
 
@@ -48,8 +46,8 @@ def Process(image_file, bgr, box):
     count = box.Update(biomass_mask, foreground)
 
     # UpdateWindow('bgr', bgr)
-    UpdateWindow('hsv', hsv)
+    # UpdateWindow('hsv', hsv)
     # UpdateWindow('accepted-holes', MaskedImage(bgr, accepted_holes_mask))
     # UpdateWindow('refused-holes', MaskedImage(bgr, refused_holes_mask))
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
-    UpdateWindow('biomass_mask FILLED', biomass_mask)
+    # UpdateWindow('biomass_mask FILLED', biomass_mask)
