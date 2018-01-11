@@ -6,9 +6,9 @@ def Process(image_file, bgr, box):
 
     basilico_hsv,basilico_stddev = LoadColorStats('basilico.pkl')
     basilico_variance = basilico_stddev ** 2
-    weight_hsv = 255.0 / basilico_variance
+    weight_hsv = 1.0 / basilico_variance
 
-    segmentation_threshold = 80  # todo: guess this from the weights
+    segmentation_threshold = 4.0  # todo: guess this from the weights
 
     biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
                                                          weight_hsv, segmentation_threshold * segmentation_threshold * 3)

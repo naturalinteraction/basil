@@ -26,7 +26,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     Process(image_file, bgr, box)
 
-    print('time elapsed', time.time() - before)
+    print(str(time.time() - before) + 's')
 
     ProcessKeystrokes()
 

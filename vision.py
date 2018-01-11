@@ -97,19 +97,13 @@ def MaskedImage(image, mask):
 
 def SegmentBiomass(hsv_image, target,
                               weight, segmentation_threshold):
-
-    if (round(weight[0]) < 1 or round(weight[1]) < 1 or round(weight[2]) < 1 or
-        round(weight[0]) > 255 or round(weight[1]) > 255 or round(weight[2]) > 255):
-            print('error! weights are out of bounds.')
-            quit()
-    return         Segment(hsv_image, round(target[0]),
-                                      round(target[1]),
-                                      round(target[2]),
-                                      round(weight[0]),
-                                      round(weight[1]),
-                                      round(weight[2]),
-                                      round(segmentation_threshold))
-
+    return         Segment(hsv_image,  target[0],
+                                       target[1],
+                                       target[2],
+                                       weight[0],
+                                       weight[1],
+                                       weight[2],
+                                       segmentation_threshold)
 
 def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
     # inverted mask, so that we can analyze the holes as white blobs against a black background
