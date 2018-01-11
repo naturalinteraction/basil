@@ -95,7 +95,6 @@ class ColorStatistics:
 
     def Update(self, pixel):
         self.pixels.append(pixel)
-        print(self.ComputeStats())
         # print(np.var(self.pixels, axis=0))  # variance
 
 def LoadColorStats(filename):
@@ -111,6 +110,7 @@ def mouseCallback(event, x, y, flags, param):
         #for w in windows.keys():
         #    print (w, windows[w][y,x].tolist())
         hsv_stats.Update(windows['hsv'][y,x].tolist())
+        print(hsv_stats.ComputeStats())
     if event == cv2.EVENT_RBUTTONDOWN:
         hsv_stats.Reset()
 

@@ -106,6 +106,7 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
     accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     circles = list()
+    # cs = ColorStatistics()
     for index,cnt in enumerate(contours):
         # print(ContourStats(cnt))
         if hierarchy[0][index][3] >= 0 and cv2.contourArea(cnt) < 30 * 30:
@@ -118,6 +119,7 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
                              (mean[2] - target[2]) ** 2 * weight[2]
 
             if color_distance < segmentation_threshold:
+                # cs.Update(mean)
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
                 cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
                 # print(" area " + str(cv2.contourArea(cnt)) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
@@ -125,7 +127,7 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
             else:
                 cv2.fillPoly(refused_holes_mask, pts = [cnt], color=(255))
                 # print("REFUSED  area " + str(cv2.contourArea(cnt)) + ' dist ' + str(color_distance) + ' mean ' + str(mean))
-
+    # print(cs.ComputeStats())
     return accepted_holes_mask,refused_holes_mask,circles
 
 
