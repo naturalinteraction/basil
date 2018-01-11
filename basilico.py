@@ -30,7 +30,7 @@ def RoutineBasilico(image_file, bgr, box):
     UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
 
     # h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))
-    # luminance = ToGray(foreground)
+    # luminance = BGRToGray(foreground)
 
     # eroded to exclude outer edges
     # UpdateWindow('derivative', ComputeImageDerivative(GaussianBlurred(luminance, 5), Erode(biomass_mask, iterations=2)))
