@@ -71,9 +71,14 @@ def Erode(input, kernel_size=3, iterations=1):
 def Dilate(input, kernel_size=3, iterations=1):
     return cv2.dilate(input, np.ones((kernel_size, kernel_size), np.uint8), iterations)
 
-# biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))  # erode, then dilate
-# biomass_mask = cv2.morphologyEx(biomass_mask, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))  # dilate, then erode
+def ImageWithColor(image_for_shape, color):
+    image = np.zeros(image_for_shape.shape[:], np.uint8)
+    image[:] = color
+    return image
 
+def ComputeStatsOfMaskedImage(image, mask):
+    mean,stddev = cv2.meanStdDev(image, mask=mask)
+    return (float(mean[0]), float(mean[1]), float(mean[2])),(float(stddev[0]), float(stddev[1]), float(stddev[2]))
 
 def ToHSV(bgr_image):
     return cv2.cvtColor(bgr_image, cv2.COLOR_BGR2HSV)

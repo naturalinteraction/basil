@@ -27,6 +27,10 @@ def RoutineBasilico(image_file, bgr, box):
 
     # this is done after because it needs the updated biomass_mask
     foreground = MaskedImage(bgr, biomass_mask)
+
+    mean,stddev = ComputeStatsOfMaskedImage(hsv, biomass_mask)
+    UpdateWindow('mean', ImageWithColor(bgr, mean))
+
     UpdateWindow('background', MaskedImage(bgr, Inverted(biomass_mask)))
 
     # h,s,v = cv2.split(cv2.cvtColor(foreground, cv2.COLOR_BGR2HSV))

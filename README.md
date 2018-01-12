@@ -17,9 +17,9 @@ A repo for my own experiments.
 - [x] Unit tests, integration tests
 - [x] Modularize the image processing pipeline
 - [x] Test median blur and blur
-- [ ] Holes: their color can be different from green
-- [ ] Holes: model their color?
-- [ ] Holes: model substrate color?
+- [ ] Segmentation: model hole color?
+- [ ] Segmentation: model substrate color?
+- [ ] Focus on segmentation, not on internal features
 - [ ] Holes: pixel-by-pixel?
 - [ ] Holes: consider their hierarchy (now there are holes and not holes all mixed)
 - [ ] Color analysis inside biomass: histograms
