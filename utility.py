@@ -103,7 +103,7 @@ def SaveColorStats(mean, stddev, filename):
 
 def LoadColorStats(filename):
     with open(filename, 'rb') as f:
-        return pickle.load(f)
+        return np.array(pickle.load(f))
 
 windows = {}
 

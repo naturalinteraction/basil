@@ -9,10 +9,12 @@ from utility import *
 from vision import *
 from basilico import *
 from senape import *
+from modello import *
 
 routine = {
             'basilico' :  RoutineBasilico,
-            'senape'   :  RoutineSenape
+            'senape'   :  RoutineSenape,
+            'modello'  :  RoutineModello,
           }
 
 args = ParseArguments()
