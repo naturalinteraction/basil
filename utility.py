@@ -97,6 +97,10 @@ class ColorStatistics:
         self.pixels.append(pixel)
         # print(np.var(self.pixels, axis=0))  # variance
 
+def SaveColorStats(mean, stddev, filename):
+    with open(filename, 'wb') as f:
+        pickle.dump((mean,stddev), f, 0)
+
 def LoadColorStats(filename):
     with open(filename, 'rb') as f:
         return pickle.load(f)
