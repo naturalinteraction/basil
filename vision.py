@@ -95,6 +95,11 @@ def Inverted(image):
 def MaskedImage(image, mask):
     return cv2.bitwise_and(image, image, mask=mask)
 
+def MaskForTone(image, filename, threshold):
+    mean,stddev = LoadColorStats(filename)
+    variance = stddev ** 2
+    return SegmentBiomass(image, mean, 1.0 / variance, threshold)
+
 def SegmentBiomass(hsv_image, target,
                               weight, segmentation_threshold):
     return         Segment(hsv_image,  target[0],
@@ -105,8 +110,7 @@ def SegmentBiomass(hsv_image, target,
                                        weight[2],
                                        segmentation_threshold)
 
-def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
-    # inverted mask, so that we can analyze the holes as white blobs against a black background
+def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold, max_area=30 * 30, greater_than=False):
     ignored, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
@@ -114,7 +118,7 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
     # cs = ColorStatistics()
     for index,cnt in enumerate(contours):
         # print(ContourStats(cnt))
-        if hierarchy[0][index][3] >= 0 and cv2.contourArea(cnt) < 30 * 30:
+        if hierarchy[0][index][3] >= 0 and cv2.contourArea(cnt) <= max_area:
             hole_mask = np.zeros(bgr.shape[:2], np.uint8)
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
@@ -123,7 +127,7 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold):
                              (mean[1] - target[1]) ** 2 * weight[1] +  \
                              (mean[2] - target[2]) ** 2 * weight[2]
 
-            if color_distance < segmentation_threshold:
+            if ((not greater_than) and color_distance <= segmentation_threshold) or (greater_than and color_distance > segmentation_threshold):
                 # cs.Update(mean)
                 cv2.fillPoly(biomass_mask, pts = [cnt], color=(255))
                 cv2.fillPoly(accepted_holes_mask, pts = [cnt], color=(255))
