@@ -3,9 +3,27 @@ import numpy as np
 from utility import *
 from segment import *
 from collections import namedtuple
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
 
 white = (255, 255, 255)
+
+
+def ScatterPlotHSV(image, title='HSV'):
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    small = cv2.resize(image, (0, 0), fx=0.01, fy=0.01)
+    height, width, depth = small.shape
+    for x in range(0, width):
+       for y in range (0, height):
+           col = small[y, x]
+           ax.scatter(col[0], col[1], col[2], c='#%02x%02x%02x' % (col[2], col[1], col[0]))  # BGR >>> RGB
+    ax.set_xlabel('H')
+    ax.set_ylabel('S')
+    ax.set_zlabel('V')
+    plt.gcf().canvas.set_window_title(title)
+    plt.show()
 
 
 '''

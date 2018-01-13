@@ -39,6 +39,6 @@ def RoutineModello(image_file, bgr, box):
     UpdateWindow('dead', dead)
     UpdateWindow('green', green)
     UpdateWindow('all', tutto)
-
     UpdateWindow('hsv', hsv)
+    ScatterPlotHSV(hsv, 'entire image')
  

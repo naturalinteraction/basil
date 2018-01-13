@@ -17,10 +17,10 @@ A repo for my own experiments.
 - [x] Unit tests, integration tests
 - [x] Modularize the image processing pipeline
 - [x] Test median blur and blur
-- [ ] Segmentation: model hole color? and dead leaves color?
-- [ ] Segmentation: model substrate color?
-- [ ] Holes: pixel-by-pixel?
+- [x] Segmentation: model hole color and dead leaves color
+- [x] Segmentation: model substrate color
 - [x] Holes: consider their hierarchy
+- [ ] Holes: pixel-by-pixel?
 - [ ] Color analysis inside biomass: histograms
 - [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance + Canny
 - [ ] Find biomass segmentation algorithm params automatically
