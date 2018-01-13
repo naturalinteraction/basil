@@ -20,9 +20,13 @@ A repo for my own experiments.
 - [x] Segmentation: model hole color and dead leaves color
 - [x] Segmentation: model substrate color
 - [x] Holes: consider their hierarchy
+- [ ] Segmentation: investigate downsizing
+- [ ] Segmentation: multi-dimensional k-means clustering
+- [ ] Segmentation: Otsu thresholding and adaptive thresholding
+- [ ] Likelihood of a pixel to belong to a class based on color and spatial location
 - [ ] Holes: pixel-by-pixel?
 - [ ] Color analysis inside biomass: histograms
-- [ ] Sobel, Scharr and Laplacian on all channels separately: B, G, R, H, S, V, luminance + Canny
+- [ ] Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] ~~Test CV_BGR2Lab~~
 
