@@ -116,9 +116,15 @@ def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold, ma
     refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
     circles = list()
     # cs = ColorStatistics()
+    plant_index = -1
+    plant_area = 0
     for index,cnt in enumerate(contours):
-        # print(ContourStats(cnt))
-        if hierarchy[0][index][3] >= 0 and cv2.contourArea(cnt) <= max_area:
+        if cv2.contourArea(cnt) > plant_area:
+            plant_area = cv2.contourArea(cnt)
+            plant_index = index
+    for index,cnt in enumerate(contours):
+        # print(index, ContourStats(cnt), hierarchy[0][index][3])
+        if hierarchy[0][index][3] == plant_index and cv2.contourArea(cnt) <= max_area:
             hole_mask = np.zeros(bgr.shape[:2], np.uint8)
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
