@@ -26,6 +26,13 @@ def ScatterPlotHSV(image, title='HSV'):
     plt.show()
 
 
+def SaturationThreshold(hsv, threshold):
+    s = cv2.split(hsv)[1]
+    cv2.threshold
+    ret,thresholded = cv2.threshold(s,threshold,255,cv2.THRESH_BINARY)
+    return thresholded
+
+
 '''
 rectangle
 '''

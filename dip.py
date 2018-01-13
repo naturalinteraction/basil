@@ -10,11 +10,13 @@ from vision import *
 from basilico import *
 from senape import *
 from modello import *
+from satu import *
 
 routine = {
             'basilico' :  RoutineBasilico,
             'senape'   :  RoutineSenape,
             'modello'  :  RoutineModello,
+            'satu'     :  RoutineSatu,
           }
 
 args = ParseArguments()
