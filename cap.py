@@ -18,7 +18,7 @@ from audio import AudioLevelPi
 print(GitCommitMessage())
 print(OpenCVVersion())
 
-campaign = 'prebiagio'
+campaign = 'sanbiagio1'
     
 # initialize the camera and grab a reference to the raw camera capture
 try:
