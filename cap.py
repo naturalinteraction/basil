@@ -27,18 +27,9 @@ except:
     print('No camera. Exiting.')
     quit()
 
-# (2560, 1920) for camera v1.3
 camera.framerate = 5
-try:
-    camera.resolution = (2560, 1920) # (2592, 1952) # (2160, 1632) (2112, 1568) (2000, 1504) (1920, 1088) (1640, 1232)
-except:
-    camera.resolution = (2560, 1920)
-    print('old camera version')
-else:
-    print('new camera version')
-finally:
-    print((camera.resolution))
-    rawCapture = PiRGBArray(camera, size=camera.resolution)
+camera.resolution = (2560, 1920)
+rawCapture = PiRGBArray(camera, size=camera.resolution)
      
 show = True
 

@@ -19,7 +19,7 @@ class CameraProperties(object):
                   'Contrast' : numpy.arange(0, 100+1, 10),
                   'Saturation' : numpy.arange(-100, +100+1, 10),               
                   'Sharpness' : numpy.arange(-100, +100+1, 10),
-                  'Shutter Speed' : numpy.arange(0, 80000, 5000),
+                  'Shutter Speed' : numpy.arange(0, 80000, 250),
                   'DRC Strength' : ['off', 'low', 'medium', 'high']    
                  }
     # indices of the currently selected camera properties' values
