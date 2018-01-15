@@ -172,10 +172,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         # grab the raw NumPy array representing the image
         image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
  
-        # force this to avoid frames fading to black
-        print('forcing', cp.PropertyValue('Shutter Speed'))
-        cp.SetPropertyOnCamera('Shutter Speed', cp.PropertyValue('Shutter Speed'))
- 
         # show the frame
         if show:
             cv2.imshow('cap', image)
@@ -196,6 +192,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 just_started_but_done = True                
         else:
           ticks = time.time()
+          if cp.calibrating == False:
+              # force this to avoid frames fading to black
+              print('forcing', cp.PropertyValue('Shutter Speed'))
+              cp.SetPropertyOnCamera('Shutter Speed', cp.PropertyValue('Shutter Speed'))
           if (ticks - last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
               if localtime.tm_min == 00:  # one per hour
