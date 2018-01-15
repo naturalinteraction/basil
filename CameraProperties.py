@@ -113,6 +113,7 @@ class CameraProperties(object):
             return
         self.cam.shutter_speed = self.cam.exposure_speed
         self.cam.exposure_mode = 'off'
+        self.cam.shutter_speed = self.cam.exposure_speed
         g = self.cam.awb_gains
         self.cam.awb_mode = 'off'
         self.cam.awb_gains = g
@@ -124,6 +125,9 @@ class CameraProperties(object):
 
     def CurrentPropertyValue(self):
         name = self.CurrentPropertyName()
+        return self.properties[name][self.values_indices[name]]
+
+    def PropertyValue(self, name):
         return self.properties[name][self.values_indices[name]]
 
     def PrintAllProperties(self):
