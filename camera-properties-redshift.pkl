@@ -22,7 +22,7 @@ p7
 I0
 sS'Shutter Speed'
 p8
-I2
+I5
 sS'ISO'
 p9
 I1
@@ -31,7 +31,7 @@ p10
 I0
 sS'AWB Blue Gain'
 p11
-I23
+I25
 sS'Exp Compensation'
 p12
 I5
