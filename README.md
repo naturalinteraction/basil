@@ -2,6 +2,12 @@
 
 A repo for my own experiments.
 
+#### Specs
+1. Identify areas with good growth and areas with issues.
+2. Curve of growth in time.
+3. Algorithm is plant-specific. Plant in tray is known.
+4. White light.
+5. Substrate will guarantee good contrast.
 
 #### Tasks dip.py
 
