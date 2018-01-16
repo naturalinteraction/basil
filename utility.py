@@ -111,8 +111,8 @@ hsv_stats = ColorStatistics()
 
 def mouseCallback(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
-        #for w in windows.keys():
-        #    print (w, windows[w][y,x].tolist())
+        for w in windows.keys():
+            print (w, windows[w][y,x].tolist())
         hsv_stats.Update(windows['hsv'][y,x].tolist())
         print(hsv_stats.ComputeStats())
     if event == cv2.EVENT_RBUTTONDOWN:
@@ -122,9 +122,9 @@ def UpdateWindow(name, image, filename=''):
     try:
         windows[name]
     except:
-        windows[name] = image
         cv2.namedWindow(name, cv2.WINDOW_NORMAL)  # moveWindow
         cv2.setMouseCallback(name, mouseCallback)
     cv2.imshow(name, image)
+    windows[name] = image
     if len(filename) > 0:
         cv2.imwrite(filename, image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
