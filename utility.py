@@ -46,8 +46,8 @@ parsing command line arguments
 '''
 def ParseArguments():
     parser = argparse.ArgumentParser(description='process images from the sensors')
-    parser.add_argument('-p', '--prefix', default = 'visible-bianco', help='the prefix for the images')
-    parser.add_argument('-s', '--substring', default='2017_12_31', help='the substring to filter the images')
+    parser.add_argument('-p', '--prefix', default = 'visible-sanbiagio1', help='the prefix for the images')
+    parser.add_argument('-s', '--substring', default='2018_01_16', help='the substring to filter the images')
     parser.add_argument('-r', '--routine', default='basilico', help='the routine to process the images')
     parser.add_argument('-d', '--download', dest='download', action='store_const',
                         const=True, default=False,

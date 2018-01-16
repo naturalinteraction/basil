@@ -60,8 +60,9 @@ class CameraProperties(object):
         if name == 'AWB Blue Gain':
              return float(self.cam.awb_gains[1])
         
-    def SetPropertyOnCamera(self, name, value):
-        print(('Attempting to set %s to %s' % (name, value)))
+    def SetPropertyOnCamera(self, name, value, mute=False):
+        if mute == False:
+            print(('Attempting to set %s to %s' % (name, value)))
         if name == 'DRC Strength':
              self.cam.drc_strength = value
         if name == 'Brightness':
@@ -106,7 +107,7 @@ class CameraProperties(object):
         or self.PropertyOnCamera('Shutter Speed') != 0
         or self.PropertyOnCamera('AWB Mode') != 'auto'
         or self.PropertyOnCamera('Exposure Mode') != 'auto'):
-            print('Set ISO and Shutter Speed to 0 first. Set Exposure Mode and AWB Mode to "auto". Doing this for you now. Freeze again in a few, please.')
+            print('Set ISO and Shutter Speed to 0 first. Set Exposure Mode and AWB Mode to "auto". Doing this for you now. Freeze again in a few, please. Not forcing shutter until the process is relaunched.')
             self.cam.iso = 0
             self.cam.exposure_mode = 'auto'
             self.cam.awb_mode = 'auto'
@@ -121,7 +122,7 @@ class CameraProperties(object):
         self.cam.awb_gains = g
         self.cam.iso = 100
         # self.calibrating = False  # so that we can adjust shutter and save
-        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen.')
+        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen. Not forcing shutter until the process is relaunched.')
 
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]

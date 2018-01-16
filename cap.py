@@ -192,13 +192,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 just_started_but_done = True                
         else:
           ticks = time.time()
+
           if cp.calibrating == False:
               # force this to avoid frames fading to black
-              print('forcing', cp.PropertyValue('Shutter Speed'))
-              cp.SetPropertyOnCamera('Shutter Speed', cp.PropertyValue('Shutter Speed'))
+              print(cp.PropertyValue('Shutter Speed'))
+              cp.SetPropertyOnCamera('Shutter Speed', cp.PropertyValue('Shutter Speed'), mute=True)
+
           if (ticks - last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
-              if localtime.tm_min == 00:  # one per hour
+              if localtime.tm_min == 00 and localtime.tm_hour > 4:  # one per hour, from 5am to 11pm
                   # if localtime.tm_hour == 10:  # one per day, at 10am
                   last_picture_taken_ticks = TakePicture(image, camera)
                   print('Turning zoom off.')
