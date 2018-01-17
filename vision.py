@@ -87,6 +87,10 @@ def Histogram(channel, output):
     for i in range(len(hist)):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
+def CropImage(image, top=0, bottom=0, left=0, right=0):
+    height, width, depth = image.shape
+    print(image.shape)
+    return image[top:height-bottom, left:width-right]
 
 # kernel_size 3, 5, 7, 9, 11 ...
 def Erode(input, kernel_size=3, iterations=1):
