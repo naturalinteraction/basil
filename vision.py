@@ -28,7 +28,6 @@ def ScatterPlotHSV(image, title='HSV'):
 
 def SaturationThreshold(hsv, threshold):
     s = cv2.split(hsv)[1]
-    cv2.threshold
     ret,thresholded = cv2.threshold(s,threshold,255,cv2.THRESH_BINARY)
     return thresholded
 
@@ -129,7 +128,6 @@ def CropImage(image, top=0, bottom=0, left=0, right=0, cropname=None):
         bottom = 160
         left = 1000
         right = 0
-    # print(top, bottom, left, right)
     return image[top:height-bottom, left:width-right]
 
 # kernel_size 3, 5, 7, 9, 11 ...
