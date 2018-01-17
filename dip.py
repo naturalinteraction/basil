@@ -11,12 +11,14 @@ from basilico import *
 from senape import *
 from modello import *
 from satu import *
+from onlydisplaybgr import *
 
 routine = {
             'basilico' :  RoutineBasilico,
             'senape'   :  RoutineSenape,
             'modello'  :  RoutineModello,
             'satu'     :  RoutineSatu,
+            'display'  :  RoutineOnlyDisplayBGR,
           }
 
 args = ParseArguments()
