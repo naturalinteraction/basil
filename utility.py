@@ -112,9 +112,12 @@ hsv_stats = ColorStatistics()
 def mouseCallback(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         for w in windows.keys():
-            print (w, windows[w][y,x].tolist())
-        hsv_stats.Update(windows['hsv'][y,x].tolist())
-        print(hsv_stats.ComputeStats())
+            print (w + str(windows[w][y,x].tolist()))
+        try:
+            hsv_stats.Update(windows['hsv'][y,x].tolist())
+            print(hsv_stats.ComputeStats())
+        except:
+            pass
     if event == cv2.EVENT_RBUTTONDOWN:
         hsv_stats.Reset()
 
