@@ -87,9 +87,49 @@ def Histogram(channel, output):
     for i in range(len(hist)):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
-def CropImage(image, top=0, bottom=0, left=0, right=0):
+def CropImage(image, top=0, bottom=0, left=0, right=0, cropname=None):
     height, width, depth = image.shape
-    print(image.shape)
+    if (cropname == 'redshift'):  # redshift: alfalfa (verde salvia) (che su internet e' 126,149,125)
+        top = 260
+        bottom = 0
+        left = 0
+        right = 0
+    if (cropname == 'noir'):  # noir: alfalfa (verde salvia) (che su internet e' 126,149,125)
+        top = 50
+        bottom = 280
+        left = 0
+        right = 250
+    if (cropname == 'blueshift'):  # blueshift: pianta kappa
+        top = 200
+        bottom = 0
+        left = 0
+        right = 0
+    if (cropname == 'visible'):  # visible
+        top = 330
+        bottom = 180
+        left = 0
+        right = 0
+    if (cropname == 'rucola'):  # visible upper left rucola
+        top = 330
+        bottom = 1170
+        left = 0
+        right = 1560
+    if (cropname == 'basilicorosso'):  # visible lower left basilico rosso (sul blu/viola)
+        top = 830
+        bottom = 0
+        left = 0
+        right = 1800
+    if (cropname == 'bieta'):  # visible upper right bieta
+        top = 330
+        bottom = 1200
+        left = 1000
+        right = 200
+    if (cropname == 'bataviarossa'):  # visible lower right batavia rossa (sul rosso)
+        top = 850
+        bottom = 160
+        left = 1000
+        right = 0
+    # print(top, bottom, left, right)
     return image[top:height-bottom, left:width-right]
 
 # kernel_size 3, 5, 7, 9, 11 ...

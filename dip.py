@@ -12,6 +12,13 @@ from senape import *
 from modello import *
 from satu import *
 from onlydisplaybgr import *
+from alfalfaredshift import *
+from alfalfanoir import *
+from bieta import *
+from rucola import *
+from basilicorosso import *
+from bataviarossa import *
+from kappa import *
 
 routine = {
             'basilico' :  RoutineBasilico,
@@ -19,6 +26,13 @@ routine = {
             'modello'  :  RoutineModello,
             'satu'     :  RoutineSatu,
             'display'  :  RoutineOnlyDisplayBGR,
+            'bieta'    :  RoutineBieta,
+            'kappa'    :  RoutineKappa,
+            'rucola'   :  RoutineRucola,
+            'alfalfaredshift'  :  RoutineAlfalfaRedshift,
+            'alfalfanoir'      :  RoutineAlfalfaNoir,
+            'basilicorosso'    :  RoutineBasilicoRosso,
+            'bataviarossa'     :  RoutineBataviaRossa,
           }
 
 args = ParseArguments()
