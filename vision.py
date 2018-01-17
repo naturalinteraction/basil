@@ -99,7 +99,7 @@ def CropImage(image, top=0, bottom=0, left=0, right=0, cropname=None):
         left = 0
         right = 250
     if (cropname == 'blueshift'):  # blueshift: pianta kappa
-        top = 200
+        top = 120
         bottom = 0
         left = 0
         right = 0
