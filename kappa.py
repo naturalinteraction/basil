@@ -32,7 +32,9 @@ def RoutineKappa(image_file, bgr, box):
                                                                         s,
                                                                         20.0)
 
-    UpdateWindow('foglie', MaskedImage(bgr, mask_tone))
+    foreground = MaskedImage(bgr, mask_tone)
+    box.Update(mask_tone, foreground)
+    UpdateWindow('foglie', foreground)
 
     if False:
         small = Resize(bgr, 0.2)
