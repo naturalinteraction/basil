@@ -30,3 +30,11 @@ def RoutineKappa(image_file, bgr, box):
                                                                         20.0)
 
     UpdateWindow('foglie', MaskedImage(bgr, mask_tone))
+
+    small = Resize(bgr, 0.2)
+    (segmented_image, labels_image, number_regions) = MeanShift(small)
+    print(number_regions)
+    UpdateWindow('small', small)
+    UpdateWindow('segmented', segmented_image)
+    UpdateWindow('labels', np.uint8(labels_image))
+    # todo: COLOR_BGR2YUV COLOR_BGR2Luv COLOR_BGR2Lab

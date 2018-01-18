@@ -6,6 +6,7 @@ from segment import *
 from collections import namedtuple
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import pymeanshift as pms
 
 
 white = (255, 255, 255)
@@ -88,6 +89,14 @@ def Histogram(channel, output):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
 
+def MeanShift(image, spatial_radius=None, range_radius=None, min_density=50):
+    # print(image.shape)
+    if spatial_radius == None:
+        spatial_radius = 6  # todo: proportional to shape?
+    if range_radius == None:
+        range_radius = 4.5  # todo: proportional to shape?
+    return pms.segment(image, spatial_radius, range_radius, min_density)  # returns (segmented_image, labels_image, number_regions)
+
 # works on reduced image to 20% on both axes, works on BGR and HSV, returns different sets of data whether stats is True
 def KMeans(three_channels, K, stats=False):
     img = cv2.resize(three_channels, (0, 0), fx=0.2, fy=0.2)
@@ -117,6 +126,9 @@ def KMeans(three_channels, K, stats=False):
         stddevs.append(stddev)
     return compactness,result,means,stddevs
 
+
+def Resize(image, factor):
+    return cv2.resize(image, (0, 0), fx=factor, fy=factor)
 
 def CropImage(image, top=0, bottom=0, left=0, right=0, cropname=None):
     height, width, depth = image.shape
