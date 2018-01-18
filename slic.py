@@ -20,7 +20,7 @@ if True:
     print('stocazzo')
 	# apply SLIC and extract (approximately) the supplied number
 	# of segments
-    segments = slic(image, n_segments = numSegments, sigma = 5)
+    segments = slic(image, compactness = 0.00000001, n_segments = numSegments, sigma = 5)
     # show the output of SLIC
     print('fatto')
     fig = plt.figure("Superpixels -- %d segments" % (numSegments))
