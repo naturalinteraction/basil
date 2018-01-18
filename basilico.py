@@ -12,16 +12,16 @@ def RoutineBasilico(image_file, bgr, box):
     segmentation_threshold = 60.0
 
     biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
-                                                         weight_hsv, segmentation_threshold)
+                                                         basilico_stddev, segmentation_threshold)
     # biomass_mask = SegmentBiomass(hsv, ...)
 
     # erosion does not affect the edges of the image!
     # biomass_mask = Erode(biomass_mask)  # to remove isolated pixels (noise), alternative to median blur
     # UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
-    accepted_holes_mask,refused_holes_mask,circles =          FillHoles(biomass_mask, bgr, hsv,
+    accepted_holes_mask,refused_holes_mask,circles =          FillHoles(biomass_mask, hsv,
                                                                         basilico_hsv,
-                                                                        weight_hsv,
+                                                                        basilico_stddev,
                                                                         segmentation_threshold * 1.33)
 
     # this is done after because it needs the updated biomass_mask

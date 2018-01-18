@@ -12,9 +12,9 @@ def RoutineModello(image_file, bgr, box):
     mask_tutto = mask_green + mask_dead + mask_holes
 
     bianco_hsv,bianco_stddev = LoadColorStats('bianco-firenze.pkl')
-    ignored1, ignored2, circles = FillHoles(mask_tutto, bgr, hsv,
+    ignored1, ignored2, circles = FillHoles(mask_tutto, hsv,
                                             bianco_hsv,
-                                            1.0 / (bianco_stddev ** 2),
+                                            bianco_stddev,
                                             30,
                                             max_area = 400, greater_than = True)
 

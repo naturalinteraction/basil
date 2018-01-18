@@ -10,8 +10,23 @@ def RoutineKappa(image_file, bgr, box):
         for i in range(2, 8):
             c,result = KMeans(hsv, i)
 
-    compactness,result,means,stddevs = KMeans(hsv, 4, stats=True)
-    UpdateWindow('kmeans', result)
+    if False:
+        compactness,result,means,stddevs = KMeans(hsv, 4, stats=True)
+        UpdateWindow('kmeans', result)
 
     # SaveColorStats(means[3],stddevs[3], 'foglie-kappa.pkl')
     print(LoadColorStats('foglie-kappa.pkl'))
+    m,s = LoadColorStats('foglie-kappa.pkl')
+
+    mask_tone = MaskForTone(hsv, 'foglie-kappa.pkl', 20.0)
+    mask_sat = SaturationThreshold(hsv, 90)  # contains purple mylar
+
+    mask_tone = cv2.bitwise_and(mask_tone, mask_sat)
+
+    if True:
+        accepted_holes_mask,refused_holes_mask,circles =      FillHoles(mask_tone, hsv,
+                                                                        m,
+                                                                        s,
+                                                                        20.0)
+
+    UpdateWindow('foglie', MaskedImage(bgr, mask_tone))

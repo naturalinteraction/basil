@@ -209,19 +209,19 @@ def SegmentBiomass(hsv_image, target,
                                        weight[2],
                                        segmentation_threshold)
 
-def FillHoles(biomass_mask, bgr, hsv, target, weight, segmentation_threshold, max_area=30 * 30, greater_than=False):
+def FillHoles(biomass_mask, hsv, target, stddev, segmentation_threshold, max_area=30 * 30, greater_than=False):
+    weight = 1.0 / (stddev ** 2)
     ignored, contours, hierarchy = cv2.findContours(biomass_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    accepted_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
-    refused_holes_mask = np.zeros(bgr.shape[:2], np.uint8)
+    accepted_holes_mask = np.zeros(hsv.shape[:2], np.uint8)
+    refused_holes_mask = np.zeros(hsv.shape[:2], np.uint8)
     circles = list()
     # cs = ColorStatistics()
     for index,cnt in enumerate(contours):
         # print(ContourStats(cnt))
         if hierarchy[0][index][3] >= 0 and cv2.contourArea(cnt) <= max_area:
-            hole_mask = np.zeros(bgr.shape[:2], np.uint8)
+            hole_mask = np.zeros(hsv.shape[:2], np.uint8)
             cv2.drawContours(hole_mask, [cnt], -1, 255, -1)
             mean = cv2.mean(hsv, mask=hole_mask)[0:3]
-
             color_distance = (mean[0] - target[0]) ** 2 * weight[0] +  \
                              (mean[1] - target[1]) ** 2 * weight[1] +  \
                              (mean[2] - target[2]) ** 2 * weight[2]
