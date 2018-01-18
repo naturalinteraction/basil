@@ -26,7 +26,7 @@ A repo for my own experiments.
 - [x] Segmentation: model hole color and dead leaves color
 - [x] Segmentation: model substrate color
 - [x] Holes: consider their hierarchy
-- [ ] Segmentation: multi-dimensional k-means clustering
+- [x] Segmentation: multi-dimensional k-means clustering as a tool
 - [ ] Segmentation: investigate downsizing
 - [ ] Segmentation: Otsu thresholding and adaptive thresholding
 - [ ] Likelihood of a pixel to belong to a class based on color and spatial location (neighborhood)

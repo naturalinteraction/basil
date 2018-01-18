@@ -86,6 +86,37 @@ def Histogram(channel, output):
     for i in range(len(hist)):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
+
+# works on reduced image to 20% on both axes, works on BGR and HSV, returns different sets of data whether stats is True
+def KMeans(three_channels, K, stats=False):
+    img = cv2.resize(three_channels, (0, 0), fx=0.2, fy=0.2)
+    pixels = img.reshape((-1,3))
+    Z = np.float32(pixels)
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    compactness,label,center=cv2.kmeans(Z, K, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    center = np.uint8(center)
+    result = center[label.flatten()]
+    result = result.reshape(img.shape)
+    if not stats:
+        print('K=' + str(K) + ' compactness=' + str(compactness))
+        return compactness,result
+    means = []
+    stddevs = []
+    pixel_lists = {}
+    for n in range(0, K):
+        pixel_lists[n] = []
+    for n,p in enumerate(pixels):
+        l = label[n]
+        pixel_lists[l[0]].append(p)
+    for n in range(0, K):
+        mean = np.mean(np.float32(pixel_lists[n]), axis=0)
+        stddev = np.std(np.float32(pixel_lists[n]), axis=0)
+        print(str(n) + ' ' + str(mean) + ' ' + str(stddev))
+        means.append(mean)
+        stddevs.append(stddev)
+    return compactness,result,means,stddevs
+
+
 def CropImage(image, top=0, bottom=0, left=0, right=0, cropname=None):
     height, width, depth = image.shape
     if (cropname == 'redshift'):  # redshift: alfalfa (verde salvia) (che su internet e' 126,149,125)
