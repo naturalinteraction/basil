@@ -88,13 +88,11 @@ def Histogram(channel, output):
     for i in range(len(hist)):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
-
-def MeanShift(image, spatial_radius=None, range_radius=None, min_density=50):
-    # print(image.shape)
-    if spatial_radius == None:
-        spatial_radius = 6  # todo: proportional to shape?
-    if range_radius == None:
-        range_radius = 4.5  # todo: proportional to shape?
+# spatial_radius    1 to 6 (integer) small numbers --> faster, more clusters, finer spatial resolution (?)
+# range_radius      1.0 to 6.0 (float) somewhat related to the above radius, equal or smaller, seldomly up to x1.2
+# min_density       10 to 300 the smaller the more it preserves fine details
+# common combinations include 2,2,20 and 6,4.5,50
+def MeanShift(image, spatial_radius, range_radius, min_density):
     return pms.segment(image, spatial_radius, range_radius, min_density)  # returns (segmented_image, labels_image, number_regions)
 
 # works on reduced image to 20% on both axes, works on BGR and HSV, returns different sets of data whether stats is True
