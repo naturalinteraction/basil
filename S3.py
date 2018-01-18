@@ -1,3 +1,4 @@
+from __future__ import print_function  # provides Python 3's print() with end=''
 import sys
 import os
 import time
@@ -92,7 +93,8 @@ def DownloadImagesFromS3(prefix, substring):
     for f in files:
         replaced = f.replace('cache/', 'downloaded/')
         if os.path.isfile(replaced):
-            print(('skipping download of %s' % f))
+            # print(('skipping download of %s' % f))
+            print('.', end='')
             skipped += 1
         else:
             print(('attempting download of %s' % f))

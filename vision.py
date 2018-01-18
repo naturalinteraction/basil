@@ -1,3 +1,4 @@
+from __future__ import print_function  # provides Python 3's print() with end=''
 import cv2
 import numpy as np
 from utility import *
