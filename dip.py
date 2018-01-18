@@ -39,6 +39,7 @@ args = ParseArguments()
 
 if args.download:
     DownloadImagesFromS3('cache/' + args.prefix, args.substring)
+    quit()
 
 box = BoundingBox()
 
