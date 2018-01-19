@@ -1,5 +1,5 @@
 from vision import *
 
-def RoutineOnlyDisplayBGR(image_file, bgr, box):
+def RoutineDisplay(image_file, bgr, box):
     UpdateWindow('bgr', bgr)
 

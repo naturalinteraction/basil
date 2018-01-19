@@ -7,7 +7,8 @@ from vision import *
 from basilico import *
 from modello import *
 from satu import *
-from onlydisplaybgr import *
+from display import *
+from save import *
 from alfalfaredshift import *
 from alfalfanoir import *
 from bieta import *
@@ -20,7 +21,8 @@ routine = {
             'basilico' :  RoutineBasilico,
             'modello'  :  RoutineModello,
             'satu'     :  RoutineSatu,
-            'display'  :  RoutineOnlyDisplayBGR,
+            'display'  :  RoutineDisplay,
+            'save'     :  RoutineSave,
             'bieta'    :  RoutineBieta,
             'kappa'    :  RoutineKappa,
             'rucola'   :  RoutineRucola,
