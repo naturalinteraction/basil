@@ -29,7 +29,7 @@ A repo for my own experiments.
 - [x] Segmentation: multi-dimensional k-means clustering as a tool
 - [ ] Lab, Luv, YUV color spaces
 - [ ] Superpixels
-- [ ] Segmentation: investigate downsizing
+- [ ] Segmentation: downsizing
 - [ ] Segmentation: Otsu thresholding and adaptive thresholding
 - [ ] Likelihood of a pixel to belong to a class based on color and spatial location (neighborhood)
 - [ ] Holes: pixel-by-pixel?
@@ -67,9 +67,8 @@ A repo for my own experiments.
 - [x] Start cap.py at boot
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [x] Integrate microphone
-- [ ] Further test the exposure metering modes
-- [ ] Sensor color calibration
-- [ ] Find camera parameters automatically
+- [ ] Sensor color calibration == Find camera parameters automatically
+- [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
 - [ ] ~~Detect if scene is not static~~
