@@ -7,6 +7,7 @@ from collections import namedtuple
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import pymeanshift as pms
+from skimage.segmentation import *
 
 
 white = (255, 255, 255)
@@ -88,6 +89,7 @@ def Histogram(channel, output):
     for i in range(len(hist)):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
+
 # spatial_radius    1 to 6 (integer) small numbers --> faster, more clusters, finer spatial resolution (?)
 # range_radius      1.0 to 6.0 (float) somewhat related to the above radius, equal or smaller, seldomly up to x1.2
 # min_density       10 to 300 the smaller the more it preserves fine details
@@ -123,6 +125,28 @@ def KMeans(three_channels, K, stats=False):
         means.append(mean)
         stddevs.append(stddev)
     return compactness,result,means,stddevs
+
+def Superpixel(image):
+    segments = felzenszwalb(image, scale=100, sigma=0.5, min_size=50)
+    # segments = quickshift(image, kernel_size=5, max_dist=16, ratio=0.5)
+    h,w = image.shape[:2]
+    means = []
+    stddevs = []
+    pixel_lists = {}
+    for n in range(0, np.max(segments) + 1):
+        pixel_lists[n] = []
+    for x in range(0, w):
+        for y in range(0, h):
+            pixel_lists[segments[y][x]].append(image[y][x])
+    for n in range(0, len(pixel_lists)):
+        mean = np.mean(np.float32(pixel_lists[n]), axis=0)
+        stddev = np.std(np.float32(pixel_lists[n]), axis=0)
+        print('' + str(n) + ' ' + str(mean) + ' ' + str(stddev))
+        means.append(mean)
+        stddevs.append(stddev)
+    result = np.uint8(means)[segments.flatten()]
+    result = result.reshape(image.shape)
+    return result,segments,means,stddevs
 
 
 def Resize(image, factor):

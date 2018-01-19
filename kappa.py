@@ -18,7 +18,7 @@ def RoutineKappa(image_file, bgr, box):
         compactness,result,means,stddevs = KMeans(hsv, 4, stats=True)
         UpdateWindow('kmeans', result)
 
-    # SaveColorStats(means[3],stddevs[3], 'foglie-kappa.pkl')
+    # SaveColorStats(means[3], stddevs[3], 'foglie-kappa.pkl')
     m,s = LoadColorStats('foglie-kappa.pkl')
 
     mask_tone = MaskForTone(hsv, 'foglie-kappa.pkl', 20.0)
@@ -40,6 +40,13 @@ def RoutineKappa(image_file, bgr, box):
         small = Resize(bgr, 0.2)
         (segmented_image, labels_image, number_regions) = MeanShift(small, 6, 4.5, 50)  # MeanShift(small, 2, 2, 20)
         print(number_regions)
-        UpdateWindow('small', small)
-        UpdateWindow('segmented', segmented_image)
+        UpdateWindow('orig', small)
+        UpdateWindow('meanshift', segmented_image)
         UpdateWindow('labels', np.uint8(labels_image))
+
+    if True:
+        small = Resize(bgr, 0.2)
+        result,segments,means,stddevs = Superpixel(small)
+        UpdateWindow("segments", np.uint8(segments))
+        UpdateWindow("orig", small)
+        UpdateWindow("superpixel", result)
