@@ -22,8 +22,6 @@ def RoutineModello(image_file, bgr, box):
 
     tutto = MaskedImage(bgr, mask_tutto)
 
-    box.Update(mask_tutto, tutto)
-
     # DrawCircles(tutto, circles, white)
 
     # bianco = MaskedImage(bgr, mask_bianco)

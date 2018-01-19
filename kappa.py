@@ -33,7 +33,6 @@ def RoutineKappa(image_file, bgr, box):
                                                                         20.0)
 
     foreground = MaskedImage(bgr, mask_tone)
-    box.Update(mask_tone, foreground)
     UpdateWindow('foglie', foreground)
 
     if False:
