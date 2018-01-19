@@ -1,24 +1,15 @@
 from vision import *
 
 def RoutineBasilico(image_file, bgr, box):
-
     hsv = ToHSV(bgr)
 
-    # print(LoadColorStats('bianco-firenze.pkl'))
-
-    basilico_hsv,basilico_stddev = LoadColorStats('basilico.pkl')
-    basilico_variance = basilico_stddev ** 2
-    weight_hsv = 1.0 / basilico_variance
-    segmentation_threshold = 60.0
-
-    biomass_mask = SegmentBiomass(MedianBlurred(hsv, 5), basilico_hsv,
-                                                         basilico_stddev, segmentation_threshold)
-    # biomass_mask = SegmentBiomass(hsv, ...)
-
+    segmentation_threshold = 20.0
+    biomass_mask = MaskForTone(MedianBlurred(hsv, 5), 'foglie-kappa.pkl', segmentation_threshold)
     # erosion does not affect the edges of the image!
     # biomass_mask = Erode(biomass_mask)  # to remove isolated pixels (noise), alternative to median blur
     # UpdateWindow('biomass_mask NOT FILLED', biomass_mask)  # this is still the raw mask, without the holes filled
 
+    basilico_hsv,basilico_stddev = LoadColorStats('foglie-kappa.pkl')
     accepted_holes_mask,refused_holes_mask,circles =          FillHoles(biomass_mask, hsv,
                                                                         basilico_hsv,
                                                                         basilico_stddev,
@@ -41,8 +32,6 @@ def RoutineBasilico(image_file, bgr, box):
     # Histogram(luminance, output=foreground)
 
     DrawCircles(foreground, circles, white)
-
-    count = box.Update(biomass_mask, foreground)
 
     # UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
