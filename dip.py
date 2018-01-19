@@ -8,7 +8,6 @@ from S3 import ListLocalImages
 from utility import *
 from vision import *
 from basilico import *
-from senape import *
 from modello import *
 from satu import *
 from onlydisplaybgr import *
@@ -22,7 +21,6 @@ from kappa import *
 
 routine = {
             'basilico' :  RoutineBasilico,
-            'senape'   :  RoutineSenape,
             'modello'  :  RoutineModello,
             'satu'     :  RoutineSatu,
             'display'  :  RoutineOnlyDisplayBGR,
