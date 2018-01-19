@@ -98,8 +98,7 @@ def MeanShift(image, spatial_radius, range_radius, min_density):
     return pms.segment(image, spatial_radius, range_radius, min_density)  # returns (segmented_image, labels_image, number_regions)
 
 # works on reduced image to 20% on both axes, works on BGR and HSV, returns different sets of data whether stats is True
-def KMeans(three_channels, K, stats=False):
-    img = cv2.resize(three_channels, (0, 0), fx=0.2, fy=0.2)
+def KMeans(img, K, stats=False):
     pixels = img.reshape((-1,3))
     Z = np.float32(pixels)
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
@@ -121,7 +120,7 @@ def KMeans(three_channels, K, stats=False):
     for n in range(0, K):
         mean = np.mean(np.float32(pixel_lists[n]), axis=0)
         stddev = np.std(np.float32(pixel_lists[n]), axis=0)
-        print(str(n) + ' ' + str(mean) + ' ' + str(stddev))
+        # print(str(n) + ' ' + str(mean) + ' ' + str(stddev))
         means.append(mean)
         stddevs.append(stddev)
     return compactness,result,means,stddevs
@@ -141,7 +140,7 @@ def Superpixel(image):
     for n in range(0, len(pixel_lists)):
         mean = np.mean(np.float32(pixel_lists[n]), axis=0)
         stddev = np.std(np.float32(pixel_lists[n]), axis=0)
-        print('' + str(n) + ' ' + str(mean) + ' ' + str(stddev))
+        # print('' + str(n) + ' ' + str(mean) + ' ' + str(stddev))
         means.append(mean)
         stddevs.append(stddev)
     result = np.uint8(means)[segments.flatten()]

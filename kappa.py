@@ -10,14 +10,6 @@ def RoutineKappa(image_file, bgr, box):
     UpdateWindow('Luv', cv2.cvtColor(bgr, cv2.COLOR_BGR2Luv))
     UpdateWindow('YUV', cv2.cvtColor(bgr, cv2.COLOR_BGR2YUV))
 
-    if False:
-        for i in range(2, 8):
-            c,result = KMeans(hsv, i)
-
-    if False:
-        compactness,result,means,stddevs = KMeans(hsv, 4, stats=True)
-        UpdateWindow('kmeans', result)
-
     # SaveColorStats(means[3], stddevs[3], 'foglie-kappa.pkl')
     m,s = LoadColorStats('foglie-kappa.pkl')
 
@@ -35,17 +27,33 @@ def RoutineKappa(image_file, bgr, box):
     foreground = MaskedImage(bgr, mask_tone)
     UpdateWindow('foglie', foreground)
 
+    small_hsv = Resize(hsv, 0.2)
+
     if False:
+        for i in range(2, 8):
+            c,result = KMeans(small_hsv, i)
+
+    if True:
+        before = time.time()
+        compactness,result,means,stddevs = KMeans(small_hsv, 4, stats=True)
+        print(str(time.time() - before) + 's KMEANS')
+        UpdateWindow('kmeans', result)
+
+    if True:
         small = Resize(bgr, 0.2)
+        before = time.time()
         (segmented_image, labels_image, number_regions) = MeanShift(small, 6, 4.5, 50)  # MeanShift(small, 2, 2, 20)
-        print(number_regions)
+        print(str(time.time() - before) + 's MEANSHIFT')
+        # print(number_regions)
         UpdateWindow('orig', small)
         UpdateWindow('meanshift', segmented_image)
         UpdateWindow('labels', np.uint8(labels_image))
 
     if True:
         small = Resize(bgr, 0.2)
+        before = time.time()
         result,segments,means,stddevs = Superpixel(small)
+        print(str(time.time() - before) + 's SUPERPIXEL')
         UpdateWindow("segments", np.uint8(segments))
         UpdateWindow("orig", small)
         UpdateWindow("superpixel", result)

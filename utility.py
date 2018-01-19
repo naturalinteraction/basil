@@ -6,6 +6,7 @@ import collections
 import numpy as np
 import sys
 import pickle
+import time
 
 
 def interrogate(item):

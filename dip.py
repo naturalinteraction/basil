@@ -1,8 +1,5 @@
 #!/usr/bin/python
 
-import time
-import cv2
-import numpy as np
 from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
 from utility import *
