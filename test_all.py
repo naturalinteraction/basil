@@ -52,6 +52,12 @@ def test_ListLocalImagesAndDownloadImagesFromS3():
     assert len(ListLocalImages('downloaded/test-test', '30')) == 1
 '''
 
+def test_CombinedMeanStandardDeviation():
+    assert CombinedMeanStandardDeviation(63, 9, 50, 54, 6, 40) == (59.0, 9.0)
+    m,s = CombinedMeanStandardDeviation((3, 2, 1), (1, 9, 5), 80, (3, 9, 100), (1, 2, 3), 5)
+    assert m.tolist() == [3.0,  2.411764705882353, 6.823529411764706]
+    assert s.tolist() == [1.0, 8.898504986988558, 23.804931011965337]
+
 def ProvideValidTestImage():
     return cv2.imread('downloaded/test-test_2560x1920_2000_01_30-00_00.jpg')
 

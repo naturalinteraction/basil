@@ -22,6 +22,21 @@ def interrogate(item):
         print('doc: ', doc)
 
 
+def CombinedMeanStandardDeviation(m1, s1, n1, m2, s2, n2):
+    m1 = np.array(m1)
+    m2 = np.array(m2)
+    s1 = np.array(s1)
+    s2 = np.array(s2)
+    mean = (n1 * m1 + n2 * m2) / float(n1 + n2)
+    v1 = s1 ** 2
+    v2 = s2 ** 2
+    d1 = m1 - mean
+    d2 = m2 - mean
+    variance = (n1 * (v1 + (d1 ** 2)) + n2 * (v2 + (d2 ** 2))) / float(n1 + n2)
+    stddev = variance ** 0.5
+    return mean,stddev
+
+
 '''
 versions
 '''
