@@ -125,10 +125,10 @@ def KMeans(img, K, stats=False):
         # print(str(n) + ' ' + str(mean) + ' ' + str(stddev))
         means.append(mean)
         stddevs.append(stddev)
-    return compactness,result,means,stddevs
+    return compactness,result,label.reshape(img.shape[:2]),means,stddevs
 
 def Superpixel(image):
-    segments = felzenszwalb(image, scale=100, sigma=0.5, min_size=50)
+    segments = felzenszwalb(image, scale=50, sigma=0.5, min_size=10)  # was 100 0.5 50
     # segments = quickshift(image, kernel_size=5, max_dist=16, ratio=0.5)
     h,w = image.shape[:2]
     means = []
@@ -148,6 +148,11 @@ def Superpixel(image):
     result = np.uint8(means)[segments.flatten()]
     result = result.reshape(image.shape)
     return result,segments,means,stddevs
+
+def Slic(image):
+    labels = slic(image, compactness=5, n_segments=2000, slic_zero=True)
+    out = color.label2rgb(labels, image, kind='avg')
+    return out,labels
 
 
 def Resize(image, factor):
