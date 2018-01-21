@@ -24,7 +24,7 @@ def CompareLabels(labels, ground_truth, result, name):
         diff = cv2.absdiff(mask, ground_truth)
         diff_mean = cv2.mean(diff)[0]
         # print(str(t) + ' diff = ' + str(diff_mean))
-    UpdateWindow(name, diff)
+    UpdateWindow(name, result)
     print(name + ' bins=' + str(len(pixel_lists)) + ' error=' + str(int(error)) + ' diff=' + str(diff_mean))
 
 def RoutineKappa(image_file, bgr, box):
@@ -44,6 +44,7 @@ def RoutineKappa(image_file, bgr, box):
     UpdateWindow('sat and tone', mask_combined)
 
     small = hsv  # bgr_small, hsv
+    UpdateWindow('small', small)
 
     if True:
         before = time.time()
