@@ -8,6 +8,8 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import pymeanshift as pms
 from skimage.segmentation import *
+from skimage import color
+from skimage.future import graph
 
 
 white = (255, 255, 255)
