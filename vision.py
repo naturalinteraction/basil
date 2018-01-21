@@ -128,7 +128,7 @@ def KMeans(img, K, stats=False):
     return compactness,result,label.reshape(img.shape[:2]),means,stddevs
 
 def Superpixel(image):
-    segments = felzenszwalb(image, scale=50, sigma=0.5, min_size=10)  # was 100 0.5 50
+    segments = felzenszwalb(image, scale=20, sigma=0.2, min_size=5)  # was 100 0.5 50
     # segments = quickshift(image, kernel_size=5, max_dist=16, ratio=0.5)
     h,w = image.shape[:2]
     means = []

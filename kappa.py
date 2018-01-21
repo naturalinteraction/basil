@@ -1,6 +1,6 @@
 from vision import *
 
-def ProcessLabels(labels, ground_truth):
+def CompareLabels(labels, ground_truth, result, name):
     h,w = labels.shape
     means = []
     pixel_lists = {}
@@ -18,8 +18,14 @@ def ProcessLabels(labels, ground_truth):
             error = error + count * (255 - mean)
         else:
             error = error + count * mean
-    print('bins = ' + str(len(pixel_lists)))
-    print('error = ' + str(int(error)))
+    error = error / 255
+    for t in range(14, 15):
+        mask = MaskForTone(result, 'foglie-kappa.pkl', t)
+        diff = cv2.absdiff(mask, ground_truth)
+        diff_mean = cv2.mean(diff)[0]
+        # print(str(t) + ' diff = ' + str(diff_mean))
+    UpdateWindow(name, diff)
+    print(name + ' bins=' + str(len(pixel_lists)) + ' error=' + str(int(error)) + ' diff=' + str(diff_mean))
 
 def RoutineKappa(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='blueshift')
@@ -42,20 +48,17 @@ def RoutineKappa(image_file, bgr, box):
     if True:
         before = time.time()
         compactness,result,labels,means,stddevs = KMeans(small, 16, stats=True)
-        print(str(time.time() - before) + 's KMEANS')
-        UpdateWindow('kmeans', result)
-        ProcessLabels(labels, mask_combined)
+        # print(str(time.time() - before) + 's KMEANS')
+        CompareLabels(labels, mask_combined, result, 'kmeans')
 
     if True:
         before = time.time()
-        (segmented_image, labels, number_regions) = MeanShift(small, 1, 1, 10)
-        print(str(time.time() - before) + 's MEANSHIFT')
-        UpdateWindow('meanshift', segmented_image)
-        ProcessLabels(labels, mask_combined)
+        (result, labels, number_regions) = MeanShift(small, 2, 2, 10)
+        # print(str(time.time() - before) + 's MEANSHIFT')
+        CompareLabels(labels, mask_combined, result, 'meanshift')
 
     if True:
         before = time.time()
         result,labels,means,stddevs = Superpixel(small)
-        print(str(time.time() - before) + 's SUPERPIXEL')
-        UpdateWindow("superpixel", result)
-        ProcessLabels(labels, mask_combined)
+        # print(str(time.time() - before) + 's SUPERPIXEL')
+        CompareLabels(labels, mask_combined, result, 'superpixel')
