@@ -27,16 +27,16 @@ A repo for my own experiments.
 - [x] Segmentation: model substrate color
 - [x] Holes: consider their hierarchy
 - [x] Segmentation: multi-dimensional k-means clustering as a tool
-- [ ] Lab, Luv, YUV color spaces
-- [ ] Superpixels
+- [x] Lab, Luv, YUV color spaces
+- [x] Superpixels
 - [ ] Segmentation: downsizing
+- [ ] Find biomass segmentation algorithm params automatically
 - [ ] Segmentation: Otsu thresholding and adaptive thresholding
-- [ ] Likelihood of a pixel to belong to a class based on color and spatial location (neighborhood)
-- [ ] Holes: pixel-by-pixel?
 - [ ] Color analysis inside biomass: histograms
 - [ ] Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
 - [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms
-- [ ] Find biomass segmentation algorithm params automatically
+- [ ] ~~Likelihood of a pixel to belong to a class based on color and spatial location (neighborhood)~~
+- [ ] ~~Holes: pixel-by-pixel~~
 
 #### Tasks cap.py
 
