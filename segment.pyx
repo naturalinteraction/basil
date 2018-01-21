@@ -33,8 +33,7 @@ cpdef SegmentWithMask(unsigned char [:, :, :] image, float t0, float t1, float t
 
 
 
-cpdef SegmentWithPalette(unsigned char [:, :, :] image):
-    filename = 'palette-kappa.pkl'  # todo
+cpdef SegmentWithPalette(unsigned char [:, :, :] image, filename):
     with open(filename, 'r') as f:
         (means,stddevs,good,bad) = pickle.load(f)
     goodness = []

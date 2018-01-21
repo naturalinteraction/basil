@@ -6,8 +6,11 @@ def ReplaceLabelWithColor(labels, selected, result, color):
         for y in range(0, h):
             if labels[y][x] == selected:
                 result[y][x] = color
+                bgr_small[y][x] = color
     UpdateWindow('interactive', result)
+    UpdateWindow('bgr_small', bgr_small)
     cv2.setMouseCallback('interactive', mouseCallbackGoodBad)
+    cv2.setMouseCallback('bgr_small', mouseCallbackGoodBad)
 
 def mouseCallbackGoodBad(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -71,6 +74,7 @@ def RoutineKappa(image_file, bgr, box):
     global means
     global stddevs
     global result
+    global bgr_small
     good = set()
     bad = set()
 
@@ -90,6 +94,7 @@ def RoutineKappa(image_file, bgr, box):
     UpdateWindow('sat and tone', mask_combined)
 
     small = hsv  # bgr_small, hsv
+    UpdateWindow('bgr_small', bgr_small)
     UpdateWindow('small', small)
 
     if False:
@@ -104,7 +109,7 @@ def RoutineKappa(image_file, bgr, box):
         # print(str(time.time() - before) + 's MEANSHIFT')
         CompareLabels(labels, mask_combined, result, 'meanshift')
 
-    if True:
+    if False:
         before = time.time()
         result,labels,means,stddevs = Superpixel(small)
         felz = result
@@ -128,9 +133,10 @@ def RoutineKappa(image_file, bgr, box):
         CompareLabels(labels2, mask_combined, result, 'merge')
 
     if True:
-        compactness,result,labels,means,stddevs = KMeans(result, 16, stats=True)
+        compactness,result,labels,means,stddevs = KMeans(small, 16, stats=True)
         CompareLabels(labels, mask_combined, result, 'interactive')
         cv2.setMouseCallback('interactive', mouseCallbackGoodBad)
+        cv2.setMouseCallback('bgr_small', mouseCallbackGoodBad)
         # this is a very basic selection based on hue
         for n,mean in enumerate(means):
             bad.add(n)
@@ -139,8 +145,9 @@ def RoutineKappa(image_file, bgr, box):
             else:
                 print(str(mean) + 'no')
 
-    before = time.time()
-    mask_palette = SegmentWithPalette(felz)  #, 'palette-kappa.pkl')
-    print(str(time.time() - before) + 's SegmentWithPalette')
-    UpdateWindow('mask_palette', mask_palette)
+    if False:
+        before = time.time()
+        mask_palette = SegmentWithPalette(result, 'palette-redshift.pkl')
+        print(str(time.time() - before) + 's SegmentWithPalette')
+        UpdateWindow('mask_palette', mask_palette)
 
