@@ -33,12 +33,6 @@ def mouseCallbackGoodBad(event, x, y, flags, param):
         print('bad', bad)
         with open('colors.pkl', 'w') as f:
             pickle.dump((means,stddevs,good,bad), f, 0)
-        with open('colors.pkl', 'r') as f:
-            (mm,ss,gg,bb) = pickle.load(f)
-            print(mm)
-            print(ss)
-            print(gg)
-            print(bb)
 
 def CompareLabels(labels, ground_truth, result, name):
     h,w = labels.shape
@@ -82,7 +76,7 @@ def RoutineKappa(image_file, bgr, box):
 
     bgr = CropImage(bgr, cropname='blueshift')
 
-    bgr_small = Resize(bgr, 0.5)
+    bgr_small = Resize(bgr, 0.2)
     hsv = ToHSV(bgr_small)
 
     m,s = LoadColorStats('foglie-kappa.pkl')
@@ -113,6 +107,7 @@ def RoutineKappa(image_file, bgr, box):
     if True:
         before = time.time()
         result,labels,means,stddevs = Superpixel(small)
+        felz = result
         # print(str(time.time() - before) + 's SUPERPIXEL')
         CompareLabels(labels, mask_combined, result, 'superpixel')
 
@@ -143,3 +138,9 @@ def RoutineKappa(image_file, bgr, box):
                 print(str(mean) + 'foreground' + str(stddevs[n]))
             else:
                 print(str(mean) + 'no')
+
+    before = time.time()
+    mask_palette = SegmentWithPalette(felz)  #, 'palette-kappa.pkl')
+    print(str(time.time() - before) + 's SegmentWithPalette')
+    UpdateWindow('mask_palette', mask_palette)
+
