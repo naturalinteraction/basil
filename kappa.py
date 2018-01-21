@@ -69,14 +69,6 @@ def RoutineKappa(image_file, bgr, box):
         CompareLabels(labels, mask_combined, result, 'superpixel')
 
     if True:
-        # result,labels = Slic(small)
-        # CompareLabels(labels, mask_combined, result, 'slic')
-        # before = time.time()
-        # g = graph.rag_mean_color(small, labels, mode='similarity')
-        # labels2 = graph.cut_normalized(labels, g)
-        # print(str(time.time() - before) + 's GRAPH AND NORMALIZED CUT')
-        # out2 = color.label2rgb(labels2, small, kind='avg')
-        # CompareLabels(labels2, mask_combined, out2, 'normalized cut')
         before = time.time()
         g = graph.rag_mean_color(small, labels)
         labels2 = graph.cut_threshold(labels, g, 29)
@@ -91,3 +83,13 @@ def RoutineKappa(image_file, bgr, box):
         # print(str(time.time() - before) + 's MERGE HIERARCHICAL')
         out2 = color.label2rgb(labels2, small, kind='avg')
         CompareLabels(labels2, mask_combined, out2, 'merge')
+
+    if True:
+        compactness,result,labels,means,stddevs = KMeans(out2, 16, stats=True)
+        CompareLabels(labels, mask_combined, result, 'kmeans 2')
+        for n,mean in enumerate(means):
+            if abs(mean[0] - m[0]) < 4:
+                print(str(mean) + 'foreground' + str(stddevs[n]))
+            else:
+                print(str(mean) + 'no')
+
