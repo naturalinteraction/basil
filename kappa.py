@@ -27,20 +27,19 @@ def RoutineKappa(image_file, bgr, box):
     foreground = MaskedImage(bgr, mask_tone)
     UpdateWindow('foglie', foreground)
 
-    small_hsv = Resize(hsv, 0.2)
-
+    small = Resize(hsv, 0.5)
+    # small = Resize(bgr, 0.2)
     if False:
         for i in range(2, 8):
-            c,result = KMeans(small_hsv, i)
+            c,result = KMeans(small, i)
 
     if True:
         before = time.time()
-        compactness,result,means,stddevs = KMeans(small_hsv, 4, stats=True)
+        compactness,result,means,stddevs = KMeans(small, 6, stats=True)
         print(str(time.time() - before) + 's KMEANS')
         UpdateWindow('kmeans', result)
 
     if True:
-        small = Resize(bgr, 0.2)
         before = time.time()
         (segmented_image, labels_image, number_regions) = MeanShift(small, 6, 4.5, 50)  # MeanShift(small, 2, 2, 20)
         print(str(time.time() - before) + 's MEANSHIFT')
@@ -50,7 +49,6 @@ def RoutineKappa(image_file, bgr, box):
         UpdateWindow('labels', np.uint8(labels_image))
 
     if True:
-        small = Resize(bgr, 0.2)
         before = time.time()
         result,segments,means,stddevs = Superpixel(small)
         print(str(time.time() - before) + 's SUPERPIXEL')
