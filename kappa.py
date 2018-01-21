@@ -1,11 +1,11 @@
 from vision import *
 
-def _weight_mean_color(graph, src, dst, n):
+def rag_weight_mean_color(graph, src, dst, n):
     diff = graph.node[dst]['mean color'] - graph.node[n]['mean color']
     diff = np.linalg.norm(diff)
     return {'weight': diff}
 
-def merge_mean_color(graph, src, dst):
+def rag_merge_mean_color(graph, src, dst):
     graph.node[dst]['total color'] += graph.node[src]['total color']
     graph.node[dst]['pixel count'] += graph.node[src]['pixel count']
     graph.node[dst]['mean color'] = (graph.node[dst]['total color'] /
@@ -16,31 +16,21 @@ def RoutineKappa(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='blueshift')
     UpdateWindow('bgr', bgr, image_file.replace('downloaded/', 'temp/') + '.jpeg')
     hsv = ToHSV(bgr)
-    UpdateWindow('hsv', hsv)
+    Lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2Lab)
+    Luv = cv2.cvtColor(bgr, cv2.COLOR_BGR2Luv)
+    YUV = cv2.cvtColor(bgr, cv2.COLOR_BGR2YUV)
 
-    UpdateWindow('Lab', cv2.cvtColor(bgr, cv2.COLOR_BGR2Lab))
-    UpdateWindow('Luv', cv2.cvtColor(bgr, cv2.COLOR_BGR2Luv))
-    UpdateWindow('YUV', cv2.cvtColor(bgr, cv2.COLOR_BGR2YUV))
-
-    # SaveColorStats(means[3], stddevs[3], 'foglie-kappa.pkl')
     m,s = LoadColorStats('foglie-kappa.pkl')
-
     mask_tone = MaskForTone(hsv, 'foglie-kappa.pkl', 20.0)
     mask_sat = SaturationThreshold(hsv, 90)  # contains purple mylar
+    mask_combined = cv2.bitwise_and(mask_tone, mask_sat)
+    accepted_holes_mask,refused_holes_mask,circles =      FillHoles(mask_combined, hsv,
+                                                                    m,
+                                                                    s,
+                                                                    20.0)
+    UpdateWindow('sat and tone', mask_combined)
 
-    mask_tone = cv2.bitwise_and(mask_tone, mask_sat)
-
-    if False:
-        accepted_holes_mask,refused_holes_mask,circles =      FillHoles(mask_tone, hsv,
-                                                                        m,
-                                                                        s,
-                                                                        20.0)
-
-    foreground = MaskedImage(bgr, mask_tone)
-    UpdateWindow('foglie', foreground)
-
-    small = Resize(hsv, 0.2)
-    # small = Resize(bgr, 0.2)
+    small = Resize(hsv, 0.2)  # bgr, hsv, Lab, Luv, YUV
 
     if False:
         for i in range(2, 8):
@@ -90,8 +80,8 @@ def RoutineKappa(image_file, bgr, box):
         before = time.time()
         labels2 = graph.merge_hierarchical(labels1, g, thresh=35, rag_copy=False,
                                            in_place_merge=True,
-                                           merge_func=merge_mean_color,
-                                           weight_func=_weight_mean_color)
+                                           merge_func=rag_merge_mean_color,
+                                           weight_func=rag_weight_mean_color)
         print(str(time.time() - before) + 's MERGE HIERARCHICAL')
         out2 = color.label2rgb(labels2, small, kind='avg')
         UpdateWindow("merge hierarchical", out2)
