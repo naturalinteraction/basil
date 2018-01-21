@@ -12,8 +12,12 @@ def CompareLabels(labels, ground_truth, result, name):
             pixel_lists[labels[y][x]].append(ground_truth[y][x])
     error = 0.0
     for n in range(0, len(pixel_lists)):
-        mean = np.mean(np.float32(pixel_lists[n]), axis=0)
         count = len(pixel_lists[n])
+        if count > 0:
+            mean = np.mean(np.float32(pixel_lists[n]), axis=0)
+        else:
+            mean = 0.0
+            print('no mean possible')
         if mean > 127:
             error = error + count * (255 - mean)
         else:
@@ -63,3 +67,27 @@ def RoutineKappa(image_file, bgr, box):
         result,labels,means,stddevs = Superpixel(small)
         # print(str(time.time() - before) + 's SUPERPIXEL')
         CompareLabels(labels, mask_combined, result, 'superpixel')
+
+    if True:
+        # result,labels = Slic(small)
+        # CompareLabels(labels, mask_combined, result, 'slic')
+        # before = time.time()
+        # g = graph.rag_mean_color(small, labels, mode='similarity')
+        # labels2 = graph.cut_normalized(labels, g)
+        # print(str(time.time() - before) + 's GRAPH AND NORMALIZED CUT')
+        # out2 = color.label2rgb(labels2, small, kind='avg')
+        # CompareLabels(labels2, mask_combined, out2, 'normalized cut')
+        before = time.time()
+        g = graph.rag_mean_color(small, labels)
+        labels2 = graph.cut_threshold(labels, g, 29)
+        # print(str(time.time() - before) + 's GRAPH AND THRESHOLD CUT')
+        out2 = color.label2rgb(labels2, small, kind='avg')
+        CompareLabels(labels2, mask_combined, out2, 'threshold')
+        before = time.time()
+        labels2 = graph.merge_hierarchical(labels, g, thresh=35, rag_copy=False,
+                                           in_place_merge=True,
+                                           merge_func=rag_merge_mean_color,
+                                           weight_func=rag_weight_mean_color)
+        # print(str(time.time() - before) + 's MERGE HIERARCHICAL')
+        out2 = color.label2rgb(labels2, small, kind='avg')
+        CompareLabels(labels2, mask_combined, out2, 'merge')

@@ -92,6 +92,17 @@ def Histogram(channel, output):
         cv2.line(output, (i * 30, 1000), (i * 30, 1000 - hist[i] * 1000 / max_hist), (0, 255, 255), 30)
 
 
+def rag_weight_mean_color(graph, src, dst, n):
+    diff = graph.node[dst]['mean color'] - graph.node[n]['mean color']
+    diff = np.linalg.norm(diff)
+    return {'weight': diff}
+
+def rag_merge_mean_color(graph, src, dst):
+    graph.node[dst]['total color'] += graph.node[src]['total color']
+    graph.node[dst]['pixel count'] += graph.node[src]['pixel count']
+    graph.node[dst]['mean color'] = (graph.node[dst]['total color'] /
+                                     graph.node[dst]['pixel count'])
+
 # spatial_radius    1 to 6 (integer) small numbers --> faster, more clusters, finer spatial resolution (?)
 # range_radius      1.0 to 6.0 (float) somewhat related to the above radius, equal or smaller, seldomly up to x1.2
 # min_density       10 to 300 the smaller the more it preserves fine details
