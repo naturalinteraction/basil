@@ -41,14 +41,14 @@ if args.download:
 box = BoundingBox()
 
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
-    print('processing ' + image_file)
+    # print('processing ' + image_file)
     bgr = cv2.imread(image_file)
 
     before = time.time()
 
     routine[args.routine](image_file, bgr, box)
 
-    print(str(time.time() - before) + 's')
+    # print(str(time.time() - before) + 's')
 
     ProcessKeystrokes()
 

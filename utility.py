@@ -81,7 +81,7 @@ def ParseArguments():
 keystrokes
 '''
 def ProcessKeystrokes():
-    key = cv2.waitKey(500) & 0xFF  # milliseconds
+    key = cv2.waitKey(1) & 0xFF  # milliseconds
     if key not in [27, 255]:  # any key except ESC to toggle pause
         key = cv2.waitKey(0) & 0xFF  # milliseconds
     # if the ESC key was pressed, simply quit
