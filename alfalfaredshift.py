@@ -14,14 +14,23 @@ def auto_canny(image, sigma=0.33):
 
 def RoutineAlfalfaRedshift(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='redshift')
-    UpdateWindow('bgr', bgr, image_file.replace('downloaded/', 'temp/') + '.jpeg')
+    # UpdateWindow('bgr', bgr, image_file.replace('downloaded/', 'temp/') + '.jpeg')
+    bgr = Resize(bgr, 0.2)
     hsv = ToHSV(bgr)
-    UpdateWindow('hsv', hsv)
+    # UpdateWindow('hsv', hsv)
 
-    edges = np.uint8(feature.canny(BGRToGray(bgr), sigma=2.0, low_threshold=20, high_threshold=50, use_quantiles=False)) * 255
-    UpdateWindow('canny1', edges)
+    EnablePaletteCreator(bgr, hsv)
+
+    if True:
+        mask = SegmentGoodPalette(hsv, 'colors.pkl' , 4.0)
+        # mask = Dilate(mask)
+        UpdateWindow('totalpalette', mask)
+        UpdateWindow('foreground', MaskedImage(bgr, mask))
+        UpdateWindow('background', MaskedImage(bgr, Inverted(mask)))
+
+    #edges = np.uint8(feature.canny(BGRToGray(bgr), sigma=2.0, low_threshold=20, high_threshold=50, use_quantiles=False)) * 255
+    #UpdateWindow('canny1', edges)
 
     # edged = auto_canny(bgr)
-    edged = cv2.Canny(bgr, 100, 200)
-    UpdateWindow('canny2', edged)
-
+    #edged = cv2.Canny(bgr, 100, 200)
+    #UpdateWindow('canny2', edged)

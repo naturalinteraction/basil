@@ -250,6 +250,62 @@ def MaskForTone(image, filename, threshold):
     variance = stddev ** 2
     return SegmentBiomass(image, mean, 1.0 / variance, threshold)
 
+def CompareLabels(labels, ground_truth, result, name):
+    h,w = labels.shape
+    means = []
+    pixel_lists = {}
+    label_count = np.max(labels)
+    for n in range(0, label_count + 1):
+        pixel_lists[n] = []
+    for x in range(0, w):
+        for y in range(0, h):
+            pixel_lists[labels[y][x]].append(ground_truth[y][x])
+    error = 0.0
+    for n in range(0, len(pixel_lists)):
+        count = len(pixel_lists[n])
+        if count > 0:
+            mean = np.mean(np.float32(pixel_lists[n]), axis=0)
+        else:
+            mean = 0.0
+            print('no mean possible')
+        if mean > 127:
+            error = error + count * (255 - mean)
+        else:
+            error = error + count * mean
+    error = error / 255
+    for t in range(14, 15):
+        mask = MaskForTone(result, 'foglie-kappa.pkl', t)
+        diff = cv2.absdiff(mask, ground_truth)
+        diff_mean = cv2.mean(diff)[0]
+    UpdateWindow(name, result)
+    print(name + ' bins=' + str(len(pixel_lists)) + ' error=' + str(int(error)) + ' diff=' + str(diff_mean))
+
+def PurgePalette(filename, label):
+    with open(filename, 'r') as f:
+        (means,stddevs,good,bad) = pickle.load(f)
+    good.remove(label)
+    bad.add(label)
+    with open(filename, 'w') as f:
+        pickle.dump((means,stddevs,good,bad), f, 0)
+
+def EnablePaletteCreator(bgr, hsv, bins=16):
+    UpdateWindow('bgr', bgr)
+    compactness,result,labels,means,stddevs = KMeans(hsv, bins, stats=True)
+    SetMouseMeansDevsLabels(means, stddevs, labels)
+
+def SegmentGoodPalette(image, filename, threshold):
+    with open(filename, 'r') as f:
+        (means,stddevs,good,bad) = pickle.load(f)
+    mask = np.zeros(image.shape[:2], np.uint8)
+    print(good)
+    for i in range(0, len(means)):
+        if i in good:
+            print(i, means[i])
+            temp_mask = SegmentBiomass(image, means[i], 1.0 / (stddevs[i] ** 2), threshold)
+            UpdateWindow(str(i), temp_mask)
+            mask = mask + temp_mask
+    return mask
+
 def SegmentBiomass(hsv_image, target,
                               weight, segmentation_threshold):
     return         Segment(hsv_image,  target[0],

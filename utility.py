@@ -123,6 +123,29 @@ def LoadColorStats(filename):
         return np.array(pickle.load(f))
 
 windows = {}
+global means
+global stddevs
+global labels
+global good
+global bad
+good = set()
+bad = set()
+means = []
+stddevs = []
+
+def SetMouseMeansDevsLabels(m, s, l):
+    global means
+    global stddevs
+    global labels
+    global good
+    global bad
+    means = m
+    stddevs = s
+    labels = l
+    good = set()
+    bad = set()
+    bad.update(range(0, len(means)))
+    print('bad', bad)
 
 hsv_stats = ColorStatistics()
 
@@ -138,12 +161,70 @@ def mouseCallback(event, x, y, flags, param):
     if event == cv2.EVENT_RBUTTONDOWN:
         hsv_stats.Reset()
 
+def ReplaceLabelWithColor(labels, selected, image, color, window_name):
+    h,w = labels.shape
+    for x in range(0, w):
+        for y in range(0, h):
+            if labels[y][x] == selected:
+                image[y][x] = color
+    UpdateWindow(window_name, image)
+    cv2.setMouseCallback(window_name, mouseCallbackGoodBad)
+
+def mouseCallbackGoodBad(event, x, y, flags, param):
+    global good
+    global bad
+    if event == cv2.EVENT_LBUTTONDOWN:
+        try:
+            labels
+        except:
+            print('no labels')
+            return
+        selected = labels[y,x]
+        print('adding to good ' + str(means[selected]) + ' ' + str(selected))
+        try:
+            good.add(selected)
+            bad.remove(selected)
+        except:
+            pass
+        ReplaceLabelWithColor(labels, selected, windows['bgr'], (255, 0, 0), 'bgr')
+    if event == cv2.EVENT_RBUTTONDOWN:
+        try:
+            labels
+        except:
+            print('no labels')
+            return
+        selected = labels[y,x]
+        print('adding to bad ' + str(means[selected]) + ' ' + str(selected))
+        try:
+            bad.add(selected)
+            good.remove(selected)
+        except:
+            pass
+        ReplaceLabelWithColor(labels, selected, windows['bgr'], (0, 255, 255), 'bgr')
+    if event == cv2.EVENT_MBUTTONDOWN:
+        try:
+            labels
+        except:
+            print('no labels')
+            return
+        print('good', good)
+        print('bad', bad)
+        print('saving.')
+        with open('colors.pkl', 'w') as f:
+            pickle.dump((means,stddevs,good,bad), f, 0)
+        good = set()
+        bad = set()
+        bad.update(range(0, len(means)))
+
 def UpdateWindow(name, image, filename=''):
     try:
         windows[name]
     except:
         cv2.namedWindow(name, cv2.WINDOW_NORMAL)  # moveWindow
-        cv2.setMouseCallback(name, mouseCallback)
+        if name == 'bgr':
+            cv2.setMouseCallback(name, mouseCallbackGoodBad)
+        else:
+            cv2.setMouseCallback(name, mouseCallback)
     cv2.imshow(name, image)
     windows[name] = image
     if len(filename) > 0:
