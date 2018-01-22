@@ -32,9 +32,9 @@ A repo for my own experiments.
 - [ ] Segmentation: downsizing
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] Segmentation: Otsu thresholding and adaptive thresholding
-- [ ] Color analysis inside biomass: histograms
 - [ ] Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
 - [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms
+- [ ] ~~Color analysis inside biomass: histograms~~
 - [ ] ~~Likelihood of a pixel to belong to a class based on color and spatial location (neighborhood)~~
 - [ ] ~~Holes: pixel-by-pixel~~
 

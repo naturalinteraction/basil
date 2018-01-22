@@ -84,6 +84,9 @@ def ComputeImageDerivative(for_derivation, mask):
     sobel = cv2.bitwise_and(sobel, sobel, mask=mask)
     return sobel
 
+def Echo(image, string):
+    h,w = image.shape[:2]
+    cv2.putText(image, str(string), (w / 20, h - h / 10), cv2.FONT_HERSHEY_SIMPLEX, h / 300, (255, 255, 255), h / 150, cv2.LINE_AA)
 
 def Histogram(channel, output):
     hist = cv2.calcHist([channel], [0], None, [64], [1,256])

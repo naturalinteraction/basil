@@ -1,9 +1,5 @@
 from vision import *
 
-def Echo(image, string):
-    h,w = image.shape[:2]
-    cv2.putText(image, str(string), (w / 20, h - h / 10), cv2.FONT_HERSHEY_SIMPLEX, h / 300, (255, 255, 255), h / 150, cv2.LINE_AA)
-
 measurements = []
 
 def RoutineKappa(image_file, bgr, box):
