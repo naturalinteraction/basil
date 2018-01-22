@@ -66,7 +66,7 @@ def MedianBlurred(image, size=3):
 '''
 image derivatives
 '''
-def ComputeImageDerivative(for_derivation, mask):
+def ComputeImageDerivative(for_derivation, mask=None):
     # laplacian = cv2.Laplacian(for_derivation, cv2.CV_64F)
     mult = 5
     if False:
