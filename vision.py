@@ -293,7 +293,7 @@ def EnablePaletteCreator(bgr, hsv, bins=16):
     compactness,result,labels,means,stddevs = KMeans(hsv, bins, stats=True)
     SetMouseMeansDevsLabels(means, stddevs, labels)
 
-def SegmentGoodPalette(image, filename, threshold):
+def SegmentGoodPalette(image, filename, threshold, debug=False):
     with open(filename, 'r') as f:
         (means,stddevs,good,bad) = pickle.load(f)
     mask = np.zeros(image.shape[:2], np.uint8)
@@ -302,7 +302,8 @@ def SegmentGoodPalette(image, filename, threshold):
         if i in good:
             print(i, means[i])
             temp_mask = SegmentBiomass(image, means[i], 1.0 / (stddevs[i] ** 2), threshold)
-            UpdateWindow(str(i), temp_mask)
+            if debug:
+                UpdateWindow(str(i), temp_mask)
             mask = mask + temp_mask
     return mask
 
