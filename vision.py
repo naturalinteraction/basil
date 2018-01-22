@@ -291,9 +291,21 @@ def PurgePalette(filename, label):
     with open(filename, 'w') as f:
         pickle.dump((means,stddevs,good,bad), f, 0)
 
+def GrowPalette(filename, label):
+    with open(filename, 'r') as f:
+        (means,stddevs,good,bad) = pickle.load(f)
+    try:
+        bad.remove(label)
+        good.add(label)
+    except:
+        pass
+    with open(filename, 'w') as f:
+        pickle.dump((means,stddevs,good,bad), f, 0)
+
 def EnablePaletteCreator(bgr, hsv, bins=16):
     UpdateWindow('bgr', bgr)
     compactness,result,labels,means,stddevs = KMeans(hsv, bins, stats=True)
+    UpdateWindow('labels', labels)
     SetMouseMeansDevsLabels(means, stddevs, labels)
 
 def SegmentGoodPalette(image, filename, threshold, debug=False):
