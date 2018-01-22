@@ -283,8 +283,11 @@ def CompareLabels(labels, ground_truth, result, name):
 def PurgePalette(filename, label):
     with open(filename, 'r') as f:
         (means,stddevs,good,bad) = pickle.load(f)
-    good.remove(label)
-    bad.add(label)
+    try:
+        good.remove(label)
+        bad.add(label)
+    except:
+        pass
     with open(filename, 'w') as f:
         pickle.dump((means,stddevs,good,bad), f, 0)
 
