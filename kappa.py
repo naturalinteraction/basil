@@ -80,7 +80,7 @@ def RoutineKappa(image_file, bgr, box):
 
     bgr = CropImage(bgr, cropname='blueshift')
 
-    bgr_small = Resize(bgr, 0.2)
+    bgr_small = Resize(bgr, 1.0)
     hsv = ToHSV(bgr_small)
 
     m,s = LoadColorStats('foglie-kappa.pkl')
@@ -132,7 +132,7 @@ def RoutineKappa(image_file, bgr, box):
         result = color.label2rgb(labels2, small, kind='avg')
         CompareLabels(labels2, mask_combined, result, 'merge')
 
-    if True:
+    if False:
         compactness,result,labels,means,stddevs = KMeans(small, 16, stats=True)
         CompareLabels(labels, mask_combined, result, 'interactive')
         cv2.setMouseCallback('interactive', mouseCallbackGoodBad)
@@ -145,9 +145,14 @@ def RoutineKappa(image_file, bgr, box):
             else:
                 print(str(mean) + 'no')
 
-    if False:
-        before = time.time()
-        mask_palette = SegmentWithPalette(result, 'palette-redshift.pkl')
-        print(str(time.time() - before) + 's SegmentWithPalette')
-        UpdateWindow('mask_palette', mask_palette)
+    filename = 'palette-kappa.pkl'
+    with open(filename, 'r') as f:
+        (means,stddevs,good,bad) = pickle.load(f)
+    colors = len(means)
+    mask = np.zeros(hsv.shape[:2], np.uint8)
+    for i in range(0, colors):
+        if i in good:
+            mask = mask + SegmentBiomass(hsv, means[i], 1.0 / (stddevs[i] ** 2), 10.0)
+    # mask = Dilate(mask)
+    UpdateWindow('totalpalette', mask)
 
