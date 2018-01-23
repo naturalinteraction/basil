@@ -14,6 +14,7 @@ from git import OpenCVVersion
 from git import GitHash
 from git import GitCommitMessage
 from audio import AudioLevelPi
+import numpy as np
 
 print(GitCommitMessage())
 print(OpenCVVersion())
@@ -30,7 +31,8 @@ except:
 camera.framerate = 5
 camera.resolution = (2560, 1920)
 rawCapture = PiRGBArray(camera, size=camera.resolution)
-     
+
+global image
 show = True
 calibrate = False
 image = None
@@ -158,6 +160,8 @@ def AttemptUpload():
     else:
         print('There was a problem uploading. Nothing done.')
 
+global locations
+global targetbgr
 locations = []
 targetbgr = []
 
@@ -185,10 +189,10 @@ def mouseCallbackCalib(event, x, y, flags, param):
             with open('calibration-locations.pkl', 'w') as f:
                 pickle.dump(locations, f, 0)
                 print('saved')
-    if event == cv2.EVENT_RBUTTONDOWN:
+    if event == cv2.EVENT_MBUTTONDOWN:
         locations = []
         print('restarting calibration')
-    if event == cv2.EVENT_MBUTTONDOWN:
+    if event == cv2.EVENT_RBUTTONDOWN:
         if not len(locations) == 24:
             print('finish selecting the 24 locations')
         else:
@@ -215,8 +219,6 @@ time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('cap', mouseCallbackCalib)
 
-global locations
-global targetbgr
 targetbgr = []
 targetbgr.append((68,82,115))  # 0 dark skin
 targetbgr.append((130,150,194))  # 1 light skin
@@ -251,7 +253,6 @@ except:
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
-        global image
         # grab the raw NumPy array representing the image
         image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
  
