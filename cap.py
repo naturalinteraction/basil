@@ -34,7 +34,7 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
 
 global image
 show = True
-calibrate = False
+color_calibrate = False
 image = None
 
 cp = CameraProperties(camera)
@@ -166,13 +166,13 @@ locations = []
 targetbgr = []
 
 def Red(bgr):
-    return float(bgr[2]) / float(bgr[0] + bgr[1] + bgr[2])  # or divided by Luminance() ?
+    return float(bgr[2]) #/ float(bgr[0] + bgr[1] + bgr[2])  # or divided by Luminance() ?
 
 def Green(bgr):
-    return float(bgr[1]) / float(bgr[0] + bgr[1] + bgr[2])
+    return float(bgr[1]) #/ float(bgr[0] + bgr[1] + bgr[2])
 
 def Blue(bgr):
-    return float(bgr[0]) / float(bgr[0] + bgr[1] + bgr[2])
+    return float(bgr[0]) #/ float(bgr[0] + bgr[1] + bgr[2])
 
 def Luminance(bgr):
     return bgr[0] * 0.1140 + bgr[1] * 0.5870 + bgr[2] * 0.2989
@@ -183,30 +183,15 @@ def mouseCallbackCalib(event, x, y, flags, param):
     global image
     if event == cv2.EVENT_LBUTTONDOWN:
         if len(locations) < 24:
-            print ('X' + str(x) + ' Y' + str(y) + ' ' + str(len(locations)))
+            print ('X' + str(x) + ' Y' + str(y) + ' location ' + str(len(locations)))
             locations.append((x,y))
-        if len(locations) == 24:
-            with open('calibration-locations.pkl', 'w') as f:
-                pickle.dump(locations, f, 0)
-                print('saved')
-    if event == cv2.EVENT_MBUTTONDOWN:
-        locations = []
-        print('restarting calibration')
+            if len(locations) == 24:
+                with open('calibration-locations.pkl', 'w') as f:
+                    pickle.dump(locations, f, 0)
+                    print('color calibration locations saved')
     if event == cv2.EVENT_RBUTTONDOWN:
-        if not len(locations) == 24:
-            print('finish selecting the 24 locations')
-        else:
-            diff = []
-            blurred = cv2.blur(image, (33, 33))
-            for n,(xx, yy) in enumerate(locations):
-                c = blurred[yy,xx].tolist()
-                t = targetbgr[n]
-                diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
-                print(n, diff[-1])
-            diff = np.array(diff)
-            # print(diff)
-            mean = np.mean(np.float32(diff), axis=0)
-            print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
+        locations = []
+        print('restarting color calibration: pick the 24 locations')
 
 print((os.environ['BASIL_NOTE']))
 # allow the camera to warmup
@@ -276,6 +261,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 just_started_but_done = True                
         else:
           ticks = time.time()
+
+          if len(locations) == 24:  # todo: color_calibrate
+              diff = []
+              blurred = cv2.blur(image, (33, 33))
+              for n,(xx, yy) in enumerate(locations):
+                  c = blurred[yy,xx].tolist()
+                  t = targetbgr[n]
+                  diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
+                  # print(n, diff[-1])
+              diff = np.array(diff)
+              # print(diff)
+              mean = np.mean(np.float32(diff), axis=0)
+              print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
 
           if cp.calibrating == False:
               # force this to avoid frames fading to black
