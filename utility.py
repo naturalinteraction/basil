@@ -81,7 +81,7 @@ def ParseArguments():
 keystrokes
 '''
 def ProcessKeystrokes():
-    key = cv2.waitKey(1) & 0xFF  # milliseconds
+    key = cv2.waitKey(500) & 0xFF  # milliseconds
     if key not in [27, 255]:  # any key except ESC to toggle pause
         key = cv2.waitKey(0) & 0xFF  # milliseconds
     # if the ESC key was pressed, simply quit
@@ -173,12 +173,13 @@ def ReplaceLabelWithColor(labels, selected, image, color, window_name):
 def mouseCallbackGoodBad(event, x, y, flags, param):
     global good
     global bad
+    try:
+        labels
+    except:
+        # print('no labels')
+        mouseCallback(event, x, y, flags, param)
+        return
     if event == cv2.EVENT_LBUTTONDOWN:
-        try:
-            labels
-        except:
-            print('no labels')
-            return
         selected = labels[y,x]
         print('adding to good ' + str(means[selected]) + ' ' + str(selected))
         try:
@@ -188,11 +189,6 @@ def mouseCallbackGoodBad(event, x, y, flags, param):
             pass
         ReplaceLabelWithColor(labels, selected, windows['bgr'], (255, 0, 0), 'bgr')
     if event == cv2.EVENT_RBUTTONDOWN:
-        try:
-            labels
-        except:
-            print('no labels')
-            return
         selected = labels[y,x]
         print('adding to bad ' + str(means[selected]) + ' ' + str(selected))
         try:
@@ -202,11 +198,6 @@ def mouseCallbackGoodBad(event, x, y, flags, param):
             pass
         ReplaceLabelWithColor(labels, selected, windows['bgr'], (0, 255, 255), 'bgr')
     if event == cv2.EVENT_MBUTTONDOWN:
-        try:
-            labels
-        except:
-            print('no labels')
-            return
         print('good', good)
         print('bad', bad)
         print('saving.')
