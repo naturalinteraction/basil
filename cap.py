@@ -298,7 +298,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
           if (ticks - last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
-              if localtime.tm_min == 00 and localtime.tm_hour > 4:  # one per hour, from 5am to 11pm
+              if localtime.tm_min == 00 and localtime.tm_hour > 9 and localtime.tm_hour < 21:  # one per hour, from 10am to 8pm
                   # if localtime.tm_hour == 10:  # one per day, at 10am
                   last_picture_taken_ticks = TakePicture(image, camera)
                   print('Turning zoom off.')
