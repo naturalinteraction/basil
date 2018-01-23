@@ -20,7 +20,7 @@ print(GitCommitMessage())
 print(OpenCVVersion())
 
 campaign = 'xxx'
-    
+
 # initialize the camera and grab a reference to the raw camera capture
 try:
     camera = PiCamera()
@@ -34,11 +34,15 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
 
 global image
 show = True
-color_calibrate = False
+color_calibrate = True  # todo
 image = None
 
 cp = CameraProperties(camera)
 cp.Load()
+
+color_calibration_shutter = cp.PropertyValue('Shutter Speed')
+color_calibration_red = cp.PropertyValue('AWB Red Gain')
+color_calibration_blue = cp.PropertyValue('AWB Blue Gain')
 
 def SaveLastPictureTicks(ticks):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -262,20 +266,32 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         else:
           ticks = time.time()
 
-          if len(locations) == 24:  # todo: color_calibrate
-              diff = []
-              blurred = cv2.blur(image, (33, 33))
-              for n,(xx, yy) in enumerate(locations):
-                  c = blurred[yy,xx].tolist()
-                  t = targetbgr[n]
-                  diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
-                  # print(n, diff[-1])
-              diff = np.array(diff)
-              # print(diff)
-              mean = np.mean(np.float32(diff), axis=0)
-              print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
+          if color_calibrate:
+              if len(locations) == 24:
+                  diff = []
+                  blurred = cv2.blur(image, (33, 33))
+                  for n,(xx, yy) in enumerate(locations):
+                      c = blurred[yy,xx].tolist()
+                      t = targetbgr[n]
+                      diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
+                      # print(n, diff[-1])
+                  diff = np.array(diff)
+                  # print(diff)
+                  mean = np.mean(np.float32(diff), axis=0)
+                  print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
 
-          if cp.calibrating == False:
+                  color_calibration_red = color_calibration_red - mean[0] / 1000.0
+                  color_calibration_blue = color_calibration_blue - mean[2] / 1000.0
+                  color_calibration_shutter = color_calibration_shutter - mean[3] - mean[1]
+                  color_calibration_red = max(0, min(8, color_calibration_red))
+                  color_calibration_blue = max(0, min(8, color_calibration_blue))
+                  color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
+                  print('setting ', color_calibration_shutter, color_calibration_red, color_calibration_blue)
+                  cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
+                  cp.SetPropertyOnCamera('AWB Red Gain', color_calibration_red, mute=True)
+                  cp.SetPropertyOnCamera('AWB Blue Gain', color_calibration_blue, mute=True)
+
+          if cp.calibrating == False and not color_calibrate:
               # force this to avoid frames fading to black
               print(cp.PropertyValue('Shutter Speed'))
               cp.SetPropertyOnCamera('Shutter Speed', cp.PropertyValue('Shutter Speed'), mute=True)
