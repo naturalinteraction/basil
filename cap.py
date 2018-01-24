@@ -282,17 +282,20 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
                       diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) - Green(t) * BF, Blue(c) - Blue(t) * BF))
-                      print(n, diff[-1])
+                      # print(n, diff[-1])
                   diff = np.array(diff)
-                  # print(diff)
+                  # print('diff', diff)
                   mean = np.mean(np.float32(diff), axis=0)
+                  squared = diff ** 2
+                  msq = np.mean(squared, axis=0)
+                  mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
                   color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0
                   color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0
                   color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
-                  print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6]))
+                  print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
                   cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                   cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
 
