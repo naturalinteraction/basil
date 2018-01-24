@@ -274,23 +274,21 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if len(locations) == 24:
                   show = True
                   diff = []
-                  BF = 1.049  # brightness factor, max 1.049
+                  BF = 1.0 # 1.049  # brightness factor, max 1.049
                   blurred = cv2.blur(image, (33, 33))
                   for n,(xx, yy) in enumerate(locations):
                       cv2.rectangle(image, (xx-19, yy-19),
                                             (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
-                      diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) + 10 - Green(t) * BF, Blue(c) - Blue(t) * BF))
+                      diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) -24 - Green(t) * BF, Blue(c) - Blue(t) * BF))
                       # print(n, diff[-1])
                   diff = np.array(diff)
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
-                  color_calibration_red = color_calibration_red - (mean[0 + 4] - mean[2+4]) /  333.0
-                  color_calibration_blue = color_calibration_blue - (mean[2 + 4] - mean[0+4]) / 333.0
-                  # color_calibration_red = color_calibration_red * (1.0 + mean[1 + 4] / 400.0)
-                  # color_calibration_blue = color_calibration_blue * (1.0 + mean[1 + 4] / 400.0)
-                  color_calibration_shutter = color_calibration_shutter - (mean[1 + 4]) * 1.0  - mean[3] * 0.0
+                  color_calibration_red = color_calibration_red - (mean[4] - mean[6]) /  333.0
+                  color_calibration_blue = color_calibration_blue - (mean[6] - mean[4]) / 333.0
+                  color_calibration_shutter = color_calibration_shutter - mean[5]
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
