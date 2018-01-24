@@ -274,7 +274,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if len(locations) == 24:
                   show = True
                   diff = []
-                  BF = 1.3  # brightness factor
+                  BF = 1.049  # brightness factor, max 1.049
                   blurred = cv2.blur(image, (33, 33))
                   for n,(xx, yy) in enumerate(locations):
                       cv2.rectangle(image, (xx-19, yy-19),
