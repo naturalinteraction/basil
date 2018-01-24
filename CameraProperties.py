@@ -96,10 +96,10 @@ class CameraProperties(object):
 
     def SetAllPropertiesOnCamera(self):
         for name in list(self.properties.keys()):
-            value = self.properties[name][self.values_indices[name]]
+            value = self.loaded_values[name]
             self.SetPropertyOnCamera(name, value)
-        value_r = self.properties['AWB Red Gain'][self.values_indices['AWB Red Gain']]
-        value_b = self.properties['AWB Blue Gain'][self.values_indices['AWB Blue Gain']]
+        value_r = self.loaded_values['AWB Red Gain']
+        value_b = self.loaded_values['AWB Blue Gain']
         self.cam.awb_gains = (value_r, value_b)
 
     def SetFreakingGains(self, r, b):
@@ -180,8 +180,11 @@ class CameraProperties(object):
         if socket.gethostname() == 'redshift':
             filename = 'camera-properties-redshift.pkl'
         print('filename', filename)
-        with open(filename, 'wb') as f:
-            pickle.dump(self.values_indices, f, 0)
+        current_values = {}
+        for name in sorted(list(self.properties.keys())):
+            current_values[name] = self.PropertyOnCamera(name)
+        with open(filename, 'w') as f:
+            pickle.dump((self.values_indices, current_values), f, 0)
         print('Saved.')
 
     def Load(self):
@@ -189,6 +192,6 @@ class CameraProperties(object):
         if socket.gethostname() == 'redshift':
             filename = 'camera-properties-redshift.pkl'
         print('filename', filename)
-        with open(filename, 'rb') as f:
-            self.values_indices = pickle.load(f)
+        with open(filename, 'r') as f:
+            (self.values_indices,self.loaded_values) = pickle.load(f)
         print('Loaded.')
