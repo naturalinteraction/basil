@@ -34,7 +34,7 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
 
 global image
 show = True
-color_calibrate = True  # todo
+color_calibrate = False
 image = None
 
 cp = CameraProperties(camera)
@@ -267,8 +267,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   diff = []
                   blurred = cv2.blur(image, (33, 33))
                   for n,(xx, yy) in enumerate(locations):
-                      cv2.rectangle(image, (xx-5, yy-5),
-                                            (xx+5, yy+5), (0,0,0), 2)
+                      cv2.rectangle(image, (xx-19, yy-19),
+                                            (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
                       diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
@@ -277,14 +277,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
                   print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
-
-                  color_calibration_red = color_calibration_red - mean[0] / 500.0
-                  color_calibration_blue = color_calibration_blue - mean[2] / 500.0
-                  color_calibration_shutter = color_calibration_shutter - mean[3] - mean[1]
+                  goal = (mean[0] + mean[1] + mean[2]) / 3.0
+                  color_calibration_red = color_calibration_red - (mean[0] - goal) / 333.0
+                  color_calibration_blue = color_calibration_blue - (mean[2] - goal) / 333.0
+                  color_calibration_shutter = color_calibration_shutter - (mean[1] - goal)  - mean[3] / 3.0
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
-                  print('setting ', color_calibration_shutter, color_calibration_red, color_calibration_blue)
+                  print(goal, 'setting', color_calibration_shutter, color_calibration_red, color_calibration_blue)
                   cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                   cp.SetPropertyOnCamera('AWB Red Gain', color_calibration_red, mute=True)
                   cp.SetPropertyOnCamera('AWB Blue Gain', color_calibration_blue, mute=True)
@@ -326,7 +326,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         
         if key == ord('s'):
             cp.Save()
-        
+
+        if key == ord('c'):
+            color_calibrate = not color_calibrate
+
         if key == ord('f'):
             cp.FreezeExposureAWB()
 
