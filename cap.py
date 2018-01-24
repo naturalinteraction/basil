@@ -34,7 +34,7 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
 
 global image
 show = True
-color_calibrate = False
+color_calibrate = True # todo False
 image = None
 
 cp = CameraProperties(camera)
@@ -179,7 +179,7 @@ def Blue(bgr):
     return float(bgr[0])
 
 def Redness(bgr):
-    return float(bgr[2]) / float(bgr[0] + bgr[1] + bgr[2])  # todo: or divided by Luminance() ?
+    return float(bgr[2]) / float(bgr[0] + bgr[1] + bgr[2])
 
 def Greenness(bgr):
     return float(bgr[1]) / float(bgr[0] + bgr[1] + bgr[2])
@@ -286,19 +286,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   diff = np.array(diff)
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
-                  #goal = (mean[0] + mean[2]) / 3.0
-                  #goal = goal / 2.0
-                  #goal = 0
-                  color_calibration_red = color_calibration_red - (mean[0] - mean[2] + mean[1]*0.0) #/  333.0
-                  color_calibration_blue = color_calibration_blue - (mean[2] - mean[0] + mean[1]*0.0) #/ 333.0
-                  #color_calibration_red = color_calibration_red * (1.0 + mean[1] * 0.9)
-                  #color_calibration_blue = color_calibration_blue * (1.0 + mean[1] * 0.9)
-                  color_calibration_shutter = color_calibration_shutter - (mean[1]) * 0 * 333.0  - mean[3] * 4 #/ 3.0
+                  color_calibration_red = color_calibration_red - (mean[0 + 4] - mean[2 + 4]) /  333.0
+                  color_calibration_blue = color_calibration_blue - (mean[2 + 4] - mean[0 + 4]) / 333.0
+                  # color_calibration_red = color_calibration_red * (1.0 + mean[1 + 4] / 400.0)
+                  # color_calibration_blue = color_calibration_blue * (1.0 + mean[1 + 4] / 400.0)
+                  color_calibration_shutter = color_calibration_shutter - (mean[1 + 4]) * 1.0  - mean[3] * 0.0
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
-                  print("r%.3f g%.3f b%.3f L%.1f shutter %d rg%.3f rb%.3f R%.1f G%.1f B%.1f" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6]))
-                  # print(goal, 'setting', color_calibration_shutter, color_calibration_red, color_calibration_blue)
+                  print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6]))
                   cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                   cp.SetPropertyOnCamera('AWB Red Gain', color_calibration_red, mute=True)
                   cp.SetPropertyOnCamera('AWB Blue Gain', color_calibration_blue, mute=True)
