@@ -41,8 +41,8 @@ cp = CameraProperties(camera)
 cp.Load()
 
 color_calibration_shutter = cp.PropertyValue('Shutter Speed')
-color_calibration_red = cp.PropertyValue('AWB Red Gain')
-color_calibration_blue = cp.PropertyValue('AWB Blue Gain')
+color_calibration_red = 2 # cp.PropertyValue('AWB Red Gain')
+color_calibration_blue = 2 # cp.PropertyValue('AWB Blue Gain')
 
 def SaveLastPictureTicks(ticks):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -286,9 +286,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   diff = np.array(diff)
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
-                  color_calibration_red = color_calibration_red - (mean[4] - mean[6]) /  333.0
-                  color_calibration_blue = color_calibration_blue - (mean[6] - mean[4]) / 333.0
-                  color_calibration_shutter = color_calibration_shutter - mean[5]
+                  color_calibration_red = color_calibration_red - (mean[4] - mean[6]) /  133.0
+                  color_calibration_blue = color_calibration_blue - (mean[6] - mean[4]) / 133.0
+                  color_calibration_shutter = color_calibration_shutter - mean[5] * 7
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
