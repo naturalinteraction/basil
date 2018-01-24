@@ -245,11 +245,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         # grab the raw NumPy array representing the image
         image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
  
-        # show the frame
-        if show:
-            cv2.imshow('cap', image)
-        key = cv2.waitKey(25) & 0xFF  # milliseconds
-
         if (just_started and just_started_but_done):
             PrintHelp()
             cp.PrintCurrentProperty()
@@ -268,9 +263,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
           if color_calibrate:
               if len(locations) == 24:
+                  show = True
                   diff = []
                   blurred = cv2.blur(image, (33, 33))
                   for n,(xx, yy) in enumerate(locations):
+                      cv2.rectangle(image, (xx-5, yy-5),
+                                            (xx+5, yy+5), (0,0,0), 2)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
                       diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
@@ -280,8 +278,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   mean = np.mean(np.float32(diff), axis=0)
                   print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
 
-                  color_calibration_red = color_calibration_red - mean[0] / 1000.0
-                  color_calibration_blue = color_calibration_blue - mean[2] / 1000.0
+                  color_calibration_red = color_calibration_red - mean[0] / 500.0
+                  color_calibration_blue = color_calibration_blue - mean[2] / 500.0
                   color_calibration_shutter = color_calibration_shutter - mean[3] - mean[1]
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
@@ -308,6 +306,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   print(last_picture_taken_ticks)
                   print(ticks)
         
+        # show the frame
+        if show:
+            cv2.imshow('cap', image)
+        key = cv2.waitKey(25) & 0xFF  # milliseconds
+
         if (key < 255 and key != ord('d')):
             # print(key)
             if show == False:
