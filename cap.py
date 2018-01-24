@@ -40,9 +40,9 @@ image = None
 cp = CameraProperties(camera)
 cp.Load()
 
-color_calibration_shutter = cp.PropertyValue('Shutter Speed')
-color_calibration_red = cp.PropertyValue('AWB Red Gain')
-color_calibration_blue = cp.PropertyValue('AWB Blue Gain')
+color_calibration_shutter = 1270 # todo cp.PropertyValue('Shutter Speed')
+color_calibration_red = 0 # cp.PropertyValue('AWB Red Gain')
+color_calibration_blue = 2 # cp.PropertyValue('AWB Blue Gain')
 
 def SaveLastPictureTicks(ticks):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -169,14 +169,17 @@ global targetbgr
 locations = []
 targetbgr = []
 
+def AbsGreen(bgr):
+    return float(bgr[1]) #/ float(bgr[0] + bgr[1] + bgr[2])  # or divided by Luminance() ?
+
 def Red(bgr):
-    return float(bgr[2]) #/ float(bgr[0] + bgr[1] + bgr[2])  # or divided by Luminance() ?
+    return float(bgr[2]) / float(bgr[0] + bgr[1] + bgr[2])  # or divided by Luminance() ?
 
 def Green(bgr):
-    return float(bgr[1]) #/ float(bgr[0] + bgr[1] + bgr[2])
+    return float(bgr[1]) / float(bgr[0] + bgr[1] + bgr[2])
 
 def Blue(bgr):
-    return float(bgr[0]) #/ float(bgr[0] + bgr[1] + bgr[2])
+    return float(bgr[0]) / float(bgr[0] + bgr[1] + bgr[2])
 
 def Luminance(bgr):
     return bgr[0] * 0.1140 + bgr[1] * 0.5870 + bgr[2] * 0.2989
@@ -271,16 +274,17 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                             (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
-                      diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
+                      diff.append((Red(c) - Red(t), AbsGreen(c) - AbsGreen(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
                       # print(n, diff[-1])
                   diff = np.array(diff)
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
                   print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
                   goal = (mean[0] + mean[1] + mean[2]) / 3.0
-                  color_calibration_red = color_calibration_red - (mean[0] - goal) / 333.0
-                  color_calibration_blue = color_calibration_blue - (mean[2] - goal) / 333.0
-                  color_calibration_shutter = color_calibration_shutter - (mean[1] - goal)  - mean[3] / 3.0
+                  goal = 0 # goal / 2.0
+                  color_calibration_red = color_calibration_red - (mean[0] - goal) #/ 333.0
+                  color_calibration_blue = color_calibration_blue - (mean[2] - goal) #/ 333.0
+                  color_calibration_shutter = color_calibration_shutter - (mean[1] - goal) #* 333.0  #- mean[3] #/ 3.0
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
