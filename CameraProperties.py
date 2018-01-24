@@ -177,9 +177,6 @@ class CameraProperties(object):
 
     def Save(self):
         filename = 'camera-properties.pkl'
-        if socket.gethostname() == 'redshift':
-            filename = 'camera-properties-redshift.pkl'
-        print('filename', filename)
         current_values = {}
         for name in sorted(list(self.properties.keys())):
             current_values[name] = self.PropertyOnCamera(name)
@@ -189,9 +186,6 @@ class CameraProperties(object):
 
     def Load(self):
         filename = 'camera-properties.pkl'
-        if socket.gethostname() == 'redshift':
-            filename = 'camera-properties-redshift.pkl'
-        print('filename', filename)
         with open(filename, 'r') as f:
             (self.values_indices,self.loaded_values) = pickle.load(f)
         print('Loaded.')
