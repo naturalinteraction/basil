@@ -278,7 +278,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
                       diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) - Green(t) * BF, Blue(c) - Blue(t) * BF))
-                      # print(n, diff[-1])
+                      print(str(n) + ' '+ str(int(diff[-1][4])) + ' '+ str(int(diff[-1][5])) + ' '+ str(int(diff[-1][6])))
                   diff = np.array(diff)
                   # print('diff', diff)
                   mean = np.mean(np.float32(diff), axis=0)
