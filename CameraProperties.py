@@ -186,6 +186,12 @@ class CameraProperties(object):
 
     def Load(self):
         filename = 'camera-properties.pkl'
+        try:
+            with open(filename, 'r') as f:
+                print('camera-properties.pkl found.')
+        except:
+            print('loading default camera properties.')
+            filename = 'default-camera-properties.pkl'
         with open(filename, 'r') as f:
             (self.values_indices,self.loaded_values) = pickle.load(f)
         print('Loaded.')
