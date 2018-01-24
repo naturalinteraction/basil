@@ -40,9 +40,9 @@ image = None
 cp = CameraProperties(camera)
 cp.Load()
 
-color_calibration_shutter = 1270 # todo cp.PropertyValue('Shutter Speed')
-color_calibration_red = 0 # cp.PropertyValue('AWB Red Gain')
-color_calibration_blue = 2 # cp.PropertyValue('AWB Blue Gain')
+color_calibration_shutter = 2350 # todo cp.PropertyValue('Shutter Speed')
+color_calibration_red = 1 # cp.PropertyValue('AWB Red Gain')
+color_calibration_blue = 1 # cp.PropertyValue('AWB Blue Gain')
 
 def SaveLastPictureTicks(ticks):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -274,17 +274,18 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                             (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
-                      diff.append((Red(c) - Red(t), AbsGreen(c) - AbsGreen(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
+                      diff.append((Red(c) - Red(t), Green(c) - Green(t), Blue(c) - Blue(t), Luminance(c) - Luminance(t)))
                       # print(n, diff[-1])
                   diff = np.array(diff)
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
                   print('R', mean[0], 'G', mean[1], 'B', mean[2], 'L', mean[3])
-                  goal = (mean[0] + mean[1] + mean[2]) / 3.0
-                  goal = 0 # goal / 2.0
-                  color_calibration_red = color_calibration_red - (mean[0] - goal) #/ 333.0
-                  color_calibration_blue = color_calibration_blue - (mean[2] - goal) #/ 333.0
-                  color_calibration_shutter = color_calibration_shutter - (mean[1] - goal) #* 333.0  #- mean[3] #/ 3.0
+                  goal = (mean[0] + mean[2]) / 3.0
+                  #goal = goal / 2.0
+                  goal = 0
+                  color_calibration_red = color_calibration_red - (mean[0] - mean[2]) #/ 333.0
+                  color_calibration_blue = color_calibration_blue - (mean[2] - mean[0]) #/ 333.0
+                  color_calibration_shutter = 2400 # color_calibration_shutter - (mean[1]) #* 333.0  #- mean[3] #/ 3.0
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
