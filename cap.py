@@ -41,8 +41,8 @@ cp = CameraProperties(camera)
 cp.Load()
 
 color_calibration_shutter = cp.PropertyValue('Shutter Speed')
-color_calibration_red = 2 # cp.PropertyValue('AWB Red Gain')
-color_calibration_blue = 2 # cp.PropertyValue('AWB Blue Gain')
+color_calibration_red = cp.PropertyValue('AWB Red Gain')
+color_calibration_blue = cp.PropertyValue('AWB Blue Gain')
 
 def SaveLastPictureTicks(ticks):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -274,28 +274,27 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if len(locations) == 24:
                   show = True
                   diff = []
-                  BF = 1.0 # 1.049  # brightness factor, max 1.049
+                  BF = 0.95 # 1.049  # brightness factor, max 1.049
                   blurred = cv2.blur(image, (33, 33))
                   for n,(xx, yy) in enumerate(locations):
                       cv2.rectangle(image, (xx-19, yy-19),
                                             (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
-                      diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) -24 - Green(t) * BF, Blue(c) - Blue(t) * BF))
-                      # print(n, diff[-1])
+                      diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) - Green(t) * BF, Blue(c) - Blue(t) * BF))
+                      print(n, diff[-1])
                   diff = np.array(diff)
                   # print(diff)
                   mean = np.mean(np.float32(diff), axis=0)
-                  color_calibration_red = color_calibration_red - (mean[4] - mean[6]) /  133.0
-                  color_calibration_blue = color_calibration_blue - (mean[6] - mean[4]) / 133.0
-                  color_calibration_shutter = color_calibration_shutter - mean[5] * 7
+                  color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0
+                  color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0
+                  color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0
                   color_calibration_red = max(0, min(8, color_calibration_red))
                   color_calibration_blue = max(0, min(8, color_calibration_blue))
                   color_calibration_shutter = max(0, min(64000, color_calibration_shutter))
                   print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6]))
                   cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
-                  cp.SetPropertyOnCamera('AWB Red Gain', color_calibration_red, mute=True)
-                  cp.SetPropertyOnCamera('AWB Blue Gain', color_calibration_blue, mute=True)
+                  cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
 
           if cp.calibrating == False and not color_calibrate:
               # force this to avoid frames fading to black

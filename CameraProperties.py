@@ -101,6 +101,9 @@ class CameraProperties(object):
         value_r = self.properties['AWB Red Gain'][self.values_indices['AWB Red Gain']]
         value_b = self.properties['AWB Blue Gain'][self.values_indices['AWB Blue Gain']]
         self.cam.awb_gains = (value_r, value_b)
+
+    def SetFreakingGains(self, r, b):
+        self.cam.awb_gains = (r, b)
             
     def FreezeExposureAWB(self):
         if (self.PropertyOnCamera('ISO') != 0
