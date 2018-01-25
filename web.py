@@ -1,6 +1,6 @@
 import time
 
-# wget -qO- http://127.0.0.1:443?ciao
+# wget -qO- http://127.0.0.1:50000?ciao
 
 from twisted.web import server, resource
 from twisted.internet import reactor
@@ -13,7 +13,7 @@ class WebPage(resource.Resource):
 
 def StartWebServer():
     site = server.Site(WebPage())
-    reactor.listenTCP(443, site)
+    reactor.listenTCP(50000, site)
     reactor.startRunning(False)
 
 def WebServerIterate():

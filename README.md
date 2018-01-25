@@ -155,3 +155,9 @@ Save username and password for 4 months:
 ```
 git config --global credential.helper 'cache --timeout=10000000'
 ```
+
+#### Web server on the sensors
+```
+pip install twisted
+[sudo] pip install service_identity
+```
