@@ -272,7 +272,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if len(locations) == 24:
                   show = True
                   diff = []
-                  BF = 1.0 # brightness factor, max 1.049
+                  BF = 1.049 # brightness factor, max 1.049
                   blurred = cv2.blur(image, (33, 33))
                   for n,(xx, yy) in enumerate(locations):
                       cv2.rectangle(image, (xx-19, yy-19),
@@ -287,10 +287,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   squared = diff ** 2
                   msq = np.mean(squared, axis=0)
                   mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
-                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.5:
-                      print('finished! exiting color calibration')
+                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.4:
+                      print('finished! exiting color calibration. Saving!')
                       color_calibrate = False
                       print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
+                      cp.Save()
+                      cp.Load()
+                      print(cp.loaded_values['Shutter Speed'], cp.loaded_values['AWB Red Gain'], cp.loaded_values['AWB Blue Gain'])
                   else:
                       color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0
                       color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0
