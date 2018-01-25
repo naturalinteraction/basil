@@ -287,7 +287,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   squared = diff ** 2
                   msq = np.mean(squared, axis=0)
                   mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
-                  if (abs(diff[4]) + abs(diff[5]) + abs(diff[6])) < 1.5:
+                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.5:
                       print('finished! exiting color calibration')
                       color_calibrate = False
                       print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
@@ -304,7 +304,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
           if cp.calibrating == False and not color_calibrate:
               # force this to avoid frames fading to black
-              print('forcing shutter' + str(cp.loaded_values['Shutter Speed']))
+              print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)
 
           if (ticks - last_picture_taken_ticks) > 61.0:
