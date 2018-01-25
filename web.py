@@ -7,6 +7,8 @@ from twisted.web import server, resource
 from twisted.internet import reactor
 import globa
 import socket
+import psutil
+import os
 
 '''
 AWB Blue Gain  2.0 <0.76953125>
@@ -36,6 +38,9 @@ link to last picture
 
 def Page():
     hostname = socket.gethostname()
+    mem = psutil.virtual_memory()
+    disk = os.statvfs('/')
+    disk_percent = 100 - 100 * disk.f_bavail / disk.f_blocks
     return (hostname + ' <p>\n' +
             'color calibration = ' + str(globa.color_calibrate) + ' <p>\n' +
             'show = ' + str(globa.show) + ' <p>\n' +
@@ -51,6 +56,9 @@ def Page():
             OpenCVVersion() + ' <p>\n' +
             'locations = ' + str(len(globa.locations)) + ' <p>\n' +
             'started at = ' + globa.time_process_started_string + ' <p>\n' +
+            'cpu = ' + str(psutil.cpu_percent()) + ' <p>\n' +
+            'memory = ' + str(mem.percent) + ' <p>\n' +
+            'disk = ' + str(disk_percent) + ' <p>\n' +
             'started at ticks = ' + str(globa.time_process_started) + ' <p>\n'
            )
 
