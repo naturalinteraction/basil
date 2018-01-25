@@ -273,7 +273,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
                   if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.4:
                       print('finished! exiting color calibration. Saving!')
-                      color_calibrate = False
+                      globa.color_calibrate = False
                       print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
                       cp.Save()
                       cp.Load()
