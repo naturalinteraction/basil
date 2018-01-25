@@ -1,29 +1,32 @@
+from git import OpenCVVersion
+from git import GitHash
+from git import GitCommitMessage
 from twisted.web import server, resource
 from twisted.internet import reactor
-import globals
+import globa
 import socket
 
 # wget -qO- http://127.0.0.1:50000?plantsensor
 
 def Page():
     hostname = socket.gethostname()
-    print('diom', globals.diom)
+    print('diom', globa.diom)
     return (hostname + ' <p>\n' +
-            str(globals.diom) + ' <p>\n' +
-            str(color_calibrate) + ' <p>\n' +
-            str(show) + ' <p>\n' +
-            str(just_started) + ' <p>\n' +
-            str(just_started_but_done) + ' <p>\n' +
-            str(previous_analog_gain) + ' <p>\n' +
-            str(previous_digital_gain) + ' <p>\n' +
-            str(gain_distance) + ' <p>\n' +
-            str(last_picture_taken_ticks) + ' <p>\n' +
+            str(globa.diom) + ' <p>\n' +
+            str(globa.color_calibrate) + ' <p>\n' +
+            str(globa.show) + ' <p>\n' +
+            str(globa.just_started) + ' <p>\n' +
+            str(globa.just_started_but_done) + ' <p>\n' +
+            str(globa.previous_analog_gain) + ' <p>\n' +
+            str(globa.previous_digital_gain) + ' <p>\n' +
+            str(globa.gain_distance) + ' <p>\n' +
+            str(globa.last_picture_taken_ticks) + ' <p>\n' +
             GitCommitMessage() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
-            campaign + ' <p>\n' +
-            str(len(locations)) + ' <p>\n' +
-            time_process_started_string + ' <p>\n' +
-            str(time_process_started) + ' <p>\n'
+            globa.campaign + ' <p>\n' +
+            str(len(globa.locations)) + ' <p>\n' +
+            globa.time_process_started_string + ' <p>\n' +
+            str(globa.time_process_started) + ' <p>\n'
            )
 
 class WebPage(resource.Resource):

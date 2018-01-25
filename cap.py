@@ -11,7 +11,7 @@ import shutil
 import pickle
 from audio import AudioLevelPi
 import numpy as np
-import globals
+import globa
 from web import *
 
 # initialize the camera and grab a reference to the raw camera capture
@@ -41,20 +41,15 @@ def LoadLastPictureTicks():
     return ticks
 
 try:
-    last_picture_taken_ticks = LoadLastPictureTicks()
-    print(last_picture_taken_ticks)
+    globa.last_picture_taken_ticks = LoadLastPictureTicks()
 except:
     print('Could not load time of last picture.')
-    print(last_picture_taken_ticks)
 
 def UpdateGainDistance():
-    global previous_analog_gain
-    global previous_digital_gain
-    global gain_distance
-    gdi = gain_distance
-    pag = previous_analog_gain
-    pdg = previous_digital_gain
-    print(pag, pdg)
+    gdi = globa.gain_distance
+    pag = globa.previous_analog_gain
+    pdg = globa.previous_digital_gain
+    print(pag, pdg)  # todo
     gdi = math.fabs(camera.digital_gain - pdg)
     gdi += math.fabs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
@@ -62,8 +57,8 @@ def UpdateGainDistance():
     print(('analog %s  digital %s distance %s' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
                                                  gdi)))
-    previous_analog_gain = pag
-    previous_digital_gain = pdg
+    globa.previous_analog_gain = pag
+    globa.previous_digital_gain = pdg
     return gdi
 
 def PrintHelp():
@@ -169,19 +164,16 @@ def Luminance(bgr):
     return bgr[0] * 0.1140 + bgr[1] * 0.5870 + bgr[2] * 0.2989
 
 def mouseCallbackCalib(event, x, y, flags, param):
-    global locations
-    global targetbgr
-    global image
     if event == cv2.EVENT_LBUTTONDOWN:
-        if len(locations) < 24:
-            print ('X' + str(x) + ' Y' + str(y) + ' location ' + str(len(locations)))
-            locations.append((x,y))
-            if len(locations) == 24:
+        if len(globa.locations) < 24:
+            print ('X' + str(x) + ' Y' + str(y) + ' location ' + str(len(globa.locations)))
+            globa.locations.append((x,y))
+            if len(globa.locations) == 24:
                 with open('calibration-locations.pkl', 'w') as f:
-                    pickle.dump(locations, f, 0)
+                    pickle.dump(globa.locations, f, 0)
                     print('color calibration locations saved')
     if event == cv2.EVENT_RBUTTONDOWN:
-        locations = []
+        globa.locations = []
         print('restarting color calibration: pick the 24 locations')
 
 # allow the camera to warmup
@@ -231,38 +223,37 @@ StartWebServer()
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
-        globals.diom = globals.diom + 1
+        globa.diom = globa.diom + 1
         WebServerIterate()
-        image = frame.array
+        globa.image = frame.array
  
-        if (just_started and just_started_but_done):
+        if (globa.just_started and globa.just_started_but_done):
             PrintHelp()
             cp.PrintCurrentProperty()
-            show = False
+            globa.show = False
             print('Display disabled.')
-            just_started = False
-            just_started_but_done = False
+            globa.just_started = False
+            globa.just_started_but_done = False
 
-        if just_started:
-            global gain_distance
-            gain_distance = UpdateGainDistance()
-            if gain_distance < 0.05:
+        if globa.just_started:
+            globa.gain_distance = UpdateGainDistance()
+            if globa.gain_distance < 0.05:
                 cp.SetAllPropertiesOnCamera()
-                just_started_but_done = True                
+                globa.just_started_but_done = True                
         else:
           ticks = time.time()
 
-          if color_calibrate:
-              if not len(locations) == 24:
+          if globa.color_calibrate:
+              if not len(globa.locations) == 24:
                   print('pick the 24 locations first')
               else:
-                  show = True
+                  globa.show = True
                   diff = []
                   BF = 1.049 # brightness factor, max 1.049
-                  blurred = cv2.blur(image, (33, 33))
-                  for n,(xx, yy) in enumerate(locations):
-                      cv2.rectangle(image, (xx-19, yy-19),
-                                            (xx+19, yy+19), (0,0,0), 3)
+                  blurred = cv2.blur(globa.image, (33, 33))
+                  for n,(xx, yy) in enumerate(globa.locations):
+                      cv2.rectangle(globa.image, (xx-19, yy-19),
+                                                 (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
                       diff.append((
@@ -299,37 +290,36 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                       cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
 
-          if cp.calibrating == False and not color_calibrate:
+          if cp.calibrating == False and not globa.color_calibrate:
               # force this to avoid frames fading to black
               print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)
 
-          if (ticks - last_picture_taken_ticks) > 61.0:
+          if (ticks - globa.last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
               if localtime.tm_min == 00 and localtime.tm_hour > 9 and localtime.tm_hour < 21:  # one per hour, from 10am to 8pm
                   # if localtime.tm_hour == 10:  # one per day, at 10am
-                  last_picture_taken_ticks = TakePicture(image, camera)
+                  globa.last_picture_taken_ticks = TakePicture(globa.image, camera)
                   print('Turning zoom off.')
                   camera.zoom = (0.0, 0.0, 1.0, 1.0)  # will not take effect immediately, but at least next one will be ok
                   print('Disabling display.')
-                  show = False
-                  print(last_picture_taken_ticks)
+                  globa.show = False
+                  print(globa.last_picture_taken_ticks)
                   print(ticks)
         
         # show the frame
-        if show:
-            cv2.imshow('cap', image)
+        if globa.show:
+            cv2.imshow('cap', globa.image)
         key = cv2.waitKey(25) & 0xFF  # milliseconds
 
         if (key < 255 and key != ord('d')):
-            # print(key)
-            if show == False:
+            if globa.show == False:
               print('Display enabled.')
-              show = True
+              globa.show = True
         
         if key == ord('d'):
             print('Display disabled.')
-            show = False
+            globa.show = False
         
         if key == ord('h'):
             PrintHelp()
@@ -338,14 +328,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.Save()
 
         if key == ord('l'):
-            locations = []
+            globa.locations = []
 
         if key == ord('c'):
-            color_calibrate = not color_calibrate
-            if not len(locations) == 24:
+            globa.color_calibrate = not globa.color_calibrate
+            if not len(globa.locations) == 24:
                 print('no 24 locations')
-                color_calibrate = False
-            if color_calibrate:
+                globa.color_calibrate = False
+            if globa.color_calibrate:
                 color_calibration_shutter = cp.loaded_values['Shutter Speed']
                 color_calibration_red = cp.loaded_values['AWB Red Gain']
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
@@ -354,9 +344,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.FreezeExposureAWB()
 
         if key == ord('p'):
-            if just_started == False:
-                last_picture_taken_ticks = TakePicture(image, camera)
-                print(last_picture_taken_ticks)
+            if globa.just_started == False:
+                globa.last_picture_taken_ticks = TakePicture(globa.image, camera)
+                print(globa.last_picture_taken_ticks)
                 print(ticks)
             else:
                 print('hold on, cowboy!')
@@ -364,17 +354,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == 10:  # enter
             cp.SetPropertyOnCamera(cp.CurrentPropertyName(),
                                    cp.CurrentPropertyValue())
-    
+
         if key == 9:  # tab
             cp.PrintAllProperties()
             print(GitCommitMessage())
-            uptime_minutes = int((time.time() - time_process_started) / (60.0))
-            print(time_process_started_string) 
+            uptime_minutes = int((time.time() - globa.time_process_started) / (60.0))
+            print(globa.time_process_started_string) 
             print((time.strftime("now     %Y/%m/%d %H:%M")))
             print(('uptime minutes %s' % uptime_minutes))
             print(('*' * 20))
 
-            
         if key == ord('z'):    
             if camera.zoom[0] == 0.0:
                 camera.zoom = (0.333, 0.333, 0.333, 0.333)
