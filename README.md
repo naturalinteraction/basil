@@ -13,7 +13,8 @@ A repo for my own experiments.
 - [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Definition of architectural aspects (image storage, notifications, etc.)
 - [ ] Optimization on sensor
-- [ ] UI for maintenance and management
+- [ ] Design UI for management (and then implement it)
+- [ ] Design enclosing case
 - [ ] Hardware specification document
 - [ ] Commented source code
 - [ ] Documentation
@@ -78,6 +79,8 @@ A repo for my own experiments.
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [x] Integrate microphone
 - [x] Sensor color calibration == Find camera parameters automatically
+- [ ] Search brightness and contrast values (after the gains are good)
+- [ ] Save 24 errors on disk (plus the average squared error)
 - [ ] Web interface
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
