@@ -61,9 +61,8 @@ def GitCommitMessage():
 def GitCommitMessagePretty():
     return subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
 
-# print out debug information about current source code version and OpenCV version
-print(GitCommitMessage())
-print(OpenCVVersion())
+# print out debug information about current source code version
+# print(GitCommitMessage())
 
 
 '''
