@@ -9,6 +9,15 @@ A repo for my own experiments.
 4. White light.
 5. Substrate will guarantee good contrast.
 
+#### High-level tasks
+- [ ] Algorithms: segmentation, analysis, calibration
+- [ ] Definition of architectural aspects (image storage, notifications, etc.)
+- [ ] Optimization on sensor
+- [ ] UI for maintenance and management
+- [ ] Hardware specification document
+- [ ] Commented source code
+- [ ] Documentation
+
 #### Tasks dip.py
 
 - [x] List all pictures on S3
@@ -29,6 +38,7 @@ A repo for my own experiments.
 - [x] Segmentation: multi-dimensional k-means clustering as a tool
 - [x] Lab, Luv, YUV color spaces
 - [x] Superpixels
+- [ ] Perspective mask
 - [ ] Segmentation: downsizing
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] Segmentation: Otsu thresholding and adaptive thresholding

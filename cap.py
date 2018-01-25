@@ -15,6 +15,7 @@ from git import GitHash
 from git import GitCommitMessage
 from audio import AudioLevelPi
 import numpy as np
+from web import *
 
 print(GitCommitMessage())
 print(OpenCVVersion())
@@ -251,10 +252,12 @@ try:
 except:
     pass
 
+StartWebServer()
+
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
-        # grab the raw NumPy array representing the image
-        image = frame.array  # maybe we can avoid this if not just started and not showing and not taking the picture
+        WebServerIterate()
+        image = frame.array
  
         if (just_started and just_started_but_done):
             PrintHelp()
