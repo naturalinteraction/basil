@@ -87,6 +87,7 @@ def PrintHelp():
     print('Arrow Keys - Navigate Properties And Values')
     print('Enter - Set Current Property')
     print('F - Freeze')
+    print('C - Color Calibration')
     print('S - Save')
     print('D - Disable Display')
     print('H - Help')
@@ -286,19 +287,24 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   squared = diff ** 2
                   msq = np.mean(squared, axis=0)
                   mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
-                  color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0
-                  color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0
-                  color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0  # no need to use L because with Green() its error goes to zero
-                  color_calibration_red = max(0, min(8, color_calibration_red))
-                  color_calibration_blue = max(0, min(8, color_calibration_blue))
-                  color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
-                  print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
-                  cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
-                  cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
+                  if (abs(diff[4]) + abs(diff[5] + abs(diff[6])) < 1.5:
+                      print('finished! exiting color calibration')
+                      color_calibrate = False
+                      print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
+                  else:
+                      color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0
+                      color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0
+                      color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0  # no need to use L because with Green() its error goes to zero
+                      color_calibration_red = max(0, min(8, color_calibration_red))
+                      color_calibration_blue = max(0, min(8, color_calibration_blue))
+                      color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
+                      print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
+                      cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
+                      cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
 
           if cp.calibrating == False and not color_calibrate:
               # force this to avoid frames fading to black
-              print(cp.loaded_values['Shutter Speed'])
+              print('forcing shutter' + str(cp.loaded_values['Shutter Speed']))
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)
 
           if (ticks - last_picture_taken_ticks) > 61.0:
