@@ -3,6 +3,9 @@ from git import OpenCVVersion
 from git import GitHash
 from git import GitCommitMessage
 
+global diom
+diom = 666
+
 global image
 image = None
 

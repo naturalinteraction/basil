@@ -11,7 +11,7 @@ import shutil
 import pickle
 from audio import AudioLevelPi
 import numpy as np
-from globals import *
+import globals
 from web import *
 
 # initialize the camera and grab a reference to the raw camera capture
@@ -48,9 +48,13 @@ except:
     print(last_picture_taken_ticks)
 
 def UpdateGainDistance():
+    global previous_analog_gain
+    global previous_digital_gain
+    global gain_distance
     gdi = gain_distance
     pag = previous_analog_gain
     pdg = previous_digital_gain
+    print(pag, pdg)
     gdi = math.fabs(camera.digital_gain - pdg)
     gdi += math.fabs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
@@ -58,7 +62,9 @@ def UpdateGainDistance():
     print(('analog %s  digital %s distance %s' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
                                                  gdi)))
-    return gdi, pag, pdg
+    previous_analog_gain = pag
+    previous_digital_gain = pdg
+    return gdi
 
 def PrintHelp():
     print(('*' * 10))
@@ -163,9 +169,9 @@ def Luminance(bgr):
     return bgr[0] * 0.1140 + bgr[1] * 0.5870 + bgr[2] * 0.2989
 
 def mouseCallbackCalib(event, x, y, flags, param):
-    # global locations  todo
-    # global targetbgr
-    # global image
+    global locations
+    global targetbgr
+    global image
     if event == cv2.EVENT_LBUTTONDOWN:
         if len(locations) < 24:
             print ('X' + str(x) + ' Y' + str(y) + ' location ' + str(len(locations)))
@@ -225,6 +231,7 @@ StartWebServer()
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
+        globals.diom = globals.diom + 1
         WebServerIterate()
         image = frame.array
  
@@ -237,7 +244,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             just_started_but_done = False
 
         if just_started:
-            gain_distance, previous_analog_gain, previous_digital_gain = UpdateGainDistance()
+            global gain_distance
+            gain_distance = UpdateGainDistance()
             if gain_distance < 0.05:
                 cp.SetAllPropertiesOnCamera()
                 just_started_but_done = True                

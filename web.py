@@ -1,13 +1,15 @@
 from twisted.web import server, resource
 from twisted.internet import reactor
-from globals import *
+import globals
 import socket
 
 # wget -qO- http://127.0.0.1:50000?plantsensor
 
 def Page():
     hostname = socket.gethostname()
+    print('diom', globals.diom)
     return (hostname + ' <p>\n' +
+            str(globals.diom) + ' <p>\n' +
             str(color_calibrate) + ' <p>\n' +
             str(show) + ' <p>\n' +
             str(just_started) + ' <p>\n' +
