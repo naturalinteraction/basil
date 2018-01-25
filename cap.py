@@ -274,7 +274,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
           ticks = time.time()
 
           if color_calibrate:
-              if len(locations) == 24:
+              if not len(locations) == 24:
+                  print('pick the 24 locations first')
+              else:
                   show = True
                   diff = []
                   BF = 1.049 # brightness factor, max 1.049
