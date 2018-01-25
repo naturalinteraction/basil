@@ -15,6 +15,7 @@ from git import GitHash
 from git import GitCommitMessage
 from audio import AudioLevelPi
 import numpy as np
+from globals import *
 from web import *
 
 print(GitCommitMessage())
@@ -32,11 +33,6 @@ except:
 camera.framerate = 5
 camera.resolution = (2560, 1920)
 rawCapture = PiRGBArray(camera, size=camera.resolution)
-
-global image
-show = True
-color_calibrate = False
-image = None
 
 cp = CameraProperties(camera)
 cp.Load()
