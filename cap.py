@@ -38,7 +38,6 @@ def LoadLastPictureTicks():
     with open('last-picture-taken-ticks.pkl', 'rb') as f:
         ticks = pickle.load(f)
     print('Loaded time of last picture.')
-    print(ticks)
     return ticks
 
 try:
@@ -184,7 +183,6 @@ def mouseCallbackCalib(event, x, y, flags, param):
         locations = []
         print('restarting color calibration: pick the 24 locations')
 
-print('BASIL_NOTE', os.environ['BASIL_NOTE'])
 # allow the camera to warmup
 print('Wait...')
 time.sleep(2)
@@ -341,6 +339,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == ord('c'):
             color_calibrate = not color_calibrate
+            if not len(locations) == 24:
+                print('no 24 locations')
+                color_calibrate = False
             if color_calibrate:
                 color_calibration_shutter = cp.loaded_values['Shutter Speed']
                 color_calibration_red = cp.loaded_values['AWB Red Gain']

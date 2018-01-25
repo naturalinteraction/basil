@@ -7,13 +7,20 @@ import socket
 
 def Page():
     hostname = socket.gethostname()
-    return (hostname + '\n' +
-            str(color_calibrate) + '\n' +
-            GitCommitMessage() + '\n' +
-            OpenCVVersion() + '\n' +
-            campaign + '\n' +
-            time_process_started_string + '\n' +
-            str(time_process_started) + '\n'
+    return (hostname + ' <p>\n' +
+            str(color_calibrate) + ' <p>\n' +
+            str(show) + ' <p>\n' +
+            str(just_started) + ' <p>\n' +
+            str(just_started_but_done) + ' <p>\n' +
+            str(previous_analog_gain) + ' <p>\n' +
+            str(previous_digital_gain) + ' <p>\n' +
+            str(gain_distance) + ' <p>\n' +
+            str(last_picture_taken_ticks) + ' <p>\n' +
+            GitCommitMessage() + ' <p>\n' +
+            OpenCVVersion() + ' <p>\n' +
+            campaign + ' <p>\n' +
+            time_process_started_string + ' <p>\n' +
+            str(time_process_started) + ' <p>\n'
            )
 
 class WebPage(resource.Resource):
