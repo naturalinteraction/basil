@@ -1,7 +1,6 @@
 from CameraProperties import CameraProperties
 from picamera import PiCamera
 from picamera.array import PiRGBArray
-import time
 import os
 import cv2
 import math
@@ -10,18 +9,10 @@ from pyexif import ExifEditor
 import glob
 import shutil
 import pickle
-from git import OpenCVVersion
-from git import GitHash
-from git import GitCommitMessage
 from audio import AudioLevelPi
 import numpy as np
 from globals import *
 from web import *
-
-print(GitCommitMessage())
-print(OpenCVVersion())
-
-campaign = 'xxx'
 
 # initialize the camera and grab a reference to the raw camera capture
 try:
@@ -49,21 +40,13 @@ def LoadLastPictureTicks():
     print('Loaded time of last picture.')
     print(ticks)
     return ticks
-  
-last_picture_taken_ticks = -1
+
 try:
     last_picture_taken_ticks = LoadLastPictureTicks()
     print(last_picture_taken_ticks)
 except:
     print('Could not load time of last picture.')
     print(last_picture_taken_ticks)
-
-just_started = True
-just_started_but_done = False
-
-gain_distance = -1.0
-previous_analog_gain = -1.0
-previous_digital_gain = -1.0
 
 def UpdateGainDistance():
     gdi = gain_distance
@@ -201,13 +184,10 @@ def mouseCallbackCalib(event, x, y, flags, param):
         locations = []
         print('restarting color calibration: pick the 24 locations')
 
-print((os.environ['BASIL_NOTE']))
+print('BASIL_NOTE', os.environ['BASIL_NOTE'])
 # allow the camera to warmup
 print('Wait...')
 time.sleep(2)
-
-time_process_started = time.time()
-time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
 
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('cap', mouseCallbackCalib)
