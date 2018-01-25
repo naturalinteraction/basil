@@ -19,6 +19,7 @@ def Page():
             GitCommitMessage() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
             campaign + ' <p>\n' +
+            str(len(locations)) + ' <p>\n' +
             time_process_started_string + ' <p>\n' +
             str(time_process_started) + ' <p>\n'
            )

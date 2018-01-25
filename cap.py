@@ -141,11 +141,6 @@ def AttemptUpload():
     else:
         print('There was a problem uploading. Nothing done.')
 
-global locations
-global targetbgr
-locations = []
-targetbgr = []
-
 def Red(bgr):
     return float(bgr[2])
 
@@ -168,9 +163,9 @@ def Luminance(bgr):
     return bgr[0] * 0.1140 + bgr[1] * 0.5870 + bgr[2] * 0.2989
 
 def mouseCallbackCalib(event, x, y, flags, param):
-    global locations
-    global targetbgr
-    global image
+    # global locations  todo
+    # global targetbgr
+    # global image
     if event == cv2.EVENT_LBUTTONDOWN:
         if len(locations) < 24:
             print ('X' + str(x) + ' Y' + str(y) + ' location ' + str(len(locations)))
