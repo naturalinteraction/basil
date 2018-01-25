@@ -6,8 +6,6 @@ from twisted.internet import reactor
 import globa
 import socket
 
-# wget -qO- http://127.0.0.1:50000?plantsensor
-
 def Page():
     hostname = socket.gethostname()
     return (hostname + ' <p>\n' +
