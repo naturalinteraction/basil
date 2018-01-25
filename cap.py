@@ -213,6 +213,7 @@ time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('cap', mouseCallbackCalib)
 
+# these will be the targets, as they will be valid also for other physical color checkers
 targetbgr = []
 targetbgr.append((68,82,115))  # 0 dark skin
 targetbgr.append((130,150,194))  # 1 light skin
