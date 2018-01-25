@@ -1,3 +1,4 @@
+import time
 from CameraProperties import CameraProperties
 from picamera import PiCamera
 from picamera.array import PiRGBArray
@@ -49,7 +50,6 @@ def UpdateGainDistance():
     gdi = globa.gain_distance
     pag = globa.previous_analog_gain
     pdg = globa.previous_digital_gain
-    print(pag, pdg)  # todo
     gdi = math.fabs(camera.digital_gain - pdg)
     gdi += math.fabs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
@@ -88,7 +88,7 @@ def TakePicture(img, cam):
     print('Saving picture.')
     res = cam.resolution
     note = os.environ['BASIL_NOTE']
-    filename = 'cache/' + note + '-' + campaign + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
+    filename = 'cache/' + note + '-' + globa.campaign + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
     # cv2.imwrite(filename + '_quality95.jpg', img, [int(cv2.IMWRITE_JPEG_QUALITY), 95])  # up to 100, default 95
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
@@ -214,7 +214,7 @@ targetbgr.append((85,85,85))  # 22 neutral 3.5
 targetbgr.append((52,52,52))  # 23 black 2
 try:
     with open('calibration-locations.pkl', 'r') as f:
-        locations = pickle.load(f)
+        globa.locations = pickle.load(f)
         print('loaded calibration locations')
 except:
     pass
@@ -223,7 +223,6 @@ StartWebServer()
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
-        globa.diom = globa.diom + 1
         WebServerIterate()
         globa.image = frame.array
  
@@ -237,7 +236,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if globa.just_started:
             globa.gain_distance = UpdateGainDistance()
-            if globa.gain_distance < 0.05:
+            if globa.gain_distance < 0.005:
                 cp.SetAllPropertiesOnCamera()
                 globa.just_started_but_done = True                
         else:
@@ -323,11 +322,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         
         if key == ord('h'):
             PrintHelp()
-        
+
         if key == ord('s'):
             cp.Save()
 
         if key == ord('l'):
+            print('color checker locations reset')
             globa.locations = []
 
         if key == ord('c'):

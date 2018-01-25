@@ -10,12 +10,10 @@ import socket
 
 def Page():
     hostname = socket.gethostname()
-    print('diom', globa.diom)
     return (hostname + ' <p>\n' +
-            str(globa.diom) + ' <p>\n' +
-            str(globa.color_calibrate) + ' <p>\n' +
-            str(globa.show) + ' <p>\n' +
-            str(globa.just_started) + ' <p>\n' +
+            'colcal ' + str(globa.color_calibrate) + ' <p>\n' +
+            'show ' + str(globa.show) + ' <p>\n' +
+            'just started ' + str(globa.just_started) + ' <p>\n' +
             str(globa.just_started_but_done) + ' <p>\n' +
             str(globa.previous_analog_gain) + ' <p>\n' +
             str(globa.previous_digital_gain) + ' <p>\n' +

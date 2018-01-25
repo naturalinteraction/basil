@@ -1,8 +1,5 @@
 import time
 
-global diom
-diom = 666
-
 global image
 image = None
 
