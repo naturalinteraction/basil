@@ -38,6 +38,3 @@ time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
 
 global locations
 locations = []
-
-global targetbgr
-targetbgr = []

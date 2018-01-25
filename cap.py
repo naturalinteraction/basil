@@ -98,7 +98,7 @@ def TakePicture(img, cam):
     # add EXIF keywords
     exif = ExifEditor(filename)
     keywords =       [GitHash(),
-                      time_process_started_string,
+                      globa.time_process_started_string,
                       'shutter_speed=' + str(cam.shutter_speed),
                       'drc_strength=' + str(cam.drc_strength),
                       'brightness=' + str(cam.brightness),
@@ -187,6 +187,7 @@ cv2.setMouseCallback('cap', mouseCallbackCalib)
 weight = []
 for i in range(0, 24):
     weight.append(1.0)
+
 targetbgr = []
 targetbgr.append((68,82,115))  # 0 dark skin
 targetbgr.append((130,150,194))  # 1 light skin
@@ -248,11 +249,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               else:
                   globa.show = True
                   diff = []
+                  kernel = 49
+                  half = int(kernel / 2 + 3)
                   BF = 1.049 # brightness factor, max 1.049
-                  blurred = cv2.blur(globa.image, (33, 33))
+                  blurred = cv2.blur(globa.image, (kernel, kernel))
                   for n,(xx, yy) in enumerate(globa.locations):
-                      cv2.rectangle(globa.image, (xx-19, yy-19),
-                                                 (xx+19, yy+19), (0,0,0), 3)
+                      cv2.rectangle(globa.image, (xx - half, yy - half),
+                                                 (xx + half, yy + half), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
                       diff.append((
@@ -264,30 +267,33 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                    (Green(c) - Green(t) * BF) * weight[n],
                                    (Blue(c) - Blue(t) * BF) * weight[n]
                                  ))
-                      print(str(n) + ' '+ str(int(diff[-1][4])) + ' '+ str(int(diff[-1][5])) + ' '+ str(int(diff[-1][6])))
+                      print(str(n) + ' '+ str(int(diff[-1][4] / weight[n])) + ' '+ str(int(diff[-1][5] / weight[n])) + ' '+ str(int(diff[-1][6] / weight[n])))
                   diff = np.array(diff)
                   # print('diff', diff)
                   mean = np.mean(np.float32(diff), axis=0)
                   squared = diff ** 2
                   msq = np.mean(squared, axis=0)
                   mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
-                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.4:
+                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 0.5:
                       print('finished! exiting color calibration. Saving!')
+                      print('mean %.2f %.2f %.2f' % (mean[4], mean[5], mean[6]))
                       globa.color_calibrate = False
                       print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
+                      time.sleep(2)
                       cp.Save()
                       cp.Load()
                       print(cp.loaded_values['Shutter Speed'], cp.loaded_values['AWB Red Gain'], cp.loaded_values['AWB Blue Gain'])
                   else:
-                      color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0 / 3.0
-                      color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0 / 3.0
-                      color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 3.0  # no need to use L because with Green() its error goes to zero
+                      color_calibration_red = color_calibration_red - (mean[4] - 0.0 * mean[5]) /  133.0 / 3.0
+                      color_calibration_blue = color_calibration_blue - (mean[6] - 0.0 * mean[5]) / 133.0 / 3.0
+                      color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 6.0  # no need to use L because with Green() its error goes to zero
                       color_calibration_red = max(0, min(8, color_calibration_red))
                       color_calibration_blue = max(0, min(8, color_calibration_blue))
                       color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
                       print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
                       cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                       cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
+                      time.sleep(0.5)
 
           if cp.calibrating == False and not globa.color_calibrate:
               # force this to avoid frames fading to black
@@ -336,6 +342,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 print('no 24 locations')
                 globa.color_calibrate = False
             if globa.color_calibrate:
+                camera.zoom = (0.0, 0.0, 1.0, 1.0)
                 color_calibration_shutter = cp.loaded_values['Shutter Speed']
                 color_calibration_red = cp.loaded_values['AWB Red Gain']
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
@@ -364,7 +371,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print(('uptime minutes %s' % uptime_minutes))
             print(('*' * 20))
 
-        if key == ord('z'):    
+        if key == ord('z') and globa.color_calibrate == False:
             if camera.zoom[0] == 0.0:
                 camera.zoom = (0.333, 0.333, 0.333, 0.333)
             else:
