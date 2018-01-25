@@ -78,6 +78,7 @@ A repo for my own experiments.
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [x] Integrate microphone
 - [x] Sensor color calibration == Find camera parameters automatically
+- [ ] Web interface
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
@@ -169,5 +170,7 @@ git config --global credential.helper 'cache --timeout=10000000'
 #### Web server on the sensors
 ```
 pip install twisted
-[sudo] pip install service_identity
+sudo pip install service_identity
+pip install service_identity
 ```
+The last command fails but then Twisted is happy anyway.
