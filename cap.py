@@ -236,7 +236,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if globa.just_started:
             globa.gain_distance = UpdateGainDistance()
-            if globa.gain_distance < 0.005:
+            if globa.gain_distance < 0.02:
                 cp.SetAllPropertiesOnCamera()
                 globa.just_started_but_done = True                
         else:
@@ -279,9 +279,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       cp.Load()
                       print(cp.loaded_values['Shutter Speed'], cp.loaded_values['AWB Red Gain'], cp.loaded_values['AWB Blue Gain'])
                   else:
-                      color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0
-                      color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0
-                      color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0  # no need to use L because with Green() its error goes to zero
+                      color_calibration_red = color_calibration_red - (mean[4] - mean[5]) /  133.0 / 3.0
+                      color_calibration_blue = color_calibration_blue - (mean[6] - mean[5]) / 133.0 / 3.0
+                      color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 3.0  # no need to use L because with Green() its error goes to zero
                       color_calibration_red = max(0, min(8, color_calibration_red))
                       color_calibration_blue = max(0, min(8, color_calibration_blue))
                       color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
