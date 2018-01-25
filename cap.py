@@ -219,7 +219,6 @@ cv2.setMouseCallback('cap', mouseCallbackCalib)
 weight = []
 for i in range(0, 24):
     weight.append(1.0)
-print(weight)
 targetbgr = []
 targetbgr.append((68,82,115))  # 0 dark skin
 targetbgr.append((130,150,194))  # 1 light skin
