@@ -3,6 +3,7 @@ from utility import GitHash
 from utility import GitCommitMessage
 from utility import GitRevCount
 from utility import GitBranch
+from utility import PiTemperature
 from twisted.web import server, resource
 from twisted.internet import reactor
 import globa
@@ -59,6 +60,7 @@ def Page():
             'cpu = ' + str(psutil.cpu_percent()) + ' <p>\n' +
             'memory = ' + str(mem.percent) + ' <p>\n' +
             'disk = ' + str(disk_percent) + ' <p>\n' +
+            'temperature = ' + str(PiTemperature()) + ' <p>\n' +
             'started at ticks = ' + str(globa.time_process_started) + ' <p>\n'
            )
 
