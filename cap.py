@@ -87,6 +87,7 @@ def PrintHelp():
     print('Arrow Keys - Navigate Properties And Values')
     print('Enter - Set Current Property')
     print('F - Freeze')
+    print('L - Reset Color Calibration Locations')
     print('C - Color Calibration')
     print('S - Save')
     print('D - Disable Display')
@@ -215,6 +216,10 @@ cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('cap', mouseCallbackCalib)
 
 # these will be the targets, as they will be valid also for other physical color checkers
+weight = []
+for i in range(0, 24):
+    weight.append(1.0)
+print(weight)
 targetbgr = []
 targetbgr.append((68,82,115))  # 0 dark skin
 targetbgr.append((130,150,194))  # 1 light skin
@@ -279,7 +284,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                             (xx+19, yy+19), (0,0,0), 3)
                       c = blurred[yy,xx].tolist()
                       t = targetbgr[n]
-                      diff.append((Redness(c) - Redness(t), Greenness(c) - Greenness(t), Blueness(c) - Blueness(t), Luminance(c) - Luminance(t) * BF, Red(c) - Red(t) * BF, Green(c) - Green(t) * BF, Blue(c) - Blue(t) * BF))
+                      diff.append((
+                                   Redness(c) - Redness(t),
+                                   Greenness(c) - Greenness(t),
+                                   Blueness(c) - Blueness(t),
+                                   Luminance(c) - Luminance(t) * BF,
+                                   (Red(c) - Red(t) * BF) * weight[n],
+                                   (Green(c) - Green(t) * BF) * weight[n],
+                                   (Blue(c) - Blue(t) * BF) * weight[n]
+                                 ))
                       print(str(n) + ' '+ str(int(diff[-1][4])) + ' '+ str(int(diff[-1][5])) + ' '+ str(int(diff[-1][6])))
                   diff = np.array(diff)
                   # print('diff', diff)
@@ -342,6 +355,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         
         if key == ord('s'):
             cp.Save()
+
+        if key == ord('l'):
+            locations = []
 
         if key == ord('c'):
             color_calibrate = not color_calibrate
