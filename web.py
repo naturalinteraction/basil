@@ -1,6 +1,8 @@
-from git import OpenCVVersion
-from git import GitHash
-from git import GitCommitMessage
+from utility import OpenCVVersion
+from utility import GitHash
+from utility import GitCommitMessage
+from utility import GitRevCount
+from utility import GitBranch
 from twisted.web import server, resource
 from twisted.internet import reactor
 import globa
@@ -17,9 +19,10 @@ def Page():
             str(globa.previous_digital_gain) + ' <p>\n' +
             str(globa.gain_distance) + ' <p>\n' +
             str(globa.last_picture_taken_ticks) + ' <p>\n' +
-            GitCommitMessage() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
             globa.campaign + ' <p>\n' +
+            'v0.' + GitRevCount() + ' <p>\n' +
+            GitBranch() + ' <p>\n' +
             str(len(globa.locations)) + ' <p>\n' +
             globa.time_process_started_string + ' <p>\n' +
             str(globa.time_process_started) + ' <p>\n'

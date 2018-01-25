@@ -7,6 +7,7 @@ import numpy as np
 import sys
 import pickle
 import time
+import os
 
 
 def interrogate(item):
@@ -43,6 +44,13 @@ versions
 '''
 def OpenCVVersion():
     return 'OpenCV ' + cv2.__version__
+
+def GitRevCount():
+    return os.popen("git rev-list --count master").read().strip()
+    # return os.popen("git rev-list --all --count").read().strip()
+
+def GitBranch():
+    return os.popen("git branch | grep \* | cut -d ' ' -f2").read().strip()
 
 def GitHash():
     return subprocess.check_output(["git", "rev-parse", "HEAD"]).strip()
