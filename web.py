@@ -32,7 +32,7 @@ def Page():
             'show = ' + str(globa.show) + ' <p>\n' +
             'just started = ' + str(globa.just_started) + ' <p>\n' +
             'just started but done = ' + str(globa.just_started_but_done) + ' <p>\n' +
-            'freeze (todo: will stay on until relaunched) ' + globa.cameraproperties.freeze_calibrate + ' <p>\n' +
+            'freeze (todo: will stay on until relaunched) ' + str(globa.cameraproperties.freeze_calibrate) + ' <p>\n' +
             'prev analog gain = ' + str(globa.previous_analog_gain) + ' <p>\n' +
             'prev digital gain = ' + str(globa.previous_digital_gain) + ' <p>\n' +
             'gain dist = ' + str(globa.gain_distance) + ' <p>\n' +
