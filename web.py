@@ -35,11 +35,16 @@ todo link to last picture only if filename not empty
 '''
 
 def Page():
+    try:
+        prop = cameraproperties.PrintAllProperties()
+    except:
+        prop = 'NO CAMERA PROPERTIES'
     hostname = socket.gethostname()
     mem = psutil.virtual_memory()
     disk = os.statvfs('/')
     disk_percent = 100 - 100 * disk.f_bavail / disk.f_blocks
-    return (hostname + ' <p>\n' +
+    return (prop + ' <p>\n' +
+            hostname + ' <p>\n' +
             'color calibration = ' + str(globa.color_calibrate) + ' <p>\n' +
             'show = ' + str(globa.show) + ' <p>\n' +
             'just started = ' + str(globa.just_started) + ' <p>\n' +

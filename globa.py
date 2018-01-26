@@ -12,6 +12,9 @@ color_calibrate = False
 global campaign
 campaign = 'xxx'
 
+global cameraproperties
+cameraproperties = None
+
 global last_picture_taken_ticks
 last_picture_taken_ticks = -1
 

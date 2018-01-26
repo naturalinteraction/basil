@@ -27,6 +27,7 @@ camera.resolution = (2560, 1920)
 rawCapture = PiRGBArray(camera, size=camera.resolution)
 
 cp = CameraProperties(camera)
+globa.cameraproperties = cp
 cp.Load()
 
 def SaveLastPictureTicks(ticks, filename):
