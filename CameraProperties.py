@@ -124,8 +124,12 @@ class CameraProperties(object):
         self.cam.awb_mode = 'off'
         self.cam.awb_gains = g
         self.cam.iso = 100
-        # self.freeze_calibrate = False  # so that we can adjust shutter and save (todo: solve this)
-        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen. Not forcing shutter until the process is relaunched.')
+        self.freeze_calibrate = False
+        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen.')
+        time.sleep(2)
+        self.Save()
+        self.Load()
+        print(self.loaded_values['Shutter Speed'], self.loaded_values['AWB Red Gain'], self.loaded_values['AWB Blue Gain'])
 
     def CurrentPropertyName(self):
         return list(self.properties)[self.property_index]
