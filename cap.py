@@ -253,7 +253,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   diff = []
                   kernel = 49
                   half = int(kernel / 2 + 3)
-                  BF = 1.049 # brightness factor, max 1.049
+                  BF = 1.2 # brightness factor, max 1.049
                   blurred = cv2.blur(globa.image, (kernel, kernel))
                   for n,(xx, yy) in enumerate(globa.locations):
                       cv2.rectangle(globa.image, (xx - half, yy - half),
@@ -269,15 +269,16 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                    (Green(c) - Green(t) * BF) * weight[n],
                                    (Blue(c) - Blue(t) * BF) * weight[n]
                                  ))
-                      print(str(n) + ' '+ str(int(diff[-1][4] / weight[n])) + ' '+ str(int(diff[-1][5] / weight[n])) + ' '+ str(int(diff[-1][6] / weight[n])))
+                      # print(str(n) + ' '+ str(int(diff[-1][4] / weight[n])) + ' '+ str(int(diff[-1][5] / weight[n])) + ' '+ str(int(diff[-1][6] / weight[n])))
                   diff = np.array(diff)
                   # print('diff', diff)
                   mean = np.mean(np.float32(diff), axis=0)
                   squared = diff ** 2
                   msq = np.mean(squared, axis=0)
                   mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
-                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 0.5:
+                  if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.0:
                       print('finished! exiting color calibration. Saving!')
+                      print(len(diff))
                       print('mean %.2f %.2f %.2f' % (mean[4], mean[5], mean[6]))
                       globa.color_calibrate = False
                       print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
@@ -292,7 +293,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       color_calibration_red = max(0, min(8, color_calibration_red))
                       color_calibration_blue = max(0, min(8, color_calibration_blue))
                       color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
-                      print("r%.3f g%.3f b%.3f L%.1f shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (mean[0], mean[1], mean[2], mean[3], int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
+                      print("shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
                       cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                       cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
                       time.sleep(0.5)
@@ -341,8 +342,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == ord('c'):
             globa.color_calibrate = not globa.color_calibrate
-            if cp.freeze_calibrate or not len(globa.locations) == 24:
-                print('freeze_calibrate or no 24 locations')
+            if cp.freeze_calibrate or not len(globa.locations) == 24 or globa.just_started:
+                print('freeze_calibrate or no 24 locations or just started')
                 globa.color_calibrate = False
             if globa.color_calibrate:
                 camera.zoom = (0.0, 0.0, 1.0, 1.0)
@@ -350,9 +351,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 color_calibration_red = cp.loaded_values['AWB Red Gain']
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
                 print('starting values for shutter and gains set', color_calibration_shutter, color_calibration_red, color_calibration_blue)
+
         if key == ord('f'):
-            if not globa.color_calibrate:
+            if not globa.color_calibrate and not globa.just_started:
                 cp.FreezeExposureAWB()
+            else:
+                print('hold on, cowboy!')
 
         if key == ord('p'):
             if globa.just_started == False:

@@ -62,6 +62,7 @@ class CameraProperties(object):
              return float(self.cam.awb_gains[1])
         
     def SetPropertyOnCamera(self, name, value, mute=False):
+        self.loaded_values[name] = value
         if mute == False:
             print(('Attempting to set %s to %s' % (name, value)))
         if name == 'DRC Strength':

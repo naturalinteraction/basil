@@ -23,7 +23,7 @@ def Page():
     disk = os.statvfs('/')
     if len(globa.last_picture_filename) > 0:
         link = 'link to last picture = http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '<br>\n'
-    else
+    else:
         link = ''
     disk_percent = 100 - 100 * disk.f_bavail / disk.f_blocks
     return ('PlantSensor: ' + hostname + ' <br>\n' +
