@@ -29,20 +29,19 @@ rawCapture = PiRGBArray(camera, size=camera.resolution)
 cp = CameraProperties(camera)
 cp.Load()
 
-def SaveLastPictureTicks(ticks):
+def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
-        pickle.dump(ticks, f, 0)
+        pickle.dump((ticks,filename), f, 0)
     print('Saved time of last picture.')
-    print(ticks)
 
 def LoadLastPictureTicks():
     with open('last-picture-taken-ticks.pkl', 'rb') as f:
-        ticks = pickle.load(f)
-    print('Loaded time of last picture.')
-    return ticks
+        (ticks,filename) = pickle.load(f)
+    print('Loaded time of last picture (and last filename).')
+    return (ticks,filename)
 
 try:
-    globa.last_picture_taken_ticks = LoadLastPictureTicks()
+    (globa.last_picture_taken_ticks, globa.last_picture_filename) = LoadLastPictureTicks()
 except:
     print('Could not load time of last picture.')
 
@@ -94,7 +93,8 @@ def TakePicture(img, cam):
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)  # test: save PNG as well
     ticks = time.time()
-    SaveLastPictureTicks(ticks)
+    globa.last_picture_filename = filename
+    SaveLastPictureTicks(ticks, filename)
     # add EXIF keywords
     exif = ExifEditor(filename)
     keywords =       [GitHash(),

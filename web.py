@@ -52,6 +52,7 @@ def Page():
             GitBranch() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
             'locations = ' + str(len(globa.locations)) + ' <p>\n' +
+            'last_picture_filename = ' + globa.last_picture_filename + ' <p>\n' +
             'last picture taken at = ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <p>\n' +
             'started at = ' + globa.time_process_started_string + ' <p>\n' +
             'now = ' + time.strftime("%Y/%m/%d %H:%M") + ' <p>\n' +

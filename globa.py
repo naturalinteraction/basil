@@ -15,6 +15,9 @@ campaign = 'xxx'
 global last_picture_taken_ticks
 last_picture_taken_ticks = -1
 
+global last_picture_filename
+last_picture_filename = ''
+
 global just_started
 just_started = True
 
