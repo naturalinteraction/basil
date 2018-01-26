@@ -297,7 +297,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
                       time.sleep(0.5)
 
-          if cp.calibrating == False and not globa.color_calibrate:
+          if cp.freeze_calibrate == False and not globa.color_calibrate:
               # force this to avoid frames fading to black
               print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)

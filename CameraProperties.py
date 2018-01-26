@@ -27,7 +27,7 @@ class CameraProperties(object):
     # index of the currently selected camera property
     property_index = 0
     cam = None
-    calibrating = False
+    freeze_calibrate = False
     
     def __init__(self, camera):
         self.cam = camera
@@ -115,7 +115,7 @@ class CameraProperties(object):
             self.cam.exposure_mode = 'auto'
             self.cam.awb_mode = 'auto'
             self.cam.shutter_speed = 0
-            self.calibrating = True
+            self.freeze_calibrate = True
             return
         self.cam.shutter_speed = self.cam.exposure_speed
         self.cam.exposure_mode = 'off'
@@ -124,7 +124,7 @@ class CameraProperties(object):
         self.cam.awb_mode = 'off'
         self.cam.awb_gains = g
         self.cam.iso = 100
-        # self.calibrating = False  # so that we can adjust shutter and save
+        # self.freeze_calibrate = False  # so that we can adjust shutter and save (todo: solve this)
         print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen. Not forcing shutter until the process is relaunched.')
 
     def CurrentPropertyName(self):
