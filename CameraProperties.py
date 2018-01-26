@@ -2,6 +2,7 @@ import pickle
 import numpy
 from picamera import PiCamera
 import socket
+import time
 
 class CameraProperties(object):
     # camera properties
@@ -110,7 +111,7 @@ class CameraProperties(object):
         or self.PropertyOnCamera('Shutter Speed') != 0
         or self.PropertyOnCamera('AWB Mode') != 'auto'
         or self.PropertyOnCamera('Exposure Mode') != 'auto'):
-            print('Set ISO and Shutter Speed to 0 first. Set Exposure Mode and AWB Mode to "auto". Doing this for you now. Freeze again in a few, please. Not forcing shutter until the process is relaunched.')
+            print('Setting ISO and Shutter Speed to 0. Setting Exposure Mode and AWB Mode to "auto". Freeze again in a few, please.')
             self.cam.iso = 0
             self.cam.exposure_mode = 'auto'
             self.cam.awb_mode = 'auto'

@@ -239,7 +239,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if globa.just_started:
             globa.gain_distance = UpdateGainDistance()
-            if globa.gain_distance < 0.02:
+            if globa.gain_distance < 0.06:  # todo: 0.02:
                 cp.SetAllPropertiesOnCamera()
                 globa.just_started_but_done = True                
         else:
@@ -299,8 +299,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
           if cp.freeze_calibrate == False and not globa.color_calibrate:
               # force this to avoid frames fading to black
-              print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
+              # print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)
+
+          if cp.freeze_calibrate and not globa.color_calibrate:
+              print('(freeze) ' + str(camera.exposure_speed)+ ' ' + str(float(camera.awb_gains[0])) + ' ' + str(float(camera.awb_gains[1])))
 
           if (ticks - globa.last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
@@ -338,8 +341,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == ord('c'):
             globa.color_calibrate = not globa.color_calibrate
-            if not len(globa.locations) == 24:
-                print('no 24 locations')
+            if cp.freeze_calibrate or not len(globa.locations) == 24:
+                print('freeze_calibrate or no 24 locations')
                 globa.color_calibrate = False
             if globa.color_calibrate:
                 camera.zoom = (0.0, 0.0, 1.0, 1.0)
@@ -348,7 +351,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
                 print('starting values for shutter and gains set', color_calibration_shutter, color_calibration_red, color_calibration_blue)
         if key == ord('f'):
-            cp.FreezeExposureAWB()
+            if not globa.color_calibrate:
+                cp.FreezeExposureAWB()
 
         if key == ord('p'):
             if globa.just_started == False:
