@@ -12,45 +12,40 @@ import psutil
 import os
 import time
 
-'''
-todo number of uploads in queue
-todo link to last picture only if filename not empty
-'''
-
+# todo: number of uploads in queue
 def Page():
     try:
         prop = globa.cameraproperties.AllPropertiesString()
     except:
-        prop = 'NO CAMERA PROPERTIES'
+        prop = 'No camera properties.'
     hostname = socket.gethostname()
     mem = psutil.virtual_memory()
     disk = os.statvfs('/')
+    if len(globa.last_picture_filename) > 0:
+        link = 'link to last picture = http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '<br>\n'
+    else
+        link = ''
     disk_percent = 100 - 100 * disk.f_bavail / disk.f_blocks
-    return (prop + ' <p>\n' +
-            hostname + ' <p>\n' +
-            'color calibration = ' + str(globa.color_calibrate) + ' <p>\n' +
-            'show = ' + str(globa.show) + ' <p>\n' +
-            'just started = ' + str(globa.just_started) + ' <p>\n' +
-            'just started but done = ' + str(globa.just_started_but_done) + ' <p>\n' +
-            'freeze ' + str(globa.cameraproperties.freeze_calibrate) + ' <p>\n' +
-            'prev analog gain = ' + str(globa.previous_analog_gain) + ' <p>\n' +
-            'prev digital gain = ' + str(globa.previous_digital_gain) + ' <p>\n' +
-            'gain dist = ' + str(globa.gain_distance) + ' <p>\n' +
-            'campaign = ' + globa.campaign + ' <p>\n' +
-            'v0.' + GitRevCount() + ' <p>\n' +
+    return ('PlantSensor: ' + hostname + ' <br>\n' +
+            'PlantSensor Firmware v0.' + GitRevCount() + ' <br>\n' +
             GitBranch() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
-            'locations = ' + str(len(globa.locations)) + ' <p>\n' +
-            'last_picture_filename = ' + 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + ' <p>\n' +
-            'last picture taken at = ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <p>\n' +
-            'started at = ' + globa.time_process_started_string + ' <p>\n' +
-            'now = ' + time.strftime("%Y/%m/%d %H:%M") + ' <p>\n' +
-            'uptime_minutes = ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' <p>\n' +
-            'cpu = ' + str(psutil.cpu_percent()) + ' <p>\n' +
-            'memory = ' + str(mem.percent) + ' <p>\n' +
-            'disk = ' + str(disk_percent) + ' <p>\n' +
+            'cpu = ' + str(psutil.cpu_percent()) + ' <br>\n' +
+            'memory = ' + str(mem.percent) + ' <br>\n' +
+            'disk = ' + str(disk_percent) + ' <br>\n' +
             'temperature = ' + str(PiTemperature()) + ' <p>\n' +
-            '' + str('') + ' <p>\n'
+            'just started = ' + str(globa.just_started) + ' <br>\n' +
+            'color calibration = ' + str(globa.color_calibrate) + ' <br>\n' +
+            'col cal locations = ' + str(len(globa.locations)) + ' <br>\n' +
+            'freeze ' + str(globa.cameraproperties.freeze_calibrate) + ' <br>\n' +
+            'show = ' + str(globa.show) + ' <p>\n' +
+            prop + ' <p>\n' +
+            'campaign = ' + globa.campaign + ' <br>\n' +
+             link +
+            'last picture taken at = ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <br>\n' +
+            'started at = ' + globa.time_process_started_string + ' <br>\n' +
+            'now = ' + time.strftime("%Y/%m/%d %H:%M") + ' <br>\n' +
+            'uptime_minutes = ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' <p>\n'
            )
 
 class WebPage(resource.Resource):
