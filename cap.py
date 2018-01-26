@@ -15,21 +15,6 @@ import numpy as np
 import globa
 from web import *
 
-# initialize the camera and grab a reference to the raw camera capture
-try:
-    camera = PiCamera()
-except:
-    print('No camera. Exiting.')
-    quit()
-
-camera.framerate = 5
-camera.resolution = (2560, 1920)
-rawCapture = PiRGBArray(camera, size=camera.resolution)
-
-cp = CameraProperties(camera)
-globa.cameraproperties = cp
-cp.Load()
-
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
         pickle.dump((ticks,filename), f, 0)
@@ -41,10 +26,27 @@ def LoadLastPictureTicks():
     print('Loaded time of last picture (and last filename).')
     return (ticks,filename)
 
+# initialize the camera and grab a reference to the raw camera capture
+try:
+    camera = PiCamera()
+except:
+    print('No camera. Exiting.')
+    quit()
+
+camera.framerate = 5
+camera.resolution = (2560, 1920)
+rawCapture = PiRGBArray(camera, size=camera.resolution)
+
+globa.cameraproperties = CameraProperties(camera)
+cp = globa.cameraproperties
+cp.Load()
+
 try:
     (globa.last_picture_taken_ticks, globa.last_picture_filename) = LoadLastPictureTicks()
 except:
     print('Could not load time of last picture.')
+
+print(Page())
 
 def UpdateGainDistance():
     gdi = globa.gain_distance

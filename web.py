@@ -13,30 +13,13 @@ import os
 import time
 
 '''
-AWB Blue Gain  2.0 <0.76953125>
-AWB Mode  off <auto>
-AWB Red Gain  1.3 <0.859375>
-Brightness  60 <50>
-Contrast  10 <0>
-DRC Strength  off <off>
-Exp Compensation  0 <0>
-Exp Meter Mode  average <average>
-Exposure Mode  off <auto>
-ISO  100 <0>
-Saturation  0 <0>
-Sharpness  100 <0>
-Shutter Speed  1500 <0>
-Exp Speed (READONLY) <62960>
-Analog Gain (READONLY) <8.0>
-Digital Gain (READONLY) <1.421875>
-Zoom <0.0, 0.0, 1.0, 1.0>
 todo number of uploads in queue
 todo link to last picture only if filename not empty
 '''
 
 def Page():
     try:
-        prop = cameraproperties.PrintAllProperties()
+        prop = globa.cameraproperties.AllPropertiesString()
     except:
         prop = 'NO CAMERA PROPERTIES'
     hostname = socket.gethostname()
@@ -84,5 +67,3 @@ def StartWebServer():
 
 def WebServerIterate():
     reactor.iterate()
-
-print(Page())

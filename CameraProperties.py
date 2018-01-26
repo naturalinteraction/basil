@@ -149,6 +149,17 @@ class CameraProperties(object):
         zoo = self.cam.zoom
         print(('Zoom <%s, %s, %s, %s>' % (zoo[0], zoo[1], zoo[2], zoo[3])))
         print(('*' * 20))
+
+    def AllPropertiesString(self):
+        result = ''
+        for name in sorted(list(self.properties.keys())):
+            result = result + "%s  %s" % (name, str(self.PropertyOnCamera(name))) + '<p>\n'
+        result = result + 'Exp Speed %s' % (int(self.cam.exposure_speed)) + '<p>\n'
+        result = result + 'Analog Gain %s' % float(self.cam.analog_gain) + '<p>\n'
+        result = result + 'Digital Gain %s' % float(self.cam.digital_gain) + '<p>\n'
+        zoo = self.cam.zoom
+        result = result + 'Zoom %s' % (zoo[2]) + '<p>\n'
+        return str(result)
         
     def PrintCurrentProperty(self):
         print(("%s   %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName()))))
