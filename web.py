@@ -30,7 +30,8 @@ Exp Speed (READONLY) <62960>
 Analog Gain (READONLY) <8.0>
 Digital Gain (READONLY) <1.421875>
 Zoom <0.0, 0.0, 1.0, 1.0>
-link to last picture
+todo number of uploads in queue
+todo link to last picture only if filename not empty
 '''
 
 def Page():
@@ -52,7 +53,7 @@ def Page():
             GitBranch() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
             'locations = ' + str(len(globa.locations)) + ' <p>\n' +
-            'last_picture_filename = ' + globa.last_picture_filename + ' <p>\n' +
+            'last_picture_filename = ' + 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + ' <p>\n' +
             'last picture taken at = ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <p>\n' +
             'started at = ' + globa.time_process_started_string + ' <p>\n' +
             'now = ' + time.strftime("%Y/%m/%d %H:%M") + ' <p>\n' +
