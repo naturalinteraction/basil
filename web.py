@@ -11,8 +11,11 @@ import socket
 import psutil
 import os
 import time
+import glob
 
-# todo: number of uploads in queue
+def NumberOfUploadsInQueue():
+    return str(len(glob.glob("cache/*.jpg")))
+
 def Page():
     try:
         prop = globa.cameraproperties.AllPropertiesString()
@@ -43,6 +46,7 @@ def Page():
             'campaign = ' + globa.campaign + ' <br>\n' +
              link +
             'last picture taken at = ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <br>\n' +
+            'uploads in queue = ' + NumberOfUploadsInQueue() + '<br>\n' +
             'started at = ' + globa.time_process_started_string + ' <br>\n' +
             'now = ' + time.strftime("%Y/%m/%d %H:%M") + ' <br>\n' +
             'uptime_minutes = ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' <p>\n'

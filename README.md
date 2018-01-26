@@ -79,6 +79,7 @@ A repo for my own experiments.
 - [x] Update git repo, relaunch cap.py, reboot and shutdown remotely via script on the 4 sensors at once
 - [x] Integrate microphone
 - [x] Sensor color calibration == Find camera parameters automatically
+- [x] Web interface: number of images in queue
 - [ ] Search brightness and contrast values (after the gains are good)
 - [ ] Save 24 errors on disk (plus the average squared error)
 - [ ] Web interface
