@@ -1,3 +1,4 @@
+
 import time
 from CameraProperties import CameraProperties
 from picamera import PiCamera
@@ -188,7 +189,7 @@ print(Page())
 
 # allow the camera to warmup
 print('Wait...')
-time.sleep(2)
+time.sleep(0.2)
 
 cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
 cv2.setMouseCallback('cap', mouseCallbackCalib)
@@ -290,7 +291,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       print('mean %.2f %.2f %.2f' % (mean[4], mean[5], mean[6]))
                       globa.color_calibrate = False
                       print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
-                      time.sleep(2)
+                      time.sleep(0.2)
                       cp.Save()
                       cp.Load()
                       print(cp.loaded_values['Shutter Speed'], cp.loaded_values['AWB Red Gain'], cp.loaded_values['AWB Blue Gain'])
@@ -304,7 +305,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                       print("shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
                       cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
                       cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
-                      time.sleep(0.5)
+                      # time.sleep(0.5)
 
           if cp.freeze_calibrate == False and not globa.color_calibrate:
               # force this to avoid frames fading to black
