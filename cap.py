@@ -59,10 +59,9 @@ def PrintHelp():
     print(('*' * 10))
 
 def TakePicture(img, cam):
-    print('Before saving picture, let me attempt to upload three files in cache.')
-    AttemptUpload()
-    AttemptUpload()
-    AttemptUpload()
+    print('Before saving picture, let me attempt to upload quite a few files in cache.')
+    for i in range(10):
+        AttemptUpload()
 
     audio_level = AudioLevelPi()
 
@@ -108,11 +107,11 @@ def TakePicture(img, cam):
     return ticks
     
 def AttemptUpload():
-    print('Attempting upload.')
     images_in_cache = glob.glob("cache/*.jpg")
     if len(images_in_cache) < 1:
-        print('No images in cache. Nothing to do.')
+        # print('No images in cache. Nothing to do.')
         return
+    print('Attempting upload.')
     uploaded = UploadFileToS3(images_in_cache[0])
     if uploaded == True:
         print('Upload succeeded. Moving image out of cache.')
