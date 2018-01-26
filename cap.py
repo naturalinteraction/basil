@@ -98,7 +98,7 @@ def TakePicture(img, cam):
     # add EXIF keywords
     exif = ExifEditor(filename)
     keywords =       [GitHash(),
-                      globa.time_process_started_string,
+                      'started=' + globa.time_process_started_string,
                       'shutter_speed=' + str(cam.shutter_speed),
                       'drc_strength=' + str(cam.drc_strength),
                       'brightness=' + str(cam.brightness),
@@ -123,7 +123,6 @@ def TakePicture(img, cam):
     # print('getKeywords', exif.getKeywords())
     print(('getTag Keywords', exif.getTag("Keywords")))
     AttemptUpload()  # after taking the picture, immediately attempt to upload it
-    print(ticks)
     return ticks
     
 def AttemptUpload():
@@ -309,8 +308,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   camera.zoom = (0.0, 0.0, 1.0, 1.0)  # will not take effect immediately, but at least next one will be ok
                   print('Disabling display.')
                   globa.show = False
-                  print(globa.last_picture_taken_ticks)
-                  print(ticks)
         
         # show the frame
         if globa.show:
@@ -353,8 +350,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == ord('p'):
             if globa.just_started == False:
                 globa.last_picture_taken_ticks = TakePicture(globa.image, camera)
-                print(globa.last_picture_taken_ticks)
-                print(ticks)
             else:
                 print('hold on, cowboy!')
 
@@ -366,7 +361,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             cp.PrintAllProperties()
             print(GitCommitMessage())
             uptime_minutes = int((time.time() - globa.time_process_started) / (60.0))
-            print(globa.time_process_started_string) 
+            print('started at ' + globa.time_process_started_string) 
             print((time.strftime("now     %Y/%m/%d %H:%M")))
             print(('uptime minutes %s' % uptime_minutes))
             print(('*' * 20))

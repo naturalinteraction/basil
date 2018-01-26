@@ -10,6 +10,7 @@ import globa
 import socket
 import psutil
 import os
+import time
 
 '''
 AWB Blue Gain  2.0 <0.76953125>
@@ -29,11 +30,6 @@ Exp Speed (READONLY) <62960>
 Analog Gain (READONLY) <8.0>
 Digital Gain (READONLY) <1.421875>
 Zoom <0.0, 0.0, 1.0, 1.0>
-started 2018/01/25 23:53
-now     2018/01/25 23:53
-uptime minutes 0
-P - Take Picture Now
-last picture taken at...
 link to last picture
 '''
 
@@ -47,21 +43,24 @@ def Page():
             'show = ' + str(globa.show) + ' <p>\n' +
             'just started = ' + str(globa.just_started) + ' <p>\n' +
             'just started but done = ' + str(globa.just_started_but_done) + ' <p>\n' +
+            'freeze ???' + ' <p>\n' +
             'prev analog gain = ' + str(globa.previous_analog_gain) + ' <p>\n' +
             'prev digital gain = ' + str(globa.previous_digital_gain) + ' <p>\n' +
             'gain dist = ' + str(globa.gain_distance) + ' <p>\n' +
-            'last picture taken ticks = ' + str(globa.last_picture_taken_ticks) + ' <p>\n' +
             'campaign = ' + globa.campaign + ' <p>\n' +
             'v0.' + GitRevCount() + ' <p>\n' +
             GitBranch() + ' <p>\n' +
             OpenCVVersion() + ' <p>\n' +
             'locations = ' + str(len(globa.locations)) + ' <p>\n' +
+            'last picture taken at = ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <p>\n' +
             'started at = ' + globa.time_process_started_string + ' <p>\n' +
+            'now = ' + time.strftime("%Y/%m/%d %H:%M") + ' <p>\n' +
+            'uptime_minutes = ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' <p>\n' +
             'cpu = ' + str(psutil.cpu_percent()) + ' <p>\n' +
             'memory = ' + str(mem.percent) + ' <p>\n' +
             'disk = ' + str(disk_percent) + ' <p>\n' +
             'temperature = ' + str(PiTemperature()) + ' <p>\n' +
-            'started at ticks = ' + str(globa.time_process_started) + ' <p>\n'
+            '' + str('') + ' <p>\n'
            )
 
 class WebPage(resource.Resource):

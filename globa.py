@@ -34,7 +34,7 @@ global time_process_started
 time_process_started = time.time()
 
 global time_process_started_string
-time_process_started_string = time.strftime("started %Y/%m/%d %H:%M")
+time_process_started_string = time.strftime("%Y/%m/%d %H:%M")
 
 global locations
 locations = []
