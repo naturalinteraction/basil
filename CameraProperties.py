@@ -118,6 +118,9 @@ class CameraProperties(object):
             self.cam.awb_mode = 'auto'
             self.cam.shutter_speed = 0
             self.freeze_calibrate = True
+            self.cam.saturation = 0
+            self.cam.brightness = 50
+            self.cam.contrast = 0
             return
         self.cam.shutter_speed = self.cam.exposure_speed
         self.cam.exposure_mode = 'off'

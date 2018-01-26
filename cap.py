@@ -26,28 +26,6 @@ def LoadLastPictureTicks():
     print('Loaded time of last picture (and last filename).')
     return (ticks,filename)
 
-# initialize the camera and grab a reference to the raw camera capture
-try:
-    camera = PiCamera()
-except:
-    print('No camera. Exiting.')
-    quit()
-
-camera.framerate = 5
-camera.resolution = (2560, 1920)
-rawCapture = PiRGBArray(camera, size=camera.resolution)
-
-globa.cameraproperties = CameraProperties(camera)
-cp = globa.cameraproperties
-cp.Load()
-
-try:
-    (globa.last_picture_taken_ticks, globa.last_picture_filename) = LoadLastPictureTicks()
-except:
-    print('Could not load time of last picture.')
-
-print(Page())
-
 def UpdateGainDistance():
     gdi = globa.gain_distance
     pag = globa.previous_analog_gain
@@ -177,6 +155,36 @@ def mouseCallbackCalib(event, x, y, flags, param):
     if event == cv2.EVENT_RBUTTONDOWN:
         globa.locations = []
         print('restarting color calibration: pick the 24 locations')
+
+# initialize the camera and grab a reference to the raw camera capture
+try:
+    camera = PiCamera()
+except:
+    print('No camera. Exiting.')
+    quit()
+
+camera.framerate = 5
+camera.resolution = (2560, 1920)
+rawCapture = PiRGBArray(camera, size=camera.resolution)
+
+globa.cameraproperties = CameraProperties(camera)
+cp = globa.cameraproperties
+cp.Load()
+
+try:
+    (globa.last_picture_taken_ticks, globa.last_picture_filename) = LoadLastPictureTicks()
+except:
+    print('Could not load time of last picture.')
+
+camera.iso = 0
+camera.exposure_mode = 'auto'
+camera.awb_mode = 'auto'
+camera.shutter_speed = 0
+camera.saturation = 0
+camera.brightness = 50
+camera.contrast = 0
+
+print(Page())
 
 # allow the camera to warmup
 print('Wait...')
