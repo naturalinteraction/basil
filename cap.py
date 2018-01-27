@@ -156,7 +156,7 @@ def mouseCallbackCalib(event, x, y, flags, param):
         globa.locations = []
         print('restarting color calibration: pick the 24 locations')
 
-def DefineColorCheckerColorsAndWeights()
+def DefineColorCheckerColorsAndWeights():
     weight = []
     for i in range(0, 24):
         weight.append(1.0)
@@ -198,7 +198,7 @@ def SetInitialCameraProperties(camera):
     camera.framerate = 5
     camera.resolution = (2560, 1920)
 
-def ColorCalibrationIterate():
+def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,color_calibration_blue):
       globa.show = True
       diff = []
       kernel = 49
@@ -245,6 +245,7 @@ def ColorCalibrationIterate():
           print("[colorcalib] shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
           cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
           cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
+      return color_calibration_shutter,color_calibration_red,color_calibration_blue
 
 targetbgr,weight = DefineColorCheckerColorsAndWeights()
 # initialize the camera and grab a reference to the raw camera capture
@@ -304,7 +305,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if not len(globa.locations) == 24:
                   print('pick the 24 locations first')
               else:
-                  ColorCalibrationIterate()
+                  color_calibration_shutter,color_calibration_red,color_calibration_blue = ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,color_calibration_blue)
 
           if not cp.freeze_calibrate and not globa.color_calibrate:
               # force this to avoid frames fading to black
