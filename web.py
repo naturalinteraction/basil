@@ -37,10 +37,10 @@ def Page():
             'memory = ' + str(mem.percent) + ' <br>\n' +
             'disk = ' + str(disk_percent) + ' <br>\n' +
             'temperature = ' + str(PiTemperature()) + ' <p>\n' +
-            'just started = ' + str(globa.just_started) + ' <br>\n' +
-            'color calibration = ' + str(globa.color_calibrate) + ' <br>\n' +
+            'initial_calibrate = ' + str(globa.initial_calibrate) + ' <br>\n' +
+            'color_calibrate = ' + str(globa.color_calibrate) + ' <br>\n' +
             'col cal locations = ' + str(len(globa.locations)) + ' <br>\n' +
-            'freeze ' + str(globa.cameraproperties.freeze_calibrate) + ' <br>\n' +
+            'auto_calibrate ' + str(globa.cameraproperties.auto_calibrate) + ' <br>\n' +
             'show = ' + str(globa.show) + ' <p>\n' +
             prop + ' <p>\n' +
             'campaign = ' + globa.campaign + ' <br>\n' +

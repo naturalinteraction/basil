@@ -28,7 +28,7 @@ class CameraProperties(object):
     # index of the currently selected camera property
     property_index = 0
     cam = None
-    freeze_calibrate = False
+    auto_calibrate = False
     
     def __init__(self, camera):
         self.cam = camera
@@ -107,17 +107,17 @@ class CameraProperties(object):
     def SetFreakingGains(self, r, b):
         self.cam.awb_gains = (r, b)
             
-    def FreezeExposureAWB(self):
+    def StartStopAutoCalibration(self):
         if (self.PropertyOnCamera('ISO') != 0
         or self.PropertyOnCamera('Shutter Speed') != 0
         or self.PropertyOnCamera('AWB Mode') != 'auto'
         or self.PropertyOnCamera('Exposure Mode') != 'auto'):
-            print('Setting ISO and Shutter Speed to 0. Setting Exposure Mode and AWB Mode to "auto". Freeze again in a few, please.')
+            print('Setting ISO and Shutter Speed to 0. Setting Exposure Mode and AWB Mode to "auto". Wait, please.')
             self.cam.iso = 0
             self.cam.exposure_mode = 'auto'
             self.cam.awb_mode = 'auto'
             self.cam.shutter_speed = 0
-            self.freeze_calibrate = True
+            self.auto_calibrate = True
             self.cam.saturation = 0
             self.cam.brightness = 50
             self.cam.contrast = 0
@@ -129,9 +129,8 @@ class CameraProperties(object):
         self.cam.awb_mode = 'off'
         self.cam.awb_gains = g
         self.cam.iso = 100
-        self.freeze_calibrate = False
-        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains frozen.')
-        time.sleep(2)
+        self.auto_calibrate = False
+        print('Exposure Mode, ISO, Shutter Speed and AWB Mode and Gains set.')
         self.Save()
         self.Load()
         print(self.loaded_values['Shutter Speed'], self.loaded_values['AWB Red Gain'], self.loaded_values['AWB Blue Gain'])

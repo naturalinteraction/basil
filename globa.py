@@ -21,11 +21,11 @@ last_picture_taken_ticks = -1
 global last_picture_filename
 last_picture_filename = ''
 
-global just_started
-just_started = True
+global initial_calibrate
+initial_calibrate = True
 
-global just_started_but_done
-just_started_but_done = False
+global initial_calibrate_but_done
+initial_calibrate_but_done = False
 
 global gain_distance
 gain_distance = -1.0

@@ -47,7 +47,7 @@ def PrintHelp():
     print('TAB - Print All Properties')
     print('Arrow Keys - Navigate Properties And Values')
     print('Enter - Set Current Property')
-    print('F - Freeze')
+    print('A - Auto Calibration')
     print('L - Reset Color Calibration Locations')
     print('C - Color Calibration')
     print('S - Save')
@@ -247,17 +247,17 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
           cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
       return color_calibration_shutter,color_calibration_red,color_calibration_blue
 
-def FreezeCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_blue_gain):
+def AutoCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_blue_gain):
     difference = float(abs(camera.exposure_speed - previous_exposure_speed) +
                        abs(camera.awb_gains[0] - previous_red_gain) +
                        abs(camera.awb_gains[1] - previous_blue_gain))
-    print('[freezecalib] ' + str(camera.exposure_speed)+ ' ' + str(float(camera.awb_gains[0])) + ' ' + str(float(camera.awb_gains[1])) + ' diff' + str(difference))
+    print('[autocalib] ' + str(camera.exposure_speed)+ ' ' + str(float(camera.awb_gains[0])) + ' ' + str(float(camera.awb_gains[1])) + ' diff' + str(difference))
     previous_exposure_speed = camera.exposure_speed
     previous_red_gain = camera.awb_gains[0]
     previous_blue_gain = camera.awb_gains[1]
     if difference == 0.0:
-        print('stopping freezecalib')
-        cp.FreezeExposureAWB()
+        print('stopping autocalib')
+        cp.StartStopAutoCalibration()
     return previous_exposure_speed,previous_red_gain,previous_blue_gain
 
 targetbgr,weight = DefineColorCheckerColorsAndWeights()
@@ -302,19 +302,19 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         WebServerIterate()
         globa.image = frame.array
  
-        if (globa.just_started and globa.just_started_but_done):
+        if (globa.initial_calibrate and globa.initial_calibrate_but_done):
             PrintHelp()
             cp.PrintCurrentProperty()
             globa.show = False
             print('Display disabled.')
-            globa.just_started = False
-            globa.just_started_but_done = False
+            globa.initial_calibrate = False
+            globa.initial_calibrate_but_done = False
 
-        if globa.just_started:
+        if globa.initial_calibrate:
             globa.gain_distance = UpdateGainDistance()
             if globa.gain_distance < 0.02 or (abs(globa.previous_digital_gain - 1.0) < 0.04 and abs(globa.previous_analog_gain - 1.0) < 0.04):
                 cp.SetAllPropertiesOnCamera()
-                globa.just_started_but_done = True                
+                globa.initial_calibrate_but_done = True                
         else:
           ticks = time.time()
 
@@ -324,13 +324,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               else:
                   color_calibration_shutter,color_calibration_red,color_calibration_blue = ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,color_calibration_blue)
 
-          if not cp.freeze_calibrate and not globa.color_calibrate:
+          if not cp.auto_calibrate and not globa.color_calibrate:
               # force this to avoid frames fading to black
               # print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)
 
-          if cp.freeze_calibrate and not globa.color_calibrate:
-              previous_exposure_speed,previous_red_gain,previous_blue_gain = FreezeCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_blue_gain)
+          if cp.auto_calibrate and not globa.color_calibrate:
+              previous_exposure_speed,previous_red_gain,previous_blue_gain = AutoCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_blue_gain)
 
           if (ticks - globa.last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
@@ -368,8 +368,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == ord('c'):
             globa.color_calibrate = not globa.color_calibrate
-            if cp.freeze_calibrate or len(globa.locations) != 24 or globa.just_started:
-                print('freeze_calibrate or no 24 locations or just started')
+            if cp.auto_calibrate or len(globa.locations) != 24 or globa.initial_calibrate:
+                print('auto_calibrate or no 24 locations or initial_calibrate')
                 globa.color_calibrate = False
             if globa.color_calibrate:
                 camera.zoom = (0.0, 0.0, 1.0, 1.0)
@@ -378,14 +378,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
                 print('starting values for shutter and gains set', color_calibration_shutter, color_calibration_red, color_calibration_blue)
 
-        if key == ord('f'):
-            if not globa.color_calibrate and not globa.just_started:
-                cp.FreezeExposureAWB()
+        if key == ord('a'):
+            if not globa.color_calibrate and not globa.initial_calibrate:
+                cp.StartStopAutoCalibration()
             else:
                 print('hold on, cowboy!')
 
         if key == ord('p'):
-            if not globa.just_started:
+            if not globa.initial_calibrate:
                 globa.last_picture_taken_ticks = TakePicture(globa.image, camera)
             else:
                 print('hold on, cowboy!')
@@ -403,7 +403,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print(('uptime minutes %s' % uptime_minutes))
             print(('*' * 20))
 
-        if key == ord('z') and not globa.color_calibrate and not globa.just_started and not cp.freeze_calibrate:
+        if key == ord('z') and not globa.color_calibrate and not globa.initial_calibrate and not cp.auto_calibrate:
             if camera.zoom[0] == 0.0:
                 camera.zoom = (0.333, 0.333, 0.333, 0.333)
             else:
