@@ -27,14 +27,14 @@ def LoadLastPictureTicks():
     return (ticks,filename)
 
 def InitialCalibrationIterate():
-    gdi = globa.gain_distance
+    gdi = globa.gain_diff
     pag = globa.previous_analog_gain
     pdg = globa.previous_digital_gain
     gdi = abs(camera.digital_gain - pdg)
     gdi += abs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
     pag = pag * .8 + .2 * camera.analog_gain
-    print(('[initialcalib] Again%.3f  Dgain%.3f distance%.3f' % (float(camera.analog_gain),
+    print(('[initialcalib] Again%.3f  Dgain%.3f diff%.3f' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
                                                  gdi)))
     globa.previous_analog_gain = pag
@@ -227,7 +227,9 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
       mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
       if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.0:
           print('finished! exiting color calibration. Saving!')
-          print(len(diff))
+          for n in range(len(diff)):
+              print(str(n) + ' '+ str(int(diff[n][4] / weight[n])) + ' '+ str(int(diff[n][5] / weight[n])) + ' '+ str(int(diff[n][6] / weight[n])))
+          print("mean squared error " + str(int(mean_squared_rgb)))
           print('mean %.2f %.2f %.2f' % (mean[4], mean[5], mean[6]))
           globa.color_calibrate = False
           print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
@@ -310,8 +312,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             globa.initial_calibrate_but_done = False
 
         if globa.initial_calibrate:
-            globa.gain_distance = InitialCalibrationIterate()
-            if globa.gain_distance < 0.02 or (abs(globa.previous_digital_gain - 1.0) < 0.04 and abs(globa.previous_analog_gain - 1.0) < 0.04):
+            globa.gain_diff = InitialCalibrationIterate()
+            if globa.gain_diff < 0.02 or (abs(globa.previous_digital_gain - 1.0) < 0.04 and abs(globa.previous_analog_gain - 1.0) < 0.04):
                 cp.SetAllPropertiesOnCamera()
                 globa.initial_calibrate_but_done = True                
         else:

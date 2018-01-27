@@ -27,8 +27,8 @@ initial_calibrate = True
 global initial_calibrate_but_done
 initial_calibrate_but_done = False
 
-global gain_distance
-gain_distance = -1.0
+global gain_diff
+gain_diff = -1.0
 
 global previous_analog_gain
 previous_analog_gain = -1.0
