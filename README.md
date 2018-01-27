@@ -178,3 +178,8 @@ sudo pip install service_identity
 pip install service_identity
 ```
 The last command fails but then Twisted is happy anyway.
+
+#### Calibrations
+Initial: Needs light. Must be done every time the sensor is turned on.
+Auto: Needs light + scene.
+Color: Needs light + colorchecker. Can provide final error(s).

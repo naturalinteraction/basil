@@ -5,7 +5,6 @@ from picamera import PiCamera
 from picamera.array import PiRGBArray
 import os
 import cv2
-import math
 from S3 import UploadFileToS3
 from pyexif import ExifEditor
 import glob
@@ -27,15 +26,15 @@ def LoadLastPictureTicks():
     print('Loaded time of last picture (and last filename).')
     return (ticks,filename)
 
-def UpdateGainDistance():
+def InitialCalibrationIterate():
     gdi = globa.gain_distance
     pag = globa.previous_analog_gain
     pdg = globa.previous_digital_gain
-    gdi = math.fabs(camera.digital_gain - pdg)
-    gdi += math.fabs(camera.analog_gain - pag)
+    gdi = abs(camera.digital_gain - pdg)
+    gdi += abs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
     pag = pag * .8 + .2 * camera.analog_gain
-    print(('analog %s  digital %s distance %s' % (float(camera.analog_gain),
+    print(('[initialcalib] Again%.3f  Dgain%.3f distance%.3f' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
                                                  gdi)))
     globa.previous_analog_gain = pag
@@ -242,7 +241,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
           color_calibration_red = max(0, min(8, color_calibration_red))
           color_calibration_blue = max(0, min(8, color_calibration_blue))
           color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
-          print("[colorcalib] shutter %d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d" % (int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
+          print('[colorcalib] shutter%d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d' % (int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
           cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
           cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
       return color_calibration_shutter,color_calibration_red,color_calibration_blue
@@ -251,7 +250,7 @@ def AutoCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_bl
     difference = float(abs(camera.exposure_speed - previous_exposure_speed) +
                        abs(camera.awb_gains[0] - previous_red_gain) +
                        abs(camera.awb_gains[1] - previous_blue_gain))
-    print('[autocalib] ' + str(camera.exposure_speed)+ ' ' + str(float(camera.awb_gains[0])) + ' ' + str(float(camera.awb_gains[1])) + ' diff' + str(difference))
+    print('[autocalib] exposure_speed' + str(camera.exposure_speed)+ ' Rgain%.3f' % (float(camera.awb_gains[0])) + ' Bgain%.3f' % (float(camera.awb_gains[1])) + ' diff' + str(difference))
     previous_exposure_speed = camera.exposure_speed
     previous_red_gain = camera.awb_gains[0]
     previous_blue_gain = camera.awb_gains[1]
@@ -311,7 +310,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             globa.initial_calibrate_but_done = False
 
         if globa.initial_calibrate:
-            globa.gain_distance = UpdateGainDistance()
+            globa.gain_distance = InitialCalibrationIterate()
             if globa.gain_distance < 0.02 or (abs(globa.previous_digital_gain - 1.0) < 0.04 and abs(globa.previous_analog_gain - 1.0) < 0.04):
                 cp.SetAllPropertiesOnCamera()
                 globa.initial_calibrate_but_done = True                
