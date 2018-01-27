@@ -247,6 +247,19 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
           cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
       return color_calibration_shutter,color_calibration_red,color_calibration_blue
 
+def FreezeCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_blue_gain):
+    difference = float(abs(camera.exposure_speed - previous_exposure_speed) +
+                       abs(camera.awb_gains[0] - previous_red_gain) +
+                       abs(camera.awb_gains[1] - previous_blue_gain))
+    print('[freezecalib] ' + str(camera.exposure_speed)+ ' ' + str(float(camera.awb_gains[0])) + ' ' + str(float(camera.awb_gains[1])) + ' diff' + str(difference))
+    previous_exposure_speed = camera.exposure_speed
+    previous_red_gain = camera.awb_gains[0]
+    previous_blue_gain = camera.awb_gains[1]
+    if difference == 0.0:
+        print('stopping freezecalib')
+        cp.FreezeExposureAWB()
+    return previous_exposure_speed,previous_red_gain,previous_blue_gain
+
 targetbgr,weight = DefineColorCheckerColorsAndWeights()
 # initialize the camera and grab a reference to the raw camera capture
 try:
@@ -279,6 +292,10 @@ except:
     pass
 
 StartWebServer()
+
+previous_exposure_speed = -1
+previous_red_gain = -1
+previous_blue_gain = -1
 
 # capture frames from the camera
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
@@ -313,8 +330,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               cp.SetPropertyOnCamera('Shutter Speed', cp.loaded_values['Shutter Speed'], mute=True)
 
           if cp.freeze_calibrate and not globa.color_calibrate:
-              print('[freezecalib] ' + str(camera.exposure_speed)+ ' ' + str(float(camera.awb_gains[0])) + ' ' + str(float(camera.awb_gains[1])))
-              # todo: must stop automatically
+              previous_exposure_speed,previous_red_gain,previous_blue_gain = FreezeCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_blue_gain)
 
           if (ticks - globa.last_picture_taken_ticks) > 61.0:
               localtime = time.localtime(ticks)  # gmtime for UTC
