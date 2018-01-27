@@ -295,7 +295,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if globa.just_started:
             globa.gain_distance = UpdateGainDistance()
-            if globa.gain_distance < 0.05:  # 0.02
+            if globa.gain_distance < 0.02 or (abs(globa.previous_digital_gain - 1.0) < 0.04 and abs(globa.previous_analog_gain - 1.0) < 0.04):
                 cp.SetAllPropertiesOnCamera()
                 globa.just_started_but_done = True                
         else:
