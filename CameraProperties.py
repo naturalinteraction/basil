@@ -151,9 +151,8 @@ class CameraProperties(object):
             value = self.properties[name][self.values_indices[name]]
             print(("%s  %s <%s>" % (name, value, self.PropertyOnCamera(name))))
         print(('Exp Speed (READONLY) <%s>' % (int(self.cam.exposure_speed))))
-        # print('Zoom (READONLY) <%s>' % self.cam.zoom)
-        print(('Analog Gain (READONLY) <%s>' % float(self.cam.analog_gain)))
-        print(('Digital Gain (READONLY) <%s>' % float(self.cam.digital_gain)))
+        print(('Analog Gain (READONLY) <%.3f>' % float(self.cam.analog_gain)))
+        print(('Digital Gain (READONLY) <%.3f>' % float(self.cam.digital_gain)))
         zoo = self.cam.zoom
         print(('Zoom <%s, %s, %s, %s>' % (zoo[0], zoo[1], zoo[2], zoo[3])))
         print(('*' * 20))
@@ -161,10 +160,13 @@ class CameraProperties(object):
     def AllPropertiesString(self):
         result = ''
         for name in sorted(list(self.properties.keys())):
-            result = result + "%s  %s" % (name, str(self.PropertyOnCamera(name))) + '<br>\n'
+            if 'Gain' in name:
+                result = result + "%s  %.3f" % (name.replace('AWB ', ''), float(self.PropertyOnCamera(name))) + '<br>\n'
+            else:
+                result = result + "%s  %s" % (name, str(self.PropertyOnCamera(name))) + '<br>\n'
         result = result + 'Exp Speed %s' % (int(self.cam.exposure_speed)) + '<br>\n'
-        result = result + 'Analog Gain %s' % float(self.cam.analog_gain) + '<br>\n'
-        result = result + 'Digital Gain %s' % float(self.cam.digital_gain) + '<br>\n'
+        result = result + 'Analog Gain %.3f' % float(self.cam.analog_gain) + '<br>\n'
+        result = result + 'Digital Gain %.3f' % float(self.cam.digital_gain) + '<br>\n'
         zoo = self.cam.zoom
         zoomed = (zoo[2] < 1.0)
         result = result + 'Zoomed ' + str(zoomed) + '<br>\n'
