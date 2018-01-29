@@ -81,8 +81,9 @@ A repo for my own experiments.
 - [x] Sensor color calibration == Find camera parameters automatically
 - [x] Web interface: number of images in queue
 - [x] Print 24 errors (with the average squared error)
+- [x] Web interface
+- [ ] Click 3-4 times instead of 24
 - [ ] Search brightness and contrast values (after the gains are good)
-- [ ] Web interface
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~

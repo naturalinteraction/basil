@@ -26,7 +26,7 @@ def Page():
     disk = os.statvfs('/')
     disk_percent = 100 - 100 * disk.f_bavail / disk.f_blocks
     if len(globa.last_picture_filename) > 0:
-        link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a><br>\n'
+        link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a> taken at ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
     else:
         link = ''
     status = 'running'
@@ -50,7 +50,6 @@ def Page():
             prop + ' <p>\n' +
             'campaign ' + globa.campaign + ' <br>\n' +
              link +
-            'last picture taken at ' + time.ctime(int(globa.last_picture_taken_ticks)) + ' <br>\n' +
             'uploads in queue ' + NumberOfUploadsInQueue() + '<br>\n' +
             'started at ' + globa.time_process_started_string + ' <br>\n' +
             'now ' + time.strftime("%Y/%m/%d %H:%M") + ' <br>\n' +
