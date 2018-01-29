@@ -3,17 +3,17 @@
 A repo for my own experiments.
 
 #### Specs
-1. Measure area with good growth and area with issues.
+1. Measure area with good growth and area with issues (uniformity).
 2. Curve of growth in time.
-3. Algorithm is plant-specific. Plant in tray is known.
+3. Algorithm is plant-specific. Plant in tray is known. Day of growth is known.
 4. White light.
 5. Substrate will guarantee good contrast.
 
 #### High-level tasks
 - [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Definition of architectural aspects (image storage, notifications, etc.)
-- [ ] Optimization on sensor
-- [ ] Design UI for management (and then implement it)
+- [ ] Image processing on sensor
+- [ ] Design and implement controls on web interface
 - [ ] Design enclosing case
 - [ ] Hardware specification document
 - [ ] Commented source code
