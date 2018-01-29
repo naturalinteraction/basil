@@ -1,4 +1,3 @@
-
 import time
 from CameraProperties import CameraProperties
 from picamera import PiCamera
@@ -222,8 +221,9 @@ def SetInitialCameraProperties(camera):
     camera.framerate = 5
     camera.resolution = (2560, 1920)
 
-def DrawColorCalibrationLocation(kernel=49):
+def DrawColorCalibrationLocations(kernel=49):
     half = int(kernel / 2 + 3)
+    print(len(globa.locations))
     for n,(xx, yy) in enumerate(globa.locations):
         cv2.rectangle(globa.image, (xx - half, yy - half),
                                    (xx + half, yy + half), (0,0,0), 3)
@@ -353,9 +353,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   color_calibration_shutter,color_calibration_red,color_calibration_blue = ColorCalibrationIterate(color_calibration_shutter,
                                                                                                                    color_calibration_red,
                                                                                                                    color_calibration_blue)
-          if globa.color_calibrate or locations < 24:
-              DrawColorCalibrationLocation()
-
           if not cp.auto_calibrate and not globa.color_calibrate:
               # force this to avoid frames fading to black
               # print('forcing shutter ' + str(cp.loaded_values['Shutter Speed']))
@@ -374,6 +371,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                   print('Disabling display.')
                   globa.show = False
         
+        if globa.color_calibrate or len(globa.locations) < 24:
+            DrawColorCalibrationLocations()
         # show the frame
         if globa.show:
             cv2.imshow('cap', globa.image)
