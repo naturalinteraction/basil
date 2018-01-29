@@ -30,11 +30,11 @@ def Page():
     else:
         link = ''
     status = 'running'
-    if initial_calibrate:
+    if globa.initial_calibrate:
         status = 'initial calibration'
-    if auto_calibrate:
+    if globa.cameraproperties.auto_calibrate:
         status = 'auto calibration'
-    if color_calibrate:
+    if globa.color_calibrate:
         status = 'color calibration'
     return ('PlantSensor: ' + hostname + ' <br>\n' +
             'PlantSensor Firmware v0.' + GitRevCount() + ' <br>\n' +
