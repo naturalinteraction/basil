@@ -179,7 +179,7 @@ def Resize(image, factor):
 def CropImage(image, top=0, bottom=0, left=0, right=0, cropname=None):
     height, width, depth = image.shape
     if (cropname == 'redshift'):  # redshift: alfalfa (verde salvia) (che su internet e' 126,149,125)
-        top = 260
+        top = 550
         bottom = 0
         left = 0
         right = 0
