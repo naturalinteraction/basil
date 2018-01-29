@@ -46,7 +46,7 @@ def OpenCVVersion():
     return 'OpenCV ' + cv2.__version__
 
 def PiTemperature():
-    return os.popen("/opt/vc/bin/vcgencmd measure_temp").read().strip()
+    return os.popen("/opt/vc/bin/vcgencmd measure_temp").read().strip().replace("'", "").replace("temp=", "")
 
 def GitRevCount():
     return os.popen("git rev-list --count master").read().strip()
