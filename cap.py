@@ -144,16 +144,28 @@ def Luminance(bgr):
 
 def mouseCallbackCalib(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
-        if len(globa.locations) < 24:
+        if len(globa.locations) < 4:
             print ('X' + str(x) + ' Y' + str(y) + ' location ' + str(len(globa.locations)))
             globa.locations.append((x,y))
-            if len(globa.locations) == 24:
+            if len(globa.locations) == 4:
+                # from 4, make it 24
+                tl = globa.locations[0]
+                tr = globa.locations[1]
+                br = globa.locations[2]
+                bl = globa.locations[3]
+                w = (tr[0] - tl[0] + br[0] - bl[0]) / 2.0  # average
+                h = (tr[1] + tl[1] - br[1] - bl[1]) / 2.0  # average
+                print('w h', w, h)
+                dy = (tr[1] - tl[1] + br[1] - bl[1]) / 2.0  # average
+                angle = atan2(float(dy), float(w))
+                print('angle', degrees(angle))
+                # todo
                 with open('calibration-locations.pkl', 'w') as f:
                     pickle.dump(globa.locations, f, 0)
-                    print('color calibration locations saved')
+                print('color calibration locations saved')
     if event == cv2.EVENT_RBUTTONDOWN:
         globa.locations = []
-        print('restarting color calibration: pick the 24 locations')
+        print('restarting color calibration: pick the 4 locations')
 
 def DefineColorCheckerColorsAndWeights():
     weight = []
