@@ -12,6 +12,7 @@ import shutil
 import pickle
 from audio import AudioLevelPi
 import numpy as np
+import math
 import globa
 from web import *
 
@@ -154,18 +155,30 @@ def mouseCallbackCalib(event, x, y, flags, param):
                 br = globa.locations[2]
                 bl = globa.locations[3]
                 w = (tr[0] - tl[0] + br[0] - bl[0]) / 2.0  # average
-                h = (tr[1] + tl[1] - br[1] - bl[1]) / 2.0  # average
+                h = - (tr[1] + tl[1] - br[1] - bl[1]) / 2.0  # average
                 print('w h', w, h)
                 dy = (tr[1] - tl[1] + br[1] - bl[1]) / 2.0  # average
-                angle = atan2(float(dy), float(w))
-                print('angle', degrees(angle))
-                # todo
+                print('dy', dy)
+                angle = math.atan2(float(dy), float(w))
+                print('angle', math.degrees(angle))
+                globa.locations = []
+                for y in range(4):
+                    for x in range(6):
+                        lx = (x * w / 5.0)
+                        ly = (y * h / 3.0)
+                        rx = lx * math.cos(angle) - ly * math.sin(angle)
+                        ry = lx * math.sin(angle) + ly * math.cos(angle)
+                        lx = tl[0] + rx
+                        ly = tl[1] + ry
+                        print(x, y, int(lx), int(ly))
+                        globa.locations.append((int(lx), int(ly)))
+                print(globa.locations)
                 with open('calibration-locations.pkl', 'w') as f:
                     pickle.dump(globa.locations, f, 0)
                 print('color calibration locations saved')
     if event == cv2.EVENT_RBUTTONDOWN:
         globa.locations = []
-        print('restarting color calibration: pick the 4 locations')
+        print('restarting color calibration: pick the 4 corner locations')
 
 def DefineColorCheckerColorsAndWeights():
     weight = []
