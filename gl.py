@@ -42,11 +42,13 @@ def DrawCube():
 
 def main():
     pygame.init()
-    display = (800,600)
-    pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
+    display = (1920,1080)
+    pygame.display.set_mode(display, DOUBLEBUF|OPENGL|FULLSCREEN)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
     glTranslatef(0.0,0.0, -5)
-    while True:
+    i = 0
+    while i < 60 * 4:
+        i = i + 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

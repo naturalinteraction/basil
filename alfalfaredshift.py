@@ -19,14 +19,16 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     bgr = Resize(bgr, 0.3)
     hsv = ToHSV(bgr)
 
-    # EnablePaletteCreator(bgr, hsv, bins=32)
-
-    if False:
-        mask = SegmentGoodPalette(hsv, 'palette-alfalfaredshift.pkl', 10.0, debug=True)
+    # EnablePaletteCreator(bgr, hsv, bins=16)
+    # PurgePalette('palette-alfalfaredshift.pkl', 4)
+    if True:
+        mask = SegmentGoodPalette(hsv, 'palette-alfalfaredshift.pkl', 20.0, debug=False)
         # mask = Dilate(mask)
         foreground = MaskedImage(bgr, mask)
         UpdateWindow('foreground', foreground)
         UpdateWindow('background', bgr - foreground)
+
+    return
 
     edges = np.uint8(feature.canny(BGRToGray(bgr), sigma=2.0, low_threshold=20, high_threshold=50, use_quantiles=False)) * 255
     UpdateWindow('canny1', edges)
