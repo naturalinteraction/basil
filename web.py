@@ -37,8 +37,7 @@ def Page():
     if globa.color_calibrate:
         status = 'color calibration...'
     return ('PlantSensor: ' + hostname + '<br>\n' +
-            'PlantSensor Firmware v0.' + GitRevCount() + '<br>\n' +
-            GitBranch() + '<br>\n' +
+            'PlantSensor Firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
             'cpu ' + str(psutil.cpu_percent()) + '%<br>\n' +
             'memory ' + str(mem.percent) + '%<br>\n' +
