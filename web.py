@@ -29,31 +29,30 @@ def Page():
         link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a> taken at ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
     else:
         link = ''
-    status = 'running'
+    status = 'running...'
     if globa.initial_calibrate:
-        status = 'initial calibration'
+        status = 'initial calibration...'
     if globa.cameraproperties.auto_calibrate:
-        status = 'auto calibration'
+        status = 'auto calibration...'
     if globa.color_calibrate:
-        status = 'color calibration'
-    return ('PlantSensor: ' + hostname + ' <br>\n' +
-            'PlantSensor Firmware v0.' + GitRevCount() + ' <br>\n' +
-            GitBranch() + ' <br>\n' +
-            OpenCVVersion() + ' <p>\n' +
+        status = 'color calibration...'
+    return ('PlantSensor: ' + hostname + '<br>\n' +
+            'PlantSensor Firmware v0.' + GitRevCount() + '<br>\n' +
+            GitBranch() + '<br>\n' +
+            OpenCVVersion() + '<p>\n' +
             'cpu ' + str(psutil.cpu_percent()) + '%<br>\n' +
             'memory ' + str(mem.percent) + '%<br>\n' +
             'disk ' + str(disk_percent) + '%<br>\n' +
-            'temperature ' + str(PiTemperature()) + ' <p>\n' +
-            'status ' + status + ' <br>\n' +
-            'locations ' + str(len(globa.locations)) + ' <br>\n' +
-            'show ' + str(globa.show) + ' <p>\n' +
-            prop + ' <p>\n' +
-            'campaign ' + globa.campaign + ' <br>\n' +
+            'temperature ' + str(PiTemperature()) + '<p>\n' +
+            status + '<br>\n' +
+            'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
+            prop + '<p>\n' +
+            'campaign ' + globa.campaign + '<br>\n' +
              link +
             'uploads in queue ' + NumberOfUploadsInQueue() + '<br>\n' +
-            'started at ' + globa.time_process_started_string + ' <br>\n' +
-            'now ' + time.strftime("%Y/%m/%d %H:%M") + ' <br>\n' +
-            'uptime_minutes ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' <p>\n'
+            'started at ' + globa.time_process_started_string + '<br>\n' +
+            'now ' + time.strftime("%Y/%m/%d %H:%M") + '<br>\n' +
+            'uptime_minutes ' + str(int((time.time() - globa.time_process_started) / (60.0))) + '<p>\n'
            )
 
 class WebPage(resource.Resource):
