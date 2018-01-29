@@ -222,16 +222,19 @@ def SetInitialCameraProperties(camera):
     camera.framerate = 5
     camera.resolution = (2560, 1920)
 
+def DrawColorCalibrationLocation(kernel=49):
+    half = int(kernel / 2 + 3)
+    for n,(xx, yy) in enumerate(globa.locations):
+        cv2.rectangle(globa.image, (xx - half, yy - half),
+                                   (xx + half, yy + half), (0,0,0), 3)
+
 def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,color_calibration_blue):
       globa.show = True
       diff = []
       kernel = 49
-      half = int(kernel / 2 + 3)
       BF = 1.2 # brightness factor, max 1.049
       blurred = cv2.blur(globa.image, (kernel, kernel))
       for n,(xx, yy) in enumerate(globa.locations):
-          cv2.rectangle(globa.image, (xx - half, yy - half),
-                                     (xx + half, yy + half), (0,0,0), 3)
           c = blurred[yy,xx].tolist()
           t = targetbgr[n]
           diff.append((
@@ -347,7 +350,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               if not len(globa.locations) == 24:
                   print('pick the 24 locations first')
               else:
-                  color_calibration_shutter,color_calibration_red,color_calibration_blue = ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,color_calibration_blue)
+                  color_calibration_shutter,color_calibration_red,color_calibration_blue = ColorCalibrationIterate(color_calibration_shutter,
+                                                                                                                   color_calibration_red,
+                                                                                                                   color_calibration_blue)
+          if globa.color_calibrate or locations < 24:
+              DrawColorCalibrationLocation()
 
           if not cp.auto_calibrate and not globa.color_calibrate:
               # force this to avoid frames fading to black

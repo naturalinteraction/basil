@@ -82,8 +82,8 @@ A repo for my own experiments.
 - [x] Web interface: number of images in queue
 - [x] Print 24 errors (with the average squared error)
 - [x] Web interface
+- [x] Click 4 times instead of 24
 - [ ] Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF?
-- [ ] Click 3-4 times instead of 24
 - [ ] Search brightness and contrast values (after the gains are good)?
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
