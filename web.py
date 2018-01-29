@@ -36,22 +36,22 @@ def Page():
         status = 'auto calibration...'
     if globa.color_calibrate:
         status = 'color calibration...'
-    return ('PlantSensor: ' + hostname + '<br>\n' +
+    return ('PlantSensor ' + hostname + '<br>\n' +
             'PlantSensor Firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
             'cpu ' + str(psutil.cpu_percent()) + '%<br>\n' +
             'memory ' + str(mem.percent) + '%<br>\n' +
             'disk ' + str(disk_percent) + '%<br>\n' +
             'temperature ' + str(PiTemperature()) + '<p>\n' +
-            status + '<br>\n' +
-            'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
+            status + '<p>\n' +
+            # 'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
             prop + '<p>\n' +
             'campaign ' + globa.campaign + '<br>\n' +
              link +
-            'uploads in queue ' + NumberOfUploadsInQueue() + '<br>\n' +
+            '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
             'started at ' + globa.time_process_started_string + '<br>\n' +
             'now ' + time.strftime("%Y/%m/%d %H:%M") + '<br>\n' +
-            'uptime_minutes ' + str(int((time.time() - globa.time_process_started) / (60.0))) + '<p>\n'
+            'uptime ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' minutes<p>\n'
            )
 
 class WebPage(resource.Resource):

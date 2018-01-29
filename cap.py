@@ -280,11 +280,6 @@ try:
 except:
     print('Could not load time of last picture.')
 
-print(Page())
-
-cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
-cv2.setMouseCallback('cap', mouseCallbackCalib)
-
 try:
     with open('calibration-locations.pkl', 'r') as f:
         globa.locations = pickle.load(f)
@@ -293,6 +288,10 @@ except:
     pass
 
 StartWebServer()
+print(Page())
+
+cv2.namedWindow('cap', cv2.WINDOW_NORMAL)
+cv2.setMouseCallback('cap', mouseCallbackCalib)
 
 previous_exposure_speed = -1
 previous_red_gain = -1
