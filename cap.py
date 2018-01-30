@@ -340,7 +340,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if globa.initial_calibrate:
             globa.gain_diff = InitialCalibrationIterate()
-            if globa.gain_diff < 0.02 or (abs(globa.previous_digital_gain - 1.0) < 0.04 and abs(globa.previous_analog_gain - 1.0) < 0.04):
+            if (abs(globa.previous_digital_gain - 1.0) < 0.03 and abs(globa.previous_analog_gain - 1.0) < 0.03):  # or globa.gain_diff < 0.02
                 cp.SetAllPropertiesOnCamera()
                 globa.initial_calibrate_but_done = True                
         else:
