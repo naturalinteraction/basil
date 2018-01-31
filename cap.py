@@ -459,7 +459,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == ord('q') or key == 27:
                 print('exiting')
                 break
-		
+        time.sleep(0.25)
+
 camera.close()
 print('Camera closed.')
 cv2.destroyAllWindows()
