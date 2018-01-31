@@ -59,7 +59,7 @@ class WebPage(resource.Resource):
     def render_GET(self, request):
         if not 'plantsensor' in str(request):
             return ''
-        return '<font face="Arial">' + Page() + '</font>'
+        return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + '</font></body>'
 
 def StartWebServer():
     site = server.Site(WebPage())
