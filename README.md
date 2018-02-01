@@ -185,3 +185,11 @@ The last command fails but then Twisted is happy anyway.
 Initial: Needs light. Must be done every time the sensor is turned on.
 Auto: Needs light + scene.
 Color: Needs light + colorchecker. Can provide final error(s).
+
+#### Disable HDMI
+Edit `/etc/rc.local` and add the following lines above `exit 0`:
+```
+# Disable HDMI
+/usr/bin/tvservice -o
+```
+Other interesting settings in `/boot/config.txt`.
