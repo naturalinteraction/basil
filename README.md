@@ -1,6 +1,6 @@
 # basil
 
-A repo for my own experiments.
+Software for PlantSensor devices.
 
 #### Specs
 1. Measure area with good growth and area with issues (uniformity).
