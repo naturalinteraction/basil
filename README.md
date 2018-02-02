@@ -40,13 +40,11 @@ Software for PlantSensor devices.
 - [x] Lab, Luv, YUV color spaces
 - [x] Superpixels
 - [ ] Perspective mask
-- [ ] Segmentation: downsizing
+- [ ] Probability map instead of binary mask: likelihood of a pixel to belong to a class based on color and spatial location (neighborhood); blur to diffuse probability and no thresholding
 - [ ] Find biomass segmentation algorithm params automatically
-- [ ] Segmentation: Otsu thresholding and adaptive thresholding
-- [ ] Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
-- [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms
+- [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
+- [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
 - [ ] ~~Color analysis inside biomass: histograms~~
-- [ ] ~~Likelihood of a pixel to belong to a class based on color and spatial location (neighborhood)~~
 - [ ] ~~Holes: pixel-by-pixel~~
 
 #### Tasks cap.py
