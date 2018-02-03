@@ -80,9 +80,9 @@ Software for PlantSensor devices.
 - [x] Web interface: number of images in queue
 - [x] Print 24 errors (with the average squared error)
 - [x] Web interface
-- [x] Click 4 times instead of 24
+- [x] Click 4 times instead of 24, perspective grid
 - [ ] Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF?
-- [ ] Search brightness and contrast values (after the gains are good)?
+- [ ] ~~Search brightness and contrast values (after the gains are good)~~
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
