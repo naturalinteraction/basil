@@ -153,9 +153,11 @@ def mouseCallbackCalib(event, x, y, flags, param):
                 tr = globa.locations[1]
                 br = globa.locations[2]
                 bl = globa.locations[3]
-                w = (tr[0] - tl[0] + br[0] - bl[0]) / 2.0  # average
+                w_top =    tr[0] - tl[0]
+                w_bottom = br[0] - bl[0]
+                w = (w_top + w_bottom) / 2.0  # average
                 h = - (tr[1] + tl[1] - br[1] - bl[1]) / 2.0  # average
-                print('w h', w, h)
+                print('wtop wbottom w h', w_top, w_bottom, w, h)
                 dy = (tr[1] - tl[1] + br[1] - bl[1]) / 2.0  # average
                 print('dy', dy)
                 angle = math.atan2(float(dy), float(w))
@@ -163,11 +165,11 @@ def mouseCallbackCalib(event, x, y, flags, param):
                 globa.locations = []
                 for y in range(4):
                     for x in range(6):
-                        lx = (x * w / 5.0)
+                        lx = (x * (w_top + (w_bottom - w_top) * y / 3.0) / 5.0)
                         ly = (y * h / 3.0)
                         rx = lx * math.cos(angle) - ly * math.sin(angle)
                         ry = lx * math.sin(angle) + ly * math.cos(angle)
-                        lx = tl[0] + rx
+                        lx = tl[0] + (bl[0] - tl[0]) * y / 3.0 + rx
                         ly = tl[1] + ry
                         print(x, y, int(lx), int(ly))
                         globa.locations.append((int(lx), int(ly)))
