@@ -67,6 +67,8 @@ def GitCommitMessagePretty():
 # print out debug information about current source code version
 # print(GitCommitMessage())
 
+def ExifKeywords(file):
+    return subprocess.check_output(["exiftool", "-Keywords", file]).strip()
 
 '''
 parsing command line arguments
