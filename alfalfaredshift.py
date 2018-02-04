@@ -14,6 +14,7 @@ def auto_canny(image, sigma=0.33):
     return edged
 
 measurements = []
+jitter = []
 
 def RoutineAlfalfaRedshift(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='redshift')
@@ -102,8 +103,10 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     biomass = cv2.mean(mult)[0] / 231.0 * 100.0
     Echo(foreground, 'biomass index %.1f' % (biomass))
     biomass = biomass - 80
-    # if len(measurements) > 0:
-    #     biomass = 0.5 * biomass + 0.5 * measurements[-1]
+    if len(measurements) > 0:
+        smooth_biomass = 0.5 * biomass + 0.5 * measurements[-1]
+        jitter.append(biomass - smooth_biomass)
+        biomass = smooth_biomass
     measurements.append(biomass)
     h,w = bgr.shape[:2]
     for i in range(1, len(measurements)):
@@ -112,3 +115,4 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
         cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9)), (i * 10 + 50, int(h - last * 9)), (255, 255, 255), 3)
     # UpdateWindow('mult', mult)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
+    print('jitter', np.std(jitter))
