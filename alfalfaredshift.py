@@ -92,7 +92,7 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
 
     hue_diff = Inverted(hue_diff)
     # todo 
-    cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+    # cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
     ret,hue_diff = cv2.threshold(hue_diff, 230, 230, cv2.THRESH_TRUNC)
     ret,hue_diff = cv2.threshold(hue_diff, 210, 210, cv2.THRESH_TOZERO)
 
