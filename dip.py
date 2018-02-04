@@ -32,6 +32,12 @@ routine = {
             'bataviarossa'     :  RoutineBataviaRossa,
           }
 
+def RemoveTemporaryFiles():
+    files = os.listdir('.')
+    for file in files:
+        if file.endswith(".temp"):
+            os.remove(os.path.join('.', file))
+
 args = ParseArguments()
 
 if args.download:
@@ -39,6 +45,8 @@ if args.download:
     quit()
 
 box = BoundingBox()
+
+RemoveTemporaryFiles()
 
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     # print('processing ' + image_file)
@@ -54,6 +62,8 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
+RemoveTemporaryFiles()
+
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
           + str(int(box.rect.xmax - box.rect.xmin)) + \

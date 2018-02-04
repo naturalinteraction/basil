@@ -71,6 +71,12 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
         UpdateWindow('deriv', deriv)
         UpdateWindow('feat', edges)
 
+    try:
+        mean,stddev = LoadColorStats('alfalfaredshift.temp')
+        mean_hue = mean[0]
+    except:
+        mean_hue = 20.0  # 31.0
+
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
     h = cv2.split(hsv)[0]
@@ -80,7 +86,7 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     cv2.normalize(v, v, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
     hue_reference = np.zeros(h.shape, np.uint8)
-    hue_reference[:] = 31
+    hue_reference[:] = round(mean_hue)
     hue_diff = cv2.absdiff(hue_reference, h)
 
     hue_diff = 255 - hue_diff
@@ -116,3 +122,10 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     # UpdateWindow('mult', mult)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
     print('jitter', np.std(jitter))
+    # update stats
+    ret,mask = cv2.threshold(mult, 254, 255, cv2.THRESH_BINARY)
+    # UpdateWindow('mask', mask)
+    (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
+    mean_biomass[0] = mean_hue * 0.0 + 1.0 * mean_biomass[0]
+    print(mean_biomass[0])
+    SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
