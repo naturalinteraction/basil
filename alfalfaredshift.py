@@ -21,7 +21,7 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     bgr = Resize(bgr, 0.5)
     # UpdateWindow('bgr', bgr)
     hsv = ToHSV(bgr)
-    hsv = MedianBlurred(hsv, size=33)
+    hsv = GaussianBlurred(hsv, size=33)
 
     # EnablePaletteCreator(bgr, hsv, bins=32)
     if False:
@@ -84,12 +84,12 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     hue_diff = cv2.absdiff(hue_reference, h)
 
     hue_diff = 255 - hue_diff
-    cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)  # todo: good or bad?
+    cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
     ret,hue_diff = cv2.threshold(hue_diff, 230, 230, cv2.THRESH_TRUNC)
     ret,hue_diff = cv2.threshold(hue_diff, 210, 210, cv2.THRESH_TOZERO)
 
     ret,s = cv2.threshold(s, 70, 70, cv2.THRESH_TRUNC)
-    ret,s = cv2.threshold(s, 30, 30, cv2.THRESH_TOZERO)  # todo: good or bad?
+    ret,s = cv2.threshold(s, 30, 30, cv2.THRESH_TOZERO)
     s = cv2.multiply(s, v, scale=1.0/255.0)
 
     mult = cv2.multiply(hue_diff, s, scale=1.0/255.0)
