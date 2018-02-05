@@ -3,10 +3,10 @@ from vision import *
 measurements = []
 jitter = []
 
-def AbsDiffReference(channel, value):
+def SimilarityToReference(channel, value):
     reference = np.zeros(channel.shape, np.uint8)
     reference[:] = round(value)
-    return cv2.absdiff(reference, channel)
+    return 255 - cv2.absdiff(reference, channel)
 
 def Normalize(channel):
     cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
@@ -15,7 +15,7 @@ def RoutineKappa(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='blueshift')
     bgr = Resize(bgr, 0.5)
     hsv = ToHSV(bgr)
-    hsv = GaussianBlurred(hsv, size=33)  # todo: or median? or smaller size?
+    hsv = MedianBlurred(hsv, size=11)  # todo: gaussian or median? or smaller size?
     try:
         read_mean,read_std = LoadColorStats('kappa.temp')
     except:
@@ -30,31 +30,31 @@ def RoutineKappa(image_file, bgr, box):
     ret,v = cv2.threshold(v, threshold, threshold, cv2.THRESH_TRUNC)
     Normalize(v)
 
-    hue_diff = AbsDiffReference(h, read_mean[0])
+    hue_sim = SimilarityToReference(h, read_mean[0])
+    sat_sim = SimilarityToReference(s, read_mean[1])
+    val_sim = SimilarityToReference(v, read_mean[2])
 
-    sat_diff = AbsDiffReference(s, read_mean[1])
-
-    val_diff = AbsDiffReference(v, read_mean[2])
-
-    UpdateWindow('hue', hue_diff)
-    UpdateWindow('sat', sat_diff)
-    UpdateWindow('val', val_diff)
-
-    hue_diff = 255 - hue_diff
     sigma = read_std[0]
     if sigma < 3.0:
         sigma = 3.0
-    Normalize(hue_diff)
-    ret,hue_diff = cv2.threshold(hue_diff, 255 - 6.0 * sigma, 255 - 6.0 * sigma, cv2.THRESH_TRUNC)  # todo: or other threshold?
-    ret,hue_diff = cv2.threshold(hue_diff, 255 - 12.0 * sigma, 255 - 12.0 * sigma, cv2.THRESH_TOZERO)  # todo: or other threshold?
+    threshold = 255 - 0.0 * sigma
+    ret,hue_sim = cv2.threshold(hue_sim, threshold, threshold, cv2.THRESH_TRUNC)  # todo: or other threshold?
+    threshold = 255 - 6.0 * sigma
+    ret,hue_sim = cv2.threshold(hue_sim, threshold, threshold, cv2.THRESH_TOZERO)  # todo: or other threshold?
+    Normalize(hue_sim)
 
+    UpdateWindow('hue', hue_sim)
+    UpdateWindow('sat', sat_sim)
+    UpdateWindow('val', val_sim)
+
+    
     ret,s = cv2.threshold(s, 106, 106, cv2.THRESH_TRUNC)  # todo: or other threshold?
     ret,s = cv2.threshold(s, 90, 90, cv2.THRESH_TOZERO)  # todo: or other threshold?
     s = cv2.multiply(s, v, scale=1.0/255.0)
 
-    mult = cv2.multiply(hue_diff, s, scale=1.0/255.0)
+    mult = cv2.multiply(hue_sim, s, scale=1.0/255.0)
     Normalize(mult)
-    
+
     # print(ExifKeywords(image_file))
 
     mult_bgr = GrayToBGR(mult)
