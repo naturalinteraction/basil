@@ -37,7 +37,7 @@ def SaturationThreshold(hsv, threshold, min_value=-1):
     if min_value > -1:
         v = cv2.split(hsv)[2]
         ret,v_thresholded = cv2.threshold(v,min_value,255,cv2.THRESH_BINARY)
-        thresholded = cv2.bitwise_and(thresholded, v_thresholded)
+        thresholded = cv2.multiply(thresholded, v_thresholded, scale=1.0/255.0)
     return thresholded
 
 
@@ -247,7 +247,7 @@ def GrayToBGR(one_channel_image):
     return cv2.cvtColor(one_channel_image, cv2.COLOR_GRAY2BGR)
 
 def Inverted(image):
-    return cv2.bitwise_not(image)
+    return 255 - image
 
 def MaskedImage(image, mask):
     return cv2.bitwise_and(image, image, mask=mask)

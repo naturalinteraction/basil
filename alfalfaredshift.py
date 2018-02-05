@@ -51,9 +51,9 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
 
     if False:
         edges = np.uint8(feature.canny(BGRToGray(bgr), sigma=2.0, low_threshold=20, high_threshold=50, use_quantiles=False)) * 255
-        edges = cv2.bitwise_and(edges, mask)  # todo: use cv2.multiply() instead
-        edged_auto = cv2.bitwise_and(auto_canny(bgr), mask)
-        edged = cv2.bitwise_and(cv2.Canny(bgr, 100, 200), mask)
+        edges = cv2.multiply(edges, mask, scale=1.0/255.0)
+        edged_auto = cv2.multiply(auto_canny(bgr), mask, scale=1.0/255.0)
+        edged = cv2.multiply(cv2.Canny(bgr, 100, 200), mask, scale=1.0/255.0)
         # edged = cv2.resize(edged, (0, 0), fx=0.1, fy=0.1, interpolation=cv2.INTER_AREA)  # not using Resize () so we can specify the custom interpolation algorithm
         # UpdateWindow('canny2', edged)
         luminance = BGRToGray(bgr)
@@ -81,7 +81,7 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     v = cv2.split(hsv)[2]
     h = cv2.split(hsv)[0]
 
-    v = 255 - v  # todo: do not use Inverted()
+    v = 255 - v
     ret,v = cv2.threshold(v, 140, 140, cv2.THRESH_TRUNC)
     cv2.normalize(v, v, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
@@ -107,7 +107,7 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     foreground = cv2.multiply(mult_bgr, bgr, scale=1.0/255.0)
 
     biomass = cv2.mean(mult)[0] / 231.0 * 100.0
-    Echo(foreground, 'biomass index %.1f' % (biomass))
+    Echo(foreground, 'biomass p-index %.1f' % (biomass))
     biomass = biomass - 80
     if len(measurements) > 0:
         smooth_biomass = 0.5 * biomass + 0.5 * measurements[-1]
