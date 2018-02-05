@@ -3,21 +3,24 @@ from vision import *
 measurements = []
 jitter = []
 
+def AbsDiffReference(channel, value):
+    reference = np.zeros(channel.shape, np.uint8)
+    reference[:] = round(value)
+    return cv2.absdiff(reference, channel)
+
+def Normalize(channel):
+    cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+
 def RoutineKappa(image_file, bgr, box):
-
-    print(image_file)
-
     bgr = CropImage(bgr, cropname='blueshift')
     bgr = Resize(bgr, 0.5)
     hsv = ToHSV(bgr)
     hsv = GaussianBlurred(hsv, size=33)  # todo: or median? or smaller size?
-
     try:
         read_mean,read_std = LoadColorStats('kappa.temp')
     except:
         read_mean = (45, 141, 125)
         read_std = (4, 28, 10)
-
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
     h = cv2.split(hsv)[0]
@@ -25,17 +28,23 @@ def RoutineKappa(image_file, bgr, box):
     v = 255 - v
     threshold = 118 # read_mean[2] - 1 * read[std]  # todo: or other threshold?
     ret,v = cv2.threshold(v, threshold, threshold, cv2.THRESH_TRUNC)
-    cv2.normalize(v, v, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+    Normalize(v)
 
-    hue_reference = np.zeros(h.shape, np.uint8)
-    hue_reference[:] = round(read_mean[0])
-    hue_diff = cv2.absdiff(hue_reference, h)
+    hue_diff = AbsDiffReference(h, read_mean[0])
+
+    sat_diff = AbsDiffReference(s, read_mean[1])
+
+    val_diff = AbsDiffReference(v, read_mean[2])
+
+    UpdateWindow('hue', hue_diff)
+    UpdateWindow('sat', sat_diff)
+    UpdateWindow('val', val_diff)
 
     hue_diff = 255 - hue_diff
     sigma = read_std[0]
     if sigma < 3.0:
         sigma = 3.0
-    cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+    Normalize(hue_diff)
     ret,hue_diff = cv2.threshold(hue_diff, 255 - 6.0 * sigma, 255 - 6.0 * sigma, cv2.THRESH_TRUNC)  # todo: or other threshold?
     ret,hue_diff = cv2.threshold(hue_diff, 255 - 12.0 * sigma, 255 - 12.0 * sigma, cv2.THRESH_TOZERO)  # todo: or other threshold?
 
@@ -44,7 +53,7 @@ def RoutineKappa(image_file, bgr, box):
     s = cv2.multiply(s, v, scale=1.0/255.0)
 
     mult = cv2.multiply(hue_diff, s, scale=1.0/255.0)
-    cv2.normalize(mult, mult, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+    Normalize(mult)
     
     # print(ExifKeywords(image_file))
 
