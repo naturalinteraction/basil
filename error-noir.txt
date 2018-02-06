@@ -1,4 +1,3 @@
-24
 finished! exiting color calibration. Saving!
 0 -13 -3 4
 1 -9 1 0
