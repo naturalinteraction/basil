@@ -1,6 +1,6 @@
-./go.sh -p redshift-biagio2 -s '' -d
-./go.sh -p blueshift-biagio2 -s '' -d
-./go.sh -p noir-biagio2 -s '' -d
-./go.sh -p visible-biagio2 -s '' -d
+./go.sh -p redshift-callalta -s '' -d
+./go.sh -p blueshift-callalta -s '' -d
+./go.sh -p noir-callalta -s '' -d
+./go.sh -p visible-callalta -s '' -d
 
 

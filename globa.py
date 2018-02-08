@@ -10,7 +10,7 @@ global color_calibrate
 color_calibrate = False
 
 global campaign
-campaign = 'biagio2'
+campaign = 'callalta'
 
 global cameraproperties
 cameraproperties = None
