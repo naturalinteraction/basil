@@ -22,7 +22,7 @@ def RoutineKappa(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='blueshift')
     bgr = Resize(bgr, 0.5)
     hsv = ToHSV(bgr)
-    hsv = MedianBlurred(hsv, size=11)  # todo: gaussian or median? or smaller size?
+    hsv = MedianBlurred(hsv, size=11)
     try:
         read_mean,read_std = LoadColorStats('kappa.temp')
     except:
@@ -33,20 +33,16 @@ def RoutineKappa(image_file, bgr, box):
     v = cv2.split(hsv)[2]
 
     v = 255 - v
-    threshold = 118 # read_mean[2] - 1 * read[std]  # todo: or other threshold?
+    threshold = read_mean[2] - 1.0 * read_std[2]
     ret,v = cv2.threshold(v, threshold, threshold, cv2.THRESH_TRUNC)
     Normalize(v)
 
     hue_sim = SimilarityToReference(h, read_mean[0])
-    sat_sim = SimilarityToReference(s, read_mean[1])
-    val_sim = SimilarityToReference(v, read_mean[2])
 
     hue_sim = TruncateAndZero(hue_sim, read_std[0], 4, 0.0, 6.0)
     Normalize(hue_sim)
 
     UpdateWindow('hue', hue_sim)
-    UpdateWindow('sat', sat_sim)
-    UpdateWindow('val', val_sim)
 
     ret,s = cv2.threshold(s, 106, 106, cv2.THRESH_TRUNC)  # todo: or other threshold?
     ret,s = cv2.threshold(s, 90, 90, cv2.THRESH_TOZERO)  # todo: or other threshold?
