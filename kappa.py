@@ -11,6 +11,13 @@ def SimilarityToReference(channel, value):
 def Normalize(channel):
     cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
+def TruncateAndZero(channel, sigma, min_sigma, trunc_sigmas, zero_sigmas):
+    sigma = max(sigma, min_sigma)
+    ret,result = cv2.threshold(channel, 255 - trunc_sigmas * sigma, 255 - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
+    ret,result = cv2.threshold(result, 255 - zero_sigmas * sigma, 255 - zero_sigmas * sigma, cv2.THRESH_TOZERO)
+    # Normalize(result)
+    return result
+
 def RoutineKappa(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='blueshift')
     bgr = Resize(bgr, 0.5)
@@ -21,9 +28,9 @@ def RoutineKappa(image_file, bgr, box):
     except:
         read_mean = (45, 141, 125)
         read_std = (4, 28, 10)
+    h = cv2.split(hsv)[0]
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
-    h = cv2.split(hsv)[0]
 
     v = 255 - v
     threshold = 118 # read_mean[2] - 1 * read[std]  # todo: or other threshold?
@@ -34,20 +41,13 @@ def RoutineKappa(image_file, bgr, box):
     sat_sim = SimilarityToReference(s, read_mean[1])
     val_sim = SimilarityToReference(v, read_mean[2])
 
-    sigma = read_std[0]
-    if sigma < 3.0:
-        sigma = 3.0
-    threshold = 255 - 0.0 * sigma
-    ret,hue_sim = cv2.threshold(hue_sim, threshold, threshold, cv2.THRESH_TRUNC)  # todo: or other threshold?
-    threshold = 255 - 6.0 * sigma
-    ret,hue_sim = cv2.threshold(hue_sim, threshold, threshold, cv2.THRESH_TOZERO)  # todo: or other threshold?
+    hue_sim = TruncateAndZero(hue_sim, read_std[0], 4, 0.0, 6.0)
     Normalize(hue_sim)
 
     UpdateWindow('hue', hue_sim)
     UpdateWindow('sat', sat_sim)
     UpdateWindow('val', val_sim)
 
-    
     ret,s = cv2.threshold(s, 106, 106, cv2.THRESH_TRUNC)  # todo: or other threshold?
     ret,s = cv2.threshold(s, 90, 90, cv2.THRESH_TOZERO)  # todo: or other threshold?
     s = cv2.multiply(s, v, scale=1.0/255.0)
