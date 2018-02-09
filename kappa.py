@@ -40,7 +40,7 @@ def RoutineKappa(image_file, bgr, box):
 
     hue_sim = TruncateAndZero(hue_sim, max(4, read_std[0]), 0.0, 6.0)
 
-    threshold = read_mean[1] - 1.25 * max(28, read_std[1])
+    threshold = read_mean[1] - 1.0 * max(28, read_std[1])
     ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TRUNC)
     threshold = read_mean[1] - 1.8 * max(28, read_std[1])
     ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TOZERO)
