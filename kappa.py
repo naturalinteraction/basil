@@ -13,7 +13,7 @@ def Normalize(channel):
 
 def TruncateAndZero(channel, sigma, trunc_sigmas, zero_sigmas):
     ret,result = cv2.threshold(channel, 255 - trunc_sigmas * sigma, 255 - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
-    ret,result = cv2.threshold(result, 255 - zero_sigmas * sigma, 255 - zero_sigmas * sigma, cv2.THRESH_TOZERO)
+    ret,result = cv2.threshold(result,  255 -  zero_sigmas * sigma, 255 -  zero_sigmas * sigma, cv2.THRESH_TOZERO)
     Normalize(result)
     return result
 
@@ -21,7 +21,7 @@ def RoutineKappa(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='blueshift')
     bgr = Resize(bgr, 0.5)
     hsv = ToHSV(bgr)
-    hsv = MedianBlurred(hsv, size=11)
+    hsv = MedianBlurred(hsv, size=5)
     try:
         read_mean,read_std = LoadColorStats('kappa.temp')
     except:
@@ -40,14 +40,16 @@ def RoutineKappa(image_file, bgr, box):
 
     hue_sim = TruncateAndZero(hue_sim, max(4, read_std[0]), 0.0, 6.0)
 
-    UpdateWindow('hue', hue_sim)
-
     threshold = read_mean[1] - 1.25 * max(28, read_std[1])
     ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TRUNC)
     threshold = read_mean[1] - 1.8 * max(28, read_std[1])
     ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TOZERO)
-    s = cv2.multiply(s, v, scale=1.0/255.0)
 
+    UpdateWindow('hue', hue_sim)
+    UpdateWindow('s', s)
+    UpdateWindow('v', v)
+
+    s = cv2.multiply(s, v, scale=1.0/255.0)
     mult = cv2.multiply(hue_sim, s, scale=1.0/255.0)
     Normalize(mult)
 
