@@ -11,11 +11,10 @@ def SimilarityToReference(channel, value):
 def Normalize(channel):
     cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
-def TruncateAndZero(channel, sigma, min_sigma, trunc_sigmas, zero_sigmas):
-    sigma = max(sigma, min_sigma)
+def TruncateAndZero(channel, sigma, trunc_sigmas, zero_sigmas):
     ret,result = cv2.threshold(channel, 255 - trunc_sigmas * sigma, 255 - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
     ret,result = cv2.threshold(result, 255 - zero_sigmas * sigma, 255 - zero_sigmas * sigma, cv2.THRESH_TOZERO)
-    # Normalize(result)
+    Normalize(result)
     return result
 
 def RoutineKappa(image_file, bgr, box):
@@ -33,19 +32,20 @@ def RoutineKappa(image_file, bgr, box):
     v = cv2.split(hsv)[2]
 
     v = 255 - v
-    threshold = read_mean[2] - 1.0 * read_std[2]
+    threshold = read_mean[2] - 1.0 * max(10, read_std[2])
     ret,v = cv2.threshold(v, threshold, threshold, cv2.THRESH_TRUNC)
     Normalize(v)
 
     hue_sim = SimilarityToReference(h, read_mean[0])
 
-    hue_sim = TruncateAndZero(hue_sim, read_std[0], 4, 0.0, 6.0)
-    Normalize(hue_sim)
+    hue_sim = TruncateAndZero(hue_sim, max(4, read_std[0]), 0.0, 6.0)
 
     UpdateWindow('hue', hue_sim)
 
-    ret,s = cv2.threshold(s, 106, 106, cv2.THRESH_TRUNC)  # todo: or other threshold?
-    ret,s = cv2.threshold(s, 90, 90, cv2.THRESH_TOZERO)  # todo: or other threshold?
+    threshold = read_mean[1] - 1.25 * max(28, read_std[1])
+    ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TRUNC)
+    threshold = read_mean[1] - 1.8 * max(28, read_std[1])
+    ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TOZERO)
     s = cv2.multiply(s, v, scale=1.0/255.0)
 
     mult = cv2.multiply(hue_sim, s, scale=1.0/255.0)
@@ -73,7 +73,7 @@ def RoutineKappa(image_file, bgr, box):
     # UpdateWindow('mult', mult)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
     # update stats
-    ret,mask = cv2.threshold(mult, 254, 255, cv2.THRESH_BINARY)
+    ret,mask = cv2.threshold(mult, 250, 255, cv2.THRESH_BINARY)
     # UpdateWindow('mask', mask)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
     print(mean_biomass, stddev_biomass)
