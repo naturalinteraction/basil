@@ -25,8 +25,9 @@ def RoutineKappa(image_file, bgr, box):
     try:
         read_mean,read_std = LoadColorStats('kappa.temp')
     except:
-        read_mean = (41, 220, 173)
-        read_std = (2.2, 20, 20)
+        read_mean = (41, 200, 183)
+        read_std = (2, 30, 17)
+
     h = cv2.split(hsv)[0]
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
@@ -34,12 +35,15 @@ def RoutineKappa(image_file, bgr, box):
     hue_sim = SimilarityToReference(h, read_mean[0])
     hue_sim = TruncateAndZero(hue_sim, 255, max(4, read_std[0]), 0.0, 2.8)
 
-    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 1.0, 4.0)
+    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 2.0, 3.0)  # 1.0, 4.0
+    v = TruncateAndZero(v, read_mean[2], max(20, read_std[1]), 1.0, 3.0)
 
     UpdateWindow('hsv', hsv)
-    UpdateWindow('hue_sim', hue_sim)
-    UpdateWindow('s', s)
+    UpdateWindow('h_sim', hue_sim)
+    UpdateWindow('s_sim', s)
+    UpdateWindow('v_sim', v)
 
+    s = cv2.multiply(v, s, scale=1.0/255.0)
     mult = cv2.multiply(hue_sim, s, scale=1.0/255.0)
     Normalize(mult)
 
