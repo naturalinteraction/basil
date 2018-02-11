@@ -72,14 +72,33 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
         UpdateWindow('feat', edges)
 
     try:
-        mean,stddev = LoadColorStats('alfalfaredshift.temp')
-        mean_hue = mean[0]
+        read_mean,read_std = LoadColorStats('alfalfaredshift.temp')
     except:
-        mean_hue = 20.0  # 31.0
+        read_mean = (20, 125, 85)
+        read_std = (2, 12, 13)
 
+    mean_hue = read_mean[0]  # todo
+
+    h = cv2.split(hsv)[0]
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
-    h = cv2.split(hsv)[0]
+
+    '''
+    h = SimilarityToReference(h, read_mean[0])
+    h = TruncateAndZero(h, 255, max(4, read_std[0]), 0.0, 2.8)
+
+    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 2.0, 3.0)
+    v = TruncateAndZero(v, read_mean[2], max(20, read_std[1]), 1.0, 3.0)
+
+    UpdateWindow('hsv', hsv)
+    UpdateWindow('dh', h)
+    UpdateWindow('ds', s)
+    UpdateWindow('dv', v)
+
+    mult = cv2.multiply(h, cv2.multiply(v, s, scale=1.0/255.0), scale=1.0/255.0)
+    Normalize(mult)
+   
+    '''
 
     v = 255 - v
     ret,v = cv2.threshold(v, 140, 140, cv2.THRESH_TRUNC)
@@ -104,8 +123,10 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     # print(ExifKeywords(image_file))
 
     mult_bgr = GrayToBGR(mult)
+    inv_mult_bgr = GrayToBGR(255 - mult)
     foreground = cv2.multiply(mult_bgr, bgr, scale=1.0/255.0)
-
+    background = cv2.multiply(inv_mult_bgr, bgr, scale=1.0/255.0)
+    UpdateWindow('back', background)
     biomass = cv2.mean(mult)[0] / 231.0 * 100.0
     Echo(foreground, 'biomass p-index %.1f' % (biomass))
     biomass = biomass - 80
@@ -121,11 +142,12 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
         cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9)), (i * 10 + 50, int(h - last * 9)), (255, 255, 255), 3)
     # UpdateWindow('mult', mult)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
-    print('jitter', np.std(jitter))
+    jit = np.std(jitter)
+    print('jitter %.3f hue %.1f' % (jit, read_mean[0]))
     # update stats
-    ret,mask = cv2.threshold(mult, 254, 255, cv2.THRESH_BINARY)
+    ret,mask = cv2.threshold(mult, 250, 255, cv2.THRESH_BINARY)
     # UpdateWindow('mask', mask)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
-    mean_biomass[0] = mean_hue * 0.0 + 1.0 * mean_biomass[0]
-    print(mean_biomass[0])
+    # mean_biomass[0] = read_mean[0] * 0.0 + 1.0 * mean_biomass[0]
+    print(mean_biomass, stddev_biomass)
     SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
