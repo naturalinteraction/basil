@@ -15,6 +15,21 @@ from skimage.future import graph
 white = (255, 255, 255)
 
 
+def SimilarityToReference(channel, value):
+    reference = np.zeros(channel.shape, np.uint8)
+    reference[:] = round(value)
+    return 255 - cv2.absdiff(reference, channel)
+
+def Normalize(channel):
+    cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+
+def TruncateAndZero(channel, reference, sigma, trunc_sigmas, zero_sigmas):
+    ret,result = cv2.threshold(channel, reference - trunc_sigmas * sigma, reference - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
+    ret,result = cv2.threshold(result,  reference -  zero_sigmas * sigma, reference -  zero_sigmas * sigma, cv2.THRESH_TOZERO)
+    Normalize(result)
+    return result
+
+
 def ScatterPlotHSV(image, title='HSV'):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
