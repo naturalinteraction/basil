@@ -32,19 +32,18 @@ def RoutineKappa(image_file, bgr, box):
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
 
-    hue_sim = SimilarityToReference(h, read_mean[0])
-    hue_sim = TruncateAndZero(hue_sim, 255, max(4, read_std[0]), 0.0, 2.8)
+    h = SimilarityToReference(h, read_mean[0])
+    h = TruncateAndZero(h, 255, max(4, read_std[0]), 0.0, 2.8)
 
-    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 2.0, 3.0)  # 1.0, 4.0
+    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 2.0, 3.0)
     v = TruncateAndZero(v, read_mean[2], max(20, read_std[1]), 1.0, 3.0)
 
     UpdateWindow('hsv', hsv)
-    UpdateWindow('h_sim', hue_sim)
-    UpdateWindow('s_sim', s)
-    UpdateWindow('v_sim', v)
+    UpdateWindow('dh', h)
+    UpdateWindow('ds', s)
+    UpdateWindow('dv', v)
 
-    s = cv2.multiply(v, s, scale=1.0/255.0)
-    mult = cv2.multiply(hue_sim, s, scale=1.0/255.0)
+    mult = cv2.multiply(h, cv2.multiply(v, s, scale=1.0/255.0), scale=1.0/255.0)
     Normalize(mult)
 
     # print(ExifKeywords(image_file))
@@ -69,11 +68,9 @@ def RoutineKappa(image_file, bgr, box):
         last = measurements[i]
         previous = measurements[i - 1]
         cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9)), (i * 10 + 50, int(h - last * 9)), (255, 255, 255), 3)
-    # UpdateWindow('mult', mult)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
     # update stats
     ret,mask = cv2.threshold(mult, 250, 255, cv2.THRESH_BINARY)
-    # UpdateWindow('mask', mask)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
     print(mean_biomass, stddev_biomass)
     print('')
