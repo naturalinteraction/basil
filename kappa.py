@@ -25,38 +25,35 @@ def RoutineKappa(image_file, bgr, box):
     try:
         read_mean,read_std = LoadColorStats('kappa.temp')
     except:
-        read_mean = (45, 141, 125)
-        read_std = (4, 28, 10)
+        read_mean = (41, 220, 173)
+        read_std = (2.2, 20, 20)
     h = cv2.split(hsv)[0]
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
 
-    v = 255 - v
-    threshold = read_mean[2] - 1.0 * max(10, read_std[2])
-    ret,v = cv2.threshold(v, threshold, threshold, cv2.THRESH_TRUNC)
-    Normalize(v)
-
     hue_sim = SimilarityToReference(h, read_mean[0])
-
-    hue_sim = TruncateAndZero(hue_sim, max(4, read_std[0]), 0.0, 6.0)
+    hue_sim = TruncateAndZero(hue_sim, max(4, read_std[0]), 0.0, 2.8)
 
     threshold = read_mean[1] - 1.0 * max(28, read_std[1])
     ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TRUNC)
-    threshold = read_mean[1] - 1.8 * max(28, read_std[1])
+    threshold = read_mean[1] - 4.0 * max(28, read_std[1])
     ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TOZERO)
+    Normalize(s)
 
-    UpdateWindow('hue', hue_sim)
+    UpdateWindow('hsv', hsv)
+    UpdateWindow('hue_sim', hue_sim)
     UpdateWindow('s', s)
-    UpdateWindow('v', v)
 
-    s = cv2.multiply(s, v, scale=1.0/255.0)
     mult = cv2.multiply(hue_sim, s, scale=1.0/255.0)
     Normalize(mult)
 
     # print(ExifKeywords(image_file))
 
     mult_bgr = GrayToBGR(mult)
+    inv_mult_bgr = GrayToBGR(255 - mult)
     foreground = cv2.multiply(mult_bgr, bgr, scale=1.0/255.0)
+    background = cv2.multiply(inv_mult_bgr, bgr, scale=1.0/255.0)
+    UpdateWindow('back', background)
     biomass = cv2.mean(mult)[0] / 231.0 * 100.0
     Echo(foreground, 'biomass p-index %.1f' % (biomass))
     biomass = biomass + 10
