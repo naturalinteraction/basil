@@ -11,9 +11,9 @@ def SimilarityToReference(channel, value):
 def Normalize(channel):
     cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
-def TruncateAndZero(channel, sigma, trunc_sigmas, zero_sigmas):
-    ret,result = cv2.threshold(channel, 255 - trunc_sigmas * sigma, 255 - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
-    ret,result = cv2.threshold(result,  255 -  zero_sigmas * sigma, 255 -  zero_sigmas * sigma, cv2.THRESH_TOZERO)
+def TruncateAndZero(channel, reference, sigma, trunc_sigmas, zero_sigmas):
+    ret,result = cv2.threshold(channel, reference - trunc_sigmas * sigma, reference - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
+    ret,result = cv2.threshold(result,  reference -  zero_sigmas * sigma, reference -  zero_sigmas * sigma, cv2.THRESH_TOZERO)
     Normalize(result)
     return result
 
@@ -32,13 +32,9 @@ def RoutineKappa(image_file, bgr, box):
     v = cv2.split(hsv)[2]
 
     hue_sim = SimilarityToReference(h, read_mean[0])
-    hue_sim = TruncateAndZero(hue_sim, max(4, read_std[0]), 0.0, 2.8)
+    hue_sim = TruncateAndZero(hue_sim, 255, max(4, read_std[0]), 0.0, 2.8)
 
-    threshold = read_mean[1] - 1.0 * max(28, read_std[1])
-    ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TRUNC)
-    threshold = read_mean[1] - 4.0 * max(28, read_std[1])
-    ret,s = cv2.threshold(s, threshold, threshold, cv2.THRESH_TOZERO)
-    Normalize(s)
+    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 1.0, 4.0)
 
     UpdateWindow('hsv', hsv)
     UpdateWindow('hue_sim', hue_sim)
