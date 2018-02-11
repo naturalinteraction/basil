@@ -75,41 +75,32 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
         read_mean,read_std = LoadColorStats('alfalfaredshift.temp')
     except:
         read_mean = (20, 125, 85)
-        read_std = (2, 12, 13)
-
-    mean_hue = read_mean[0]  # todo
+        read_std = (3.4, 12, 13)
 
     h = cv2.split(hsv)[0]
     s = cv2.split(hsv)[1]
     v = cv2.split(hsv)[2]
 
-    '''
-    h = SimilarityToReference(h, read_mean[0])
-    h = TruncateAndZero(h, 255, max(4, read_std[0]), 0.0, 2.8)
-    
-    '''
-
     v = TruncateAndZero(255 - v, read_mean[2], max(20, read_std[1]), 0.0, 1.0)
 
-    hue_reference = np.zeros(h.shape, np.uint8)
-    hue_reference[:] = round(mean_hue)
-    hue_diff = cv2.absdiff(hue_reference, h)
-    hue_diff = 255 - hue_diff
-    cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-    ret,hue_diff = cv2.threshold(hue_diff, 230, 230, cv2.THRESH_TRUNC)
-    ret,hue_diff = cv2.threshold(hue_diff, 210, 210, cv2.THRESH_TOZERO)
-    
+    h = SimilarityToReference(h, read_mean[0])
+    Normalize(h)
+    # h = TruncateAndZero(h, 255, max(4, read_std[0]), 4.0, 8.0, normalize=False)
+    # print(255 - 4.0 * max(4, read_std[0]), 255 -  8.0 * max(4, read_std[0]))
+    ret,h = cv2.threshold(h, 230, 230, cv2.THRESH_TRUNC)
+    ret,h = cv2.threshold(h, 210, 210, cv2.THRESH_TOZERO)
+
     # s = TruncateAndZero(s, read_mean[1], max(14, read_std[1]), 2.8, 5.4, normalize=False)
     # print(read_mean[1] - 3.6 * max(14, read_std[1]), read_mean[1] -  6.4 * max(14, read_std[1]))
     ret,s = cv2.threshold(s, 70, 70, cv2.THRESH_TRUNC)
     ret,s = cv2.threshold(s, 30, 30, cv2.THRESH_TOZERO)
 
     UpdateWindow('hsv', hsv)
-    UpdateWindow('dh', hue_diff)  # todo
+    UpdateWindow('dh', h)
     UpdateWindow('ds', s)
     UpdateWindow('dv', v)
 
-    mult = cv2.multiply(hue_diff, cv2.multiply(v, s, scale=1.0/255.0), scale=1.0/255.0)
+    mult = cv2.multiply(h, cv2.multiply(v, s, scale=1.0/255.0), scale=1.0/255.0)
     Normalize(mult)
     mult_bgr = GrayToBGR(mult)
     inv_mult_bgr = GrayToBGR(255 - mult)
@@ -135,6 +126,5 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     # update stats
     ret,mask = cv2.threshold(mult, 250, 255, cv2.THRESH_BINARY)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
-    # mean_biomass[0] = read_mean[0] * 0.0 + 1.0 * mean_biomass[0]
     print(mean_biomass, stddev_biomass)
     SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
