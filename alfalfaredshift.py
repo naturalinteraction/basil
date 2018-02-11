@@ -86,42 +86,31 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     '''
     h = SimilarityToReference(h, read_mean[0])
     h = TruncateAndZero(h, 255, max(4, read_std[0]), 0.0, 2.8)
-
-    s = TruncateAndZero(s, read_mean[1], max(28, read_std[1]), 2.0, 3.0)
-    v = TruncateAndZero(v, read_mean[2], max(20, read_std[1]), 1.0, 3.0)
-
-    UpdateWindow('hsv', hsv)
-    UpdateWindow('dh', h)
-    UpdateWindow('ds', s)
-    UpdateWindow('dv', v)
-
-    mult = cv2.multiply(h, cv2.multiply(v, s, scale=1.0/255.0), scale=1.0/255.0)
-    Normalize(mult)
-   
+    
     '''
 
-    v = 255 - v
-    ret,v = cv2.threshold(v, 140, 140, cv2.THRESH_TRUNC)
-    cv2.normalize(v, v, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+    v = TruncateAndZero(255 - v, read_mean[2], max(20, read_std[1]), 0.0, 1.0)
 
     hue_reference = np.zeros(h.shape, np.uint8)
     hue_reference[:] = round(mean_hue)
     hue_diff = cv2.absdiff(hue_reference, h)
-
     hue_diff = 255 - hue_diff
     cv2.normalize(hue_diff, hue_diff, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
     ret,hue_diff = cv2.threshold(hue_diff, 230, 230, cv2.THRESH_TRUNC)
     ret,hue_diff = cv2.threshold(hue_diff, 210, 210, cv2.THRESH_TOZERO)
-
+    
+    # s = TruncateAndZero(s, read_mean[1], max(14, read_std[1]), 2.8, 5.4, normalize=False)
+    # print(read_mean[1] - 3.6 * max(14, read_std[1]), read_mean[1] -  6.4 * max(14, read_std[1]))
     ret,s = cv2.threshold(s, 70, 70, cv2.THRESH_TRUNC)
     ret,s = cv2.threshold(s, 30, 30, cv2.THRESH_TOZERO)
-    s = cv2.multiply(s, v, scale=1.0/255.0)
 
-    mult = cv2.multiply(hue_diff, s, scale=1.0/255.0)
-    cv2.normalize(mult, mult, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
-    
-    # print(ExifKeywords(image_file))
+    UpdateWindow('hsv', hsv)
+    UpdateWindow('dh', hue_diff)  # todo
+    UpdateWindow('ds', s)
+    UpdateWindow('dv', v)
 
+    mult = cv2.multiply(hue_diff, cv2.multiply(v, s, scale=1.0/255.0), scale=1.0/255.0)
+    Normalize(mult)
     mult_bgr = GrayToBGR(mult)
     inv_mult_bgr = GrayToBGR(255 - mult)
     foreground = cv2.multiply(mult_bgr, bgr, scale=1.0/255.0)
@@ -140,13 +129,11 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
         last = measurements[i]
         previous = measurements[i - 1]
         cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9)), (i * 10 + 50, int(h - last * 9)), (255, 255, 255), 3)
-    # UpdateWindow('mult', mult)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
     jit = np.std(jitter)
     print('jitter %.3f hue %.1f' % (jit, read_mean[0]))
     # update stats
     ret,mask = cv2.threshold(mult, 250, 255, cv2.THRESH_BINARY)
-    # UpdateWindow('mask', mask)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
     # mean_biomass[0] = read_mean[0] * 0.0 + 1.0 * mean_biomass[0]
     print(mean_biomass, stddev_biomass)

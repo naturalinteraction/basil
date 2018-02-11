@@ -23,10 +23,11 @@ def SimilarityToReference(channel, value):
 def Normalize(channel):
     cv2.normalize(channel, channel, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
 
-def TruncateAndZero(channel, reference, sigma, trunc_sigmas, zero_sigmas):
+def TruncateAndZero(channel, reference, sigma, trunc_sigmas, zero_sigmas, normalize=True):
     ret,result = cv2.threshold(channel, reference - trunc_sigmas * sigma, reference - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
     ret,result = cv2.threshold(result,  reference -  zero_sigmas * sigma, reference -  zero_sigmas * sigma, cv2.THRESH_TOZERO)
-    Normalize(result)
+    if normalize:
+        Normalize(result)
     return result
 
 
