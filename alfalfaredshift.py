@@ -43,13 +43,14 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     measurements.append(biomass)
     ret,mask = cv2.threshold(dist, 254, 255, cv2.THRESH_BINARY)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
+    for i in range(3):
+        mean_biomass[i] = 0.1 * mean_biomass[i] + 0.9 * read_mean[i]
+        stddev_biomass[i] = 0.1 * stddev_biomass[i] + 0.9 * read_std[i]
+    print(mean_biomass)
+    SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
     h,w = bgr.shape[:2]
     for i in range(1, len(measurements)):
         last = measurements[i]
         previous = measurements[i - 1]
         cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9)), (i * 10 + 50, int(h - last * 9)), (255, 255, 255), 3)
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
-    for i in range(3):
-        mean_biomass[i] = 0.5 * mean_biomass[i] + 0.5 * read_mean[i]
-        stddev_biomass[i] = 0.5 * stddev_biomass[i] + 0.5 * read_std[i]
-    SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
