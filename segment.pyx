@@ -15,6 +15,20 @@ cpdef Segment(unsigned char [:, :, :] image, float t0, float t1, float t2,
                 result[y, x] = 255
     return result
 
+cpdef SegmentNoThreshold(unsigned char [:, :, :] image, float t0, float t1, float t2,
+                                                        float w0, float w1, float w2):
+    h = image.shape[0]
+    w = image.shape[1]
+    hp = image.shape[0] - 0
+    wp = image.shape[1] - 0
+    result = np.zeros((h, w), np.uint8)
+    for x in range(0, wp):
+        for y in range (0, hp):
+            dist = w0 * (image[y, x, 0] - t0) ** 2 + w1 * (image[y, x, 1] - t1) ** 2 + w2 * (image[y, x, 2] - t2) ** 2
+            if dist > 255:
+                dist = 255
+            result[y, x] = 255 - dist
+    return result
 
 cpdef SegmentWithMask(unsigned char [:, :, :] image, float t0, float t1, float t2,
                                                      float w0, float w1, float w2, int threshold, unsigned char [:, :] mask):

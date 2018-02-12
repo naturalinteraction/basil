@@ -273,6 +273,11 @@ def MaskForTone(image, filename, threshold):
     variance = stddev ** 2
     return SegmentBiomass(image, mean, 1.0 / variance, threshold)
 
+def DistanceFromTone(image, filename):
+    mean,stddev = LoadColorStats(filename)
+    variance = stddev ** 2
+    return SegmentBiomassNoThreshold(image, mean, 1.0 / variance)
+
 def CompareLabels(labels, ground_truth, result, name):
     h,w = labels.shape
     means = []
@@ -359,6 +364,15 @@ def SegmentBiomass(hsv_image, target,
                                        weight[1],
                                        weight[2],
                                        segmentation_threshold)
+
+def SegmentBiomassNoThreshold(hsv_image, target,
+                              weight):
+    return         SegmentNoThreshold(hsv_image,  target[0],
+                                       target[1],
+                                       target[2],
+                                       weight[0],
+                                       weight[1],
+                                       weight[2])
 
 def FillHoles(biomass_mask, hsv, target, stddev, segmentation_threshold, max_area=30 * 30, greater_than=False):
     weight = 1.0 / (stddev ** 2)
