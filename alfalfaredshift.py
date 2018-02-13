@@ -46,7 +46,9 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
     for i in range(3):
         mean_biomass[i] = 0.1 * mean_biomass[i] + 0.9 * read_mean[i]
         stddev_biomass[i] = 0.1 * stddev_biomass[i] + 0.9 * read_std[i]
-    print(mean_biomass)
+        if False and stddev_biomass[i] < default_std[i]:
+            stddev_biomass[i] = default_std[i]
+    # print(mean_biomass)
     SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
     h,w = bgr.shape[:2]
     for i in range(1, len(measurements)):
