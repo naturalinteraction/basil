@@ -1,6 +1,6 @@
 # basil
 
-Software for PlantSensor devices.
+Software for plant sensor devices.
 
 #### Specs
 1. Measure area with good growth and area with issues (uniformity).
