@@ -41,6 +41,7 @@ Software for plant sensor devices.
 - [x] Superpixels
 - [x] Probability map instead of binary mask: likelihood of a pixel to belong to a class based on color and spatial location (neighborhood); blur to diffuse probability
 - [ ] Perspective mask, warping for perspective invariant areas
+- [x] Find biomass dominant tone based on saturation
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~

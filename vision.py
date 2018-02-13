@@ -15,6 +15,15 @@ from skimage.future import graph
 white = (255, 255, 255)
 
 
+def FindDominantTone(hsv):
+    s = cv2.split(hsv)[1]
+    # UpdateWindow('FindDominantTone saturation', s)
+    ret,mask = cv2.threshold(s, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY)
+    # UpdateWindow('FindDominantTone mask', mask)
+    (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
+    # print(mean_biomass, stddev_biomass)
+    return mean_biomass, stddev_biomass
+
 def SimilarityToReference(channel, value):
     reference = np.zeros(channel.shape, np.uint8)
     reference[:] = round(value)
