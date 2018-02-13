@@ -3,7 +3,6 @@ from vision import *
 measurements = []
 
 def RoutineRucola(image_file, bgr, box):
-    bgr = CropImage(bgr, cropname='rucola')
     # bgr = Resize(bgr, 0.2)
     hsv = ToHSV(bgr)
 
