@@ -15,7 +15,7 @@ def RoutineRucola(image_file, bgr, box):
     read_mean,read_std = LoadColorStats(tone_filename)
     print('read', read_mean, read_std)
 
-    print(FindDominantTone(hsv))
+    print('dominant', FindDominantTone(hsv))
 
     dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
 
