@@ -31,18 +31,18 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawChart(foreground, measurements, color=(255, 255, 255)):
+def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=10, xoffset=50, ymult=10, yoffset=150):
     h,w = foreground.shape[:2]
     for i in range(1, len(measurements)):
         baseline = measurements[0]
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
-        cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9 - 150)), (i * 10 + 50, int(h - last * 9 - 150)), color, 3)
+        cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, 3)
 
-def AppendMeasurementJitter(dist, measurements, jitter):
+def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
     biomass = cv2.mean(dist)[0]
     if len(measurements) > 1:
-        smooth_biomass = 0.5 * biomass + 0.5 * measurements[-1]
+        smooth_biomass = alpha * biomass + (1.0 - alpha) * measurements[-1]
         predicted_biomass = smooth_biomass + (measurements[-2] -smooth_biomass)
         jitter.append(biomass - predicted_biomass)
         biomass = smooth_biomass
@@ -59,13 +59,15 @@ def UpdateToneStats(dist, hsv, previous_mean, previous_std, filename, min_distan
         stddev_biomass[i] = alpha * stddev_biomass[i] + (1.0 - alpha) * previous_std[i]
     SaveColorStats(mean_biomass, stddev_biomass, filename)
 
+def PrintStats(str, mean, std):
+    print("%s %.0f %.0f %.0f  -  %.0f %.0f %.0f" % (str, mean[0], mean[1], mean[2], std[0], std[1], std[2]))
+
 def FindDominantTone(hsv):
     s = cv2.split(hsv)[1]
-    # UpdateWindow('FindDominantTone saturation', s)
+    UpdateWindow('FindDominantTone saturation', s)
     ret,mask = cv2.threshold(s, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY)
-    # UpdateWindow('FindDominantTone mask', mask)
+    UpdateWindow('FindDominantTone mask', mask)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
-    # print(mean_biomass, stddev_biomass)
     return mean_biomass, stddev_biomass
 
 def SimilarityToReference(channel, value):
