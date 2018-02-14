@@ -1,6 +1,9 @@
 from vision import *
 
 measurements = []
+h = []
+s = []
+v = []
 jitter = []
 tone_filename = 'rucola.temp'
 
@@ -37,5 +40,11 @@ def RoutineRucola(image_file, bgr, box):
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=0.1)  # 0.5
 
     DrawChart(foreground, measurements)
+
+    h.append(read_mean[0])
+
+    DrawChart(foreground, h)
+    DrawChart(foreground, s)
+    DrawChart(foreground, v)
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')

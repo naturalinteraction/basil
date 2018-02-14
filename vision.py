@@ -31,13 +31,13 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawChart(foreground, measurements):
+def DrawChart(foreground, measurements, color=(255, 255, 255)):
     h,w = foreground.shape[:2]
     for i in range(1, len(measurements)):
         baseline = measurements[0]
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
-        cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9 - 150)), (i * 10 + 50, int(h - last * 9 - 150)), (255, 255, 255), 3)
+        cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9 - 150)), (i * 10 + 50, int(h - last * 9 - 150)), color, 3)
 
 def AppendMeasurementJitter(dist, measurements, jitter):
     biomass = cv2.mean(dist)[0]
