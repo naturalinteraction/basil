@@ -37,14 +37,11 @@ def RoutineCurves(image_file, bgr, box):
     read_std = read_std * alpha + dom_std * (1.0 - alpha)
 
     PrintStats('med', read_mean, read_std)
-    dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 253, 10.0)  # was 251
+    dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
 
     UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
     UpdateWindow('dist', dist)
-
-    foreground = cv2.multiply(GrayToBGR(dist), bgr, scale=1.0/255.0)
-    UpdateWindow('background', cv2.multiply(GrayToBGR(255 - dist), bgr, scale=1.0/255.0))
 
     curve_alpha = 0.05
 
@@ -64,6 +61,9 @@ def RoutineCurves(image_file, bgr, box):
         topped_sat_mean.append(sm * curve_alpha + (1.0 - curve_alpha) * topped_sat_mean[-1])
     else:
         topped_sat_mean.append(sm)
+
+    foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
+    UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
     # Echo(foreground, 'biomass p-index %.1f' % (biomass))
