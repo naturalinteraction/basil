@@ -5,6 +5,7 @@ jitter = []
 tone_filename = 'rucola.temp'
 
 def RoutineRucola(image_file, bgr, box):
+    print(image_file)
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
     if len(measurements) == 0:
@@ -16,9 +17,15 @@ def RoutineRucola(image_file, bgr, box):
     print('read', read_mean, read_std)
 
     print('dominant', FindDominantTone(hsv))
+    dom_mean, dom_std = FindDominantTone(hsv)
+
+    alpha = 0.5
+    read_mean = read_mean * alpha + dom_mean * (1.0 - alpha)
+    read_std = read_std * alpha + dom_std * (1.0 - alpha)
 
     dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
 
+    UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
     UpdateWindow('dist', dist)
 
@@ -27,7 +34,7 @@ def RoutineRucola(image_file, bgr, box):
 
     Echo(foreground, 'biomass p-index %.1f' % (AppendMeasurementJitter(dist, measurements, jitter)))
 
-    UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename)
+    UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=0.1)  # 0.5
 
     DrawChart(foreground, measurements)
 

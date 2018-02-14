@@ -51,12 +51,12 @@ def AppendMeasurementJitter(dist, measurements, jitter):
     measurements.append(biomass)
     return biomass
 
-def UpdateToneStats(dist, hsv, previous_mean, previous_std, filename, min_distance=254):
+def UpdateToneStats(dist, hsv, previous_mean, previous_std, filename, min_distance=254, alpha=0.1):
     ret,mask = cv2.threshold(dist, min_distance, 255, cv2.THRESH_BINARY)
     (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
     for i in range(3):
-        mean_biomass[i] = 0.1 * mean_biomass[i] + 0.9 * previous_mean[i]
-        stddev_biomass[i] = 0.1 * stddev_biomass[i] + 0.9 * previous_std[i]
+        mean_biomass[i] = alpha * mean_biomass[i] + (1.0 - alpha) * previous_mean[i]
+        stddev_biomass[i] = alpha * stddev_biomass[i] + (1.0 - alpha) * previous_std[i]
     SaveColorStats(mean_biomass, stddev_biomass, filename)
 
 def FindDominantTone(hsv):
