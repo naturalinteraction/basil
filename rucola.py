@@ -12,7 +12,10 @@ tone_filename = 'rucola.temp'
 def RoutineRucola(image_file, bgr, box):
     print(image_file)
 
-    bgr = CropImage(bgr, cropname='bieta')
+    # bgr = CropImage(bgr, cropname='bieta')  # ok
+    # bgr = CropImage(bgr, cropname='basilicorosso')  # no
+    # bgr = CropImage(bgr, cropname='rucola')  # ok
+    # bgr = CropImage(bgr, cropname='bataviarossa')  # no
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
@@ -71,13 +74,12 @@ def RoutineRucola(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
+    DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
+    DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
+    DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
+
     DrawChart(foreground, measurements)
     DrawChart(foreground, sat_mean, color=(0, 255, 255))
     DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
-
-    DrawChart(foreground, h, color=(255, 0, 0), xoffset=0.1, ymult=0.005, yoffset=0.5)
-    DrawChart(foreground, s, color=(0, 255, 0), xoffset=0.1, ymult=0.005, yoffset=0.5)
-    DrawChart(foreground, v, color=(0, 0, 255), xoffset=0.1, ymult=0.005, yoffset=0.5)
-
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
