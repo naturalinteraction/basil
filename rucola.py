@@ -4,6 +4,7 @@ measurements = []
 h = []
 s = []
 v = []
+sat_mean = []
 jitter = []
 tone_filename = 'rucola.temp'
 
@@ -27,7 +28,7 @@ def RoutineRucola(image_file, bgr, box):
     read_std = read_std * alpha + dom_std * (1.0 - alpha)
 
     PrintStats('med', read_mean, read_std)
-    dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
+    dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 253, 10.0)  # was 251
 
     UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
@@ -35,6 +36,16 @@ def RoutineRucola(image_file, bgr, box):
 
     foreground = cv2.multiply(GrayToBGR(dist), bgr, scale=1.0/255.0)
     UpdateWindow('background', cv2.multiply(GrayToBGR(255 - dist), bgr, scale=1.0/255.0))
+
+    saturation = cv2.split(hsv)[1]
+    Normalize(saturation)
+    UpdateWindow('normalized saturation', saturation)
+    ####ret,saturation = cv2.threshold(saturation, reference - trunc_sigmas * sigma, reference - trunc_sigmas * sigma, cv2.THRESH_TRUNC)
+    sm = cv2.mean(saturation)[0]
+    if len(sat_mean) > 0:
+        sat_mean.append(sm * 0.1 + 0.9 * sat_mean[-1])
+    else:
+        sat_mean.append(sm)
 
     Echo(foreground, 'biomass p-index %.1f' % (AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)))
 
@@ -45,9 +56,11 @@ def RoutineRucola(image_file, bgr, box):
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=0.1)
 
     DrawChart(foreground, measurements)
+    DrawChart(foreground, sat_mean, color=(0, 255, 255))
 
-    DrawChart(foreground, h, color=(255, 0, 0), xmult=10, xoffset=50, ymult=10, yoffset=450)
-    DrawChart(foreground, s, color=(0, 255, 0), xmult=10, xoffset=50, ymult=10, yoffset=450)
-    DrawChart(foreground, v, color=(0, 0, 255), xmult=10, xoffset=50, ymult=3, yoffset=450)
+    DrawChart(foreground, h, color=(255, 0, 0), xmult=10, xoffset=150, ymult=6, yoffset=500)
+    DrawChart(foreground, s, color=(0, 255, 0), xmult=10, xoffset=150, ymult=6, yoffset=500)
+    DrawChart(foreground, v, color=(0, 0, 255), xmult=10, xoffset=150, ymult=6, yoffset=500)
+
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
