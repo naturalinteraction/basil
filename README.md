@@ -3,13 +3,15 @@
 Software for plant sensor devices.
 
 #### Specs
-1. Measure area with good growth and area with issues (uniformity).
+
+1. Measure uniformity of growth.
 2. Curve of growth in time.
 3. Algorithm is plant-specific. Plant in tray is known. Day of growth is known.
 4. White light.
 5. Substrate will guarantee good contrast.
 
 #### High-level tasks
+
 - [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Definition of architectural aspects (image storage, notifications, etc.)
 - [ ] Image processing on sensor
@@ -40,13 +42,16 @@ Software for plant sensor devices.
 - [x] Lab, Luv, YUV color spaces
 - [x] Superpixels
 - [x] Probability map instead of binary mask: likelihood of a pixel to belong to a class based on color and spatial location (neighborhood); blur to diffuse probability
-- [ ] Perspective mask, warping for perspective invariant areas
 - [x] Find biomass dominant tone based on saturation
 - [ ] Find biomass segmentation algorithm params automatically
+- [ ] Perspective mask, warping for perspective invariant areas
+- [ ] Detect if scene is not static
+- [ ] Detect if scene is dark
 - [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
 - [ ] ~~Color analysis inside biomass: histograms~~
 - [ ] ~~Holes: pixel-by-pixel~~
+
 
 #### Tasks cap.py
 
@@ -82,13 +87,11 @@ Software for plant sensor devices.
 - [x] Print 24 errors (with the average squared error)
 - [x] Web interface
 - [x] Click 4 times instead of 24, perspective grid
-- [ ] Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF?
-- [ ] ~~Search brightness and contrast values (after the gains are good)~~
+- [ ] Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF? It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.
+- [ ] ~~Search brightness and contrast values (after the gains are good). Or make sure brightness is 50 and contrast is 10 and so on.~~
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
 - [ ] ~~Camera on/off (250mA, no continuous mode)~~
-- [ ] ~~Detect if scene is not static~~
-- [ ] ~~Detect if scene is dark~~
 
 
 #### Creating image of SD card:
@@ -145,6 +148,7 @@ To look for local raspberries:
 ```
 sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```
+Visible sensor failed around February 12th. cap.py not running and camera not detected until reboot.
 
 
 #### Autostart
