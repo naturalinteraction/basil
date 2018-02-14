@@ -7,14 +7,14 @@ v = []
 sat_mean = []
 topped_sat_mean = []
 jitter = []
-tone_filename = 'rucola.temp'
+tone_filename = 'curves.temp'
 
-def RoutineRucola(image_file, bgr, box):
+def RoutineCurves(image_file, bgr, box):
     print(image_file)
 
     # bgr = CropImage(bgr, cropname='bieta')  # ok
-    # bgr = CropImage(bgr, cropname='basilicorosso')  # no
     # bgr = CropImage(bgr, cropname='rucola')  # ok
+    # bgr = CropImage(bgr, cropname='basilicorosso')  # no
     # bgr = CropImage(bgr, cropname='bataviarossa')  # no
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
@@ -67,6 +67,7 @@ def RoutineRucola(image_file, bgr, box):
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
     # Echo(foreground, 'biomass p-index %.1f' % (biomass))
+    Echo(foreground, image_file.replace('downloaded/', ''))
 
     h.append(read_mean[0])
     s.append(read_mean[1])

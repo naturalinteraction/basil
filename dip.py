@@ -12,7 +12,7 @@ from save import *
 from alfalfaredshift import *
 from alfalfanoir import *
 from bieta import *
-from rucola import *
+from curves import *
 from basilicorosso import *
 from bataviarossa import *
 from kappa import *
@@ -25,7 +25,7 @@ routine = {
             'save'     :  RoutineSave,
             'bieta'    :  RoutineBieta,
             'kappa'    :  RoutineKappa,
-            'rucola'   :  RoutineRucola,
+            'curves'   :  RoutineCurves,
             'alfalfaredshift'  :  RoutineAlfalfaRedshift,
             'alfalfanoir'      :  RoutineAlfalfaNoir,
             'basilicorosso'    :  RoutineBasilicoRosso,
