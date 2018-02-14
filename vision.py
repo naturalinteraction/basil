@@ -15,6 +15,10 @@ from skimage.future import graph
 white = (255, 255, 255)
 
 
+def FrameBrightness(bgr):
+    m = cv2.mean(bgr)[0:3]
+    return (m[0] + m[1] + m[2]) / 3.0
+
 def DistanceFromToneBlurTopBottom(hsv, tone_filename, dilate_kernel, erode_kernel, blur_size, top, multiplicator):
     dist = DistanceFromTone(hsv, tone_filename)
     dist = Dilate(dist, kernel_size=dilate_kernel, iterations=1)
@@ -31,8 +35,12 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=10, xoffset=50, ymult=10, yoffset=150):
+def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.01, xoffset=0.05, ymult=0.01, yoffset=0.5):
     h,w = foreground.shape[:2]
+    xmult = int(xmult * w)
+    xoffset = int(xoffset * w)
+    ymult = int(ymult * h)
+    yoffset = int(yoffset * h)
     for i in range(1, len(measurements)):
         baseline = measurements[0]
         last = measurements[i] - baseline

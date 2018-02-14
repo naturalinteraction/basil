@@ -28,6 +28,6 @@ def RoutineAlfalfaRedshift(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename)
 
-    DrawChart(foreground, measurements)
+    DrawChart(foreground, measurements, yoffset=0.2)
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')

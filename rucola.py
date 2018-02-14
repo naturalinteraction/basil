@@ -11,7 +11,12 @@ tone_filename = 'rucola.temp'
 
 def RoutineRucola(image_file, bgr, box):
     print(image_file)
+
+    bgr = CropImage(bgr, cropname='bieta')
+
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
+
+    print('frame brightness', FrameBrightness(bgr))
 
     if len(measurements) == 0:
         default_mean,default_std = FindDominantTone(hsv)
@@ -70,9 +75,9 @@ def RoutineRucola(image_file, bgr, box):
     DrawChart(foreground, sat_mean, color=(0, 255, 255))
     DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
 
-    DrawChart(foreground, h, color=(255, 0, 0), xmult=10, xoffset=150, ymult=6, yoffset=500)
-    DrawChart(foreground, s, color=(0, 255, 0), xmult=10, xoffset=150, ymult=6, yoffset=500)
-    DrawChart(foreground, v, color=(0, 0, 255), xmult=10, xoffset=150, ymult=6, yoffset=500)
+    DrawChart(foreground, h, color=(255, 0, 0), xoffset=0.1, ymult=0.005, yoffset=0.5)
+    DrawChart(foreground, s, color=(0, 255, 0), xoffset=0.1, ymult=0.005, yoffset=0.5)
+    DrawChart(foreground, v, color=(0, 0, 255), xoffset=0.1, ymult=0.005, yoffset=0.5)
 
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
