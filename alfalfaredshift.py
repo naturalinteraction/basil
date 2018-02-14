@@ -2,57 +2,32 @@ from vision import *
 
 measurements = []
 jitter = []
+tone_filename = 'alfalfaredshift.temp'
 
 def RoutineAlfalfaRedshift(image_file, bgr, box):
     bgr = CropImage(bgr, cropname='redshift')
-    bgr = Resize(bgr, 0.5)
-    hsv = ToHSV(bgr)
-    hsv = MedianBlurred(hsv, size=5)
-
-    default_std = (3.4, 27, 26)
+    bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
     if len(measurements) == 0:
-        SaveColorStats((21, 137, 84), default_std, 'alfalfaredshift.temp')
+        default_mean,default_std = FindDominantTone(hsv)
+        print('dominant', default_mean, default_std)
+        SaveColorStats(default_mean, default_std, tone_filename)
 
-    read_mean,read_std = LoadColorStats('alfalfaredshift.temp')
-    dist = DistanceFromTone(hsv, 'alfalfaredshift.temp')
-    dist = Dilate(dist, kernel_size=11, iterations=1)
-    dist = Erode(dist, kernel_size=5, iterations=1)
-    dist = MedianBlurred(dist, size=7)
-    dist = TruncateAndZero(dist, 255, 1, 4, 1000)
-    dist = 255 - dist
-    dist = cv2.addWeighted(dist, 10.0, dist, 0.0, 0.0)
-    dist = 255 - dist
+    read_mean,read_std = LoadColorStats(tone_filename)
+    print('read', read_mean, read_std)
+
+    dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
+
     UpdateWindow('hsv', hsv)
     UpdateWindow('dist', dist)
-    dist_bgr = GrayToBGR(dist)
-    inv_dist_bgr = GrayToBGR(255 - dist)
-    foreground = cv2.multiply(dist_bgr, bgr, scale=1.0/255.0)
-    background = cv2.multiply(inv_dist_bgr, bgr, scale=1.0/255.0)
-    UpdateWindow('back', background)
-    biomass = cv2.mean(dist)[0] / 231.0 * 100.0
-    Echo(foreground, 'biomass p-index %.1f' % (biomass))
-    biomass = biomass - 80
-    if len(measurements) > 1:
-        smooth_biomass = 0.5 * biomass + 0.5 * measurements[-1]
-        predicted_biomass = smooth_biomass + (measurements[-2] -smooth_biomass)
-        jitter.append(biomass - predicted_biomass)
-        biomass = smooth_biomass
-        jit = np.std(jitter)
-        print('jitter %.3f' % (jit))
-    measurements.append(biomass)
-    ret,mask = cv2.threshold(dist, 254, 255, cv2.THRESH_BINARY)
-    (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
-    for i in range(3):
-        mean_biomass[i] = 0.1 * mean_biomass[i] + 0.9 * read_mean[i]
-        stddev_biomass[i] = 0.1 * stddev_biomass[i] + 0.9 * read_std[i]
-        if False and stddev_biomass[i] < default_std[i]:
-            stddev_biomass[i] = default_std[i]
-    # print(mean_biomass)
-    SaveColorStats(mean_biomass, stddev_biomass, 'alfalfaredshift.temp')
-    h,w = bgr.shape[:2]
-    for i in range(1, len(measurements)):
-        last = measurements[i]
-        previous = measurements[i - 1]
-        cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9)), (i * 10 + 50, int(h - last * 9)), (255, 255, 255), 3)
+
+    foreground = cv2.multiply(GrayToBGR(dist), bgr, scale=1.0/255.0)
+    UpdateWindow('background', cv2.multiply(GrayToBGR(255 - dist), bgr, scale=1.0/255.0))
+
+    Echo(foreground, 'biomass p-index %.1f' % (AppendMeasurementJitter(dist, measurements, jitter)))
+
+    UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename)
+
+    DrawChart(foreground, measurements)
+
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')

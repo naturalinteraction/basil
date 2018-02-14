@@ -15,6 +15,50 @@ from skimage.future import graph
 white = (255, 255, 255)
 
 
+def DistanceFromToneBlurTopBottom(hsv, tone_filename, dilate_kernel, erode_kernel, blur_size, top, multiplicator):
+    dist = DistanceFromTone(hsv, tone_filename)
+    dist = Dilate(dist, kernel_size=dilate_kernel, iterations=1)
+    dist = Erode(dist, kernel_size=erode_kernel, iterations=1)
+    dist = MedianBlurred(dist, size=blur_size)
+    dist = TruncateAndZero(dist, 255, 1, 255 - top, 1000)
+    dist = 255 - dist
+    dist = cv2.addWeighted(dist, multiplicator, dist, 0.0, 0.0)
+    return 255 - dist
+
+def ResizeBlur(bgr, resize_factor, blur_size):
+    bgr = Resize(bgr, resize_factor)
+    hsv = ToHSV(bgr)
+    hsv = MedianBlurred(hsv, size=blur_size)
+    return bgr,hsv
+
+def DrawChart(foreground, measurements):
+    h,w = foreground.shape[:2]
+    for i in range(1, len(measurements)):
+        baseline = measurements[0]
+        last = measurements[i] - baseline
+        previous = measurements[i - 1] - baseline
+        cv2.line(foreground, ((i - 1) * 10 + 50, int(h - previous * 9 - 150)), (i * 10 + 50, int(h - last * 9 - 150)), (255, 255, 255), 3)
+
+def AppendMeasurementJitter(dist, measurements, jitter):
+    biomass = cv2.mean(dist)[0]
+    if len(measurements) > 1:
+        smooth_biomass = 0.5 * biomass + 0.5 * measurements[-1]
+        predicted_biomass = smooth_biomass + (measurements[-2] -smooth_biomass)
+        jitter.append(biomass - predicted_biomass)
+        biomass = smooth_biomass
+        jit = np.std(jitter)
+        print('jitter %.3f' % (jit))
+    measurements.append(biomass)
+    return biomass
+
+def UpdateToneStats(dist, hsv, previous_mean, previous_std, filename, min_distance=254):
+    ret,mask = cv2.threshold(dist, min_distance, 255, cv2.THRESH_BINARY)
+    (mean_biomass,stddev_biomass) = cv2.meanStdDev(hsv, mask=mask)[0:3]
+    for i in range(3):
+        mean_biomass[i] = 0.1 * mean_biomass[i] + 0.9 * previous_mean[i]
+        stddev_biomass[i] = 0.1 * stddev_biomass[i] + 0.9 * previous_std[i]
+    SaveColorStats(mean_biomass, stddev_biomass, filename)
+
 def FindDominantTone(hsv):
     s = cv2.split(hsv)[1]
     # UpdateWindow('FindDominantTone saturation', s)
@@ -115,7 +159,7 @@ def ComputeImageDerivative(for_derivation, mask=None):
 
 def Echo(image, string):
     h,w = image.shape[:2]
-    cv2.putText(image, str(string), (w / 20, h - h / 10), cv2.FONT_HERSHEY_SIMPLEX, h / 300, (255, 255, 255), h / 150, cv2.LINE_AA)
+    cv2.putText(image, str(string), (50, h - h / 10), cv2.FONT_HERSHEY_SIMPLEX, h / 300, (255, 255, 255), h / 150, cv2.LINE_AA)
 
 def Histogram(channel, output):
     hist = cv2.calcHist([channel], [0], None, [64], [1,256])
