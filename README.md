@@ -13,13 +13,25 @@ Software for plant sensor devices.
 #### High-level tasks
 
 - [ ] Algorithms: segmentation, analysis, calibration
-- [ ] Definition of architectural aspects (image storage, notifications, etc.)
+- [x] Definition of architectural aspects (image storage, JSON, etc.)
 - [ ] Image processing on sensor
 - [ ] Design and implement controls on web interface
-- [ ] Design enclosing case
+- [x] Design enclosing case
 - [ ] Hardware specification document
 - [ ] Commented source code
 - [ ] Documentation
+
+#### Architectural specs
+
+Algorithms need to know (HTTP GET):
+(a) Unique identifier for the specific crop/tray (to link current processing with previous history)
+(b) Day of growth (0, 1, 2...) - can be calculated since a new (a) is provided
+(c) The recipe or plant kind (can be provided when a new (a) is provided, and it is bound to it)
+
+Single Python 2.7 function for both uploads:
+```
+def UploadData(image_filename, json_string)  -->  True|False (whether both succeeded)
+```
 
 #### Tasks dip.py
 
