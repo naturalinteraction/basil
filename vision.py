@@ -15,6 +15,13 @@ from skimage.future import graph
 white = (255, 255, 255)
 
 
+def auto_canny(image, sigma=0.33):
+    v = np.median(image)
+    lower = int(max(0, (1.0 - sigma) * v))
+    upper = int(min(255, (1.0 + sigma) * v))
+    edged = cv2.Canny(image, lower, upper)
+    return edged
+
 def FrameBrightness(bgr):
     m = cv2.mean(bgr)[0:3]
     return (m[0] + m[1] + m[2]) / 3.0
@@ -45,7 +52,7 @@ def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.01, xoffs
         baseline = measurements[0]
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
-        cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, 3)
+        cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, 2)
 
 def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
     biomass = cv2.mean(dist)[0]
@@ -169,7 +176,7 @@ def ComputeImageDerivative(for_derivation, mask=None):
 
 def Echo(image, string):
     h,w = image.shape[:2]
-    cv2.putText(image, str(string), (50, h - h / 10), cv2.FONT_HERSHEY_SIMPLEX, h / 300, (255, 255, 255), h / 150, cv2.LINE_AA)
+    cv2.putText(image, str(string), (int(w * 0.1), int(h - h * 0.1)), cv2.FONT_HERSHEY_SIMPLEX, int(h * 0.002), (255, 255, 255), int(h * 0.003), cv2.LINE_AA)
 
 def Histogram(channel, output):
     hist = cv2.calcHist([channel], [0], None, [64], [1,256])

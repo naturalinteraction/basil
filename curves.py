@@ -8,6 +8,7 @@ sat_mean = []
 topped_sat_mean = []
 jitter = []
 tone_filename = 'curves.temp'
+disuniformity = []
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
@@ -65,6 +66,15 @@ def RoutineCurves(image_file, bgr, box):
     foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
     UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
+    disuniformity_mask = Resize(dist, 0.1)
+    disuniformity_mask = cv2.Canny(disuniformity_mask, 200, 200)
+    disuniformity_value,ignore = cv2.meanStdDev(disuniformity_mask)
+    if len(disuniformity) > 0:
+        disuniformity.append(disuniformity_value * curve_alpha + (1.0 - curve_alpha) * disuniformity[-1])
+    else:
+        disuniformity.append(disuniformity_value)
+    UpdateWindow('disuniformity_mask', disuniformity_mask)
+
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
     # Echo(foreground, 'biomass p-index %.1f' % (biomass))
     Echo(foreground, image_file.replace('downloaded/', ''))
@@ -82,5 +92,6 @@ def RoutineCurves(image_file, bgr, box):
     DrawChart(foreground, measurements)
     DrawChart(foreground, sat_mean, color=(0, 255, 255))
     DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
+    DrawChart(foreground, disuniformity, color=(255, 0, 255))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
