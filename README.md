@@ -24,9 +24,9 @@ Software for plant sensor devices.
 #### Architectural specs
 
 Algorithms need to know (HTTP GET):
-(a) Unique identifier for the specific crop/tray (to link current processing with previous history)
-(b) Day of growth (0, 1, 2...) - can be calculated since a new (a) is provided
-(c) The recipe or plant kind (can be provided when a new (a) is provided, and it is bound to it)
+- (a) Unique identifier for the specific crop/tray (to link current processing with previous history)
+- (b) Day of growth (0, 1, 2...) - can be calculated since a new (a) is provided
+- (c) The recipe or plant kind (can be provided when a new (a) is provided, and it is bound to it)
 
 Single Python 2.7 function for both uploads:
 ```
