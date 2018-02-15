@@ -57,9 +57,12 @@ def UploadData(image_filename, json_string)  -->  True|False (whether both succe
 - [x] Find biomass dominant tone based on saturation
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] Perspective mask, warping for perspective invariant areas
-- [ ] Detect if scene is not static
+- [ ] Detect if scene is not static (motion detection)
 - [ ] Detect if scene is dark
-- [ ] Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny
+- [ ] Background subtraction
+- [ ] Hires image and charts
+- [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
+- [ ] ~~Retain pixel probability from previous frames (running average)~~
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
 - [ ] ~~Color analysis inside biomass: histograms~~
 - [ ] ~~Holes: pixel-by-pixel~~
