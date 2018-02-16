@@ -263,6 +263,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
           print('mean %.2f %.2f %.2f' % (mean[4], mean[5], mean[6]))
           globa.color_calibrate = False
           color_calibration_shutter = color_calibration_shutter * 2.0  # attempt to get a brighter image
+          cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
           print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
           cp.Save()
           cp.Load()
