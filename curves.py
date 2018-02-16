@@ -47,13 +47,13 @@ def RoutineCurves(image_file, bgr, box):
     PrintStats('med', read_mean, read_std)
     dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
 
-    UpdateWindow('bgr', bgr)
+    # UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
-    UpdateWindow('dist', dist)
+    # UpdateWindow('dist', dist)
 
     saturation = cv2.split(hsv)[1]
     Normalize(saturation)
-    UpdateWindow('normalized saturation', saturation)
+    # UpdateWindow('normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
     if len(sat_mean) > 0:
         sat_mean.append(sm * curve_alpha + (1.0 - curve_alpha) * sat_mean[-1])
@@ -61,7 +61,7 @@ def RoutineCurves(image_file, bgr, box):
         sat_mean.append(sm)
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
-    if True:
+    if False:
         ravanello = DistanceFromToneBlurTopBottom(hsv, "ravanello.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('ravanello', ravanello)
         saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.7, 0.0)
@@ -75,7 +75,7 @@ def RoutineCurves(image_file, bgr, box):
 
     # foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
     foreground = bgr
-    UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
+    # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
     disuniformity_mask = Resize(dist, 0.1)
     disuniformity_mask = cv2.Canny(disuniformity_mask, 200, 200)
@@ -84,7 +84,7 @@ def RoutineCurves(image_file, bgr, box):
         disuniformity.append(disuniformity_value * curve_alpha + (1.0 - curve_alpha) * disuniformity[-1])
     else:
         disuniformity.append(disuniformity_value)
-    UpdateWindow('disuniformity_mask', disuniformity_mask)
+    # UpdateWindow('disuniformity_mask', disuniformity_mask)
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
     # Echo(foreground, 'biomass p-index %.1f' % (biomass))
