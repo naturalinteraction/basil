@@ -9,6 +9,9 @@ topped_sat_mean = []
 jitter = []
 tone_filename = 'curves.temp'
 disuniformity = []
+darkness = []
+
+curve_alpha = 0.05
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
@@ -20,7 +23,11 @@ def RoutineCurves(image_file, bgr, box):
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
-    print('frame brightness', FrameBrightness(bgr))
+    dark = FrameBrightness(bgr)
+    if len(darkness) > 0:
+        darkness.append(dark * curve_alpha + (1.0 - curve_alpha) * darkness[-1])
+    else:
+        darkness.append(dark)
 
     if len(measurements) == 0:
         default_mean,default_std = FindDominantTone(hsv)
@@ -44,8 +51,6 @@ def RoutineCurves(image_file, bgr, box):
     UpdateWindow('hsv', hsv)
     UpdateWindow('dist', dist)
 
-    curve_alpha = 0.05
-
     saturation = cv2.split(hsv)[1]
     Normalize(saturation)
     UpdateWindow('normalized saturation', saturation)
@@ -63,7 +68,8 @@ def RoutineCurves(image_file, bgr, box):
     else:
         topped_sat_mean.append(sm)
 
-    foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
+    # foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
+    foreground = bgr
     UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
     disuniformity_mask = Resize(dist, 0.1)
@@ -85,6 +91,7 @@ def RoutineCurves(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
+    DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
     DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
     DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
     DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
