@@ -1,6 +1,4 @@
-# ./go.sh -p redshift-callalta -s '' -d
-# ./go.sh -p blueshift-callalta -s '' -d
-# ./go.sh -p noir-callalta -s '' -d
-# ./go.sh -p visible-callalta -s '' -d
-
-
+./go.sh -p redshift-yyy -s '' -d
+./go.sh -p blueshift-yyy -s '' -d
+./go.sh -p noir-yyy -s '' -d
+./go.sh -p visible-yyy -s '' -d

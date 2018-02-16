@@ -10,7 +10,7 @@ global color_calibrate
 color_calibrate = False
 
 global campaign
-campaign = 'callalta'
+campaign = 'yyy'
 
 global cameraproperties
 cameraproperties = None

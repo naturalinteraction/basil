@@ -234,7 +234,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
       globa.show = True
       diff = []
       kernel = 49
-      BF = 1.2 # brightness factor, max 1.049
+      BF = 1.049 # brightness factor, max 1.049
       blurred = cv2.blur(globa.image, (kernel, kernel))
       for n,(xx, yy) in enumerate(globa.locations):
           c = blurred[yy,xx].tolist()
@@ -262,6 +262,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
           print("mean squared error " + str(int(mean_squared_rgb)))
           print('mean %.2f %.2f %.2f' % (mean[4], mean[5], mean[6]))
           globa.color_calibrate = False
+          color_calibration_shutter = color_calibration_shutter * 2.0  # attempt to get a brighter image
           print(int(color_calibration_shutter), color_calibration_red, color_calibration_blue)
           cp.Save()
           cp.Load()
