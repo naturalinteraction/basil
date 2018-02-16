@@ -58,7 +58,7 @@ def RoutineCurves(image_file, bgr, box):
         sat_mean.append(sm)
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
-    if False:
+    if 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:  # ravanello
         ravanello = DistanceFromToneBlurTopBottom(hsv, "ravanello.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('ravanello', ravanello)
         saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.7, 0.0)
