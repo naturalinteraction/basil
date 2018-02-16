@@ -10,7 +10,7 @@ global color_calibrate
 color_calibrate = False
 
 global campaign
-campaign = 'yyy'
+campaign = 'doublecalib'
 
 global cameraproperties
 cameraproperties = None

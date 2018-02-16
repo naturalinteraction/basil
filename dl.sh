@@ -1,4 +1,4 @@
-./go.sh -p redshift-yyy -s '' -d
-./go.sh -p blueshift-yyy -s '' -d
-./go.sh -p noir-yyy -s '' -d
-./go.sh -p visible-yyy -s '' -d
+./go.sh -p redshift-doublecalib -s '' -d
+./go.sh -p blueshift-doublecalib -s '' -d
+./go.sh -p noir-doublecalib -s '' -d
+./go.sh -p visible-doublecalib -s '' -d
