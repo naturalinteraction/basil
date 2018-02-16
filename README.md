@@ -12,14 +12,14 @@ Software for plant sensor devices.
 
 #### High-level tasks
 
-- [ ] Algorithms: segmentation, analysis, calibration
 - [x] Definition of architectural aspects (image storage, JSON, etc.)
+- [x] Design enclosing case
+- [x] Hardware specification document
+- [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Image processing on sensor
 - [ ] Design and implement controls on web interface
-- [x] Design enclosing case
-- [ ] Hardware specification document
 - [ ] Commented source code
-- [ ] Documentation
+- [ ] Operation guide
 
 #### Architectural specs
 
@@ -55,12 +55,12 @@ def UploadData(image_filename, json_string)  -->  True|False (whether both succe
 - [x] Superpixels
 - [x] Probability map instead of binary mask: likelihood of a pixel to belong to a class based on color and spatial location (neighborhood); blur to diffuse probability
 - [x] Find biomass dominant tone based on saturation
+- [x] Detect if scene is dark
+- [x] Hires image and charts
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] Perspective mask, warping for perspective invariant areas
 - [ ] Detect if scene is not static (motion detection)
-- [x] Detect if scene is dark
 - [ ] Background subtraction
-- [ ] Hires image and charts
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
 - [ ] ~~Retain pixel probability from previous frames (running average)~~
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
@@ -200,9 +200,9 @@ pip install service_identity
 The last command fails but then Twisted is happy anyway.
 
 #### Calibrations
-Initial: Needs light. Must be done every time the sensor is turned on.
-Auto: Needs light + scene.
-Color: Needs light + colorchecker. Can provide final error(s).
+- Initial: Needs light. Must be done every time the sensor is turned on.
+- Auto: Needs light + scene.
+- Color: Needs light + colorchecker. Can provide final error(s).
 
 #### Disable HDMI
 Edit `/etc/rc.local` and add the following lines above `exit 0`:

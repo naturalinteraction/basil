@@ -1,0 +1,16 @@
+Sensor hardware:
+
+- 1x Raspberry Pi 3 Model B
+- 1x Raspberry Pi Camera Module V2.1 or infrared Raspberry Pi Camera Module V2.1 (Pi NoIR) (still experimenting with both)
+
+Sensor case:
+
+https://www.thingiverse.com/thing:2776363
+
+Screws:
+
+4x M2 x 4mm self-tapping to mount the optical sensor (untested)
+4x M2.5 x 6mm self-tapping to mount the main PCB (untested)
+4x M3 x 30mm + locknuts to close the case (tamper-resistant: Torx?)
+
+
