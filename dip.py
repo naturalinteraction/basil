@@ -37,6 +37,9 @@ def RemoveTemporaryFiles():
     for file in files:
         if file.endswith(".temp"):
             os.remove(os.path.join('.', file))
+    files = os.listdir('temp')
+    for file in files:
+        os.remove(os.path.join('temp', file))
 
 args = ParseArguments()
 
