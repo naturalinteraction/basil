@@ -75,4 +75,4 @@ try:
           str(int(box.rect.xmin)) + ':' + str(int(box.rect.ymin))) + \
           "' timelapse.mp4"
 except:
-    print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 timelapse.mp4")
+    print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 timelapse-" + args.prefix + "-" + args.routine + ".mp4")
