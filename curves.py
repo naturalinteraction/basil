@@ -16,11 +16,6 @@ curve_alpha = 0.05
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
 
-    # bgr = CropImage(bgr, cropname='bieta')  # ok
-    # bgr = CropImage(bgr, cropname='rucola')  # ok
-    # bgr = CropImage(bgr, cropname='basilicorosso')  # no
-    # bgr = CropImage(bgr, cropname='bataviarossa')  # no
-
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
     dark = FrameBrightness(bgr)

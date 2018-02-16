@@ -176,7 +176,7 @@ def ComputeImageDerivative(for_derivation, mask=None):
 
 def Echo(image, string):
     h,w = image.shape[:2]
-    cv2.putText(image, str(string), (int(w * 0.1), int(h - h * 0.1)), cv2.FONT_HERSHEY_SIMPLEX, int(h * 0.002), (255, 255, 255), int(h * 0.003), cv2.LINE_AA)
+    cv2.putText(image, str(string), (int(w * 0.1), int(h - h * 0.1)), cv2.FONT_HERSHEY_SIMPLEX, max(1, int(h * 0.002)), (255, 255, 255), max(1, int(h * 0.003)), cv2.LINE_AA)
 
 def Histogram(channel, output):
     hist = cv2.calcHist([channel], [0], None, [64], [1,256])
