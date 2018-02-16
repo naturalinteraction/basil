@@ -32,14 +32,15 @@ routine = {
             'bataviarossa'     :  RoutineBataviaRossa,
           }
 
-def RemoveTemporaryFiles():
+def RemoveTemporaryFiles(also_temp_subdir=False):
     files = os.listdir('.')
     for file in files:
         if file.endswith(".temp"):
             os.remove(os.path.join('.', file))
     files = os.listdir('temp')
-    for file in files:
-        os.remove(os.path.join('temp', file))
+    if also_temp_subdir:
+        for file in files:
+            os.remove(os.path.join('temp', file))
 
 args = ParseArguments()
 
@@ -49,7 +50,7 @@ if args.download:
 
 box = BoundingBox()
 
-RemoveTemporaryFiles()
+RemoveTemporaryFiles(True)
 
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     # print('processing ' + image_file)

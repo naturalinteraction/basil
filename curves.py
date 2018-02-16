@@ -61,6 +61,11 @@ def RoutineCurves(image_file, bgr, box):
         sat_mean.append(sm)
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
+    if True:
+        bluastro = DistanceFromToneBlurTopBottom(hsv, "foglie-bluastre-visible-callalta.pkl", 1, 1, 1, 240, 10.0)
+        UpdateWindow('bluastro', bluastro)
+        saturation = cv2.addWeighted(saturation, 1.0, bluastro, 0.7, 0.0)
+    Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
     if len(topped_sat_mean) > 0:
