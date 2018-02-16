@@ -4,8 +4,9 @@ Software for plant sensor devices.
 
 #### Requirements
 
-1. Measure uniformity of growth.
-2. Provide curve of growth in time.
+- Measure uniformity of growth.
+- Provide curve of growth in time.
+
 Algorithm is plant-specific. Plant in tray is known. Day of growth is known. White light. Substrate will guarantee good contrast.
 
 #### High-level tasks
