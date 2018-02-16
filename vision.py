@@ -52,7 +52,7 @@ def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.01, xoffs
         baseline = measurements[0]
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
-        cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, 2)
+        cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
 
 def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
     biomass = cv2.mean(dist)[0]

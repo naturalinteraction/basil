@@ -16,6 +16,8 @@ curve_alpha = 0.05
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
 
+    hires = bgr
+
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
     dark = FrameBrightness(bgr)
@@ -69,7 +71,7 @@ def RoutineCurves(image_file, bgr, box):
         topped_sat_mean.append(sm)
 
     # foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
-    foreground = bgr
+    foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
     disuniformity_mask = Resize(dist, 0.1)
@@ -92,14 +94,15 @@ def RoutineCurves(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
-    # DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
-    # DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
-    # DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
-    # DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
+    if True:
+        DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, measurements)
+        DrawChart(foreground, sat_mean, color=(0, 255, 255))
 
-    # DrawChart(foreground, measurements)
-    # DrawChart(foreground, sat_mean, color=(0, 255, 255))
-    DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
     DrawChart(foreground, disuniformity, color=(255, 0, 255))
+    DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
