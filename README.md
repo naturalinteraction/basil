@@ -58,7 +58,7 @@ def UploadData(image_filename, json_string)  -->  True|False (whether both succe
 - [ ] Find biomass segmentation algorithm params automatically
 - [ ] Perspective mask, warping for perspective invariant areas
 - [ ] Detect if scene is not static (motion detection)
-- [ ] Detect if scene is dark
+- [x] Detect if scene is dark
 - [ ] Background subtraction
 - [ ] Hires image and charts
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~

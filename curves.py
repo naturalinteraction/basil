@@ -75,6 +75,7 @@ def RoutineCurves(image_file, bgr, box):
     disuniformity_mask = Resize(dist, 0.1)
     disuniformity_mask = cv2.Canny(disuniformity_mask, 200, 200)
     disuniformity_value,ignore = cv2.meanStdDev(disuniformity_mask)
+    disuniformity_value = -disuniformity_value
     if len(disuniformity) > 0:
         disuniformity.append(disuniformity_value * curve_alpha + (1.0 - curve_alpha) * disuniformity[-1])
     else:
@@ -91,13 +92,13 @@ def RoutineCurves(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
-    DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
-    DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
-    DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
-    DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
+    # DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
+    # DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
+    # DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
+    # DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
 
-    DrawChart(foreground, measurements)
-    DrawChart(foreground, sat_mean, color=(0, 255, 255))
+    # DrawChart(foreground, measurements)
+    # DrawChart(foreground, sat_mean, color=(0, 255, 255))
     DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
     DrawChart(foreground, disuniformity, color=(255, 0, 255))
 
