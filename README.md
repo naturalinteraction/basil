@@ -2,13 +2,11 @@
 
 Software for plant sensor devices.
 
-#### Specs
+#### Requirements
 
 1. Measure uniformity of growth.
-2. Curve of growth in time.
-3. Algorithm is plant-specific. Plant in tray is known. Day of growth is known.
-4. White light.
-5. Substrate will guarantee good contrast.
+2. Provide curve of growth in time.
+Algorithm is plant-specific. Plant in tray is known. Day of growth is known. White light. Substrate will guarantee good contrast.
 
 #### High-level tasks
 
@@ -32,6 +30,17 @@ Single Python 2.7 function for both uploads:
 ```
 def UploadData(image_filename, json_string)  -->  True|False (whether both succeeded)
 ```
+Required scalar outputs:
+- Biomass quantity
+- Biomass uniformity
+
+Optional outputs:
+- Biomass RGB (mean, standard deviation or histogram)
+- Biomass HSV (hue, saturation and intensity; mean, standard deviation or histogram)
+- Scene brightness/darkness
+- Scene motion
+- Biomass motion
+- Sensor health (if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)
 
 #### Tasks dip.py
 
