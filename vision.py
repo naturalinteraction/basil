@@ -348,7 +348,7 @@ def DistanceFromTone(image, filename):
     variance = stddev ** 2
     return SegmentBiomassNoThreshold(image, mean, 1.0 / variance)
 
-def CompareLabels(labels, ground_truth, result, name):
+def CompareLabels(labels, ground_truth, result, name, tone_filename):
     h,w = labels.shape
     means = []
     pixel_lists = {}
@@ -372,7 +372,7 @@ def CompareLabels(labels, ground_truth, result, name):
             error = error + count * mean
     error = error / 255
     for t in range(14, 15):
-        mask = MaskForTone(result, 'foglie-kappa.pkl', t)
+        mask = MaskForTone(result, tone_filename, t)
         diff = cv2.absdiff(mask, ground_truth)
         diff_mean = cv2.mean(diff)[0]
     UpdateWindow(name, result)
