@@ -37,7 +37,7 @@ Required scalar outputs:
 
 Optional outputs:
 - Biomass RGB (mean, standard deviation or histogram)
-- Biomass HSV (hue, saturation and intensity; mean, standard deviation or histogram)
+- Biomass HSV (hue, saturation (or vibrance) and intensity; mean, standard deviation or histogram)
 - Scene brightness/darkness
 - Scene motion
 - Biomass motion
