@@ -12,6 +12,8 @@ import psutil
 import os
 import time
 import glob
+import cv2
+from vision import Resize
 
 def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
@@ -59,6 +61,16 @@ class WebPage(resource.Resource):
     def render_GET(self, request):
         if not 'plantsensor' in str(request):
             return ''
+        if 'thumbnail' in str(request):
+            thumbnail = Resize(globa.image, 0.1)
+            cv2.imwrite('uploaded/thumbnail.jpg', thumbnail, [int(cv2.IMWRITE_JPEG_QUALITY), 70])  # up to 100, default 95
+            try:
+                request.setHeader('content-type', "image/jpeg")  # "image/jpeg"
+                f = open('uploaded/thumbnail.jpg', 'rb')
+                return f.read()
+            except:
+                request.setHeader('content-type', "text/html")
+                return 'Thumbnail not available.'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + '</font></body>'
 
 def StartWebServer():
