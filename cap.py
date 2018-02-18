@@ -8,7 +8,6 @@ import cv2
 from S3 import UploadFileToS3
 from pyexif import ExifEditor
 import glob
-import shutil
 import pickle
 # from audio import AudioLevelPi
 import numpy as np
@@ -114,11 +113,12 @@ def AttemptUpload():
     print('Attempting upload.')
     uploaded = UploadFileToS3(images_in_cache[0])
     if uploaded:
-        print('Upload succeeded. Moving image out of cache.')
+        print('Upload succeeded. Deleting image from cache.')
         try:
-            shutil.move(images_in_cache[0], "uploaded/")
+            os.remove(images_in_cache[0])
         except:
-            print('could not move image: file already exists')
+            print('could not delete image! this is really bad! quitting.')
+            quit()
     else:
         print('There was a problem uploading. Nothing done.')
 
