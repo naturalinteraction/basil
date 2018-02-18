@@ -62,7 +62,8 @@ class WebPage(resource.Resource):
             return ''
         if 'thumbnail' in str(request):
             thumbnail = cv2.resize(globa.image, (0, 0), fx=0.1, fy=0.1)
-            cv2.imwrite('uploaded/thumbnail.jpg', thumbnail, [int(cv2.IMWRITE_JPEG_QUALITY), 70])  # up to 100, default 95
+            print('Saving thumbnail as requested from web.')
+            cv2.imwrite('uploaded/thumbnail.jpg', thumbnail, [int(cv2.IMWRITE_JPEG_QUALITY), 50])  # up to 100, default 95
             try:
                 request.setHeader('content-type', "image/jpeg")  # "image/jpeg"
                 f = open('uploaded/thumbnail.jpg', 'rb')
