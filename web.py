@@ -13,7 +13,6 @@ import os
 import time
 import glob
 import cv2
-from vision import Resize
 
 def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
@@ -62,7 +61,7 @@ class WebPage(resource.Resource):
         if not 'plantsensor' in str(request):
             return ''
         if 'thumbnail' in str(request):
-            thumbnail = Resize(globa.image, 0.1)
+            thumbnail = cv2.resize(globa.image, (0, 0), fx=0.1, fy=0.1)
             cv2.imwrite('uploaded/thumbnail.jpg', thumbnail, [int(cv2.IMWRITE_JPEG_QUALITY), 70])  # up to 100, default 95
             try:
                 request.setHeader('content-type', "image/jpeg")  # "image/jpeg"
