@@ -72,9 +72,9 @@ class WebPage(resource.Resource):
             except:
                 request.setHeader('content-type', "text/html")
                 return 'Thumbnail not available.'
-        thumb = ''
+        thumb = '<p><a href="plantsensor?refresh-thumbnail">Thumbnail Refresh</a><br>\n'
         if 'refresh-thumbnail' in str(request):
-            thumb = '<p><img src="uploaded/plantsensorthumbnail.jpg">'
+            thumb = thumb + '<p><img src="uploaded/plantsensorthumbnail.jpg">'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
 
 def StartWebServer():
