@@ -1,3 +1,4 @@
+import gc
 import time
 from CameraProperties import CameraProperties
 from picamera import PiCamera
@@ -319,6 +320,7 @@ try:
 except:
     pass
 
+gc.enable()
 gc.set_debug(gc.DEBUG_LEAK)
 
 StartWebServer()
