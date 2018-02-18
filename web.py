@@ -61,7 +61,7 @@ class WebPage(resource.Resource):
     def render_GET(self, request):
         if not 'plantsensor' in str(request):
             return ''
-        if 'uploaded/thumbnail.jpg' in str(request):
+        if 'plantsensorthumbnail.jpg' in str(request):
             thumbnail = cv2.resize(globa.image, (0, 0), fx=0.1, fy=0.1)
             print('Saving thumbnail as requested from web.')
             cv2.imwrite('uploaded/thumbnail.jpg', thumbnail, [int(cv2.IMWRITE_JPEG_QUALITY), 70])  # up to 100, default 95
@@ -74,7 +74,7 @@ class WebPage(resource.Resource):
                 return 'Thumbnail not available.'
         thumb = ''
         if 'refresh-thumbnail' in str(request):
-            thumb = '<p><p><img src="uploaded/thumbnail.jpg">'
+            thumb = '<p><img src="uploaded/plantsensorthumbnail.jpg">'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
 
 def StartWebServer():

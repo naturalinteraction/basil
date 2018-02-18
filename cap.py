@@ -1,4 +1,4 @@
-import gc
+# import gc
 import time
 from CameraProperties import CameraProperties
 from picamera import PiCamera
@@ -101,7 +101,7 @@ def TakePicture(img, cam):
     # print('getKeywords', exif.getKeywords())
     print(('getTag Keywords', exif.getTag("Keywords")))
     AttemptUpload()  # after taking the picture, immediately attempt to upload it
-    gc.collect()
+    # gc.collect()
     return ticks
     
 def AttemptUpload():
@@ -319,8 +319,8 @@ try:
 except:
     pass
 
-gc.enable()
-gc.set_debug(gc.DEBUG_LEAK)
+# gc.enable()
+# gc.set_debug(gc.DEBUG_LEAK)
 
 StartWebServer()
 print(Page())
@@ -433,7 +433,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                    cp.CurrentPropertyValue())
 
         if key == 9:  # tab
-            gc.collect()
+            # gc.collect()
             cp.PrintAllProperties()
             print(GitCommitMessage())
             uptime_minutes = int((time.time() - globa.time_process_started) / (60.0))
