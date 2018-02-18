@@ -9,7 +9,7 @@ from pyexif import ExifEditor
 import glob
 import shutil
 import pickle
-from audio import AudioLevelPi
+# from audio import AudioLevelPi
 import numpy as np
 import math
 import globa
@@ -62,7 +62,7 @@ def TakePicture(img, cam):
     for i in range(10):
         AttemptUpload()
 
-    audio_level = AudioLevelPi()
+    # audio_level = AudioLevelPi()
 
     print('Saving picture.')
     res = cam.resolution
@@ -95,14 +95,14 @@ def TakePicture(img, cam):
                       'exposure_speed=' + str(cam.exposure_speed),
                       'analog_gain=' + str(float(cam.analog_gain)),
                       'digital_gain=' + str(float(cam.digital_gain)),
-                      'zoom=' + str(cam.zoom[3]),
-                      'audio=' + str(audio_level)
+                      'zoom=' + str(cam.zoom[3])
                      ]
     print(keywords)
     exif.addKeywords(keywords)
     # print('getKeywords', exif.getKeywords())
     print(('getTag Keywords', exif.getTag("Keywords")))
     AttemptUpload()  # after taking the picture, immediately attempt to upload it
+    gc.collect()
     return ticks
     
 def AttemptUpload():
@@ -319,6 +319,8 @@ try:
 except:
     pass
 
+gc.set_debug(gc.DEBUG_LEAK)
+
 StartWebServer()
 print(Page())
 
@@ -430,6 +432,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                                    cp.CurrentPropertyValue())
 
         if key == 9:  # tab
+            gc.collect()
             cp.PrintAllProperties()
             print(GitCommitMessage())
             uptime_minutes = int((time.time() - globa.time_process_started) / (60.0))
