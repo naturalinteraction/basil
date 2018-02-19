@@ -17,6 +17,15 @@ import cv2
 def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
 
+def UpdateFirmware():
+    return os.popen("git pull").read().strip()
+
+def RebootSensor():
+    return os.popen("sudo /sbin/shutdown -r now").read().strip()
+
+def RestartSensor():
+    return os.popen("pkill -f cap").read().strip()
+
 def Page():
     try:
         prop = globa.cameraproperties.AllPropertiesString()
@@ -75,6 +84,12 @@ class WebPage(resource.Resource):
         thumb = '<p><a href="plantsensor?refresh-thumbnail">Thumbnail Refresh</a><br>\n'
         if 'refresh-thumbnail' in str(request):
             thumb = thumb + '<p><img src="uploaded/plantsensorthumbnail.jpg">'
+        if 'update-firmware' in str(request):
+            print(UpdateFirmware())
+        if 'restart-sensor' in str(request):
+            RestartSensor()
+        if 'reboot-sensor' in str(request):
+            RebootSensor()
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
 
 def StartWebServer():
