@@ -415,6 +415,12 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 color_calibration_red = cp.loaded_values['AWB Red Gain']
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
                 print('starting values for shutter and gains set', color_calibration_shutter, color_calibration_red, color_calibration_blue)
+            else:
+                if not cp.auto_calibrate and len(globa.locations) == 24 and not globa.initial_calibrate:  # that is, if it was color calibrating
+                    print('loading previous camera properties')
+                    cp.Load()
+                    cp.SetAllPropertiesOnCamera()
+                    print(cp.loaded_values['Shutter Speed'], cp.loaded_values['AWB Red Gain'], cp.loaded_values['AWB Blue Gain'])
 
         if key == ord('a'):
             if not globa.color_calibrate and not globa.initial_calibrate:
