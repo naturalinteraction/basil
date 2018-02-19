@@ -88,14 +88,21 @@ class WebPage(resource.Resource):
         if 'refresh-thumbnail' in str(request):
             thumb = thumb + '<p><img src="uploaded/plantsensorthumbnail.jpg">'
         if 'update-firmware' in str(request):
-            print('1')
-            print(UpdateFirmware())
+            firmware_result = UpdateFirmware()
+            print(firmware_result)
+            thumb = thumb + '<p><pre><code>' + firmware_result + '</pre></code>'
         if 'restart-sensor' in str(request):
-            print('2')
             RestartSensor()
         if 'reboot-sensor' in str(request):
-            print('3')
             RebootSensor()
+        if 'valli-admin' in str(request):
+            thumb = thumb + '<p><a href="plantsensor?update-firmware">Update Firmware</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?restart-sensor">Restart Sensor</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?reboot-sensor">Reboot Sensor</a><br>\n'
+        else:
+            thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
+            thumb = thumb + 'Restart Sensor (disabled)<br>\n'
+            thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
 
 def StartWebServer():
