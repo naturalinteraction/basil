@@ -70,6 +70,27 @@ def GitCommitMessagePretty():
 def ExifKeywords(file):
     return subprocess.check_output(["exiftool", "-Keywords", file]).strip()
 
+def GetCPUSerial():
+  # Extract serial from cpuinfo file
+  cpuserial = "0000000000000000"
+  try:
+    f = open('/proc/cpuinfo','r')
+    for line in f:
+      if line[0:6]=='Serial':
+        cpuserial = line[10:26]
+    f.close()
+  except:
+    cpuserial = "ERROR000000000"
+  return cpuserial
+
+def GetMAC(interface='eth0'):  # 'wlan0'
+  # Return the MAC address of the specified interface
+  try:
+    str = open('/sys/class/net/%s/address' %interface).read()
+  except:
+    str = "00:00:00:00:00:00"
+  return str[0:17]
+
 '''
 parsing command line arguments
 '''
