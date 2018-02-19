@@ -404,7 +404,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print('color checker locations reset')
             globa.locations = []
 
-        if key == ord('c'):
+        if key == ord('c') or globa.toggle_color_calibration:
+            globa.toggle_color_calibration = False
             globa.color_calibrate = not globa.color_calibrate
             if cp.auto_calibrate or len(globa.locations) != 24 or globa.initial_calibrate:
                 print('auto_calibrate or no 24 locations or initial_calibrate')

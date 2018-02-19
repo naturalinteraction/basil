@@ -95,14 +95,19 @@ class WebPage(resource.Resource):
             RestartSensor()
         if 'reboot-sensor' in str(request):
             RebootSensor()
+        if 'toggle-color-calibration' in str(request):
+            print('setting globa.toggle_color_calibration to True')
+            globa.toggle_color_calibration = True
         if 'valli-admin' in str(request):
             thumb = thumb + '<p><a href="plantsensor?update-firmware">Update Firmware</a><br>\n'
             thumb = thumb + '<a href="plantsensor?restart-sensor">Restart Sensor</a><br>\n'
             thumb = thumb + '<a href="plantsensor?reboot-sensor">Reboot Sensor</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?toggle-color-calibration">Toggle Color Calibration (UNTESTED)</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
+            thumb = thumb + 'Toggle Color Calibration (disabled)<br>\n'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
 
 def StartWebServer():
