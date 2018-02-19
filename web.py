@@ -18,12 +18,15 @@ def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
 
 def UpdateFirmware():
+    print('attempting to update firmware...')
     return os.popen("git pull").read().strip()
 
 def RebootSensor():
+    print('attempting to reboot sensor...')
     return os.popen("sudo /sbin/shutdown -r now").read().strip()
 
 def RestartSensor():
+    print('attempting to restart cap...')
     return os.popen("pkill -f cap").read().strip()
 
 def Page():
