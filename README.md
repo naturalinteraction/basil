@@ -7,7 +7,7 @@ Software for plant sensor devices.
 - Measure uniformity of growth.
 - Provide curve of growth in time.
 
-Algorithm is plant-specific. Plant in tray is known. Day of growth is known. White, constant light. Substrate will guarantee good contrast.
+Algorithm is plant-specific. Plant in tray is known. Day of growth is known. White, constant light. Substrate is white and plastic. Distance and angle are fixed.
 
 #### High-level tasks
 
