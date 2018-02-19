@@ -88,10 +88,13 @@ class WebPage(resource.Resource):
         if 'refresh-thumbnail' in str(request):
             thumb = thumb + '<p><img src="uploaded/plantsensorthumbnail.jpg">'
         if 'update-firmware' in str(request):
+            print('1')
             print(UpdateFirmware())
         if 'restart-sensor' in str(request):
+            print('2')
             RestartSensor()
         if 'reboot-sensor' in str(request):
+            print('3')
             RebootSensor()
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
 
