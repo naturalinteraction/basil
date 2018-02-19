@@ -16,7 +16,7 @@ Algorithm is plant-specific. Plant in tray is known. Day of growth is known. Whi
 - [x] Hardware specification document
 - [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Image processing on sensor
-- [ ] Design and implement controls on web interface: update FW, restart, reboot, start-color-calibration, stop-color-calibration (and reload previous properties)
+- [ ] Design and implement controls on web interface: update firmware, restart, reboot, start-color-calibration, stop-color-calibration (and reload previous properties)
 - [ ] Commented source code
 - [ ] Operation guide
 
