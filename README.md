@@ -14,9 +14,9 @@ Algorithm is plant-specific. Plant in tray is known. Day of growth is known. Whi
 - [x] Definition of architectural aspects (image storage, JSON, etc.)
 - [x] Design enclosing case
 - [x] Hardware specification document
+- [x] Design and implement controls on web interface
 - [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Image processing on sensor
-- [ ] Design and implement controls on web interface: start-color-calibration, stop-color-calibration (and reload previous properties)
 - [ ] Commented source code
 - [ ] Operation guide
 
