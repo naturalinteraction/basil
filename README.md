@@ -67,10 +67,10 @@ Optional outputs:
 - [x] Find biomass dominant tone based on saturation
 - [x] Detect if scene is dark
 - [x] Hires image and charts
-- [ ] Find biomass segmentation algorithm params automatically
-- [ ] Perspective mask, warping for perspective invariant areas
 - [ ] Detect if scene is not static (motion detection)
-- [ ] Background subtraction
+- [ ] Find biomass segmentation algorithm params automatically
+- [ ] Perspective mask, warping for perspective invariant areas (needs a more clear idea about the position relative to the tray)
+- [ ] ~~Background subtraction~~
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
 - [ ] ~~Retain pixel probability from previous frames (running average)~~
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
