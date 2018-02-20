@@ -8,6 +8,8 @@ import sys
 import pickle
 import time
 import os
+import psutil
+import glob
 
 
 def interrogate(item):
@@ -90,6 +92,48 @@ def GetMAC(interface='eth0'):  # 'wlan0'
   except:
     str = "00:00:00:00:00:00"
   return str[0:17]
+
+def NumberOfUploadsInQueue():
+    return str(len(glob.glob("cache/*.jpg")))
+
+def MemoryPercent():
+    mem = psutil.virtual_memory()
+    return mem.percent
+
+def CPUPercent():
+    return psutil.cpu_percent()
+
+def DiskPercent():
+    disk = os.statvfs('/')
+    return 100 - 100 * disk.f_bavail / disk.f_blocks
+
+def SensorFunctioningOK():
+    if CPUPercent() > 80:
+        return False
+    if MemoryPercent() > 80:
+        return False
+    if DiskPercent() > 80:
+        return False
+    if float(PiTemperature().replace('C', '')) > 75:
+        return False
+    if int(NumberOfUploadsInQueue()) > 1:
+        return False
+    if globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:  # mode
+        return False
+    return True
+
+def UpdateFirmware():
+    print('attempting to update firmware...')
+    return os.popen("git pull").read().strip()
+
+def RebootSensor():
+    print('attempting to reboot sensor...')
+    return os.popen("sudo /sbin/shutdown -r now").read().strip()
+
+def RestartSensor():
+    print('attempting to restart cap...')
+    return os.popen("pkill -f cap").read().strip()
+
 
 '''
 parsing command line arguments

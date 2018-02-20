@@ -1,59 +1,10 @@
-from utility import OpenCVVersion
-from utility import GitHash
-from utility import GitCommitMessage
-from utility import GitRevCount
-from utility import GitBranch
-from utility import PiTemperature
+from utility import OpenCVVersion, GitHash, GitCommitMessage, GitRevCount, GitBranch, PiTemperature, NumberOfUploadsInQueue, MemoryPercent, CPUPercent, DiskPercent, SensorFunctioningOK, UpdateFirmware, RebootSensor, RestartSensor
 from twisted.web import server, resource
 from twisted.internet import reactor
 import globa
 import socket
-import psutil
-import os
 import time
-import glob
 import cv2
-
-def NumberOfUploadsInQueue():
-    return str(len(glob.glob("cache/*.jpg")))
-
-def MemoryPercent():
-    mem = psutil.virtual_memory()
-    return mem.percent
-
-def CPUPercent():
-    return psutil.cpu_percent()
-
-def DiskPercent():
-    disk = os.statvfs('/')
-    return 100 - 100 * disk.f_bavail / disk.f_blocks
-
-def SensorFunctioningOK():
-    if CPUPercent() > 80:
-        return False
-    if MemoryPercent() > 80:
-        return False
-    if DiskPercent() > 80:
-        return False
-    if float(PiTemperature().replace('C', '')) > 75:
-        return False
-    if int(NumberOfUploadsInQueue()) > 1:
-        return False
-    if globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:  # mode
-        return False
-    return True
-
-def UpdateFirmware():
-    print('attempting to update firmware...')
-    return os.popen("git pull").read().strip()
-
-def RebootSensor():
-    print('attempting to reboot sensor...')
-    return os.popen("sudo /sbin/shutdown -r now").read().strip()
-
-def RestartSensor():
-    print('attempting to restart cap...')
-    return os.popen("pkill -f cap").read().strip()
 
 def Page():
     try:
