@@ -35,9 +35,9 @@ def SensorFunctioningOK():
         return False
     if DiskPercent() > 80:
         return False
-    if PiTemperature() > 75:
+    if float(PiTemperature().replace('C', '')) > 75:
         return False
-    if NumberOfUploadsInQueue() > 1:
+    if int(NumberOfUploadsInQueue()) > 1:
         return False
     if globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:  # mode
         return False
