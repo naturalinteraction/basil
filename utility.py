@@ -94,6 +94,21 @@ def GetMAC(interface='eth0'):  # 'wlan0'
     str = "00:00:00:00:00:00"
   return str[0:17]
 
+def GetSDSerial():
+  try:
+    str = open('/sys/block/mmcblk0/device/serial').read().strip()
+  except:
+    str = ''
+  return str
+
+def GetSDCID():
+  try:
+    str = open('/sys/block/mmcblk0/device/cid').read().strip()
+  except:
+    str = ''
+  return str
+
+
 def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
 

@@ -20,6 +20,8 @@ from kappa import *
 print(GetCPUSerial())
 print(GetMAC('eth0'))
 print(GetMAC('wlan0'))
+print(GetSDSerial())
+print(GetSDCID())
 
 routine = {
             'basilico' :  RoutineBasilico,
