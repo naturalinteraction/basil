@@ -35,7 +35,7 @@ def Page():
             # 'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
             prop + '<p>\n' +
             'Sensor OK? ' + str(SensorFunctioningOK()) + '<br>\n'
-            'campaign ' + globa.campaign + '<br>\n' +
+            'series ' + globa.series + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
             'started at ' + globa.time_process_started_string + '<br>\n' +

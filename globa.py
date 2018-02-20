@@ -12,8 +12,8 @@ color_calibrate = False
 global toggle_color_calibration
 toggle_color_calibration = False
 
-global campaign
-campaign = 'doublecalib'
+global series
+series = 'doublecalib'
 
 global cameraproperties
 cameraproperties = None

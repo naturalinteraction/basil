@@ -48,7 +48,7 @@ Optional outputs:
 - [x] List all pictures on S3
 - [x] Check if local file exists
 - [x] Download pictures that are not here yet
-- [x] Group images with the same 'note' and campaign identifier
+- [x] Group images with the same 'note' and series identifier
 - [x] Open downloaded images
 - [x] Cython threshold function
 - [x] Optionally download images from S3
