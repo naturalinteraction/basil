@@ -17,6 +17,32 @@ import cv2
 def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
 
+def MemoryPercent()
+    mem = psutil.virtual_memory()
+    return mem.percent
+
+def CPUPercent()
+    return psutil.cpu_percent()
+
+def DiskPercent()
+    disk = os.statvfs('/')
+    return 100 - 100 * disk.f_bavail / disk.f_blocks
+
+def SensorFunctioningOK()
+    if CPUPercent() > 80:
+        return False
+    if MemoryPercent() > 80:
+        return False
+    if DiskPercent() > 80:
+        return False
+    if PiTemperature() > 75:
+        return False
+    if NumberOfUploadsInQueue() > 1:
+        return False
+    if globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:  # mode
+        return False
+    return True
+
 def UpdateFirmware():
     print('attempting to update firmware...')
     return os.popen("git pull").read().strip()
@@ -36,9 +62,6 @@ def Page():
     except:
         prop = 'No camera properties.'
     hostname = socket.gethostname()
-    mem = psutil.virtual_memory()
-    disk = os.statvfs('/')
-    disk_percent = 100 - 100 * disk.f_bavail / disk.f_blocks
     if len(globa.last_picture_filename) > 0:
         link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a> taken at ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
     else:
@@ -53,13 +76,14 @@ def Page():
     return ('PlantSensor ' + hostname + '<br>\n' +
             'PlantSensor Firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
-            'cpu ' + str(psutil.cpu_percent()) + '%<br>\n' +
-            'memory ' + str(mem.percent) + '%<br>\n' +
-            'disk ' + str(disk_percent) + '%<br>\n' +
+            'cpu ' + str(CPUPercent()) + '%<br>\n' +
+            'memory ' + str(MemoryPercent()) + '%<br>\n' +
+            'disk ' + str(DiskPercent()) + '%<br>\n' +
             'temperature ' + str(PiTemperature()) + '<p>\n' +
             status + '<p>\n' +
             # 'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
             prop + '<p>\n' +
+            'Sensor OK? ' + str(SensorFunctioningOK()) + '<br>\n'
             'campaign ' + globa.campaign + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
