@@ -17,18 +17,18 @@ import cv2
 def NumberOfUploadsInQueue():
     return str(len(glob.glob("cache/*.jpg")))
 
-def MemoryPercent()
+def MemoryPercent():
     mem = psutil.virtual_memory()
     return mem.percent
 
-def CPUPercent()
+def CPUPercent():
     return psutil.cpu_percent()
 
-def DiskPercent()
+def DiskPercent():
     disk = os.statvfs('/')
     return 100 - 100 * disk.f_bavail / disk.f_blocks
 
-def SensorFunctioningOK()
+def SensorFunctioningOK():
     if CPUPercent() > 80:
         return False
     if MemoryPercent() > 80:
