@@ -111,3 +111,7 @@ calibration-locations.pkl
 camera-properties.pkl
 
 *.temp
+
+prior/*.jpg
+prior/*.jpeg
+prior/*.png

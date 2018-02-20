@@ -1,0 +1,1 @@
+this directory will contain data about the history of each specific series (e.g. for background subtraction and motion detection)
