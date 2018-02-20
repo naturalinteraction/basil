@@ -2,7 +2,7 @@ Sensor hardware:
 
 - 1x Raspberry Pi 3 Model B
 - 1x Raspberry Pi Camera Module V2.1 or infrared Raspberry Pi Camera Module V2.1 (Pi NoIR) (still experimenting with both)
-- 1x Dissipator Kit for Raspberry Pi 3 (contains 3 dissipators)
+- 1x Heatsinks for Raspberry Pi 3
 - 1x SanDisk Ultra MicroSDHC 16 GB Class 10
 
 Sensor case:
