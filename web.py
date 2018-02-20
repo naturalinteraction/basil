@@ -32,7 +32,7 @@ def RestartSensor():
 def Page():
     try:
         prop = globa.cameraproperties.AllPropertiesString()
-        prop = prop + '<p>\nProperties OK? ' + globa.cameraproperties.AllPropertiesOK() + '<br>\n'
+        prop = prop + '<p>\nProperties OK? ' + str(globa.cameraproperties.AllPropertiesOK()) + '<br>\n'
     except:
         prop = 'No camera properties.'
     hostname = socket.gethostname()
