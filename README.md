@@ -127,7 +127,10 @@ sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc
 
 #### Copying image to SD card:
 ```
-sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc  # also of=/dev/sdb1 bs=512k
+# lsblk to list devices
+# partition(s) must be unmounted
+# be very careful with what follows, see https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
+sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc  # of=/dev/sdb bs=4M
 ```
 
 
