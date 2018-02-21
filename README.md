@@ -127,7 +127,7 @@ sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc
 
 #### Copying image to SD card:
 ```
-sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc
+sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc  # also of=/dev/sdb1 bs=512k
 ```
 
 
