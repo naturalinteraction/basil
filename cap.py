@@ -234,7 +234,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
       globa.show = True
       diff = []
       kernel = 49
-      BF = 1.049 # brightness factor, max 1.049
+      BF = 1.0  # brightness factor, max 1.049
       blurred = cv2.blur(globa.image, (kernel, kernel))
       for n,(xx, yy) in enumerate(globa.locations):
           c = blurred[yy,xx].tolist()
@@ -271,7 +271,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
       else:
           color_calibration_red = color_calibration_red - (mean[4] - 0.0 * mean[5]) /  133.0 / 3.0
           color_calibration_blue = color_calibration_blue - (mean[6] - 0.0 * mean[5]) / 133.0 / 3.0
-          color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 6.0  # no need to use L because with Green() its error goes to zero
+          color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 1.0  # no need to use L because with Green() its error goes to zero
           color_calibration_red = max(0, min(8, color_calibration_red))
           color_calibration_blue = max(0, min(8, color_calibration_blue))
           color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
@@ -412,7 +412,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 globa.color_calibrate = False
             if globa.color_calibrate:
                 camera.zoom = (0.0, 0.0, 1.0, 1.0)
-                color_calibration_shutter = cp.loaded_values['Shutter Speed']
+                color_calibration_shutter = cp.loaded_values['Shutter Speed'] // 2
                 color_calibration_red = cp.loaded_values['AWB Red Gain']
                 color_calibration_blue = cp.loaded_values['AWB Blue Gain']
                 print('starting values for shutter and gains set', color_calibration_shutter, color_calibration_red, color_calibration_blue)
