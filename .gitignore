@@ -117,3 +117,5 @@ prior/*.jpeg
 prior/*.png
 
 colorcalibration/macduff
+colorcalibration/*.csv
+colorcalibration/*.jpg
