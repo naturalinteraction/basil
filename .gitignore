@@ -115,3 +115,5 @@ camera-properties.pkl
 prior/*.jpg
 prior/*.jpeg
 prior/*.png
+
+colorcalibration/macduff

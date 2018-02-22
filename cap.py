@@ -404,6 +404,13 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print('color checker locations reset')
             globa.locations = []
 
+        if key == ord('m'):
+            print('macduff')
+            cv2.imwrite('colorcalibration/input.jpg', globa.image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
+            print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
+            os.remove('colorcalibration/input.jpg')
+            # os.remove('colorcalibration/output.csv')
+
         if key == ord('c') or globa.toggle_color_calibration:
             globa.toggle_color_calibration = False
             globa.color_calibrate = not globa.color_calibrate
