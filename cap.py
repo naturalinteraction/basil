@@ -173,7 +173,7 @@ def mouseCallbackCalib(event, x, y, flags, param):
                         ly = tl[1] + ry
                         print(x, y, int(lx), int(ly))
                         globa.locations.append((int(lx), int(ly)))
-                print(globa.locations)
+                print('globa.locations', globa.locations)
                 with open('calibration-locations.pkl', 'w') as f:
                     pickle.dump(globa.locations, f, 0)
                 print('color calibration locations saved')
@@ -420,8 +420,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 # macduff worked
                 globa.locations = []
                 for i in range(24):
-                    globa.locations.append((location_coords[i * 2 + 0], location_coords[i * 2 + 1]))
+                    globa.locations.append((int(location_coords[i * 2 + 0]), int(location_coords[i * 2 + 1])))
                 print('globa.locations', globa.locations)
+                with open('calibration-locations.pkl', 'w') as f:
+                    pickle.dump(globa.locations, f, 0)
             else:
                 # macduff did not work
                 print('macduff did not work')
