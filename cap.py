@@ -225,7 +225,7 @@ def SetInitialCameraProperties(camera):
 
 def DrawColorCalibrationLocations(kernel=49):
     half = int(kernel / 2 + 3)
-    print(len(globa.locations))
+    # print(len(globa.locations))
     for n,(xx, yy) in enumerate(globa.locations):
         cv2.rectangle(globa.image, (xx - half, yy - half),
                                    (xx + half, yy + half), (0,0,0), 3)
@@ -233,7 +233,7 @@ def DrawColorCalibrationLocations(kernel=49):
 def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,color_calibration_blue):
       globa.show = True
       diff = []
-      kernel = 49
+      kernel = 17
       BF = 1.0  # brightness factor, max 1.049
       blurred = cv2.blur(globa.image, (kernel, kernel))
       for n,(xx, yy) in enumerate(globa.locations):
@@ -257,6 +257,10 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
       mean_squared_rgb = (msq[4] + msq[5] + msq[6]) / 3.0
       if (abs(mean[4]) + abs(mean[5]) + abs(mean[6])) < 1.0:
           print('finished! exiting color calibration. Saving!')
+          print(len(diff))
+          print(type(diff))
+          print(diff)
+          print(weight)
           for n in range(len(diff)):
               print(str(n) + ' '+ str(int(diff[n][4] / weight[n])) + ' '+ str(int(diff[n][5] / weight[n])) + ' '+ str(int(diff[n][6] / weight[n])))
           print("mean squared error " + str(int(mean_squared_rgb)))
