@@ -414,15 +414,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
             os.remove('colorcalibration/input.jpg')
             try:
-                str = open('colorcalibration/output.csv').read().strip()
+                do_not_redefine_str = open('colorcalibration/output.csv').read().strip()
             except:
-                str = ''
-            location_coords = str.replace(',', '\n').split('\n')
+                do_not_redefine_str = ''
+            location_coords = do_not_redefine_str.replace(',', '\n').split('\n')
             print('location_coords', location_coords)
             print('coords = ', len(location_coords))
+            globa.locations = []
             if len(location_coords) == 48:
                 # macduff worked
-                globa.locations = []
                 for i in range(24):
                     globa.locations.append((int(location_coords[i * 2 + 0]), int(location_coords[i * 2 + 1])))
                 print('globa.locations', globa.locations)
