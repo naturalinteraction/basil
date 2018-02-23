@@ -411,7 +411,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         if key == ord('m'):
             print('macduff')
             cv2.imwrite('colorcalibration/input.jpg', globa.image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
-            print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
+            try:
+                print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
+            except:
+                print('could not run macduff')
+                # todo: return some text to the webpage
             os.remove('colorcalibration/input.jpg')
             try:
                 do_not_redefine_str = open('colorcalibration/output.csv').read().strip()
@@ -428,6 +432,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 print('globa.locations', globa.locations)
                 with open('calibration-locations.pkl', 'w') as f:
                     pickle.dump(globa.locations, f, 0)
+                # todo: in either case, return some text (and optionally, an image) to the webpage
             else:
                 # macduff did not work
                 print('macduff did not work')
