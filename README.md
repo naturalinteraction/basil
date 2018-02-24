@@ -45,7 +45,7 @@ Optional outputs:
 
 #### Customizing each SD image
 
-Keep record of these:
+Keep record of these (info.sh):
 - SD serial
 - SD cid
 - Pi serial
