@@ -42,7 +42,7 @@ def CombinedMeanStandardDeviation(m1, s1, n1, m2, s2, n2):
     return mean,stddev
 
 
-def Macduff()
+def Macduff():
     print('Macduff')
     globa.locations = []
     try:
