@@ -42,6 +42,41 @@ def CombinedMeanStandardDeviation(m1, s1, n1, m2, s2, n2):
     return mean,stddev
 
 
+def Macduff()
+    print('Macduff')
+    globa.locations = []
+    try:
+        os.remove('colorcalibration/output.csv')
+        os.remove('colorcalibration/output.jpg')
+    except:
+        pass
+    cv2.imwrite('colorcalibration/input.jpg', globa.image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
+    try:
+        print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
+    except:
+        return 'Could not run colorchecker finder!'
+    os.remove('colorcalibration/input.jpg')
+    try:
+        do_not_redefine_str = open('colorcalibration/output.csv').read().strip()
+    except:
+        do_not_redefine_str = ''
+        return 'Could not find colorchecker!'
+    location_coords = do_not_redefine_str.replace(',', '\n').split('\n')
+    print('location_coords', location_coords)
+    print('coords = ', len(location_coords))
+    if len(location_coords) == 48:
+        # macduff worked
+        for i in range(24):
+            globa.locations.append((int(location_coords[i * 2 + 0]), int(location_coords[i * 2 + 1])))
+        print('globa.locations', globa.locations)
+        with open('calibration-locations.pkl', 'w') as f:
+            pickle.dump(globa.locations, f, 0)
+        return ''  # todo: return some text (and optionally, an image) to the webpage
+    else:
+        # macduff did not work
+        return 'Could not find all the locations!'
+
+
 '''
 versions
 '''

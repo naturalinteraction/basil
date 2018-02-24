@@ -12,6 +12,9 @@ color_calibrate = False
 global toggle_color_calibration
 toggle_color_calibration = False
 
+global macduff
+macduff = False
+
 global series
 series = 'doublecalib'
 

@@ -71,6 +71,9 @@ class WebPage(resource.Resource):
             RestartSensor()
         if 'reboot-sensor' in str(request):
             RebootSensor()
+        if 'macduff' in str(request):
+            print('setting globa.macduff to True')
+            globa.macduff = True
         if 'toggle-color-calibration' in str(request):
             print('setting globa.toggle_color_calibration to True')
             globa.toggle_color_calibration = True

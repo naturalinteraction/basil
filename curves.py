@@ -86,7 +86,7 @@ def RoutineCurves(image_file, bgr, box):
         disuniformity.append(disuniformity_value * curve_alpha + (1.0 - curve_alpha) * disuniformity[-1])
     else:
         disuniformity.append(disuniformity_value)
-    # UpdateWindow('disuniformity_mask', disuniformity_mask)
+    UpdateWindow('disuniformity_mask', disuniformity_mask)
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
     # Echo(foreground, 'biomass p-index %.1f' % (biomass))
@@ -103,7 +103,7 @@ def RoutineCurves(image_file, bgr, box):
         DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
         DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
         DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
-        DrawChart(foreground, measurements)
+        # DrawChart(foreground, measurements)
         DrawChart(foreground, sat_mean, color=(0, 255, 255))
 
     DrawChart(foreground, disuniformity, color=(255, 0, 255))

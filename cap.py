@@ -409,34 +409,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             globa.locations = []
 
         if key == ord('m'):
-            print('macduff')
-            cv2.imwrite('colorcalibration/input.jpg', globa.image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
-            try:
-                print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
-            except:
-                print('could not run macduff')
-                # todo: return some text to the webpage
-            os.remove('colorcalibration/input.jpg')
-            try:
-                do_not_redefine_str = open('colorcalibration/output.csv').read().strip()
-            except:
-                do_not_redefine_str = ''
-            location_coords = do_not_redefine_str.replace(',', '\n').split('\n')
-            print('location_coords', location_coords)
-            print('coords = ', len(location_coords))
-            globa.locations = []
-            if len(location_coords) == 48:
-                # macduff worked
-                for i in range(24):
-                    globa.locations.append((int(location_coords[i * 2 + 0]), int(location_coords[i * 2 + 1])))
-                print('globa.locations', globa.locations)
-                with open('calibration-locations.pkl', 'w') as f:
-                    pickle.dump(globa.locations, f, 0)
-                # todo: in either case, return some text (and optionally, an image) to the webpage
-            else:
-                # macduff did not work
-                print('macduff did not work')
-            os.remove('colorcalibration/output.csv')
+            print(Macduff())
 
         if key == ord('c') or globa.toggle_color_calibration:
             globa.toggle_color_calibration = False
