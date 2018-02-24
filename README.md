@@ -38,10 +38,26 @@ Required scalar outputs:
 Optional outputs:
 - Biomass RGB (mean, standard deviation or histogram)
 - Biomass HSV (hue, saturation (or vibrance) and intensity; mean, standard deviation or histogram)
-- Scene brightness/darkness
+- Scene brightness/darkness or RGB or HSV
 - Scene motion
 - Biomass motion
 - Sensor health (if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)
+
+#### Customizing each SD image
+
+Keep record of these:
+- SD serial
+- SD cid
+- Pi serial
+- eth0 MAC address
+- wlan0 MAC address
+
+Username can remain 'pi'. Same password. Ethernet must be in DHCP.
+
+Change via script:
+- Hostname / hosts file
+- BASIL_NOTE
+- Wifi SSID and password
 
 #### Tasks dip.py
 
