@@ -93,11 +93,13 @@ class WebPage(resource.Resource):
             thumb = thumb + '<p><a href="plantsensor?update-firmware">Update Firmware</a><br>\n'
             thumb = thumb + '<a href="plantsensor?restart-sensor">Restart Sensor</a><br>\n'
             thumb = thumb + '<a href="plantsensor?reboot-sensor">Reboot Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?toggle-color-calibration">Toggle Color Calibration (UNTESTED)</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?run-macduff">Find Colorchecker</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?toggle-color-calibration">Toggle Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
+            thumb = thumb + 'Find Colorchecker (disabled)<br>\n'
             thumb = thumb + 'Toggle Color Calibration (disabled)<br>\n'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + macduff + '</font></body>'
 

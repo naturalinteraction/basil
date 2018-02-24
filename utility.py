@@ -50,7 +50,8 @@ def Macduff():
         os.remove('colorcalibration/output.jpg')
     except:
         pass
-    cv2.imwrite('colorcalibration/input.jpg', globa.image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
+    result = cv2.resize(globa.image, (0, 0), fx=0.2, fy=0.2)
+    cv2.imwrite('colorcalibration/input.jpg', result, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     try:
         print(os.popen("./colorcalibration/macduff colorcalibration/input.jpg colorcalibration/output.jpg > colorcalibration/output.csv").read().strip())
     except:
@@ -67,11 +68,11 @@ def Macduff():
     if len(location_coords) == 48:
         # macduff worked
         for i in range(24):
-            globa.locations.append((int(location_coords[i * 2 + 0]), int(location_coords[i * 2 + 1])))
+            globa.locations.append((int(location_coords[i * 2 + 0]) * 5, int(location_coords[i * 2 + 1]) * 5))
         print('globa.locations', globa.locations)
         with open('calibration-locations.pkl', 'w') as f:
             pickle.dump(globa.locations, f, 0)
-        return ''  # todo: return some text (and optionally, an image) to the webpage
+        return ''
     else:
         # macduff did not work
         return 'Could not find all the locations!'
