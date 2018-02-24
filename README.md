@@ -56,8 +56,8 @@ Username is the default. Password is the same everywhere. DHCP on usb0, eth0 and
 
 Change via script:
 - Hostname / hosts file (change_hostname.sh)
-- BASIL_NOTE
-- Wifi SSID and password
+- Wifi SSID and password (wifi.py)
+- BASIL_NOTE (decide what to do)
 
 #### Tasks dip.py
 
