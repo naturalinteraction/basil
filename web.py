@@ -84,7 +84,7 @@ class WebPage(resource.Resource):
             print('running Macduff()')
             macduff = Macduff()
             if macduff == '':
-                macduff = '<img src="macduff-result.jpg">'
+                macduff = '<img src="plantsensor/macduff-result.jpg">'
         macduff = '<p>' + macduff + '<br>\n'
         if 'toggle-color-calibration' in str(request):
             print('setting globa.toggle_color_calibration to True')
