@@ -1,4 +1,4 @@
-from utility import OpenCVVersion, GitHash, GitCommitMessage, GitRevCount, GitBranch, PiTemperature, NumberOfUploadsInQueue, MemoryPercent, CPUPercent, DiskPercent, SensorFunctioningOK, UpdateFirmware, RebootSensor, RestartSensor
+from utility import OpenCVVersion, GitHash, GitCommitMessage, GitRevCount, GitBranch, PiTemperature, NumberOfUploadsInQueue, MemoryPercent, CPUPercent, DiskPercent, SensorFunctioningOK, UpdateFirmware, RebootSensor, RestartSensor, Macduff
 from twisted.web import server, resource
 from twisted.internet import reactor
 import globa
@@ -49,6 +49,14 @@ class WebPage(resource.Resource):
     def render_GET(self, request):
         if not 'plantsensor' in str(request):
             return ''
+        if 'macduff-result.jpg' in str(request):
+            try:
+                request.setHeader('content-type', "image/jpeg")
+                f = open('colorcalibration/output.jpg', 'rb')
+                return f.read()
+            except:
+                request.setHeader('content-type', "text/html")
+                return 'Macduff result not available.'
         if 'plantsensorthumbnail.jpg' in str(request):
             thumbnail = cv2.resize(globa.image, (0, 0), fx=0.1, fy=0.1)
             print('Saving thumbnail as requested from web.')
@@ -71,9 +79,13 @@ class WebPage(resource.Resource):
             RestartSensor()
         if 'reboot-sensor' in str(request):
             RebootSensor()
-        if 'macduff' in str(request):
-            print('setting globa.macduff to True')
-            globa.macduff = True
+        macduff = ''
+        if 'run-macduff' in str(request):
+            print('running Macduff()')
+            macduff = Macduff()
+            if macduff == '':
+                macduff = '<img src="macduff-result.jpg">'
+        macduff = '<p>' + macduff + '<br>\n'
         if 'toggle-color-calibration' in str(request):
             print('setting globa.toggle_color_calibration to True')
             globa.toggle_color_calibration = True
@@ -87,7 +99,7 @@ class WebPage(resource.Resource):
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
             thumb = thumb + 'Toggle Color Calibration (disabled)<br>\n'
-        return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + '</font></body>'
+        return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + macduff + '</font></body>'
 
 def StartWebServer():
     site = server.Site(WebPage())
