@@ -52,7 +52,7 @@ Keep record of these (info.sh):
 - eth0 MAC address
 - wlan0 MAC address
 
-Username can remain 'pi'. Same password. Ethernet must be in DHCP.
+Username is the default. Password is the same everywhere. DHCP on usb0, eth0 and wlan0.
 
 Change via script:
 - Hostname / hosts file (change_hostname.sh)
