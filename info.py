@@ -4,6 +4,7 @@ from utility import *
 
 print(GetMAC('eth0'))
 print(GetMAC('wlan0'))
+print(GetMAC('usb0'))
 print(GetCPUSerial())
 print(GetSDSerial())
 print(GetSDCID())

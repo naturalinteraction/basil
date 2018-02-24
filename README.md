@@ -55,7 +55,7 @@ Keep record of these (info.sh):
 Username can remain 'pi'. Same password. Ethernet must be in DHCP.
 
 Change via script:
-- Hostname / hosts file
+- Hostname / hosts file (change_hostname.sh)
 - BASIL_NOTE
 - Wifi SSID and password
 
