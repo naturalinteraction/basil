@@ -13,7 +13,7 @@ global toggle_color_calibration
 toggle_color_calibration = False
 
 global series
-series = 'doublecalib'
+series = 'bf1'
 
 global cameraproperties
 cameraproperties = None

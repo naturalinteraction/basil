@@ -50,6 +50,7 @@ Keep record of these (info.sh):
 - SD cid
 - Pi serial
 - eth0 MAC address
+- usb0 MAC address
 - wlan0 MAC address
 
 Username is the default. Password is the same everywhere. DHCP on usb0, eth0 and wlan0.
@@ -218,6 +219,12 @@ exiftool -keywords <filename>
 Save username and password for 4 months:
 ```
 git config --global credential.helper 'cache --timeout=10000000'
+```
+
+#### Cython
+
+```
+pip install Cython
 ```
 
 #### Web server on the sensors
