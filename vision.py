@@ -4,8 +4,8 @@ import numpy as np
 from utility import *
 from segment import *
 from collections import namedtuple
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+# import matplotlib.pyplot as plt
 import pymeanshift as pms
 from skimage.segmentation import *
 from skimage import color
@@ -49,7 +49,7 @@ def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.01, xoffs
     ymult = int(ymult * h)
     yoffset = int(yoffset * h)
     for i in range(1, len(measurements)):
-        baseline = measurements[0]  # todo: draw absolute charts, take into account actual time of each capture
+        baseline = measurements[0]  # todo: draw absolute charts, take into account actual time of each capture, try to contain chart in image
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
         cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
@@ -100,7 +100,7 @@ def TruncateAndZero(channel, reference, sigma, trunc_sigmas, zero_sigmas, normal
         Normalize(result)
     return result
 
-
+'''
 def ScatterPlotHSV(image, title='HSV'):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -115,7 +115,7 @@ def ScatterPlotHSV(image, title='HSV'):
     ax.set_zlabel('V')
     plt.gcf().canvas.set_window_title(title)
     plt.show()
-
+'''
 
 def SaturationThreshold(hsv, threshold, min_value=-1):
     s = cv2.split(hsv)[1]
