@@ -1,4 +1,4 @@
-./go.sh -p redshift-doublecalib -s '' -d
-#./go.sh -p blueshift-doublecalib -s '' -d
-./go.sh -p noir-doublecalib -s '' -d
-#./go.sh -p visible-doublecalib -s '' -d
+./go.sh -p redshift-bf1 -s '' -d
+./go.sh -p blueshift-bf1 -s '' -d
+./go.sh -p noir-bf1 -s '' -d
+./go.sh -p visible-bf1 -s '' -d
