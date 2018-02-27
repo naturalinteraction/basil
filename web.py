@@ -79,6 +79,8 @@ class WebPage(resource.Resource):
             RestartSensor()
         if 'reboot-sensor' in str(request):
             RebootSensor()
+        if 'quit-quit' in str(request):
+            globa.should_quit = True
         macduff = ''
         if 'run-macduff' in str(request):
             print('running Macduff()')

@@ -479,7 +479,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         rawCapture.truncate(0)
  
         # if the `q` or ESC key was pressed, break from the loop
-        if key == ord('q') or key == 27:
+        if key == ord('q') or key == 27 or globa.should_quit:
                 print('exiting')
                 break
         time.sleep(0.25)

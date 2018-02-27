@@ -9,6 +9,9 @@ show = True
 global color_calibrate
 color_calibrate = False
 
+global should_quit
+should_quit = False
+
 global toggle_color_calibration
 toggle_color_calibration = False
 
