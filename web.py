@@ -1,6 +1,7 @@
 from utility import OpenCVVersion, GitHash, GitCommitMessage, GitRevCount, GitBranch, PiTemperature, NumberOfUploadsInQueue, MemoryPercent, CPUPercent, DiskPercent, SensorFunctioningOK, UpdateFirmware, RebootSensor, RestartSensor, Macduff
 from twisted.web import server, resource
 from twisted.internet import reactor
+import pickle
 import globa
 import socket
 import time
@@ -82,10 +83,14 @@ class WebPage(resource.Resource):
         if 'quit-quit' in str(request):
             globa.should_quit = True
         if 'change-series' in str(request):
-            parts = str(request).split('=')
+            parts = str(request).replace(' ', '=').split('=')
             print(parts)
-            print('last part', parts[-1])
-            pass  # todo: save series name to disk; empty string means pause...
+            for i,p in enumerate(parts):
+                if 'change-series' in p:
+                        globa.series = parts[i + 1].replace('clientproto', '')
+                        print('saving globa.series = %s' % globa.series)
+                        with open('series.pkl', 'w') as f:
+                            pickle.dump(globa.series, f, 0)
         macduff = ''
         if 'run-macduff' in str(request):
             print('running Macduff()')
