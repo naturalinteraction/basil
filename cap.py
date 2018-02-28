@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # import gc
 import time
 from CameraProperties import CameraProperties
