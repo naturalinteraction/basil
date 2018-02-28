@@ -82,6 +82,9 @@ class WebPage(resource.Resource):
         if 'quit-quit' in str(request):
             globa.should_quit = True
         if 'change-series' in str(request):
+            parts = str(request).split('=')
+            print(parts)
+            print('last part', parts[-1])
             pass  # todo: save series name to disk; empty string means pause...
         macduff = ''
         if 'run-macduff' in str(request):
