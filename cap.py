@@ -37,6 +37,7 @@ def InitialCalibrationIterate():
     gdi += abs(camera.analog_gain - pag)
     pdg = pdg * .8 + .2 * camera.digital_gain
     pag = pag * .8 + .2 * camera.analog_gain
+    globa.calib_error = str(gdi)
     print(('[initialcalib] Again%.3f  Dgain%.3f diff%.3f' % (float(camera.analog_gain),
                                                  float(camera.digital_gain),
                                                  gdi)))
@@ -286,6 +287,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
           color_calibration_red = max(0, min(8, color_calibration_red))
           color_calibration_blue = max(0, min(8, color_calibration_blue))
           color_calibration_shutter = max(0, min(80000, color_calibration_shutter))
+          globa.calib_error = str(mean_squared_rgb)
           print('[colorcalib] shutter%d Rgain%.3f Bgain%.3f R%.1f G%.1f B%.1f err%d' % (int(color_calibration_shutter), color_calibration_red, color_calibration_blue, mean[4], mean[5], mean[6], mean_squared_rgb))
           cp.SetPropertyOnCamera('Shutter Speed', int(color_calibration_shutter), mute=True)
           cp.SetFreakingGains(color_calibration_red, color_calibration_blue)
@@ -295,6 +297,7 @@ def AutoCalibrationIterate(previous_exposure_speed,previous_red_gain,previous_bl
     difference = float(abs(camera.exposure_speed - previous_exposure_speed) +
                        abs(camera.awb_gains[0] - previous_red_gain) +
                        abs(camera.awb_gains[1] - previous_blue_gain))
+    globa.calib_error = str(difference)
     print('[autocalib] exposure_speed' + str(camera.exposure_speed)+ ' Rgain%.3f' % (float(camera.awb_gains[0])) + ' Bgain%.3f' % (float(camera.awb_gains[1])) + ' diff' + str(difference))
     previous_exposure_speed = camera.exposure_speed
     previous_red_gain = camera.awb_gains[0]

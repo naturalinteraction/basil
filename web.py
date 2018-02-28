@@ -19,11 +19,11 @@ def Page():
         link = ''
     status = 'running...'
     if globa.initial_calibrate:
-        status = 'initial calibration...'  # todo: show current error (to give an idea of progress)
+        status = 'initial calibration... (' + globa.calib_error + ')'
     if globa.cameraproperties.auto_calibrate:
-        status = 'auto calibration...'  # todo: show current error (to give an idea of progress)
+        status = 'auto calibration... (' + globa.calib_error + ')'
     if globa.color_calibrate:
-        status = 'color calibration...'  # todo: show current error (to give an idea of progress)
+        status = 'color calibration... (' + globa.calib_error + ')'
     return ('sensor ' + hostname + '<br>\n' +
             'firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
