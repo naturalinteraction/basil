@@ -19,11 +19,11 @@ def Page():
         link = ''
     status = 'running...'
     if globa.initial_calibrate:
-        status = 'initial calibration...'
+        status = 'initial calibration...'  # todo: show current error (to give an idea of progress)
     if globa.cameraproperties.auto_calibrate:
-        status = 'auto calibration...'
+        status = 'auto calibration...'  # todo: show current error (to give an idea of progress)
     if globa.color_calibrate:
-        status = 'color calibration...'
+        status = 'color calibration...'  # todo: show current error (to give an idea of progress)
     return ('sensor ' + hostname + '<br>\n' +
             'firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
@@ -78,9 +78,11 @@ class WebPage(resource.Resource):
         if 'restart-sensor' in str(request):
             RestartSensor()
         if 'reboot-sensor' in str(request):
-            RebootSensor()
+            RebootSensor()  # todo: return <head><meta http-equiv="refresh" content="0; URL=http://www.naturalinteraction.org/" /></head>
         if 'quit-quit' in str(request):
             globa.should_quit = True
+        if 'change-series' in str(request):
+            pass  # todo: save series name to disk; empty string means pause...
         macduff = ''
         if 'run-macduff' in str(request):
             print('running Macduff()')

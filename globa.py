@@ -17,6 +17,11 @@ toggle_color_calibration = False
 
 global series
 series = 'bf1'
+with open('series.pkl', 'w') as f:
+    pickle.dump(series, f, 0)
+with open('series.pkl', 'r') as f:
+series = str(pickle.load(f))
+print('series', series)
 
 global cameraproperties
 cameraproperties = None

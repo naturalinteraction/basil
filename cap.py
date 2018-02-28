@@ -63,6 +63,10 @@ def TakePicture(img, cam):
     for i in range(10):
         AttemptUpload()
 
+    if len(globa.series) == 0:
+        print('not taking picture as series is empty')
+        return 0
+
     # audio_level = AudioLevelPi()
 
     print('Saving picture.')
