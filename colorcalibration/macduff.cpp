@@ -229,6 +229,9 @@ ColorChecker find_colorchecker(CvSeq * quads, CvSeq * boxes, CvMemStorage *stora
       passport_box_flipped = true;
     }
     
+    if (! (passport_box.size.width > 1) || ! (passport_box.size.height > 1))
+        exit(0);
+
     cvBoxPoints(passport_box, box_corners);
     // for(int i = 0; i < 4; i++)
     // {
@@ -257,7 +260,9 @@ ColorChecker find_colorchecker(CvSeq * quads, CvSeq * boxes, CvMemStorage *stora
         
     fprintf(stderr,"Spacing is %f %f\n",horizontal_spacing,vertical_spacing);
     fprintf(stderr,"Slope is %f %f\n", horizontal_slope,vertical_slope);
-    
+    if (! (horizontal_slope > -361) || ! (vertical_slope > -361) ||
+        ! (horizontal_spacing > 1) || ! (vertical_spacing > 1))
+        exit(0);
     int average_size = 0;
     for(int i = 0; i < boxes->total; i++)
     {
@@ -626,7 +631,8 @@ IplImage * find_macbeth( const char *img )
             
             // render the found colorchecker
             draw_colorchecker(found_colorchecker.values,found_colorchecker.points,macbeth_img,found_colorchecker.size);
-            
+
+            if (initial_quads->total > 1 && found_colorchecker.error < 800000)
             // print out the colorchecker info
             for(int y = 0; y < MACBETH_HEIGHT; y++) {            
                 for(int x = 0; x < MACBETH_WIDTH; x++) {
