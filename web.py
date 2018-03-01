@@ -102,13 +102,14 @@ class WebPage(resource.Resource):
             if macduff == '':
                 macduff = '<img src="plantsensor/macduff-result.jpg">'
         macduff = '<p>' + macduff + '<br>\n'
-        refresh = ''
         if 'start-color-calibration' in str(request):
             print('setting globa.start_color_calibration to True')
             globa.start_color_calibration = True
+        refresh = ''
+        if 'start-color-calibration' in str(request) or globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:
             refresh = '<meta http-equiv="refresh" content="3; URL=plantsensor" />'
             if 'admin-admin' in str(request):
-                refresh = refresh + '?admin-admin'
+                refresh = '<meta http-equiv="refresh" content="3; URL=plantsensor?admin-admin" />'
         if 'admin-admin' in str(request):
             thumb = thumb + '<p><a href="plantsensor?admin-admin&update-firmware">Update Firmware</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
