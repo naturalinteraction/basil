@@ -387,7 +387,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
               localtime = time.localtime(ticks)  # gmtime for UTC
               if localtime.tm_min == 00 and localtime.tm_hour > 9 and localtime.tm_hour < 21:  # one per hour, from 10am to 8pm
                   # if localtime.tm_hour == 10:  # one per day, at 10am
-                  globa.last_picture_taken_ticks = TakePicture(globa.image, camera)
+                  temporary_ticks = TakePicture(globa.image, camera)
+                  if temporary_ticks > 0:
+                      globa.last_picture_taken_ticks = temporary_ticks
                   print('Turning zoom off.')
                   camera.zoom = (0.0, 0.0, 1.0, 1.0)  # will not take effect immediately, but at least next one will be ok
                   print('Disabling display.')
@@ -449,7 +451,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 
         if key == ord('p'):
             if not globa.initial_calibrate:
-                globa.last_picture_taken_ticks = TakePicture(globa.image, camera)
+                temporary_ticks = TakePicture(globa.image, camera)
+                if temporary_ticks > 0:
+                    globa.last_picture_taken_ticks = temporary_ticks
             else:
                 print('hold on, cowboy!')
 
