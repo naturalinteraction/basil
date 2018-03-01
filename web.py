@@ -116,7 +116,7 @@ class WebPage(resource.Resource):
             thumb = thumb + '<a href="plantsensor?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&start-color-calibration">Toggle Color Calibration</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
