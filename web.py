@@ -102,9 +102,13 @@ class WebPage(resource.Resource):
             if macduff == '':
                 macduff = '<img src="plantsensor/macduff-result.jpg">'
         macduff = '<p>' + macduff + '<br>\n'
-        if 'toggle-color-calibration' in str(request):
-            print('setting globa.toggle_color_calibration to True')
-            globa.toggle_color_calibration = True
+        refresh = ''
+        if 'start-color-calibration' in str(request):
+            print('setting globa.start_color_calibration to True')
+            globa.start_color_calibration = True
+            refresh = '<meta http-equiv="refresh" content="3; URL=plantsensor" />'
+            if 'admin-admin' in str(request):
+                refresh = refresh + '?admin-admin'
         if 'admin-admin' in str(request):
             thumb = thumb + '<p><a href="plantsensor?admin-admin&update-firmware">Update Firmware</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
@@ -112,14 +116,14 @@ class WebPage(resource.Resource):
             thumb = thumb + '<a href="plantsensor?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&toggle-color-calibration">Toggle Color Calibration</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&start-color-calibration">Toggle Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
             thumb = thumb + 'Find Colorchecker (disabled)<br>\n'
-            thumb = thumb + 'Toggle Color Calibration (disabled)<br>\n'
-        return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"></head><body><font face="Arial">' + Page() + thumb + macduff + '</font></body>'
+            thumb = thumb + 'Start Color Calibration (disabled)<br>\n'
+        return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico">' + refresh + '</head><body><font face="Arial">' + Page() + thumb + macduff + '</font></body>'
 
 def StartWebServer():
     site = server.Site(WebPage())

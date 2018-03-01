@@ -22,8 +22,8 @@ should_restart = False
 global should_reboot
 should_reboot = False
 
-global toggle_color_calibration
-toggle_color_calibration = False
+global start_color_calibration
+start_color_calibration = False
 
 global series
 # series = 'series-name'
