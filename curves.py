@@ -62,10 +62,11 @@ def RoutineCurves(image_file, bgr, box):
         ravanello = DistanceFromToneBlurTopBottom(hsv, "ravanello.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('ravanello', ravanello)
         saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.7, 0.0)
-    if 'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file:  # alga
-        alga = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
-        UpdateWindow('alga', alga)
-        saturation = cv2.addWeighted(saturation, 1.0, alga, -0.5, 0.0)
+    if 'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:  # algae
+        print('removing algae')
+        algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
+        UpdateWindow('algae', algae)
+        saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)
     Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
