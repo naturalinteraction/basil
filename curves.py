@@ -99,14 +99,20 @@ def RoutineCurves(image_file, bgr, box):
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
     if True:
+        print('darkness')
         DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
+        print('h')
         DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
+        print('s')
         DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
+        print('v')
         DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
-        # DrawChart(foreground, measurements)
+        print('sat_mean')
         DrawChart(foreground, sat_mean, color=(0, 255, 255))
 
+    print('disuniformity')
     DrawChart(foreground, disuniformity, color=(255, 0, 255))
+    print('topped_sat_mean')
     DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
