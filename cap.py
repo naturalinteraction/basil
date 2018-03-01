@@ -494,8 +494,14 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         time.sleep(0.25)
 
         if globa.should_restart:
+            for i in range(10):
+                print(i)
+                WebServerIterate()
             RestartSensor()
         if globa.should_reboot:
+            for i in range(10):
+                print(i)
+                WebServerIterate()
             RebootSensor()
 
 camera.close()
