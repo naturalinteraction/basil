@@ -70,6 +70,8 @@ class WebPage(resource.Resource):
                 request.setHeader('content-type', "text/html")
                 return 'Thumbnail not available.'
         thumb = '<p><a href="plantsensor?refresh-thumbnail">Thumbnail Refresh</a><br>\n'
+        if 'admin-admin' in str(request):
+            thumb = '<p><a href="plantsensor?admin-admin&refresh-thumbnail">Thumbnail Refresh</a><br>\n'
         if 'refresh-thumbnail' in str(request):
             thumb = thumb + '<p><img src="uploaded/plantsensorthumbnail.jpg">'
         if 'update-firmware' in str(request):
@@ -103,12 +105,12 @@ class WebPage(resource.Resource):
         if 'toggle-color-calibration' in str(request):
             print('setting globa.toggle_color_calibration to True')
             globa.toggle_color_calibration = True
-        if 'valli-admin' in str(request):
-            thumb = thumb + '<p><a href="plantsensor?update-firmware">Update Firmware</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?restart-sensor">Restart Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?reboot-sensor">Reboot Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?run-macduff">Find Colorchecker</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?toggle-color-calibration">Toggle Color Calibration</a><br>\n'
+        if 'admin-admin' in str(request):
+            thumb = thumb + '<p><a href="plantsensor?admin-admin&update-firmware">Update Firmware</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&run-macduff">Find Colorchecker</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&toggle-color-calibration">Toggle Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
