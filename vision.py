@@ -42,24 +42,16 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.01, xoffset=0.05, ymult=0.01, yoffset=0.5):
+def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.007, xoffset=0.01, ymult=0.003, yoffset=0.01):
     h,w = foreground.shape[:2]
     xmult = int(xmult * w)
     xoffset = int(xoffset * w)
     ymult = int(ymult * h)
     yoffset = int(yoffset * h)
     print('minmax', min(measurements), max(measurements))
-    '''
-    darkness  minmax 110 169
-    h minmax 19  38
-    s minmax 76  132
-    v minmax 124   174
-    sat_mean  minmax 25 99
-    disuniformity minmax -64  -23
-    topped_sat_mean minmax 38  147
-    '''
+    cv2.circle(foreground, (0 * xmult + xoffset, int(h - measurements[0] * ymult - yoffset)), 3, color, thickness=5)
     for i in range(1, len(measurements)):
-        baseline = measurements[0]  # todo: draw absolute charts, take into account actual time of each capture, contain chart in image
+        baseline = 0  # todo: take into account actual time of each capture
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
         cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))

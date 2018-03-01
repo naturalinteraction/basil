@@ -81,7 +81,7 @@ def RoutineCurves(image_file, bgr, box):
     uniformity_mask = Resize(dist, 0.1)
     uniformity_mask = cv2.Canny(uniformity_mask, 200, 200)
     uniformity_value,ignore = cv2.meanStdDev(uniformity_mask)
-    uniformity_value = 255 - uniformity_value
+    uniformity_value = 200 - uniformity_value
     if len(uniformity) > 0:
         uniformity.append(uniformity_value * curve_alpha + (1.0 - curve_alpha) * uniformity[-1])
     else:
@@ -100,13 +100,13 @@ def RoutineCurves(image_file, bgr, box):
 
     if True:
         print('darkness')
-        DrawChart(foreground, darkness, color=(0, 0, 0), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, darkness, color=(0, 0, 0))
         print('h')
-        DrawChart(foreground, h, color=(255, 0, 0), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, h, color=(255, 0, 0))
         print('s')
-        DrawChart(foreground, s, color=(0, 255, 0), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, s, color=(0, 255, 0))
         print('v')
-        DrawChart(foreground, v, color=(0, 0, 255), ymult=0.005, yoffset=0.5)
+        DrawChart(foreground, v, color=(0, 0, 255))
         print('sat_mean')
         DrawChart(foreground, sat_mean, color=(0, 255, 255))
 
