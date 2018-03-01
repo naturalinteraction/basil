@@ -493,6 +493,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                 break
         time.sleep(0.25)
 
+        if globa.should_restart:
+            RestartSensor()
+        if globa.should_reboot:
+            RebootSensor()
+
 camera.close()
 print('Camera closed.')
 cv2.destroyAllWindows()

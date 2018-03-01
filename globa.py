@@ -16,6 +16,12 @@ calib_error = '0'
 global should_quit
 should_quit = False
 
+global should_restart
+should_restart = False
+
+global should_reboot
+should_reboot = False
+
 global toggle_color_calibration
 toggle_color_calibration = False
 

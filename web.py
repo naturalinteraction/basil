@@ -77,9 +77,11 @@ class WebPage(resource.Resource):
             print(firmware_result)
             thumb = thumb + '<p><pre><code>' + firmware_result + '</pre></code>'
         if 'restart-sensor' in str(request):
-            RestartSensor()
+            globa.should_restart = True
+            return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"><meta http-equiv="refresh" content="0; URL=http://www.naturalinteraction.org/" /></head><body>Restarting...</body>'
         if 'reboot-sensor' in str(request):
-            RebootSensor()  # todo: return <head><meta http-equiv="refresh" content="0; URL=http://www.naturalinteraction.org/" /></head>
+            globa.should_reboot = True
+            return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"><meta http-equiv="refresh" content="0; URL=http://www.naturalinteraction.org/" /></head><body>Rebooting...</body>'
         if 'quit-quit' in str(request):
             globa.should_quit = True
         if 'change-series' in str(request):
