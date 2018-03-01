@@ -25,6 +25,9 @@ def Page():
         status = 'auto calibration... (' + globa.calib_error + ')'
     if globa.color_calibrate:
         status = 'color calibration... (' + globa.calib_error + ')'
+    series_name = globa.series
+    if len(series_name) == 0:
+        series_name = '[empty, which means the sensor is paused]'
     return ('sensor ' + hostname + '<br>\n' +
             'firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
@@ -34,9 +37,9 @@ def Page():
             'temperature ' + str(PiTemperature()) + '<p>\n' +
             status + '<p>\n' +
             # 'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
-            prop + '<p>\n' +
-            'Sensor OK? ' + str(SensorFunctioningOK()) + '<br>\n'
-            'series ' + globa.series + '<br>\n' +
+            prop + '\n' +
+            'Sensor OK? ' + str(SensorFunctioningOK()) + '<p>\n'
+            'Series ' + series_name + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
             'started at ' + globa.time_process_started_string + '<br>\n' +
