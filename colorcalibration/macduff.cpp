@@ -641,8 +641,8 @@ IplImage * find_macbeth( const char *img )
                         this_point.val[0],this_point.val[1]);
                 }
             }
-            // printf("%0.f\n%f\n",found_colorchecker.size,found_colorchecker.error);
-            
+            fprintf(stderr, "%0.f\n%f\n",found_colorchecker.size,found_colorchecker.error);
+
         }
                 
         cvReleaseMemStorage( &storage );
