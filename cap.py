@@ -26,7 +26,7 @@ def SaveLastPictureTicks(ticks, filename):
 def LoadLastPictureTicks():
     with open('last-picture-taken-ticks.pkl', 'rb') as f:
         (ticks,filename) = pickle.load(f)
-    print('Loaded time of last picture (and last filename).')
+    print('Loaded time of last picture (and last filename). Ticks are %d and filename is %s' % (int(ticks), filename))  # todo
     return (ticks,filename)
 
 def InitialCalibrationIterate():

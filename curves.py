@@ -15,7 +15,7 @@ curve_alpha = 0.05
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
-
+    print(image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-'))
     hires = bgr
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
