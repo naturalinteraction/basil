@@ -49,10 +49,11 @@ def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.01, xoffs
     ymult = int(ymult * h)
     yoffset = int(yoffset * h)
     for i in range(1, len(measurements)):
-        baseline = measurements[0]  # todo: draw absolute charts, take into account actual time of each capture, contain chart in image, bullets
+        baseline = measurements[0]  # todo: draw absolute charts, take into account actual time of each capture, contain chart in image
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
         cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
+        cv2.circle(foreground, (i * xmult + xoffset, int(h - last * ymult - yoffset)), 3, color, thickness=5)
 
 def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
     biomass = cv2.mean(dist)[0]
