@@ -108,6 +108,8 @@ class WebPage(resource.Resource):
         if 'admin-admin' in str(request):
             thumb = thumb + '<p><a href="plantsensor?admin-admin&update-firmware">Update Firmware</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&quit-quit">Quit Sensor</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&toggle-color-calibration">Toggle Color Calibration</a><br>\n'
