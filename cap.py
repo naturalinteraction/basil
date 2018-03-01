@@ -350,6 +350,7 @@ previous_blue_gain = -1
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=False):
         globa.image = frame.array
         WebServerIterate()
+        WebServerIterate()
  
         if (globa.initial_calibrate and globa.initial_calibrate_but_done):
             PrintHelp()

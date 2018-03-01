@@ -96,8 +96,8 @@ class WebPage(resource.Resource):
                         with open('series.pkl', 'w') as f:
                             pickle.dump(globa.series, f, 0)
         macduff = ''
-        if 'run-macduff' in str(request):
-            print('running Macduff()')
+        if 'find-colorchecker' in str(request):
+            print('finding colorchecker')
             macduff = Macduff()
             if macduff == '':
                 macduff = '<img src="plantsensor/macduff-result.jpg">'
@@ -109,7 +109,7 @@ class WebPage(resource.Resource):
             thumb = thumb + '<p><a href="plantsensor?admin-admin&update-firmware">Update Firmware</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&run-macduff">Find Colorchecker</a><br>\n'
+            thumb = thumb + '<a href="plantsensor?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
             thumb = thumb + '<a href="plantsensor?admin-admin&toggle-color-calibration">Toggle Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
