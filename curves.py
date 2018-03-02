@@ -14,7 +14,7 @@ tone_filename = 'curves.temp'
 uniformity = []
 brightness = []
 
-curve_alpha = 1.0 # 0.05  # todo: take into account time since previous reading
+curve_alpha = 0.5 # 0.05  # todo: take into account time since previous reading
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
@@ -75,7 +75,7 @@ def RoutineCurves(image_file, bgr, box):
         ravanello = DistanceFromToneBlurTopBottom(hsv, "ravanello.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('ravanello', ravanello)
         saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.7, 0.0)
-    if 'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:  # algae
+    if 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:  # algae
         print('removing algae')
         algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
