@@ -1,5 +1,7 @@
 from vision import *
 
+from datetime import datetime
+
 measurements = []
 h = []
 s = []
@@ -15,7 +17,16 @@ curve_alpha = 0.05
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
-    print(image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-'))
+    dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
+    print(dt)
+    date = datetime.now()
+    date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
+    print(date)
+    timediff = date - datetime.fromtimestamp(0)
+    minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
+    print('timediff', timediff)
+    print('minutes', minutes)
+
     hires = bgr
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
