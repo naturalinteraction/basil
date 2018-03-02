@@ -42,7 +42,7 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.007, xoffset=0.01, ymult=0.003, yoffset=0.01):
+def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01):
     h,w = foreground.shape[:2]
     xmult = int(xmult * w)
     xoffset = int(xoffset * w)
@@ -51,11 +51,13 @@ def DrawChart(foreground, measurements, color=(255, 255, 255), xmult=0.007, xoff
     print('minmax', min(measurements), max(measurements))
     cv2.circle(foreground, (0 * xmult + xoffset, int(h - measurements[0] * ymult - yoffset)), 3, color, thickness=5)
     for i in range(1, len(measurements)):
-        baseline = 0  # todo: take into account actual time of each capture
+        mins = minutes_since_epoch[i] - minutes_since_epoch[0]
+        previous_mins = minutes_since_epoch[i - 1] - minutes_since_epoch[0]
+        baseline = 0
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
-        cv2.line(foreground, ((i - 1) * xmult + xoffset, int(h - previous * ymult - yoffset)), (i * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
-        cv2.circle(foreground, (i * xmult + xoffset, int(h - last * ymult - yoffset)), 3, color, thickness=5)
+        cv2.line(foreground, (previous_mins // 60 * xmult + xoffset, int(h - previous * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
+        cv2.circle(foreground, (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), 3, color, thickness=5)
 
 def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
     biomass = cv2.mean(dist)[0]

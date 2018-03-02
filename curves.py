@@ -2,6 +2,7 @@ from vision import *
 
 from datetime import datetime
 
+minutes_since_epoch = []
 measurements = []
 h = []
 s = []
@@ -11,9 +12,9 @@ topped_sat_mean = []
 jitter = []
 tone_filename = 'curves.temp'
 uniformity = []
-darkness = []
+brightness = []
 
-curve_alpha = 0.05
+curve_alpha = 1.0 # 0.05  # todo: take into account time since previous reading
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
@@ -24,18 +25,19 @@ def RoutineCurves(image_file, bgr, box):
     print(date)
     timediff = date - datetime.fromtimestamp(0)
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
-    print('timediff', timediff)
+    # print('timediff', timediff)
     print('minutes', minutes)
+    minutes_since_epoch.append(minutes)
 
     hires = bgr
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
-    dark = FrameBrightness(bgr)
-    if len(darkness) > 0:
-        darkness.append(dark * curve_alpha + (1.0 - curve_alpha) * darkness[-1])
+    bright = FrameBrightness(bgr)
+    if len(brightness) > 0:
+        brightness.append(bright * curve_alpha + (1.0 - curve_alpha) * brightness[-1])
     else:
-        darkness.append(dark)
+        brightness.append(bright)
 
     if len(measurements) == 0:
         default_mean,default_std = FindDominantTone(hsv)
@@ -111,20 +113,20 @@ def RoutineCurves(image_file, bgr, box):
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
     if True:
-        print('darkness')
-        DrawChart(foreground, darkness, color=(0, 0, 0))
+        print('brightness')
+        DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
         print('h')
-        DrawChart(foreground, h, color=(255, 0, 0))
+        DrawChart(foreground, minutes_since_epoch, h, color=(255, 0, 0))
         print('s')
-        DrawChart(foreground, s, color=(0, 255, 0))
+        DrawChart(foreground, minutes_since_epoch, s, color=(0, 255, 0))
         print('v')
-        DrawChart(foreground, v, color=(0, 0, 255))
+        DrawChart(foreground, minutes_since_epoch, v, color=(0, 0, 255))
         print('sat_mean')
-        DrawChart(foreground, sat_mean, color=(0, 255, 255))
+        DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 255, 255))
 
     print('uniformity')
-    DrawChart(foreground, uniformity, color=(255, 0, 255))
+    DrawChart(foreground, minutes_since_epoch, uniformity, color=(255, 0, 255))
     print('topped_sat_mean')
-    DrawChart(foreground, topped_sat_mean, color=(255, 255, 0))
+    DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 0))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
