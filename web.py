@@ -125,6 +125,8 @@ class WebPage(resource.Resource):
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
+            thumb = thumb + 'Quit Sensor (disabled)<br>\n'
+            thumb = thumb + 'Change Series (disabled)<br>\n'
             thumb = thumb + 'Find Colorchecker (disabled)<br>\n'
             thumb = thumb + 'Start Color Calibration (disabled)<br>\n'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico">' + refresh + '</head><body><font face="Arial">' + Page() + thumb + macduff + '</font></body>'
