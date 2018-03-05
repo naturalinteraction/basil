@@ -138,14 +138,16 @@ Change via script:
 
 #### Creating image of SD card:
 ```
-sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc
+# lsblk to list devices
+# partition(s) must be unmounted (with umount; partitions, not the disk itself)
+sudo dd if=/dev/mmcblk0 of=sdimage.img bs=4096 conv=notrunc  # if=/dev/sdb bs=4M
 ```
 
 
 #### Copying image to SD card:
 ```
 # lsblk to list devices
-# partition(s) must be unmounted
+# partition(s) must be unmounted (with umount; partitions, not the disk itself)
 # be very careful with what follows, see https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
 sudo dd if=sdimage.img of=/dev/mmcblk0 bs=4096 conv=notrunc  # of=/dev/sdb bs=4M
 ```
