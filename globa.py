@@ -1,6 +1,9 @@
 import time
 import pickle
 
+global git_rev_count_and_branch
+git_rev_count_and_branch = 'none'
+
 global image
 image = None
 

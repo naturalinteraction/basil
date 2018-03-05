@@ -7,6 +7,8 @@ import socket
 import time
 import cv2
 
+globa.git_rev_count_and_branch = GitRevCount() + ' ' + GitBranch()
+
 def Page():
     try:
         prop = globa.cameraproperties.AllPropertiesString()
@@ -29,7 +31,7 @@ def Page():
     if len(series_name) == 0:
         series_name = '[empty, which means the sensor is paused]'
     return ('sensor ' + hostname + '<br>\n' +
-            'firmware v0.' + GitRevCount() + ' ' + GitBranch() + '<br>\n' +
+            'firmware v0.' + globa.git_rev_count_and_branch + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
             'cpu ' + str(CPUPercent()) + '%<br>\n' +
             'memory ' + str(MemoryPercent()) + '%<br>\n' +
