@@ -14,7 +14,7 @@ tone_filename = 'curves.temp'
 uniformity = []
 brightness = []
 
-curve_alpha = 0.5 # 0.05  # todo: take into account time since previous reading
+curve_alpha = 1.0 # 0.05  # todo: take into account time since previous reading
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
@@ -115,14 +115,14 @@ def RoutineCurves(image_file, bgr, box):
     if True:
         print('brightness')
         DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
-        print('h')
-        DrawChart(foreground, minutes_since_epoch, h, color=(255, 0, 0))
-        print('s')
-        DrawChart(foreground, minutes_since_epoch, s, color=(0, 255, 0))
-        print('v')
-        DrawChart(foreground, minutes_since_epoch, v, color=(0, 0, 255))
-        print('sat_mean')
-        DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 255, 255))
+        # print('h')
+        # DrawChart(foreground, minutes_since_epoch, h, color=(255, 0, 0))
+        # print('s')
+        # DrawChart(foreground, minutes_since_epoch, s, color=(0, 255, 0))
+        # print('v')
+        # DrawChart(foreground, minutes_since_epoch, v, color=(0, 0, 255))
+        # print('sat_mean')
+        # DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 255, 255))
 
     print('uniformity')
     DrawChart(foreground, minutes_since_epoch, uniformity, color=(255, 0, 255))
