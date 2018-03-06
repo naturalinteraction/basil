@@ -79,7 +79,7 @@ def RoutineCurves(image_file, bgr, box):
         print('removing algae')
         algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
-        saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)
+        saturation = cv2.addWeighted(saturation, 1.0, algae, -1.0, 0.0)
     Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
@@ -93,7 +93,7 @@ def RoutineCurves(image_file, bgr, box):
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
     uniformity_mask = Resize(saturation, 0.1)
-    ret,uniformity_mask = cv2.threshold(uniformity_mask, 80, 255, cv2.THRESH_BINARY)
+    ret,uniformity_mask = cv2.threshold(uniformity_mask, 100, 255, cv2.THRESH_BINARY)  # Otsu doesn't help here
     UpdateWindow('before canny', uniformity_mask)
     uniformity_mask = cv2.Canny(uniformity_mask, 200, 200)
     uniformity_value,ignore = cv2.meanStdDev(uniformity_mask)
