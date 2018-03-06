@@ -92,7 +92,9 @@ def RoutineCurves(image_file, bgr, box):
     foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
-    uniformity_mask = Resize(dist, 0.1)
+    uniformity_mask = Resize(saturation, 0.1)
+    ret,uniformity_mask = cv2.threshold(uniformity_mask, 80, 255, cv2.THRESH_BINARY)
+    UpdateWindow('before canny', uniformity_mask)
     uniformity_mask = cv2.Canny(uniformity_mask, 200, 200)
     uniformity_value,ignore = cv2.meanStdDev(uniformity_mask)
     uniformity_value = 200 - uniformity_value
