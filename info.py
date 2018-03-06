@@ -2,10 +2,10 @@
 
 from utility import *
 
-print(GetMAC('eth0'))
-print(GetMAC('wlan0'))
-print(GetMAC('usb0'))
-print(GetCPUSerial())
-print(GetSDSerial())
-print(GetSDCID())
+print('eth0', GetMAC('eth0'))
+print('wlan0', GetMAC('wlan0'))
+print('usb0', GetMAC('usb0'))
+print('cpuserial', GetCPUSerial())
+print('sdserial', GetSDSerial())
+print('sdcid', GetSDCID())
 
