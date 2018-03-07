@@ -79,7 +79,7 @@ def RoutineCurves(image_file, bgr, box):
         print('removing algae')
         algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
-        saturation = cv2.addWeighted(saturation, 1.0, algae, -1.0, 0.0)
+        saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)  # or -1.0?
     Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
