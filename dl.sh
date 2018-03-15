@@ -1,4 +1,4 @@
-./go.sh -p redshift-bf1 -s '' -d
-./go.sh -p blueshift-bf1 -s '' -d
-./go.sh -p noir-bf1 -s '' -d
-./go.sh -p visible-bf1 -s '' -d
+./go.sh -p redshift-hawk -s '' -d
+./go.sh -p blueshift-hawk -s '' -d
+./go.sh -p noir-hawk -s '' -d
+./go.sh -p visible-hawk -s '' -d

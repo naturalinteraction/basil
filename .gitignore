@@ -121,3 +121,7 @@ colorcalibration/*.csv
 colorcalibration/*.jpg
 
 series.pkl
+
+MqttImageUploader/*.jpg
+MqttImageUploader/*.png
+

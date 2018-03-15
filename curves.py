@@ -14,7 +14,14 @@ tone_filename = 'curves.temp'
 uniformity = []
 brightness = []
 
-curve_alpha = 1.0 # 0.05  # todo: take into account time since previous reading
+def LinearMapping(val, in_min, in_max, out_min, out_max):
+    val = float(max(in_min, min(in_max, val)))
+    print('a', val)
+    val = val - in_min
+    print('b', val)
+    val = val / (in_max - in_min)
+    print('c', val)
+    return out_min + val * (out_max - out_min)
 
 def RoutineCurves(image_file, bgr, box):
     print(image_file)
@@ -28,6 +35,13 @@ def RoutineCurves(image_file, bgr, box):
     # print('timediff', timediff)
     print('minutes', minutes)
     minutes_since_epoch.append(minutes)
+
+    curve_alpha = 1.0
+    if len(minutes_since_epoch) > 1:
+        minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
+        print('minutes_since_previous', minutes_since_previous)
+        curve_alpha = LinearMapping(minutes_since_previous, 60, 60 * 24, 0.05, 1.0)
+    print('curve_alpha', curve_alpha)
 
     hires = bgr
 
