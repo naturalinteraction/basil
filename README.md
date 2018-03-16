@@ -85,8 +85,9 @@ Change via script:
 - [x] Detect if scene is dark
 - [x] Hires image and charts
 - [ ] Detect if scene is not static (motion detection)
-- [ ] Find biomass segmentation algorithm params automatically
+- [x] Find biomass segmentation algorithm params automatically
 - [ ] Perspective mask, warping for perspective invariant areas (needs a more clear idea about the position relative to the tray)
+- [ ] Mask to remove central stripe
 - [ ] ~~Background subtraction~~
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
 - [ ] ~~Retain pixel probability from previous frames (running average)~~
@@ -129,7 +130,7 @@ Change via script:
 - [x] Print 24 errors (with the average squared error)
 - [x] Web interface
 - [x] Click 4 times instead of 24, perspective grid
-- [ ] Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF? It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.
+- [ ] ~~Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF? It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.~~
 - [ ] ~~Search brightness and contrast values (after the gains are good). Or make sure brightness is 50 and contrast is 10 and so on.~~
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
