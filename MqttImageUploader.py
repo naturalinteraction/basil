@@ -8,18 +8,8 @@ from io import BytesIO
 
 from PIL import Image, ImageColor
 
-
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
-
-# def on_message(client, userdata, msg):
-# 	print(msg.topic+" "+str(msg.payload))
-
-
-def on_publish(client, userdata, result):
-    print("data published \n")
-    print(result)
-
 
 class MqttImageUploader:
     def __init__(self, host, port, topic, tls, ca_certificate, client_certificate, client_key):
@@ -45,11 +35,22 @@ class MqttImageUploader:
         imgFile = open(image_name,"r")
         img = imgFile.read()
         asString = base64.b64encode(img)
-        print(len(asString))
+        print(str(len(asString)) + ' bytes')
         j = json.loads(json_string)
         j['image'] = asString
         j['timestamp'] = time.time()
-        print('publish call about to be made')
         client.publish(self.topic, json.dumps(j), qos=0)
-        print('publish returned')
         client.loop_stop()
+
+
+mqtt_url = "159.100.249.153"
+mqtt_port = 8883
+
+def mqtt_publish_callback(client, userdata, result):
+    print("published data")
+    print(result)
+
+def UploadMQTT(topic, filename, dictionary):
+    print('UploadMQTT')
+    uploader = MqttImageUploader(mqtt_url, mqtt_port, topic, True, "/home/av/ca.crt", "/home/av/client.crt","/home/av/client.key")
+    uploader.UploadData(filename, json.dumps(dictionary), mqtt_publish_callback)
