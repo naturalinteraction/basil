@@ -19,17 +19,6 @@ from utility import Macduff
 from web import *
 from MqttImageUploader import *
 
-# temporary mqtt test
-d = dict()
-d['timestamp'] = 123123123
-d['farmId'] = "valliFarm"
-d['batchId'] = "valliBatchBig"
-d['lineId'] = 2
-d['fake'] = 420
-d['type'] = "image"
-UploadMQTT("zero/test/images", 'test.txt', d)
-# end of temporary mqtt test
-
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
         pickle.dump((ticks,filename), f, 0)
@@ -132,6 +121,20 @@ def AttemptUpload():
         return
     print('Attempting upload.')
     uploaded = UploadFileToS3(images_in_cache[0])
+    if uploaded:
+        d = dict()
+        d['timestamp'] = 666666
+        d['farmId'] = socket.gethostname()
+        d['batchId'] = globa.series
+        d['lineId'] = 666
+        d['uniformity'] = 669
+        d['biomass'] = 969
+        d['type'] = "image"
+        code = UploadMQTT("zero/test/images", images_in_cache[0], d)
+        print('code' + str(code))
+        if not code == 1:
+            print('MQTT upload failed!')
+            uploaded = False
     if uploaded:
         print('Upload succeeded. Deleting image from cache.')
         try:
