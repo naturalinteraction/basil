@@ -121,7 +121,7 @@ def AttemptUpload():
         return
     print('Attempting upload.')
     uploaded = UploadFileToS3(images_in_cache[0])
-    if uploaded:
+    if False and uploaded:
         d = dict()
         d['timestamp'] = 666666
         d['farmId'] = socket.gethostname()
