@@ -17,6 +17,7 @@ Algorithm is plant-specific. Plant in tray is known. Day of growth is known. Whi
 - [x] Design and implement controls on web interface
 - [ ] Algorithms: segmentation, analysis, calibration
 - [ ] Image processing on sensor
+- [ ] Image processing on server
 - [ ] Commented source code
 - [ ] Operation guide
 
@@ -84,11 +85,13 @@ Change via script:
 - [x] Find biomass dominant tone based on saturation
 - [x] Detect if scene is dark
 - [x] Hires image and charts
-- [ ] Detect if scene is not static (motion detection)
 - [x] Find biomass segmentation algorithm params automatically
-- [ ] Perspective mask, warping for perspective invariant areas (needs a more clear idea about the position relative to the tray)
+- [ ] Upload MQTT
 - [ ] Mask to remove central stripe
-- [ ] ~~Background subtraction~~
+- [ ] Perspective mask, warping for perspective invariant areas
+- [ ] Servers list in git: an http request containing image name is done until a server responds positively
+- [ ] Detect if scene is not static (motion detection)
+- [ ] Background subtraction
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
 - [ ] ~~Retain pixel probability from previous frames (running average)~~
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
