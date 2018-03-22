@@ -121,7 +121,7 @@ def AttemptUpload():
         return
     print('Attempting upload.')
     uploaded = UploadFileToS3(images_in_cache[0])
-    if False and uploaded:
+    if uploaded:
         d = dict()
         d['timestamp'] = 666666
         d['farmId'] = socket.gethostname()
@@ -130,9 +130,10 @@ def AttemptUpload():
         d['uniformity'] = 669
         d['biomass'] = 969
         d['type'] = "image"
+        print(d)
         code = UploadMQTT("zero/test/images", images_in_cache[0], d)
-        print('code' + str(code))
-        if not code == 1:
+        print('code ' + str(code))
+        if not (code == 1):
             print('MQTT upload failed!')
             uploaded = False
     if uploaded:
