@@ -6,8 +6,6 @@ import base64
 import json
 from io import BytesIO
 
-from PIL import Image, ImageColor
-
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
 
@@ -52,5 +50,5 @@ def mqtt_publish_callback(client, userdata, result):
 
 def UploadMQTT(topic, filename, dictionary):
     print('UploadMQTT')
-    uploader = MqttImageUploader(mqtt_url, mqtt_port, topic, True, "/home/av/ca.crt", "/home/av/client.crt","/home/av/client.key")
+    uploader = MqttImageUploader(mqtt_url, mqtt_port, topic, True, "/etc/zero/ca.crt", "/etc/zero/client.crt","/etc/zero/client.key")
     uploader.UploadData(filename, json.dumps(dictionary), mqtt_publish_callback)
