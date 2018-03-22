@@ -8,6 +8,7 @@ from S3 import DownloadFileFromS3
 from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
 import os
+from MqttImageUploader import *
 
 def test_GitCommitMessage():
     assert len(GitCommitMessage().split('\n')) >= 5
@@ -100,3 +101,14 @@ def test_ColorStatistics():
     mean,stddev = cs.ComputeStats()
     assert(list(mean) == [2.5,  3.5,  4.5])
     assert(list(stddev) == [1.5,  1.5,  1.5])
+
+def test_MQTT():
+    d = dict()
+    d['timestamp'] = 123123123
+    d['farmId'] = "valliFarm"
+    d['batchId'] = "valliBatchBig"
+    d['lineId'] = 2
+    d['fake'] = 420
+    d['type'] = "image"
+    assert(UploadMQTT("zero/test/images", 'test.txt', d) == 1)
+

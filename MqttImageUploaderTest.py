@@ -7,4 +7,4 @@ d['batchId'] = "valliBatchBig"
 d['lineId'] = 2
 d['fake'] = 420
 d['type'] = "image"
-UploadMQTT("zero/test/images", 'test.txt', d)
+print(UploadMQTT("zero/test/images", 'test.txt', d))

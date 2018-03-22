@@ -9,6 +9,8 @@ from io import BytesIO
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
 
+mqtt_return_code = -1
+
 class MqttImageUploader:
     def __init__(self, host, port, topic, tls, ca_certificate, client_certificate, client_key):
         self.host = host
@@ -47,8 +49,13 @@ mqtt_port = 8883
 def mqtt_publish_callback(client, userdata, result):
     print("published data")
     print(result)
+    global mqtt_return_code
+    mqtt_return_code = result
 
 def UploadMQTT(topic, filename, dictionary):
     print('UploadMQTT')
+    global mqtt_return_code
+    mqtt_return_code = -1
     uploader = MqttImageUploader(mqtt_url, mqtt_port, topic, True, "/etc/zero/ca.crt", "/etc/zero/client.crt","/etc/zero/client.key")
     uploader.UploadData(filename, json.dumps(dictionary), mqtt_publish_callback)
+    return mqtt_return_code
