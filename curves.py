@@ -2,6 +2,8 @@ from vision import *
 
 from datetime import datetime
 
+smooth_curves = True
+
 minutes_since_epoch = []
 measurements = []
 h = []
@@ -37,13 +39,6 @@ def RoutineCurves(image_file, bgr, box):
     # print('minutes', minutes)
     minutes_since_epoch.append(minutes)
 
-    curve_alpha = 1.0
-    if len(minutes_since_epoch) > 1:
-        minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
-        # print('minutes_since_previous', minutes_since_previous)
-        curve_alpha = LinearMapping(minutes_since_previous, 60, 60 * 24, 0.05, 1.0)
-    # print('curve_alpha', curve_alpha)
-
     hires = bgr
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
@@ -70,6 +65,13 @@ def RoutineCurves(image_file, bgr, box):
     # print(motion_value)
     previous = motion_bgr
     # end of motion detection
+
+    curve_alpha = 1.0
+    if smooth_curves and len(minutes_since_epoch) > 1:
+        minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
+        # print('minutes_since_previous', minutes_since_previous)
+        curve_alpha = LinearMapping(minutes_since_previous + motion_value * 7, 60, 60 * 24, 0.1, 1.0)
+    print(motion_value, 'curve_alpha', curve_alpha)
 
     bright = FrameBrightness(bgr)
     if False:  # len(brightness) > 0:
@@ -100,7 +102,7 @@ def RoutineCurves(image_file, bgr, box):
     # UpdateWindow('dist', dist)
 
     saturation = cv2.split(hsv)[1]
-    Normalize(saturation)
+    Normalize(saturation)  # normalization tested: stable ratio of 1.5
     # UpdateWindow('normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
     if len(sat_mean) > 0:
