@@ -143,7 +143,6 @@ def RoutineCurves(image_file, bgr, box):
     UpdateWindow('uniformity_mask', uniformity_mask)
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
-    Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date))
 
     h.append(read_mean[0])
     s.append(read_mean[1])
@@ -151,22 +150,11 @@ def RoutineCurves(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
-    if True:
-        # print('brightness')
-        DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
-        DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 255))
-        # print('h')
-        # DrawChart(foreground, minutes_since_epoch, h, color=(255, 0, 0))
-        # print('s')
-        # DrawChart(foreground, minutes_since_epoch, s, color=(0, 255, 0))
-        # print('v')
-        # DrawChart(foreground, minutes_since_epoch, v, color=(0, 0, 255))
-        # print('sat_mean')
-        # DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 255, 255))
-
-    # print('uniformity')
+    DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 255), bars=True)
+    DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
     DrawChart(foreground, minutes_since_epoch, uniformity, color=(255, 0, 255))
-    # print('topped_sat_mean')
+    # biomass
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 0))
+    Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')

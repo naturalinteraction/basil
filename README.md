@@ -15,7 +15,7 @@ Algorithm is plant-specific. Plant in tray is known. Day of growth is known. Whi
 - [x] Design enclosing case
 - [x] Hardware specification document
 - [x] Design and implement controls on web interface
-- [ ] Algorithms: segmentation, analysis, calibration
+- [x] Algorithms: segmentation, analysis, calibration
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Commented source code
@@ -87,8 +87,8 @@ Change via script:
 - [x] Hires image and charts
 - [x] Find biomass segmentation algorithm params automatically
 - [x] Upload MQTT
-- [ ] Detect if scene is not static (motion detection)
-- [ ] Background subtraction
+- [x] Detect if scene is not static (motion detection)
+- [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
 - [ ] ~~Prior knowledge is stored somewhere~~
