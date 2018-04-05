@@ -48,7 +48,7 @@ def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 25
     xoffset = int(xoffset * w)
     ymult = int(ymult * h)
     yoffset = int(yoffset * h)
-    print('minmax', min(measurements), max(measurements))
+    # print('minmax', min(measurements), max(measurements))
     cv2.circle(foreground, (0 * xmult + xoffset, int(h - measurements[0] * ymult - yoffset)), 3, color, thickness=5)
     for i in range(1, len(measurements)):
         mins = minutes_since_epoch[i] - minutes_since_epoch[0]
@@ -67,7 +67,7 @@ def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
         jitter.append(biomass - predicted_biomass)
         biomass = smooth_biomass
         jit = np.std(jitter)
-        print('jitter %.3f' % (jit))
+        # print('jitter %.3f' % (jit))
     measurements.append(biomass)
     return biomass
 

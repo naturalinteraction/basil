@@ -16,32 +16,32 @@ brightness = []
 
 def LinearMapping(val, in_min, in_max, out_min, out_max):
     val = float(max(in_min, min(in_max, val)))
-    print('a', val)
+    # print('a', val)
     val = val - in_min
-    print('b', val)
+    # print('b', val)
     val = val / (in_max - in_min)
-    print('c', val)
+    # print('c', val)
     return out_min + val * (out_max - out_min)
 
 def RoutineCurves(image_file, bgr, box):
-    print(image_file)
+    # print(image_file)
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
-    print(dt)
+    # print(dt)
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
     print(date)
     timediff = date - datetime.fromtimestamp(0)
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
     # print('timediff', timediff)
-    print('minutes', minutes)
+    # print('minutes', minutes)
     minutes_since_epoch.append(minutes)
 
     curve_alpha = 1.0
     if len(minutes_since_epoch) > 1:
         minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
-        print('minutes_since_previous', minutes_since_previous)
+        # print('minutes_since_previous', minutes_since_previous)
         curve_alpha = LinearMapping(minutes_since_previous, 60, 60 * 24, 0.05, 1.0)
-    print('curve_alpha', curve_alpha)
+    # print('curve_alpha', curve_alpha)
 
     hires = bgr
 
@@ -55,20 +55,20 @@ def RoutineCurves(image_file, bgr, box):
 
     if len(measurements) == 0:
         default_mean,default_std = FindDominantTone(hsv)
-        PrintStats('dom', default_mean, default_std)
+        # PrintStats('dom', default_mean, default_std)
         SaveColorStats(default_mean, default_std, tone_filename)
 
     read_mean,read_std = LoadColorStats(tone_filename)
-    PrintStats('rea', read_mean, read_std)
+    # PrintStats('rea', read_mean, read_std)
 
     dom_mean, dom_std = FindDominantTone(hsv)
-    PrintStats('dom', dom_mean, dom_std)
+    # PrintStats('dom', dom_mean, dom_std)
 
     alpha = 0.9
     read_mean = read_mean * alpha + dom_mean * (1.0 - alpha)
     read_std = read_std * alpha + dom_std * (1.0 - alpha)
 
-    PrintStats('med', read_mean, read_std)
+    # PrintStats('med', read_mean, read_std)
     dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
 
     # UpdateWindow('bgr', bgr)
@@ -129,7 +129,7 @@ def RoutineCurves(image_file, bgr, box):
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
     if True:
-        print('brightness')
+        # print('brightness')
         DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
         # print('h')
         # DrawChart(foreground, minutes_since_epoch, h, color=(255, 0, 0))
@@ -140,9 +140,9 @@ def RoutineCurves(image_file, bgr, box):
         # print('sat_mean')
         # DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 255, 255))
 
-    print('uniformity')
+    # print('uniformity')
     DrawChart(foreground, minutes_since_epoch, uniformity, color=(255, 0, 255))
-    print('topped_sat_mean')
+    # print('topped_sat_mean')
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 0))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
