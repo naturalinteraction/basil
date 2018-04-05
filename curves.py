@@ -13,6 +13,7 @@ jitter = []
 tone_filename = 'curves.temp'
 uniformity = []
 brightness = []
+motion_values = []
 
 def LinearMapping(val, in_min, in_max, out_min, out_max):
     val = float(max(in_min, min(in_max, val)))
@@ -61,13 +62,17 @@ def RoutineCurves(image_file, bgr, box):
     ret,motion = cv2.threshold(motion, 20, 20, cv2.THRESH_TOZERO)
     UpdateWindow('motion', motion)
     motion_value = int(cv2.mean(motion)[0])
-    motion_value = motion_value * motion_value
-    print(motion_value)
+    motion_value = motion_value * motion_value / 4
+    if motion_value > 255:
+        print(motion_value)
+        motion_value = 255
+    motion_values.append(motion_value)
+    # print(motion_value)
     previous = motion_bgr
     # end of motion detection
 
     bright = FrameBrightness(bgr)
-    if len(brightness) > 0:
+    if False:  # len(brightness) > 0:
         brightness.append(bright * curve_alpha + (1.0 - curve_alpha) * brightness[-1])
     else:
         brightness.append(bright)
@@ -149,6 +154,7 @@ def RoutineCurves(image_file, bgr, box):
     if True:
         # print('brightness')
         DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
+        DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 255))
         # print('h')
         # DrawChart(foreground, minutes_since_epoch, h, color=(255, 0, 0))
         # print('s')
