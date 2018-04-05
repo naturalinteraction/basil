@@ -86,12 +86,13 @@ Change via script:
 - [x] Detect if scene is dark
 - [x] Hires image and charts
 - [x] Find biomass segmentation algorithm params automatically
-- [ ] Upload MQTT
-- [ ] Mask to remove central stripe
-- [ ] Perspective mask, warping for perspective invariant areas
-- [ ] Servers list in git: an http request containing image name is done until a server responds positively
+- [x] Upload MQTT
 - [ ] Detect if scene is not static (motion detection)
 - [ ] Background subtraction
+- [ ] ~~Perspective warping for perspective invariant areas~~
+- [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
+- [ ] ~~Prior knowledge is stored somewhere~~
+- [ ] ~~Mask~~
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
 - [ ] ~~Retain pixel probability from previous frames (running average)~~
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
