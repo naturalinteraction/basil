@@ -47,6 +47,25 @@ def RoutineCurves(image_file, bgr, box):
 
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
+    # for motion detection
+    motion_bgr = Resize(bgr, 0.2)
+    motion_bgr = MedianBlurred(motion_bgr, 33)
+    UpdateWindow('motion_bgr', motion_bgr)
+    global previous
+    try:
+        previous
+    except:
+        previous = motion_bgr
+    motion = cv2.absdiff(motion_bgr, previous)
+    motion = BGRToGray(motion)
+    ret,motion = cv2.threshold(motion, 20, 20, cv2.THRESH_TOZERO)
+    UpdateWindow('motion', motion)
+    motion_value = int(cv2.mean(motion)[0])
+    motion_value = motion_value * motion_value
+    print(motion_value)
+    previous = motion_bgr
+    # end of motion detection
+
     bright = FrameBrightness(bgr)
     if len(brightness) > 0:
         brightness.append(bright * curve_alpha + (1.0 - curve_alpha) * brightness[-1])
