@@ -138,8 +138,7 @@ def RoutineCurves(image_file, bgr, box):
     UpdateWindow('uniformity_mask', uniformity_mask)
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
-    # Echo(foreground, 'biomass p-index %.1f' % (biomass))
-    Echo(foreground, image_file.replace('downloaded/', ''))
+    Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date))
 
     h.append(read_mean[0])
     s.append(read_mean[1])
