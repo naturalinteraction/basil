@@ -62,7 +62,7 @@ def RoutineCurves(image_file, bgr, box):
     ret,motion = cv2.threshold(motion, 20, 20, cv2.THRESH_TOZERO)
     UpdateWindow('motion', motion)
     motion_value = int(cv2.mean(motion)[0])
-    motion_value = motion_value * motion_value / 4
+    motion_value = motion_value * motion_value / 8
     if motion_value > 255:
         print(motion_value)
         motion_value = 255
@@ -150,11 +150,10 @@ def RoutineCurves(image_file, bgr, box):
 
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
-    DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 255), bars=True)
-    DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 0, 0))
-    DrawChart(foreground, minutes_since_epoch, uniformity, color=(255, 0, 255))
-    # biomass
-    DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 0))
+    DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 0), bars=True)
+    DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
+    DrawChart(foreground, minutes_since_epoch, uniformity, color=(0, 140, 255))
+    DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')

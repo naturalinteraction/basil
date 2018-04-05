@@ -57,9 +57,10 @@ def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 25
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
         if bars:
-            cv2.line(foreground, (mins // 60 * xmult + xoffset, int(h - baseline * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 150)))
+            cv2.line(foreground, (mins // 60 * xmult + xoffset, int(h - baseline * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
         else:
-            cv2.line(foreground, (previous_mins // 60 * xmult + xoffset, int(h - previous * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
+            if True:  # if (mins - previous_mins) < 60 * 6:
+                cv2.line(foreground, (previous_mins // 60 * xmult + xoffset, int(h - previous * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
         cv2.circle(foreground, (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), 3, color, thickness=5)
 
 def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
