@@ -120,6 +120,11 @@ def RoutineCurves(image_file, bgr, box):
         algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
         saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)  # or -1.0?
+    if '-hawk' in image_file:  # stripe
+        print('removing stripe')
+        stripe = DistanceFromToneBlurTopBottom(hsv, "stripe.pkl", 1, 1, 1, 255, 10.0)
+        UpdateWindow('stripe', stripe)
+        saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)  # or -0.5?
     Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
