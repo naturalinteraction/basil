@@ -46,7 +46,7 @@ def RoutineCurves(image_file, bgr, box):
     # for motion detection
     motion_bgr = Resize(bgr, 0.2)
     motion_bgr = MedianBlurred(motion_bgr, 33)
-    UpdateWindow('motion_bgr', motion_bgr)
+    # UpdateWindow('motion_bgr', motion_bgr)
     global previous
     try:
         previous
@@ -55,7 +55,7 @@ def RoutineCurves(image_file, bgr, box):
     motion = cv2.absdiff(motion_bgr, previous)
     motion = BGRToGray(motion)
     ret,motion = cv2.threshold(motion, 20, 20, cv2.THRESH_TOZERO)
-    UpdateWindow('motion', motion)
+    # UpdateWindow('motion', motion)
     motion_value = int(cv2.mean(motion)[0])
     motion_value = motion_value * motion_value / 8
     if motion_value > 255:
@@ -139,7 +139,7 @@ def RoutineCurves(image_file, bgr, box):
 
     uniformity_mask = Resize(saturation, 0.1)
     ret,uniformity_mask = cv2.threshold(uniformity_mask, 100, 255, cv2.THRESH_BINARY)  # Otsu doesn't help here
-    UpdateWindow('before canny', uniformity_mask)
+    UpdateWindow('before canny', uniformity_mask)  # mouseCallback will not work with this
     uniformity_mask = cv2.Canny(uniformity_mask, 200, 200)
     uniformity_value,ignore = cv2.meanStdDev(uniformity_mask)
     uniformity_value = 200 - uniformity_value
@@ -147,7 +147,7 @@ def RoutineCurves(image_file, bgr, box):
         uniformity.append(uniformity_value * curve_alpha + (1.0 - curve_alpha) * uniformity[-1])
     else:
         uniformity.append(uniformity_value)
-    UpdateWindow('uniformity_mask', uniformity_mask)
+    UpdateWindow('uniformity_mask', uniformity_mask)  # mouseCallback will not work with this
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
 
