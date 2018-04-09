@@ -103,9 +103,12 @@ def RoutineCurves(image_file, bgr, box):
 
     saturation = cv2.split(hsv)[1]
 
+    ret,colorful_mask = cv2.threshold(saturation, 70, 255, cv2.THRESH_BINARY)
     substrate_white = cv2.split(hsv)[2]
+    UpdateWindow('colorful_mask', colorful_mask)
     UpdateWindow('substrate_white', substrate_white)
     ret,substrate_mask = cv2.threshold(substrate_white, 200, 255, cv2.THRESH_BINARY)
+    substrate_mask = cv2.addWeighted(substrate_mask, 1.0, colorful_mask, -1.0, 0.0)
     UpdateWindow('substrate_mask', substrate_mask)
     substrate_value = cv2.mean(substrate_mask)[0]
     print(substrate_value)
@@ -154,6 +157,7 @@ def RoutineCurves(image_file, bgr, box):
     DrawChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0))
     DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
+    DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 0, 255))
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
