@@ -113,10 +113,14 @@ def RoutineCurves(image_file, bgr, box):
         sat_mean.append(sm)
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
-    if 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:  # ravanello
+
+    if 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:  # ravanello
         ravanello = DistanceFromToneBlurTopBottom(hsv, "ravanello.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('ravanello', ravanello)
-        saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.7, 0.0)
+        bluastro = DistanceFromToneBlurTopBottom(hsv, "bluastro.pkl", 1, 1, 1, 240, 10.0)
+        UpdateWindow('bluastro', bluastro)
+        saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.5, 0.0) 
+        saturation = cv2.addWeighted(saturation, 1.0, bluastro, 0.5, 0.0)
     if 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:  # algae
         print('removing algae')
         algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
@@ -141,7 +145,7 @@ def RoutineCurves(image_file, bgr, box):
 
     uniformity_mask = Resize(saturation, 0.1)
     ret,uniformity_mask = cv2.threshold(uniformity_mask, 100, 255, cv2.THRESH_BINARY)  # Otsu doesn't help here
-    UpdateWindow('before canny', uniformity_mask)  # mouseCallback will not work with this
+    # UpdateWindow('before canny', uniformity_mask)  # mouseCallback will not work with this
     uniformity_mask = cv2.Canny(uniformity_mask, 200, 200)
     uniformity_value,ignore = cv2.meanStdDev(uniformity_mask)
     uniformity_value = 200 - uniformity_value
@@ -149,7 +153,7 @@ def RoutineCurves(image_file, bgr, box):
         uniformity.append(uniformity_value * curve_alpha + (1.0 - curve_alpha) * uniformity[-1])
     else:
         uniformity.append(uniformity_value)
-    UpdateWindow('uniformity_mask', uniformity_mask)  # mouseCallback will not work with this
+    # UpdateWindow('uniformity_mask', uniformity_mask)  # mouseCallback will not work with this
 
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
 
@@ -163,6 +167,6 @@ def RoutineCurves(image_file, bgr, box):
     DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
     DrawChart(foreground, minutes_since_epoch, uniformity, color=(0, 140, 255))
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
-    Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date))
+    Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
