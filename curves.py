@@ -16,6 +16,7 @@ tone_filename = 'curves.temp'
 uniformity = []
 brightness = []
 motion_values = []
+substrate = []
 
 def LinearMapping(val, in_min, in_max, out_min, out_max):
     val = float(max(in_min, min(in_max, val)))
@@ -104,6 +105,15 @@ def RoutineCurves(image_file, bgr, box):
     # UpdateWindow('dist', dist)
 
     saturation = cv2.split(hsv)[1]
+
+    substrate_white = cv2.split(hsv)[2]
+    UpdateWindow('substrate_white', substrate_white)
+    ret,substrate_mask = cv2.threshold(substrate_white, 200, 255, cv2.THRESH_BINARY)
+    UpdateWindow('substrate_mask', substrate_mask)
+    substrate_value = cv2.mean(substrate_mask)[0]
+    print(substrate_value)
+    substrate.append(substrate_value)
+
     Normalize(saturation)  # normalization tested: stable ratio of 1.5
     # UpdateWindow('normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
@@ -130,7 +140,7 @@ def RoutineCurves(image_file, bgr, box):
         print('removing stripe')
         stripe = DistanceFromToneBlurTopBottom(hsv, "stripe.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('stripe', stripe)
-        saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)  # or -0.5?
+        saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)
     Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
     sm = cv2.mean(saturation)[0]
@@ -164,6 +174,7 @@ def RoutineCurves(image_file, bgr, box):
     UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
     DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 0), bars=True)
+    DrawChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0))
     DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
     DrawChart(foreground, minutes_since_epoch, uniformity, color=(0, 140, 255))
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
