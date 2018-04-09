@@ -1,6 +1,9 @@
 # basil
 
-Software for plant sensor devices.
+![relative](website/logo.png)
+![absolute](https://raw.githubusercontent.com/naturalinteraction/basil/master/website/logo.png)
+
+Software for sensor devices.
 
 #### Requirements
 
@@ -111,7 +114,6 @@ Change via script:
 - [ ] ~~Segmentation: Otsu thresholding and adaptive thresholding~~
 - [ ] ~~Color analysis inside biomass: histograms~~
 - [ ] ~~Holes: pixel-by-pixel~~
-
 
 #### Tasks cap.py
 
