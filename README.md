@@ -96,6 +96,7 @@ Change via script:
 - [x] Find biomass segmentation algorithm params automatically
 - [x] Upload MQTT
 - [x] Detect if scene is not static (motion detection)
+- [ ] Daily, not hourly (or average of multiple hours?); can use multiple hours to simulate multiple crops of the same species
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~

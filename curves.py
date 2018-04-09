@@ -32,6 +32,8 @@ def RoutineCurves(image_file, bgr, box):
     # print(dt)
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
+    # if int(dt[-2]) != 12:
+    #     return
     print(date)
     timediff = date - datetime.fromtimestamp(0)
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
@@ -71,7 +73,7 @@ def RoutineCurves(image_file, bgr, box):
         minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
         # print('minutes_since_previous', minutes_since_previous)
         curve_alpha = LinearMapping(minutes_since_previous + motion_value * 7, 60, 60 * 24, 0.1, 1.0)
-    print(motion_value, 'curve_alpha', curve_alpha)
+    # print(motion_value, 'curve_alpha', curve_alpha)
 
     bright = FrameBrightness(bgr)
     if False:  # len(brightness) > 0:
