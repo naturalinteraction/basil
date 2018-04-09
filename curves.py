@@ -5,14 +5,8 @@ from datetime import datetime
 smooth_curves = True
 
 minutes_since_epoch = []
-measurements = []
-h = []
-s = []
-v = []
 sat_mean = []
 topped_sat_mean = []
-jitter = []
-tone_filename = 'curves.temp'
 brightness = []
 motion_values = []
 substrate = []
@@ -104,27 +98,8 @@ def RoutineCurves(image_file, bgr, box):
     else:
         brightness.append(bright)
 
-    if len(measurements) == 0:
-        default_mean,default_std = FindDominantTone(hsv)
-        # PrintStats('dom', default_mean, default_std)
-        SaveColorStats(default_mean, default_std, tone_filename)
-
-    read_mean,read_std = LoadColorStats(tone_filename)
-    # PrintStats('rea', read_mean, read_std)
-
-    dom_mean, dom_std = FindDominantTone(hsv)
-    # PrintStats('dom', dom_mean, dom_std)
-
-    alpha = 0.9
-    read_mean = read_mean * alpha + dom_mean * (1.0 - alpha)
-    read_std = read_std * alpha + dom_std * (1.0 - alpha)
-
-    # PrintStats('med', read_mean, read_std)
-    dist = DistanceFromToneBlurTopBottom(hsv, tone_filename, 11, 5, 7, 251, 10.0)
-
     # UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
-    # UpdateWindow('dist', dist)
 
     saturation = cv2.split(hsv)[1]
 
@@ -174,14 +149,6 @@ def RoutineCurves(image_file, bgr, box):
     # foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
     foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
-
-    biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
-
-    h.append(read_mean[0])
-    s.append(read_mean[1])
-    v.append(read_mean[2])
-
-    UpdateToneStats(dist, hsv, read_mean, read_std, tone_filename, alpha=curve_alpha)
 
     DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 0), bars=True)
     DrawChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0))
