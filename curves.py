@@ -13,7 +13,6 @@ sat_mean = []
 topped_sat_mean = []
 jitter = []
 tone_filename = 'curves.temp'
-uniformity = []
 brightness = []
 motion_values = []
 substrate = []
@@ -176,18 +175,6 @@ def RoutineCurves(image_file, bgr, box):
     foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
-    uniformity_mask = Resize(saturation, 0.1)
-    ret,uniformity_mask = cv2.threshold(uniformity_mask, 100, 255, cv2.THRESH_BINARY)  # Otsu doesn't help here
-    # UpdateWindow('before canny', uniformity_mask)  # mouseCallback will not work with this
-    uniformity_mask = cv2.Canny(uniformity_mask, 200, 200)
-    uniformity_value,ignore = cv2.meanStdDev(uniformity_mask)
-    uniformity_value = 200 - uniformity_value
-    if len(uniformity) > 0:
-        uniformity.append(uniformity_value * curve_alpha + (1.0 - curve_alpha) * uniformity[-1])
-    else:
-        uniformity.append(uniformity_value)
-    # UpdateWindow('uniformity_mask', uniformity_mask)  # mouseCallback will not work with this
-
     biomass = AppendMeasurementJitter(dist, measurements, jitter, alpha=0.1)
 
     h.append(read_mean[0])
@@ -199,7 +186,6 @@ def RoutineCurves(image_file, bgr, box):
     DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 0), bars=True)
     DrawChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0))
     DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
-    DrawChart(foreground, minutes_since_epoch, uniformity, color=(0, 140, 255))
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
