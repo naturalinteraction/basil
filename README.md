@@ -25,7 +25,7 @@ Software for sensor devices.
 - [x] Design enclosing case
 - [x] Hardware specification document
 - [x] Design and implement controls on web interface
-- [ ] Algorithms: segmentation, analysis, calibration
+- [x] Algorithms: segmentation, analysis, calibration
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Commented source code
@@ -98,9 +98,7 @@ Change via script:
 - [x] Find biomass segmentation algorithm params automatically
 - [x] Upload MQTT
 - [x] Detect if scene is not static (motion detection)
-- [ ] PiP for debugging
-- [ ] Daily, not hourly (or average of multiple hours?); can use multiple hours to simulate multiple crops of the same species
-- [ ] Better uniformity algorithm
+- [x] Substrate-based uniformity algorithm
 - [ ] Send true values over MQTT
 - [ ] Plant species as dip.py argument
 - [ ] ~~Background subtraction~~

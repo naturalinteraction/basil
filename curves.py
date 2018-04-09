@@ -2,7 +2,7 @@ from vision import *
 
 from datetime import datetime
 
-smooth_curves = True
+smooth_curves = False
 
 minutes_since_epoch = []
 sat_mean = []
