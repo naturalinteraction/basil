@@ -1,7 +1,6 @@
 # basil
 
-![relative](website/logo.png)
-![absolute](https://raw.githubusercontent.com/naturalinteraction/basil/master/website/logo.png)
+![basil logo](website/logo.png)
 
 Software for sensor devices.
 
