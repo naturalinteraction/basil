@@ -18,6 +18,48 @@ brightness = []
 motion_values = []
 substrate = []
 
+'''
+VISIBLE-CEPPI
+short, sensor falls
+biomass, uniformity and brightness all OK
+
+BLUESHIFT-CEPPI
+all OK
+check what is measured at the end
+
+NOIR-CEPPI
+brightness sudden change
+biomass OK but low
+descending uniformity
+ravanello?
+
+REDSHIFT-CEPPI
+short, microgreens cut
+biomass OK but low
+descending uniformity
+investigate changes in brightness
+ravanello?
+
+REDSHIFT-HAWK
+terrible
+ravanello?
+
+BLUESHIFT-HAWK
+brightness sudden change
+check what is measured at the end
+biomass and uniformity OK
+
+VISIBLE-HAWK
+brightness OK
+uniformity goes down in the beginning
+biomass goes down at the end
+
+NOIR-HAWK
+uniformity goes down in the beginning
+biomass OK
+investigate change in brightness
+'''
+
 def RoutineCurves(image_file, bgr, box):
     # print(image_file)
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
