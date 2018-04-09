@@ -5,7 +5,6 @@ from datetime import datetime
 smooth_curves = False
 
 minutes_since_epoch = []
-sat_mean = []
 topped_sat_mean = []
 brightness = []
 motion_values = []
@@ -44,28 +43,20 @@ investigate changes in brightness
 '''
 
 def RoutineCurves(image_file, bgr, box):
-    # print(image_file)
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
-    # print(dt)
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
-    # if int(dt[-2]) != 12:
-    #     return
     print(date)
     timediff = date - datetime.fromtimestamp(0)
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
-    # print('timediff', timediff)
-    # print('minutes', minutes)
     minutes_since_epoch.append(minutes)
 
     hires = bgr
-
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
 
-    # for motion detection
+    # motion detection
     motion_bgr = Resize(bgr, 0.2)
     motion_bgr = MedianBlurred(motion_bgr, 33)
-    # UpdateWindow('motion_bgr', motion_bgr)
     global previous
     try:
         previous
@@ -73,24 +64,19 @@ def RoutineCurves(image_file, bgr, box):
         previous = motion_bgr
     motion = cv2.absdiff(motion_bgr, previous)
     motion = BGRToGray(motion)
-    ret,motion = cv2.threshold(motion, 20, 20, cv2.THRESH_TOZERO)
-    # UpdateWindow('motion', motion)
+    ret,motion = cv2.threshold(motion, 6, 6, cv2.THRESH_TOZERO)
     motion_value = int(cv2.mean(motion)[0])
     motion_value = motion_value * motion_value / 8
     if motion_value > 255:
-        print(motion_value)
         motion_value = 255
     motion_values.append(motion_value)
-    # print(motion_value)
     previous = motion_bgr
     # end of motion detection
 
     curve_alpha = 1.0
     if smooth_curves and len(minutes_since_epoch) > 1:
         minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
-        # print('minutes_since_previous', minutes_since_previous)
         curve_alpha = LinearMapping(minutes_since_previous + motion_value * 7, 60, 60 * 24, 0.1, 1.0)
-    # print(motion_value, 'curve_alpha', curve_alpha)
 
     bright = FrameBrightness(bgr)
     if False:  # len(brightness) > 0:
@@ -106,7 +92,6 @@ def RoutineCurves(image_file, bgr, box):
     ret,colorful_mask = cv2.threshold(saturation, 70, 255, cv2.THRESH_BINARY)
     substrate_white = cv2.split(hsv)[2]
     UpdateWindow('colorful_mask', colorful_mask)
-    UpdateWindow('substrate_white', substrate_white)
     ret,substrate_mask = cv2.threshold(substrate_white, 200, 255, cv2.THRESH_BINARY)
     substrate_mask = cv2.addWeighted(substrate_mask, 1.0, colorful_mask, -1.0, 0.0)
     UpdateWindow('substrate_mask', substrate_mask)
@@ -115,12 +100,6 @@ def RoutineCurves(image_file, bgr, box):
     substrate.append(substrate_value)
 
     Normalize(saturation)  # normalization tested: stable ratio of 1.5
-    # UpdateWindow('normalized saturation', saturation)
-    sm = cv2.mean(saturation)[0]
-    if len(sat_mean) > 0:
-        sat_mean.append(sm * curve_alpha + (1.0 - curve_alpha) * sat_mean[-1])
-    else:
-        sat_mean.append(sm)
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
 
@@ -157,7 +136,6 @@ def RoutineCurves(image_file, bgr, box):
     DrawChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0))
     DrawChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
-    DrawChart(foreground, minutes_since_epoch, sat_mean, color=(0, 0, 255))
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
