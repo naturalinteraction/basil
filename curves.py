@@ -18,15 +18,6 @@ brightness = []
 motion_values = []
 substrate = []
 
-def LinearMapping(val, in_min, in_max, out_min, out_max):
-    val = float(max(in_min, min(in_max, val)))
-    # print('a', val)
-    val = val - in_min
-    # print('b', val)
-    val = val / (in_max - in_min)
-    # print('c', val)
-    return out_min + val * (out_max - out_min)
-
 def RoutineCurves(image_file, bgr, box):
     # print(image_file)
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')

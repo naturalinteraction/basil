@@ -15,6 +15,15 @@ from skimage.future import graph
 white = (255, 255, 255)
 
 
+def LinearMapping(val, in_min, in_max, out_min, out_max):
+    val = float(max(in_min, min(in_max, val)))
+    # print('a', val)
+    val = val - in_min
+    # print('b', val)
+    val = val / (in_max - in_min)
+    # print('c', val)
+    return out_min + val * (out_max - out_min)
+
 def auto_canny(image, sigma=0.33):
     v = np.median(image)
     lower = int(max(0, (1.0 - sigma) * v))
