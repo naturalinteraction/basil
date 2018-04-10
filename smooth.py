@@ -21,7 +21,7 @@ def smoothWithMovingWindow(x,window_len=11,window='hanning'):  # used by SmoothH
         if window == 'flat': #moving average
                 w=np.ones(window_len,'d')
         else:  
-                w=eval('np.'+window+'(window_len)')  # todo: useful to choose a function based on a string
+                w=eval('np.'+window+'(window_len)')
         y=np.convolve(w/w.sum(),s,mode='same')
         return y[window_len:-window_len+1]
 
