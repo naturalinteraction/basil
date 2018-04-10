@@ -51,14 +51,14 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawSmoothChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False, dots=False):
+def DrawSmoothChart(foreground, times, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False, dots=False, spline_value=240):
     try:
-        DrawChart(foreground, minutes_since_epoch, SmoothSpline(minutes_since_epoch, measurements), color, xmult, xoffset, ymult, yoffset, bars=False, dots=False)
+        DrawChart(foreground, times, SmoothSpline(times, measurements, spline_value), color, xmult, xoffset, ymult, yoffset, bars=False, dots=False)
     except:
         pass
-    DrawChart(foreground, minutes_since_epoch, measurements, color, dots=True)
+    DrawChart(foreground, times, measurements, color, dots=True)
 
-def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False, dots = False):
+def DrawChart(foreground, times, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False, dots = False):
     h,w = foreground.shape[:2]
     xmult = int(xmult * w)
     xoffset = int(xoffset * w)
@@ -67,8 +67,8 @@ def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 25
     # print('minmax', min(measurements), max(measurements))
     cv2.circle(foreground, (0 * xmult + xoffset, int(h - measurements[0] * ymult - yoffset)), 3, color, thickness=5)
     for i in range(1, len(measurements)):
-        mins = minutes_since_epoch[i] - minutes_since_epoch[0]
-        previous_mins = minutes_since_epoch[i - 1] - minutes_since_epoch[0]
+        mins = times[i] - times[0]
+        previous_mins = times[i - 1] - times[0]
         baseline = 0
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline

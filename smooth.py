@@ -64,8 +64,8 @@ def SmoothGauss(x, y):
 def SmoothWiener(x, y):
 	return wiener(y, mysize=15, noise=1000000)
 
-def SmoothSpline(x, y):
-	sp = UnivariateSpline(x, y, s=240)  # 4240
+def SmoothSpline(x, y, s=240):
+	sp = UnivariateSpline(x, y, s=s)
 	return sp(x)
 
 '''
