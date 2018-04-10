@@ -10,7 +10,7 @@ import pymeanshift as pms
 from skimage.segmentation import *
 from skimage import color
 from skimage.future import graph
-
+from smooth import *
 
 white = (255, 255, 255)
 
@@ -51,7 +51,14 @@ def ResizeBlur(bgr, resize_factor, blur_size):
     hsv = MedianBlurred(hsv, size=blur_size)
     return bgr,hsv
 
-def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False):
+def DrawSmoothChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False, dots=False):
+    try:
+        DrawChart(foreground, minutes_since_epoch, SmoothSpline(minutes_since_epoch, measurements), color, xmult, xoffset, ymult, yoffset, bars=False, dots=False)
+    except:
+        pass
+    DrawChart(foreground, minutes_since_epoch, measurements, color, dots=True)
+
+def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 255), xmult=0.004, xoffset=0.01, ymult=0.004, yoffset=0.01, bars=False, dots = False):
     h,w = foreground.shape[:2]
     xmult = int(xmult * w)
     xoffset = int(xoffset * w)
@@ -68,9 +75,10 @@ def DrawChart(foreground, minutes_since_epoch, measurements, color=(255, 255, 25
         if bars:
             cv2.line(foreground, (mins // 60 * xmult + xoffset, int(h - baseline * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
         else:
-            if True:  # if (mins - previous_mins) < 60 * 6:
+            if not dots:
                 cv2.line(foreground, (previous_mins // 60 * xmult + xoffset, int(h - previous * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
-        cv2.circle(foreground, (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), 3, color, thickness=5)
+        if dots:
+            cv2.circle(foreground, (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), 3, color, thickness=5)
 
 def AppendMeasurementJitter(dist, measurements, jitter, alpha=0.5):
     biomass = cv2.mean(dist)[0]
