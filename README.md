@@ -69,7 +69,6 @@ Username is the default. Password is the same everywhere. DHCP on usb0, eth0 and
 Change via script:
 - Hostname / hosts file (change_hostname.sh)
 - Wifi SSID and password (wifi.py)
-- BASIL_NOTE (decide what to do)
 
 #### Tasks dip.py
 
@@ -99,8 +98,9 @@ Change via script:
 - [x] Upload MQTT
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
-- [ ] Send true values over MQTT
+- [ ] Send real values over MQTT
 - [ ] Plant species as dip.py argument
+- [ ] Limit spline propagation
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
