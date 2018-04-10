@@ -132,8 +132,8 @@ def RoutineCurves(image_file, bgr, box):
     foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
-    DrawSmoothChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
     DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 255), bars=True)
+    DrawSmoothChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
     DrawSmoothChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0), spline_value=720)  # 480
     DrawSmoothChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255), spline_value=1240)  # biomass
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))

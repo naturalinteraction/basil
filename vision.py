@@ -73,7 +73,7 @@ def DrawChart(foreground, times, measurements, color=(255, 255, 255), xmult=0.00
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
         if bars:
-            cv2.line(foreground, (mins // 60 * xmult + xoffset, int(h - baseline * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
+            cv2.line(foreground, (mins // 60 * xmult + xoffset, int(h - baseline * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 150)))
         else:
             if not dots:
                 cv2.line(foreground, (previous_mins // 60 * xmult + xoffset, int(h - previous * ymult - yoffset)), (mins // 60 * xmult + xoffset, int(h - last * ymult - yoffset)), color, max(1, int(h / 300)))
