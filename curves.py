@@ -138,4 +138,6 @@ def RoutineCurves(image_file, bgr, box):
     DrawChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255))  # biomass
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
+    SaveTimeSeries(minutes_since_epoch, topped_sat_mean, 'time-series.pkl')
+
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')

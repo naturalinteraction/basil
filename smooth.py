@@ -6,6 +6,7 @@ import scipy.optimize as op
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy.polynomial.polynomial as poly
+from utility import LoadTimeSeries
 
 def smooth(x,window_len=11,window='hanning'):
         if x.ndim != 1:
@@ -24,66 +25,68 @@ def smooth(x,window_len=11,window='hanning'):
         y=np.convolve(w/w.sum(),s,mode='same')
         return y[window_len:-window_len+1]
 
+WL = 15
+
 def testHanning (x,y):
-    smoothed = smooth(np.array(y),window_len=7, window='hanning')
+    smoothed = smooth(np.array(y),window_len=WL, window='hanning')
     plt.plot(x, smoothed, '-')
 
 def testHamming (x,y):
-    smoothed = smooth(np.array(y),window_len=7, window='hamming')
+    smoothed = smooth(np.array(y),window_len=WL, window='hamming')
     plt.plot(x, smoothed, '-')
 
 def testBartlett (x,y):
-    smoothed = smooth(np.array(y),window_len=7, window='bartlett')
+    smoothed = smooth(np.array(y),window_len=WL, window='bartlett')
     plt.plot(x, smoothed, '-')
 
 def testBlackman (x,y):
-    smoothed = smooth(np.array(y),window_len=7, window='blackman')
+    smoothed = smooth(np.array(y),window_len=WL, window='blackman')
     plt.plot(x, smoothed, '-')
 
 def testFlat (x,y):
-    smoothed = smooth(np.array(y),window_len=7, window='flat')
+    smoothed = smooth(np.array(y),window_len=WL, window='flat')
     plt.plot(x, smoothed, '-')
 
 def testPoly(x, y):
     coefs = poly.polyfit(x, y, 4)
-    x_new = np.linspace(x[0], x[-1], num=len(x)*10)
-    ffit = poly.polyval(x_new, coefs)
-    plt.plot(x_new, ffit)
+    ffit = poly.polyval(x, coefs)
+    plt.plot(x, ffit, '-')
 
 def testLowess(x, y):
-    # lowess will return our "smoothed" data with a y value for at every x-value
     lowess = sm.nonparametric.lowess(y, x, frac=.3)
     lowess_x = list(zip(*lowess))[0]
     lowess_y = list(zip(*lowess))[1]
     plt.plot(lowess_x, lowess_y, '-')
 
 def testGauss(x, y):
-	b = gaussian(9, 2)
+	b = gaussian(19, 20)
 	ga = filters.convolve1d(y, b/b.sum())
 	plt.plot(x, ga, '-')
 
 def testWiener(x, y):
-	wi = wiener(y, mysize=5, noise=0.5)
+	wi = wiener(y, mysize=15, noise=1000000)
 	plt.plot(x, wi, '-')
 
 def testSpline(x, y):
-	sp = UnivariateSpline(x, y, s=28)
+	sp = UnivariateSpline(x, y, s=4240)
 	plt.plot(x, sp(x), '-')
 
-x = list(range(3, 35))
-y = [1,2,2,1,2,13,1,1,3,4,5,4,5,6,5,6,7,8,9,10,11,11,12,11,11,10,12,11,11,10,9,8]
+x,y = LoadTimeSeries('time-series.pkl')
 
 plt.plot(x,y,'o')
 
-# testGauss(x, y)
-# testWiener(x, y)
-# testSpline(x, y)
-# testLowess(x, y)
-# testHanning(x, y)
-# testHamming(x, y)
-# testBlackman(x, y)
-# testBartlett(x, y)
+testSpline(x, y)
+'''
+testGauss(x, y)
+testWiener(x, y)
+testSpline(x, y)
+testLowess(x, y)
+testHanning(x, y)
+testHamming(x, y)
+testBlackman(x, y)
+testBartlett(x, y)
 testFlat(x, y)
 testPoly(x, y)
+'''
 plt.show()
 

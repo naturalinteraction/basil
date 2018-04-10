@@ -251,6 +251,14 @@ def LoadColorStats(filename):
     with open(filename, 'rb') as f:
         return np.array(pickle.load(f))
 
+def SaveTimeSeries(t, v, filename):
+    with open(filename, 'wb') as f:
+        pickle.dump((t,v), f, 0)
+
+def LoadTimeSeries(filename):
+    with open(filename, 'rb') as f:
+        return np.array(pickle.load(f))
+
 windows = {}
 global means
 global stddevs

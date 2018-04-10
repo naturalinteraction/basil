@@ -125,3 +125,4 @@ series.pkl
 MqttImageUploader/*.jpg
 MqttImageUploader/*.png
 
+time-series.pkl
