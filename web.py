@@ -53,7 +53,7 @@ class WebPage(resource.Resource):
     isLeaf = True
 
     def render_GET(self, request):
-        if not 'plantsensor' in str(request):
+        if not 'sensorstatus' in str(request):
             return ''
         if 'macduff-result.jpg' in str(request):
             try:
@@ -63,7 +63,7 @@ class WebPage(resource.Resource):
             except:
                 request.setHeader('content-type', "text/html")
                 return 'Macduff result not available.'
-        if 'plantsensorthumbnail.jpg' in str(request):
+        if 'sensorstatusthumbnail.jpg' in str(request):
             thumbnail = cv2.resize(globa.image, (0, 0), fx=0.1, fy=0.1)
             print('Saving thumbnail as requested from web.')
             cv2.imwrite('uploaded/thumbnail.jpg', thumbnail, [int(cv2.IMWRITE_JPEG_QUALITY), 70])  # up to 100, default 95
@@ -74,11 +74,11 @@ class WebPage(resource.Resource):
             except:
                 request.setHeader('content-type', "text/html")
                 return 'Thumbnail not available.'
-        thumb = '<p><a href="plantsensor?refresh-thumbnail">Thumbnail Refresh</a><br>\n'
+        thumb = '<p><a href="sensorstatus?refresh-thumbnail">Thumbnail Refresh</a><br>\n'
         if 'admin-admin' in str(request):
-            thumb = '<p><a href="plantsensor?admin-admin&refresh-thumbnail">Thumbnail Refresh</a><br>\n'
+            thumb = '<p><a href="sensorstatus?admin-admin&refresh-thumbnail">Thumbnail Refresh</a><br>\n'
         if 'refresh-thumbnail' in str(request):
-            thumb = thumb + '<p><img src="uploaded/plantsensorthumbnail.jpg">'
+            thumb = thumb + '<p><img src="uploaded/sensorstatusthumbnail.jpg">'
         if 'update-firmware' in str(request):
             firmware_result = UpdateFirmware()
             print(firmware_result)
@@ -105,24 +105,24 @@ class WebPage(resource.Resource):
             print('finding colorchecker')
             macduff = Macduff()
             if macduff == '':
-                macduff = '<img src="plantsensor/macduff-result.jpg">'
+                macduff = '<img src="sensorstatus/macduff-result.jpg">'
         macduff = '<p>' + macduff + '<br>\n'
         if 'start-color-calibration' in str(request):
             print('setting globa.start_color_calibration to True')
             globa.start_color_calibration = True
         refresh = ''
         if 'start-color-calibration' in str(request) or globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:
-            refresh = '<meta http-equiv="refresh" content="3; URL=plantsensor" />'
+            refresh = '<meta http-equiv="refresh" content="3; URL=sensorstatus" />'
             if 'admin-admin' in str(request):
-                refresh = '<meta http-equiv="refresh" content="3; URL=plantsensor?admin-admin" />'
+                refresh = '<meta http-equiv="refresh" content="3; URL=sensorstatus?admin-admin" />'
         if 'admin-admin' in str(request):
-            thumb = thumb + '<p><a href="plantsensor?admin-admin&update-firmware">Update Firmware</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&quit-quit">Quit Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
-            thumb = thumb + '<a href="plantsensor?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
+            thumb = thumb + '<p><a href="sensorstatus?admin-admin&update-firmware">Update Firmware</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&quit-quit">Quit Sensor</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             thumb = thumb + 'Restart Sensor (disabled)<br>\n'

@@ -1,7 +1,7 @@
-wget -qO- http://80.86.151.47:2216/plantsensor
+wget -qO- http://80.86.151.47:2216/sensorstatus
 echo '----------------------------------------------------'
-wget -qO- http://80.86.151.47:2217/plantsensor
+wget -qO- http://80.86.151.47:2217/sensorstatus
 echo '----------------------------------------------------'
-wget -qO- http://80.86.151.47:2218/plantsensor
+wget -qO- http://80.86.151.47:2218/sensorstatus
 echo '----------------------------------------------------'
-wget -qO- http://80.86.151.47:2219/plantsensor
+wget -qO- http://80.86.151.47:2219/sensorstatus
