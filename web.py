@@ -17,7 +17,7 @@ def Page():
         prop = 'No camera properties.'
     hostname = socket.gethostname()
     if len(globa.last_picture_filename) > 0:
-        link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a> taken at ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
+        link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
     else:
         link = ''
     status = 'running...'
@@ -31,7 +31,7 @@ def Page():
     if len(series_name) == 0:
         series_name = '[empty, which means the sensor is paused]'
     return ('sensor ' + hostname + '<br>\n' +
-            'firmware v0.' + globa.git_rev_count_and_branch + '<br>\n' +
+            'firmware v1.' + globa.git_rev_count_and_branch + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
             'cpu ' + str(CPUPercent()) + '%<br>\n' +
             'memory ' + str(MemoryPercent()) + '%<br>\n' +
@@ -44,7 +44,7 @@ def Page():
             'Series ' + series_name + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
-            'started at ' + globa.time_process_started_string + '<br>\n' +
+            'started ' + globa.time_process_started_string + '<br>\n' +
             'now ' + time.strftime("%Y/%m/%d %H:%M") + '<br>\n' +
             'uptime ' + str(int((time.time() - globa.time_process_started) / (60.0))) + ' minutes<p>\n'
            )
@@ -117,17 +117,17 @@ class WebPage(resource.Resource):
                 refresh = '<meta http-equiv="refresh" content="3; URL=sensorstatus?admin-admin" />'
         if 'admin-admin' in str(request):
             thumb = thumb + '<p><a href="sensorstatus?admin-admin&update-firmware">Update Firmware</a><br>\n'
-            thumb = thumb + '<a href="sensorstatus?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
-            thumb = thumb + '<a href="sensorstatus?admin-admin&quit-quit">Quit Sensor</a><br>\n'
+            # thumb = thumb + '<a href="sensorstatus?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
+            # thumb = thumb + '<a href="sensorstatus?admin-admin&quit-quit">Quit Sensor</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
-            thumb = thumb + 'Restart Sensor (disabled)<br>\n'
+            # thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
-            thumb = thumb + 'Quit Sensor (disabled)<br>\n'
+            # thumb = thumb + 'Quit Sensor (disabled)<br>\n'
             thumb = thumb + 'Change Series (disabled)<br>\n'
             thumb = thumb + 'Find Colorchecker (disabled)<br>\n'
             thumb = thumb + 'Start Color Calibration (disabled)<br>\n'
