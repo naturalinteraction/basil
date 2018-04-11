@@ -14,7 +14,7 @@ Software for sensor devices.
 - Algorithm is plant-specific.
 - Plant in tray is known.
 - Measurements across different plant species are not comparable.
-- Day of growth is known.
+- Day of growth is known. Actually starting day and hour must be known.
 - White, constant light.
 - Substrate is white or black and plastic.
 - Distance and angle are fixed.
@@ -98,6 +98,8 @@ Change via script:
 - [x] Upload MQTT
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
+- [ ] Determine stand angle
+- [ ] Store date and time of crop start
 - [ ] Send real values over MQTT
 - [ ] Plant species as dip.py argument
 - [ ] Limit spline propagation
