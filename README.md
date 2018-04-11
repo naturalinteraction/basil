@@ -214,6 +214,7 @@ sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```
 Visible sensor failed around February 12th. cap.py not running and camera not detected until reboot.
 
+Resolution set to 1280x720 (16:9)
 
 #### Autostart
 Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
