@@ -30,6 +30,8 @@ def Page():
     series_name = globa.series
     if len(series_name) == 0:
         series_name = '[empty, which means the sensor is paused]'
+    else:
+        series_name = series_name + ' (started ' + str(series_start) + ')'  # todo
     return ('sensor ' + hostname + '<br>\n' +
             'firmware v1.' + globa.git_rev_count_and_branch + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
@@ -98,8 +100,9 @@ class WebPage(resource.Resource):
                 if 'change-series' in p:
                         globa.series = parts[i + 1].replace('clientproto', '')
                         print('saving globa.series = %s' % globa.series)
+                        globa.series_start = time.time()
                         with open('series.pkl', 'w') as f:
-                            pickle.dump(globa.series, f, 0)
+                            pickle.dump((globa.series, globa.series_start), f, 0)
         macduff = ''
         if 'find-colorchecker' in str(request):
             print('finding colorchecker')

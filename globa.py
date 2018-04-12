@@ -29,12 +29,9 @@ global start_color_calibration
 start_color_calibration = False
 
 global series
-# series = 'series-name'
-# with open('series.pkl', 'w') as f:
-#     pickle.dump(series, f, 0)
+global series_start
 with open('series.pkl', 'r') as f:
-    series = str(pickle.load(f))
-# print('series', series)
+    (series, series_start) = str(pickle.load(f))
 
 global cameraproperties
 cameraproperties = None
