@@ -11,6 +11,9 @@ import os
 import psutil
 import glob
 import globa
+# to deal with timezones and tzinfo:
+# from tzlocal import get_localzone
+# import pytz
 
 
 def interrogate(item):
@@ -108,6 +111,15 @@ def GitCommitMessagePretty():
 
 def ExifKeywords(file):
     return subprocess.check_output(["exiftool", "-Keywords", file]).strip()
+
+def ExifSeriesStart(file):
+    series_start = -1
+    exif = ExifKeywords(file).split(',')
+    for e in exif:
+        if 'series_start' in e:
+            e = e.split('=')
+            series_start = int(e[-1])
+    return series_start
 
 def GetCPUSerial():
   # Extract serial from cpuinfo file

@@ -4,7 +4,7 @@ from datetime import datetime
 
 smooth_curves = False
 
-minutes_since_epoch = []
+minutes_since_start = []
 topped_sat_mean = []
 brightness = []
 motion_values = []
@@ -52,9 +52,17 @@ def RoutineCurves(image_file, bgr, box):
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
     print(date)
-    timediff = date - datetime.fromtimestamp(0)
+
+    series_start = ExifSeriesStart(image_file)
+    if series_start > -1:
+        timediff = date - datetime.fromtimestamp(series_start)
+    else:
+        timediff = date - date
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
-    minutes_since_epoch.append(minutes)
+    minutes_since_start.append(minutes)
+    print('minutes', locals()['minutes'])
+    print('series_start', time.ctime(series_start))
+    print('this image taken at', time.ctime(series_start + minutes * 60))
 
     hires = bgr
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
@@ -79,8 +87,8 @@ def RoutineCurves(image_file, bgr, box):
     # end of motion detection
 
     curve_alpha = 1.0
-    if smooth_curves and len(minutes_since_epoch) > 1:
-        minutes_since_previous = minutes_since_epoch[-1] - minutes_since_epoch[-2]
+    if smooth_curves and len(minutes_since_start) > 1:
+        minutes_since_previous = minutes_since_start[-1] - minutes_since_start[-2]
         curve_alpha = LinearMapping(minutes_since_previous + motion_value * 7, 60, 60 * 24, 0.1, 1.0)
 
     bright = FrameBrightness(bgr)
@@ -137,12 +145,12 @@ def RoutineCurves(image_file, bgr, box):
     foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
-    DrawChart(foreground, minutes_since_epoch, motion_values, color=(0, 0, 255), bars=True)
-    DrawSmoothChart(foreground, minutes_since_epoch, brightness, color=(0, 255, 255))
-    DrawSmoothChart(foreground, minutes_since_epoch, substrate, color=(255, 0, 0), spline_value=720)  # 480
-    DrawSmoothChart(foreground, minutes_since_epoch, topped_sat_mean, color=(255, 255, 255), spline_value=1240)  # biomass
+    DrawChart(foreground, minutes_since_start, motion_values, color=(0, 0, 255), bars=True)
+    DrawSmoothChart(foreground, minutes_since_start, brightness, color=(0, 255, 255))
+    DrawSmoothChart(foreground, minutes_since_start, substrate, color=(255, 0, 0), spline_value=720)  # 480
+    DrawSmoothChart(foreground, minutes_since_start, topped_sat_mean, color=(255, 255, 255), spline_value=1240)  # biomass
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
-    SaveTimeSeries(minutes_since_epoch, topped_sat_mean, 'time-series.pkl')
+    SaveTimeSeries(minutes_since_start, topped_sat_mean, 'time-series.pkl')
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
