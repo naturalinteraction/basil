@@ -31,7 +31,7 @@ def Page():
     if len(series_name) == 0:
         series_name = '[empty, which means the sensor is paused]'
     else:
-        series_name = series_name + ' (started ' + str(series_start) + ')'  # todo
+        series_name = series_name + ' (started ' + str(globa.series_start) + ')'  # todo
     return ('sensor ' + hostname + '<br>\n' +
             'firmware v1.' + globa.git_rev_count_and_branch + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
