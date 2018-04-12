@@ -67,8 +67,8 @@ def DrawChart(foreground, times, measurements, color=(255, 255, 255), xmult=0.00
     # print('minmax', min(measurements), max(measurements))
     cv2.circle(foreground, (0 * xmult + xoffset, int(h - measurements[0] * ymult - yoffset)), 3, color, thickness=5)
     for i in range(1, len(measurements)):
-        mins = times[i] - times[0]
-        previous_mins = times[i - 1] - times[0]
+        mins = times[i]
+        previous_mins = times[i - 1]
         baseline = 0
         last = measurements[i] - baseline
         previous = measurements[i - 1] - baseline
