@@ -2,8 +2,6 @@ from vision import *
 
 from datetime import datetime
 
-smooth_curves = False
-
 minutes_since_start = []
 topped_sat_mean = []
 brightness = []
@@ -91,16 +89,7 @@ def RoutineCurves(image_file, bgr, box):
     previous = motion_bgr
     # end of motion detection
 
-    curve_alpha = 1.0
-    if smooth_curves and len(minutes_since_start) > 1:
-        minutes_since_previous = minutes_since_start[-1] - minutes_since_start[-2]
-        curve_alpha = LinearMapping(minutes_since_previous + motion_value * 7, 60, 60 * 24, 0.1, 1.0)
-
-    bright = FrameBrightness(bgr)
-    if False:  # len(brightness) > 0:
-        brightness.append(bright * curve_alpha + (1.0 - curve_alpha) * brightness[-1])
-    else:
-        brightness.append(bright)
+    brightness.append(FrameBrightness(bgr))
 
     # UpdateWindow('bgr', bgr)
     UpdateWindow('hsv', hsv)
@@ -140,11 +129,7 @@ def RoutineCurves(image_file, bgr, box):
         saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)
     Normalize(saturation)
     UpdateWindow('topped normalized saturation', saturation)
-    sm = cv2.mean(saturation)[0]
-    if len(topped_sat_mean) > 0:
-        topped_sat_mean.append(sm * curve_alpha + (1.0 - curve_alpha) * topped_sat_mean[-1])
-    else:
-        topped_sat_mean.append(sm)
+    topped_sat_mean.append(cv2.mean(saturation)[0])
 
     # foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
     foreground = hires  # bgr
