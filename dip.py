@@ -4,18 +4,8 @@ from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
 from utility import *
 from vision import *
-from basilico import *
-from modello import *
-from satu import *
 from display import *
-from save import *
-from alfalfaredshift import *
-from alfalfanoir import *
-from bieta import *
 from curves import *
-from basilicorosso import *
-from bataviarossa import *
-from kappa import *
 
 customer = 'zero'
 

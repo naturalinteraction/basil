@@ -1,7 +1,7 @@
 from utility import *
 from vision import *
-from audio import AudioLevelPi
-from audio import AudioLevelLaptop
+# from audio import AudioLevelPi
+# from audio import AudioLevelLaptop
 from S3 import UploadFileToS3
 from S3 import ListFilesOnS3
 from S3 import DownloadFileFromS3
@@ -21,13 +21,13 @@ def test_OpenCVVersion():
 
 def test_GitHash():
     assert len(GitHash()) == 40
-
+'''
 def test_AudioLevelPi():
     assert AudioLevelPi() == -1  # assuming there is no second sound card on the laptop
 
 def test_AudioLevelLaptop():
     assert AudioLevelLaptop() > 0
-
+'''
 '''
 def test_UploadFileToS3():
     assert UploadFileToS3('test.txt')
