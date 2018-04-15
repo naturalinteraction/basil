@@ -12,7 +12,6 @@
 ./go.sh -r RoutineCurves -p noir-doublecalib
 ./go.sh -r RoutineCurves -p visible-doublecalib
 ./go.sh -r RoutineCurves -p blueshift-doublecalib
-'
 
 ./go.sh -r RoutineCurves -p redshift-ceppi
 ./go.sh -r RoutineCurves -p noir-ceppi
@@ -23,3 +22,9 @@
 ./go.sh -r RoutineCurves -p noir-hawk
 ./go.sh -r RoutineCurves -p visible-hawk
 ./go.sh -r RoutineCurves -p blueshift-hawk
+'
+
+./go.sh -r RoutineCurves -p redshift-aprile
+./go.sh -r RoutineCurves -p noir-aprile
+./go.sh -r RoutineCurves -p visible-aprile
+./go.sh -r RoutineCurves -p blueshift-aprile
