@@ -7,9 +7,7 @@ import boto.s3
 from boto.s3.key import Key
 import glob
 
-customer = 'zero'
-
-def UploadFileToS3(filename):
+def UploadFileToS3(filename, customer):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
     AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
 
@@ -85,7 +83,7 @@ def DownloadFileFromS3(key, filename):
 
     return True
 
-def DownloadImagesFromS3(prefix, substring):
+def DownloadImagesFromS3(prefix, substring, customer):
     files = ListFilesOnS3(prefix)
     downloaded = 0
     skipped = 0

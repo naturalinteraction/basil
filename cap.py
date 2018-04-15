@@ -19,6 +19,8 @@ from utility import Macduff
 from web import *
 from MqttImageUploader import *
 
+customer = 'zero'
+
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
         pickle.dump((ticks,filename), f, 0)
@@ -122,7 +124,7 @@ def AttemptUpload():
         # print('No images in cache. Nothing to do.')
         return
     print('Attempting upload.')
-    uploaded = UploadFileToS3(images_in_cache[0])  # 'cache' will be replaced with the customer's name
+    uploaded = UploadFileToS3(images_in_cache[0], customer)  # 'cache' will be replaced with the customer's name
     if uploaded:
         d = dict()
         d['timestamp'] = 666666

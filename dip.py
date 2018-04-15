@@ -32,7 +32,7 @@ def RemoveTemporaryFiles(also_temp_subdir=False):
 args = ParseArguments()
 
 if args.download:
-    DownloadImagesFromS3(customer + '/' + args.prefix, args.substring)
+    DownloadImagesFromS3(customer + '/' + args.prefix, args.substring, customer)
     quit()
 
 box = BoundingBox()
