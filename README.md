@@ -99,7 +99,7 @@ Change via script:
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
 - [ ] Plant species as dip.py argument
-- [ ] From cache/ to zero/
+- [ ] Store custom customer name
 - [ ] Limit spline propagation
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
