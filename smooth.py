@@ -4,7 +4,7 @@ from scipy.signal import wiener, filtfilt, butter, gaussian, freqz
 from scipy.ndimage import filters
 import scipy.optimize as op
 import matplotlib.pyplot as plt
-import statsmodels.api as sm  # deprecated: used by SmoothLowess() only
+# import statsmodels.api as sm  # deprecated: used by SmoothLowess() only
 import numpy.polynomial.polynomial as poly
 from utility import LoadTimeSeries
 
@@ -50,13 +50,13 @@ def SmoothFlat (x,y):
 def SmoothPoly(x, y):
     coefs = poly.polyfit(x, y, 4)  # no change with >4
     return poly.polyval(x, coefs)
-
+'''
 def SmoothLowess(x, y):
     lowess = sm.nonparametric.lowess(y, x, frac=.3)
     lowess_x = list(zip(*lowess))[0]
     lowess_y = list(zip(*lowess))[1]
     return (lowess_x, lowess_y)
-
+'''
 def SmoothGauss(x, y):
 	b = gaussian(19, 20)
 	return filters.convolve1d(y, b/b.sum())
@@ -73,7 +73,7 @@ x,y = LoadTimeSeries('time-series.pkl')
 plt.plot(x, y,'o')
 
 plt.plot(x, SmoothSpline(x, y))
-(lx,ly) = SmoothLowess(x, y)
+# (lx,ly) = SmoothLowess(x, y)
 plt.plot(lx, ly)
 plt.plot(x, SmoothPoly(x, y))
 plt.plot(x, SmoothHanning(x, y))
