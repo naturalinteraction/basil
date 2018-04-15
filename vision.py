@@ -6,10 +6,12 @@ from segment import *
 from collections import namedtuple
 # from mpl_toolkits.mplot3d import Axes3D
 # import matplotlib.pyplot as plt
+'''
 import pymeanshift as pms
 from skimage.segmentation import *
 from skimage import color
 from skimage.future import graph
+'''
 from smooth import *
 
 white = (255, 255, 255)
@@ -226,9 +228,10 @@ def rag_merge_mean_color(graph, src, dst):
 # range_radius      1.0 to 6.0 (float) somewhat related to the above radius, equal or smaller, seldomly up to x1.2
 # min_density       10 to 300 the smaller the more it preserves fine details
 # common combinations include 2,2,20 and 6,4.5,50
+'''
 def MeanShift(image, spatial_radius, range_radius, min_density):
     return pms.segment(image, spatial_radius, range_radius, min_density)  # returns (segmented_image, labels_image, number_regions)
-
+'''
 # works on reduced image to 20% on both axes, works on BGR and HSV, returns different sets of data whether stats is True
 def KMeans(img, K, stats=False):
     pixels = img.reshape((-1,3))

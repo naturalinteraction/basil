@@ -1,4 +1,4 @@
-./go.sh -p redshift-hawk -s '' -d
-./go.sh -p blueshift-hawk -s '' -d
-./go.sh -p noir-hawk -s '' -d
-./go.sh -p visible-hawk -s '' -d
+./go.sh -p redshift-aprile -s '' -d
+./go.sh -p blueshift-aprile -s '' -d
+./go.sh -p noir-aprile -s '' -d
+./go.sh -p visible-aprile -s '' -d
