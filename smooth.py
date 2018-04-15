@@ -3,7 +3,7 @@ from scipy.interpolate import UnivariateSpline
 from scipy.signal import wiener, filtfilt, butter, gaussian, freqz
 from scipy.ndimage import filters
 import scipy.optimize as op
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 # import statsmodels.api as sm  # deprecated: used by SmoothLowess() only
 import numpy.polynomial.polynomial as poly
 from utility import LoadTimeSeries
