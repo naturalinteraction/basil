@@ -17,6 +17,8 @@ from basilicorosso import *
 from bataviarossa import *
 from kappa import *
 
+customer = 'zero'
+
 def RemoveTemporaryFiles(also_temp_subdir=False):
     files = os.listdir('.')
     for file in files:
@@ -30,7 +32,7 @@ def RemoveTemporaryFiles(also_temp_subdir=False):
 args = ParseArguments()
 
 if args.download:
-    DownloadImagesFromS3('cache/' + args.prefix, args.substring)
+    DownloadImagesFromS3(customer + '/' + args.prefix, args.substring)
     quit()
 
 box = BoundingBox()

@@ -7,6 +7,8 @@ import boto.s3
 from boto.s3.key import Key
 import glob
 
+customer = 'zero'
+
 def UploadFileToS3(filename):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
     AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
@@ -26,7 +28,8 @@ def UploadFileToS3(filename):
             sys.stdout.flush()
 
         k = Key(bucket)
-        k.key = filename
+        customer_filename = filename.replace('cache/', customer + '/')
+        k.key = customer_filename
         k.set_contents_from_filename(filename,
                                      cb=percent_cb,
                                      num_cb=10)
@@ -91,7 +94,7 @@ def DownloadImagesFromS3(prefix, substring):
     if len(substring) > 0:
         files = list(filter(lambda x: substring in x, files))
     for f in files:
-        replaced = f.replace('cache/', 'downloaded/')
+        replaced = f.replace(customer + '/', 'downloaded/')
         if os.path.isfile(replaced):
             # print(('skipping download of %s' % f))
             print('.', end='')

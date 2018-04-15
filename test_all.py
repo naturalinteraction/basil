@@ -33,7 +33,7 @@ def test_UploadFileToS3():
     assert UploadFileToS3('test.txt')
 
 def test_ListFilesOnS3():
-    assert len(ListFilesOnS3('cache/test-test')) == 2
+    assert len(ListFilesOnS3('zero/test-test')) == 2
 
 def test_DownloadFileFromS3():
     assert DownloadFileFromS3('test.txt', 'downloaded/test.txt')
@@ -43,11 +43,11 @@ def test_ListLocalImagesAndDownloadImagesFromS3():
     for t in test_images:
         os.remove(t)
     assert len(ListLocalImages('downloaded/test-test', '')) == 0
-    skipped,downloaded,failed = DownloadImagesFromS3('cache/test-test', '')
+    skipped,downloaded,failed = DownloadImagesFromS3('zero/test-test', '')
     assert (skipped == 0 and downloaded == 2 and failed == 0)
-    skipped,downloaded,failed = DownloadImagesFromS3('cache/test-test', '')
+    skipped,downloaded,failed = DownloadImagesFromS3('zero/test-test', '')
     assert (skipped == 2 and downloaded == 0 and failed == 0)
-    skipped,downloaded,failed = DownloadImagesFromS3('cache/test-test', '30')
+    skipped,downloaded,failed = DownloadImagesFromS3('zero/test-test', '30')
     assert (skipped == 1 and downloaded == 0 and failed == 0)
     assert len(ListLocalImages('downloaded/test-test', '')) == 2
     assert len(ListLocalImages('downloaded/test-test', '30')) == 1
