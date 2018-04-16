@@ -84,7 +84,7 @@ def TakePicture(img, cam):
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)
     ticks = time.time()
-    globa.last_picture_filename = filename
+    globa.last_picture_filename = filename.replace('cache/', customer + '/')
     SaveLastPictureTicks(ticks, filename)
     # add EXIF keywords
     exif = ExifEditor(filename)
