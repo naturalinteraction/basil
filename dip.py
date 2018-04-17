@@ -14,10 +14,11 @@ def RemoveTemporaryFiles(also_temp_subdir=False):
     for file in files:
         if file.endswith(".temp"):
             os.remove(os.path.join('.', file))
-    files = os.listdir('temp')
     if also_temp_subdir:
+        files = os.listdir('temp')
         for file in files:
-            os.remove(os.path.join('temp', file))
+            if file.endswith(".jpeg"):
+                os.remove(os.path.join('temp', file))
 
 args = ParseArguments()
 
