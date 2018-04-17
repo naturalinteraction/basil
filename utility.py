@@ -15,6 +15,16 @@ import globa
 # from tzlocal import get_localzone
 # import pytz
 
+def LoadCustomer():
+    file = open('customer.txt')
+    customer_name = file.read().strip()
+    print('customer: ' + customer_name)
+    if customer_name == 'none':
+        print('customer has not been initialized. exiting.')
+        quit()
+    return customer_name
+
+globa.customer = LoadCustomer()
 
 def interrogate(item):
     if hasattr(item, "__name__"):
@@ -28,15 +38,6 @@ def interrogate(item):
         doc = getattr(item, '__doc__')
         # doc = doc.strip()
         print('doc: ', doc)
-
-def LoadCustomer():
-    file = open('customer.txt')
-    customer_name = file.read().strip()
-    print('customer: ' + customer_name)
-    if customer_name == 'none':
-        print('customer has not been initialized. exiting.')
-        quit()
-    return customer_name
 
 def CombinedMeanStandardDeviation(m1, s1, n1, m2, s2, n2):
     m1 = np.array(m1)
