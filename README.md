@@ -91,8 +91,12 @@ Change via script:
 - [ ] Hardware check based on MAC addresses and serials (see info.sh)
 - [ ] Image processing on sensor
 - [ ] Image processing on server
+- [ ] Customer in dip.py
 - [ ] Limit spline propagation
 - [ ] Series --> batch
+- [ ] Optionally disable MQTT
+- [ ] Web output of processing (local network and Internet)
+- [ ] Hours of operation can be set via web interface or per organization
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
@@ -139,7 +143,7 @@ Change via script:
 - [x] Web interface
 - [x] Click 4 times instead of 24, perspective grid
 - [x] Store date and time of crop start
-- [ ] ~~Send sensor health warning(if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)~~
+- [ ] ~~Send sensor health warning (if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)~~
 - [ ] ~~Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF? It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.~~
 - [ ] ~~Search brightness and contrast values (after the gains are good). Or make sure brightness is 50 and contrast is 10 and so on.~~
 - [ ] ~~Further test the exposure metering modes~~
