@@ -275,3 +275,4 @@ Other interesting settings in `/boot/config.txt`.
 ```
 git update-index --assume-unchanged FILE
 ```
+Must be executed on each machine. That means this is part of the installation process.
