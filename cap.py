@@ -16,11 +16,11 @@ import numpy as np
 import math
 import globa
 from utility import Macduff
-from utility import LoadCustomer
 from web import *
 from MqttImageUploader import *
 
-customer = LoadCustomer()  # 'zero'
+print(globa.customer)
+quit()
 
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -85,7 +85,7 @@ def TakePicture(img, cam):
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)
     ticks = time.time()
-    globa.last_picture_filename = filename.replace('cache/', customer + '/')
+    globa.last_picture_filename = filename.replace('cache/', globa.customer + '/')
     SaveLastPictureTicks(ticks, filename)
     # add EXIF keywords
     exif = ExifEditor(filename)
@@ -125,7 +125,7 @@ def AttemptUpload():
         # print('No images in cache. Nothing to do.')
         return
     print('Attempting upload.')
-    uploaded = UploadFileToS3(images_in_cache[0], customer)  # 'cache' will be replaced with the customer's name
+    uploaded = UploadFileToS3(images_in_cache[0], globa.customer)  # 'cache' will be replaced with the customer's name
     if uploaded:
         d = dict()
         d['timestamp'] = 666666
@@ -136,7 +136,7 @@ def AttemptUpload():
         d['biomass'] = 969
         d['type'] = "image"
         print(d)
-        code = UploadMQTT("zero/test/images", images_in_cache[0], d)
+        code = UploadMQTT(globa.customer + "/test/images", images_in_cache[0], d)
         print('code ' + str(code))
         if not (code == 1):
             print('MQTT upload failed!')
@@ -305,7 +305,7 @@ def ColorCalibrationIterate(color_calibration_shutter,color_calibration_red,colo
       else:
           color_calibration_red = color_calibration_red - (mean[4] - 0.0 * mean[5]) /  133.0 / 3.0
           color_calibration_blue = color_calibration_blue - (mean[6] - 0.0 * mean[5]) / 133.0 / 3.0
-          color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 1.0  # no need to use L because with Green() its error goes to zero
+          color_calibration_shutter = color_calibration_shutter - mean[5] * 9.0 / 1.0  # no need to use L because with Green() its error goes to 0
           color_calibration_red = max(0, min(8, color_calibration_red))
           color_calibration_blue = max(0, min(8, color_calibration_blue))
           color_calibration_shutter = max(0, min(80000, color_calibration_shutter))

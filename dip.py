@@ -7,7 +7,7 @@ from vision import *
 from display import *
 from curves import *
 
-customer = 'zero'
+customer = 'zero'  # todo
 
 def RemoveTemporaryFiles(also_temp_subdir=False):
     files = os.listdir('.')

@@ -1,5 +1,9 @@
 import time
 import pickle
+from utility import LoadCustomer
+
+global customer
+customer = LoadCustomer()
 
 global git_rev_count_and_branch
 git_rev_count_and_branch = 'none'
