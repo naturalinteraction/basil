@@ -14,7 +14,7 @@ Software for sensor devices.
 - Algorithm is plant-specific.
 - Plant in tray is known.
 - Measurements across different plant species are not comparable.
-- Day of growth is known. Actually starting day and hour must be known.
+- Day of growth is known. Starting day and hour must be known.
 - White, constant light.
 - Substrate is white or black and plastic.
 - Distance and angle are fixed.
@@ -26,8 +26,6 @@ Software for sensor devices.
 - [x] Hardware specification document
 - [x] Design and implement controls on web interface
 - [x] Algorithms: segmentation, analysis, calibration
-- [ ] Image processing on sensor
-- [ ] Image processing on server
 - [ ] Commented source code
 - [ ] Operation guide
 
@@ -98,8 +96,12 @@ Change via script:
 - [x] Upload MQTT
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
-- [ ] Plant species as dip.py argument
-- [ ] Store custom customer name
+- [x] Store custom customer name
+- [ ] Plant species and customer as dip.py argument
+- [ ] Obfuscation and separate git repo or other delivery method
+- [ ] Hardware check based on MAC addresses and serials (see info.sh)
+- [ ] Image processing on sensor
+- [ ] Image processing on server
 - [ ] Limit spline propagation
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
@@ -216,6 +218,8 @@ sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 Visible sensor failed around February 12th. cap.py not running and camera not detected until reboot.
 
 Resolution set to 1280x720 (16:9)
+
+There is no way we can use the Raspberry Pi Zero because sourcing is unreliable.
 
 #### Autostart
 Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
