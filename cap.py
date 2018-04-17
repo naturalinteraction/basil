@@ -16,10 +16,11 @@ import numpy as np
 import math
 import globa
 from utility import Macduff
+from utility import LoadCustomer
 from web import *
 from MqttImageUploader import *
 
-customer = 'zero'
+customer = LoadCustomer()  # 'zero'
 
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:

@@ -29,6 +29,14 @@ def interrogate(item):
         # doc = doc.strip()
         print('doc: ', doc)
 
+def LoadCustomer():
+    file = open('customer.txt')
+    customer_name = file.read().strip()
+    print('--' + customer_name + '--')
+    if customer_name == 'none':
+        print('customer has not been initialized. exiting.')
+        quit()
+    return customer_name
 
 def CombinedMeanStandardDeviation(m1, s1, n1, m2, s2, n2):
     m1 = np.array(m1)
