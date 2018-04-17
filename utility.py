@@ -32,7 +32,7 @@ def interrogate(item):
 def LoadCustomer():
     file = open('customer.txt')
     customer_name = file.read().strip()
-    print('--' + customer_name + '--')
+    print('customer: ' + customer_name)
     if customer_name == 'none':
         print('customer has not been initialized. exiting.')
         quit()

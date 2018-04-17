@@ -242,11 +242,12 @@ Save username and password for 4 months:
 git config --global credential.helper 'cache --timeout=10000000'
 ```
 
-#### Cython and Scipy
+#### Cython, Scipy and MQTT
 
 ```
 pip install Cython
 sudo apt-get install python-scipy
+pip install paho-mqtt
 ```
 
 #### Web server on the sensors
@@ -269,3 +270,8 @@ Edit `/etc/rc.local` and add the following lines above `exit 0`:
 /usr/bin/tvservice -o
 ```
 Other interesting settings in `/boot/config.txt`.
+
+#### Ignore changes to file
+```
+git update-index --assume-unchanged FILE
+```
