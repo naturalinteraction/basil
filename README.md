@@ -237,12 +237,12 @@ Save username and password for 4 months:
 git config --global credential.helper 'cache --timeout=10000000'
 ```
 
-#### Cython, Scipy and MQTT
-
+#### Cython, Scipy, FFmpeg and MQTT
 ```
 pip install Cython
 sudo apt-get install python-scipy
 pip install paho-mqtt
+sudo apt-get install ffmpeg
 ```
 
 #### Web server on the sensors
