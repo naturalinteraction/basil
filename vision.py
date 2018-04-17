@@ -2,7 +2,7 @@ from __future__ import print_function  # provides Python 3's print() with end=''
 import cv2
 import numpy as np
 from utility import *
-from segment import *
+# from segment import *  # requires Cython
 from collections import namedtuple
 # from mpl_toolkits.mplot3d import Axes3D
 # import matplotlib.pyplot as plt

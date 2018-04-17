@@ -242,10 +242,11 @@ Save username and password for 4 months:
 git config --global credential.helper 'cache --timeout=10000000'
 ```
 
-#### Cython
+#### Cython and Scipy
 
 ```
 pip install Cython
+sudo apt-get install python-scipy
 ```
 
 #### Web server on the sensors
