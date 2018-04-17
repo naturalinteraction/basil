@@ -22,9 +22,11 @@
 ./go.sh -r RoutineCurves -p noir-hawk
 ./go.sh -r RoutineCurves -p visible-hawk
 ./go.sh -r RoutineCurves -p blueshift-hawk
-'
 
 ./go.sh -r RoutineCurves -p redshift-aprile
 ./go.sh -r RoutineCurves -p noir-aprile
 ./go.sh -r RoutineCurves -p visible-aprile
 ./go.sh -r RoutineCurves -p blueshift-aprile
+'
+
+./go.sh -r RoutineCurves -p redshift-hawk

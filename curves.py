@@ -110,21 +110,21 @@ def RoutineCurves(image_file, bgr, box):
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
 
-    if 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:  # ravanello
-        ravanello = DistanceFromToneBlurTopBottom(hsv, "ravanello.pkl", 1, 1, 1, 240, 10.0)
-        UpdateWindow('ravanello', ravanello)
-        bluastro = DistanceFromToneBlurTopBottom(hsv, "bluastro.pkl", 1, 1, 1, 240, 10.0)
-        UpdateWindow('bluastro', bluastro)
-        saturation = cv2.addWeighted(saturation, 1.0, ravanello, 0.5, 0.0) 
-        saturation = cv2.addWeighted(saturation, 1.0, bluastro, 0.5, 0.0)
+    if 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:
+        reddish = DistanceFromToneBlurTopBottom(hsv, "colors/reddish.pkl", 1, 1, 1, 240, 10.0)
+        UpdateWindow('reddish', reddish)
+        bluish = DistanceFromToneBlurTopBottom(hsv, "colors/bluish.pkl", 1, 1, 1, 240, 10.0)
+        UpdateWindow('bluish', bluish)
+        saturation = cv2.addWeighted(saturation, 1.0, reddish, 0.5, 0.0) 
+        saturation = cv2.addWeighted(saturation, 1.0, bluish, 0.5, 0.0)
     if 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:  # algae
         print('removing algae')
-        algae = DistanceFromToneBlurTopBottom(hsv, "alga.pkl", 1, 1, 1, 255, 10.0)
+        algae = DistanceFromToneBlurTopBottom(hsv, "colors/algae.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
         saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)  # or -1.0?
     if '-hawk' in image_file:  # stripe
         print('removing stripe')
-        stripe = DistanceFromToneBlurTopBottom(hsv, "stripe.pkl", 1, 1, 1, 255, 10.0)
+        stripe = DistanceFromToneBlurTopBottom(hsv, "colors/stripe.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('stripe', stripe)
         saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)
     Normalize(saturation)
