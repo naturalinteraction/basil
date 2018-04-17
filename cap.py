@@ -83,7 +83,7 @@ def TakePicture(img, cam):
     # cv2.imwrite(filename + '.png', img)
     ticks = time.time()
     globa.last_picture_filename = filename.replace('cache/', globa.customer + '/')
-    SaveLastPictureTicks(ticks, filename)
+    SaveLastPictureTicks(ticks, globa.last_picture_filename)
     # add EXIF keywords
     exif = ExifEditor(filename)
     keywords =       [GitHash(),
