@@ -19,9 +19,6 @@ from utility import Macduff
 from web import *
 from MqttImageUploader import *
 
-print(globa.customer)
-quit()
-
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
         pickle.dump((ticks,filename), f, 0)
