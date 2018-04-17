@@ -40,17 +40,6 @@ Single Python 2.7 function for both uploads:
 ```
 def UploadData(image_filename, json_string)  -->  True|False (whether both succeeded)
 ```
-Required scalar outputs:
-- Biomass quantity
-- Biomass uniformity
-
-Optional outputs:
-- Biomass RGB (mean, standard deviation or histogram)
-- Biomass HSV (hue, saturation (or vibrance) and intensity; mean, standard deviation or histogram)
-- Scene brightness/darkness or RGB or HSV
-- Scene motion
-- Biomass motion
-- Sensor health (if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)
 
 #### Customizing each SD image
 
@@ -103,6 +92,7 @@ Change via script:
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Limit spline propagation
+- [ ] Series --> batch
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
@@ -149,6 +139,7 @@ Change via script:
 - [x] Web interface
 - [x] Click 4 times instead of 24, perspective grid
 - [x] Store date and time of crop start
+- [ ] ~~Send sensor health warning(if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)~~
 - [ ] ~~Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF? It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.~~
 - [ ] ~~Search brightness and contrast values (after the gains are good). Or make sure brightness is 50 and contrast is 10 and so on.~~
 - [ ] ~~Further test the exposure metering modes~~
