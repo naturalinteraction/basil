@@ -69,6 +69,8 @@ def SmoothSpline(x, y, s=240):
 	return sp(x)
 
 '''
+# SaveTimeSeries(minutes_since_start, topped_sat_mean, 'time-series.pkl')
+
 x,y = LoadTimeSeries('time-series.pkl')
 plt.plot(x, y,'o')
 
