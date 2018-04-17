@@ -10,7 +10,7 @@ p3
 I13
 sS'Brightness'
 p4
-I6
+I5
 sS'Exp Meter Mode'
 p5
 I0
@@ -22,7 +22,7 @@ p7
 I0
 sS'Shutter Speed'
 p8
-I6
+I20
 sS'ISO'
 p9
 I1
@@ -37,7 +37,7 @@ p12
 I5
 sS'Contrast'
 p13
-I1
+I0
 s(dp14
 S'DRC Strength'
 p15
@@ -48,10 +48,10 @@ p17
 I0
 sS'AWB Red Gain'
 p18
-F1.15625
+F1.23046875
 sS'Brightness'
 p19
-I60
+I50
 sS'Exp Meter Mode'
 p20
 Vaverage
@@ -64,7 +64,7 @@ p23
 g16
 sS'Shutter Speed'
 p24
-I633
+I10010
 sS'ISO'
 p25
 L100L
@@ -73,12 +73,12 @@ p26
 g16
 sS'AWB Blue Gain'
 p27
-F1.8984375
+F2.1015625
 sS'Exp Compensation'
 p28
 I0
 sS'Contrast'
 p29
-I10
+I0
 stp30
 .
