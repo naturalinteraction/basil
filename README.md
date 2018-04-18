@@ -86,7 +86,10 @@ Change via script:
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
 - [x] Store custom customer name
-- [ ] DrawSmoothChart() and possibly DrawChart() draw phantom point at time zero
+- [x] DrawSmoothChart() and DrawChart() do not draw phantom point at time zero
+- [x] Series --> batch
+- [x] MQTT only for customer zero
+- [ ] Hours of operation can be set via text file, per group, and they are shown on web interface
 - [ ] Customer in dip.py
 - [ ] Plant species and customer as dip.py argument
 - [ ] Obfuscation and separate git repo or other delivery method
@@ -94,10 +97,7 @@ Change via script:
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Limit spline propagation
-- [x] Series --> batch
-- [x] MQTT only for customer zero
 - [ ] Web output of processing (local network and Internet)
-- [ ] Hours of operation can be set via web interface or per organization
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
