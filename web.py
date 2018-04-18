@@ -32,7 +32,7 @@ def Page():
         series_name = '[empty, which means the sensor is paused]'
     else:
         series_name = series_name + ' (started ' + str(time.ctime(int(globa.series_start))) + ')'
-    return ('organization ' + globa.customer + '<br>\n' +
+    return ('group ' + globa.customer + '<br>\n' +
             'sensor ' + hostname + '<br>\n' +
             'firmware v1.' + globa.git_rev_count_and_branch + '<br>\n' +
             OpenCVVersion() + '<p>\n' +
