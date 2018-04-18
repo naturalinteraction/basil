@@ -123,7 +123,7 @@ def AttemptUpload():
         return
     print('Attempting upload.')
     uploaded = UploadFileToS3(images_in_cache[0], globa.customer)  # 'cache' will be replaced with the customer's name
-    if uploaded:
+    if uploaded and customer == 'zero':
         d = dict()
         d['timestamp'] = 666666
         d['farmId'] = socket.gethostname()
