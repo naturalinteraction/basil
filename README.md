@@ -94,7 +94,7 @@ Change via script:
 - [ ] Image processing on server
 - [ ] Limit spline propagation
 - [ ] Series --> batch
-- [ ] Optionally disable MQTT
+- [x] MQTT only for customer zero
 - [ ] Web output of processing (local network and Internet)
 - [ ] Hours of operation can be set via web interface or per organization
 - [ ] ~~Background subtraction~~
