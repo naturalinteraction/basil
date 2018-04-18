@@ -3,9 +3,9 @@ from vision import *
 from datetime import datetime
 
 minutes_since_start = []
-topped_sat_mean = []
+biomass = []
 brightness = []
-motion_values = []
+motion = []
 substrate = []
 
 '''
@@ -75,9 +75,9 @@ def RoutineCurves(image_file, bgr, box):
         timediff = date - date
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
     minutes_since_start.append(minutes)
-    print('minutes', locals()['minutes'])
-    print('batch_start', time.ctime(batch_start))
-    print('this image taken at', time.ctime(batch_start + minutes * 60))
+    # print('minutes', locals()['minutes'])
+    # print('batch_start', time.ctime(batch_start))
+    # print('this image taken at', time.ctime(batch_start + minutes * 60))
 
     hires = bgr
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
@@ -90,14 +90,14 @@ def RoutineCurves(image_file, bgr, box):
         previous
     except:
         previous = motion_bgr
-    motion = cv2.absdiff(motion_bgr, previous)
-    motion = BGRToGray(motion)
-    ret,motion = cv2.threshold(motion, 6, 6, cv2.THRESH_TOZERO)
-    motion_value = int(cv2.mean(motion)[0])
+    motion_diff = cv2.absdiff(motion_bgr, previous)
+    motion_diff = BGRToGray(motion_diff)
+    ret,motion_diff = cv2.threshold(motion_diff, 6, 6, cv2.THRESH_TOZERO)
+    motion_value = int(cv2.mean(motion_diff)[0])
     motion_value = motion_value * motion_value / 8
     if motion_value > 255:
         motion_value = 255
-    motion_values.append(motion_value)
+    motion.append(motion_value)
     previous = motion_bgr
     # end of motion detection
 
@@ -140,17 +140,17 @@ def RoutineCurves(image_file, bgr, box):
         UpdateWindow('stripe', stripe)
         saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)
     Normalize(saturation)
-    UpdateWindow('topped normalized saturation', saturation)
-    topped_sat_mean.append(cv2.mean(saturation)[0])
+    UpdateWindow('biomass', saturation)
+    biomass.append(cv2.mean(saturation)[0])
 
     # foreground = cv2.multiply(GrayToBGR(saturation), bgr, scale=1.0/255.0)
     foreground = hires  # bgr
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
-    DrawChart(foreground, minutes_since_start, motion_values, color=(0, 0, 255), bars=True)
+    DrawChart(foreground, minutes_since_start, motion, color=(0, 0, 255), bars=True)
     DrawSmoothChart(foreground, minutes_since_start, brightness, color=(0, 255, 255))
     DrawSmoothChart(foreground, minutes_since_start, substrate, color=(255, 0, 0), spline_value=720)  # 480
-    DrawSmoothChart(foreground, minutes_since_start, topped_sat_mean, color=(255, 255, 255), spline_value=1240)  # biomass
+    DrawSmoothChart(foreground, minutes_since_start, biomass, color=(255, 255, 255), spline_value=1240)
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
