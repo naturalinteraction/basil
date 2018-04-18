@@ -31,14 +31,14 @@ should_reboot = False
 global start_color_calibration
 start_color_calibration = False
 
-global series
-global series_start
+global batch
+global batch_start
 try:
-    with open('series.pkl', 'r') as f:
-        (series, series_start) = pickle.load(f)
+    with open('batch.pkl', 'r') as f:
+        (batch, batch_start) = pickle.load(f)
 except:
-    series = ''
-    series_start = 0
+    batch = ''
+    batch_start = 0
 
 global cameraproperties
 cameraproperties = None

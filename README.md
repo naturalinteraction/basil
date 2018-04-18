@@ -62,7 +62,7 @@ Change via script:
 - [x] List all pictures on S3
 - [x] Check if local file exists
 - [x] Download pictures that are not here yet
-- [x] Group images with the same 'note' and series identifier
+- [x] Group images with the same hostname and batch identifier
 - [x] Open downloaded images
 - [x] Cython threshold function
 - [x] Optionally download images from S3
@@ -86,6 +86,7 @@ Change via script:
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
 - [x] Store custom customer name
+- [ ] DrawSmoothChart() and possibly DrawChart() draw phantom point at time zero
 - [ ] Customer in dip.py
 - [ ] Plant species and customer as dip.py argument
 - [ ] Obfuscation and separate git repo or other delivery method
@@ -93,7 +94,7 @@ Change via script:
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Limit spline propagation
-- [ ] Series --> batch
+- [x] Series --> batch
 - [x] MQTT only for customer zero
 - [ ] Web output of processing (local network and Internet)
 - [ ] Hours of operation can be set via web interface or per organization

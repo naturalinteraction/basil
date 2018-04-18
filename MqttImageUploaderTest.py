@@ -7,6 +7,6 @@ d['uniformity'] = 669
 d['biomass'] = 969
 d['type'] = "image"
 d['farmId'] = "somehost"  # "valliFarm"
-d['batchId'] = "someseries"  # "valliBatchBig"
+d['batchId'] = "somebatch"  # "valliBatchBig"
 d['type'] = "image"
 print(UploadMQTT("zero/test/images", 'downloaded/redshift-sanbiagio1_2560x1920_2018_01_21-13_00.jpg', d))

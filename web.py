@@ -27,11 +27,11 @@ def Page():
         status = 'auto calibration... (' + globa.calib_error + ')'
     if globa.color_calibrate:
         status = 'color calibration... (' + globa.calib_error + ')'
-    series_name = globa.series
-    if len(series_name) == 0:
-        series_name = '[empty, which means the sensor is paused]'
+    batch_name = globa.batch
+    if len(batch_name) == 0:
+        batch_name = '[empty, which means the sensor is paused]'
     else:
-        series_name = series_name + ' (started ' + str(time.ctime(int(globa.series_start))) + ')'
+        batch_name = batch_name + ' (started ' + str(time.ctime(int(globa.batch_start))) + ')'
     return ('group ' + globa.customer + '<br>\n' +
             'sensor ' + hostname + '<br>\n' +
             'firmware v1.' + globa.git_rev_count_and_branch + '<br>\n' +
@@ -44,7 +44,7 @@ def Page():
             # 'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
             prop + '\n' +
             'Sensor OK? ' + str(SensorFunctioningOK()) + '<p>\n'
-            'Series ' + series_name + '<br>\n' +
+            'Batch ' + batch_name + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
             'started ' + globa.time_process_started_string + '<br>\n' +
@@ -94,16 +94,16 @@ class WebPage(resource.Resource):
             return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"><meta http-equiv="refresh" content="0; URL=http://www.naturalinteraction.org/" /></head><body>Rebooting...</body>'
         if 'quit-quit' in str(request):
             globa.should_quit = True
-        if 'change-series' in str(request):
+        if 'change-batch' in str(request):
             parts = str(request).replace(' ', '=').split('=')
             print(parts)
             for i,p in enumerate(parts):
-                if 'change-series' in p:
-                        globa.series = parts[i + 1].replace('clientproto', '')
-                        print('saving globa.series = %s' % globa.series)
-                        globa.series_start = time.time()
-                        with open('series.pkl', 'w') as f:
-                            pickle.dump((globa.series, globa.series_start), f, 0)
+                if 'change-batch' in p:
+                        globa.batch = parts[i + 1].replace('clientproto', '')
+                        print('saving globa.batch = %s' % globa.batch)
+                        globa.batch_start = time.time()
+                        with open('batch.pkl', 'w') as f:
+                            pickle.dump((globa.batch, globa.batch_start), f, 0)
         macduff = ''
         if 'find-colorchecker' in str(request):
             print('finding colorchecker')
@@ -123,7 +123,7 @@ class WebPage(resource.Resource):
             thumb = thumb + '<p><a href="sensorstatus?admin-admin&update-firmware">Update Firmware</a><br>\n'
             # thumb = thumb + '<a href="sensorstatus?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
             # thumb = thumb + '<a href="sensorstatus?admin-admin&quit-quit">Quit Sensor</a><br>\n'
-            thumb = thumb + '<a href="sensorstatus?admin-admin&change-series=new-series-name">Change Series</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&change-batch=new-batch-name">Change Batch</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
@@ -132,7 +132,7 @@ class WebPage(resource.Resource):
             # thumb = thumb + 'Restart Sensor (disabled)<br>\n'
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
             # thumb = thumb + 'Quit Sensor (disabled)<br>\n'
-            thumb = thumb + 'Change Series (disabled)<br>\n'
+            thumb = thumb + 'Change Batch (disabled)<br>\n'
             thumb = thumb + 'Find Colorchecker (disabled)<br>\n'
             thumb = thumb + 'Start Color Calibration (disabled)<br>\n'
         return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico">' + refresh + '</head><body><font face="Arial">' + Page() + thumb + macduff + '</font></body>'

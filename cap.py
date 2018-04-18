@@ -67,8 +67,8 @@ def TakePicture(img, cam):
     for i in range(10):
         AttemptUpload()
 
-    if len(globa.series) == 0:
-        print('not taking picture as series is empty')
+    if len(globa.batch) == 0:
+        print('not taking picture as batch is empty')
         return 0
 
     # audio_level = AudioLevelPi()
@@ -77,7 +77,7 @@ def TakePicture(img, cam):
     res = cam.resolution
     note = socket.gethostname()  # os.environ['BASIL_NOTE']
     print('note', note)
-    filename = 'cache/' + note + '-' + globa.series + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
+    filename = 'cache/' + note + '-' + globa.batch + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)
@@ -87,8 +87,8 @@ def TakePicture(img, cam):
     # add EXIF keywords
     exif = ExifEditor(filename)
     keywords =       [GitHash(),
-                      'series=' + globa.series,
-                      'series_start=' + str(int(globa.series_start)),
+                      'batch=' + globa.batch,
+                      'batch_start=' + str(int(globa.batch_start)),
                       'started=' + globa.time_process_started_string,
                       'shutter=' + str(cam.shutter_speed),
                       'drc_str=' + str(cam.drc_strength),
@@ -127,7 +127,7 @@ def AttemptUpload():
         d = dict()
         d['timestamp'] = 666666
         d['farmId'] = socket.gethostname()
-        d['batchId'] = globa.series
+        d['batchId'] = globa.batch
         d['lineId'] = 666
         d['uniformity'] = 669
         d['biomass'] = 969

@@ -29,4 +29,4 @@
 ./go.sh -r RoutineCurves -p blueshift-aprile
 '
 
-./go.sh -r RoutineCurves -p redshift-hawk
+./go.sh -r RoutineCurves -p redshift-aprile

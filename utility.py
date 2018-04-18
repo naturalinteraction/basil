@@ -121,14 +121,14 @@ def GitCommitMessagePretty():
 def ExifKeywords(file):
     return subprocess.check_output(["exiftool", "-Keywords", file]).strip()
 
-def ExifSeriesStart(file):
-    series_start = -1
+def ExifBatchStart(file):
+    batch_start = -1
     exif = ExifKeywords(file).split(',')
     for e in exif:
-        if 'series_start' in e:
+        if 'batch_start' in e or 'series_start' in e:  # for backward compatibility in batch 'aprile'
             e = e.split('=')
-            series_start = int(e[-1])
-    return series_start
+            batch_start = int(e[-1])
+    return batch_start
 
 def GetCPUSerial():
   # Extract serial from cpuinfo file

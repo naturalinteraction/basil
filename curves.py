@@ -63,21 +63,21 @@ def RoutineCurves(image_file, bgr, box):
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
     print(date)
 
-    global series_start
+    global batch_start  # not to be confused with globa.batch_start in cap.py
     try:
-        series_start
+        batch_start
     except:
-        series_start = ExifSeriesStart(image_file)
-    if series_start > -1:
-        timediff = date - datetime.fromtimestamp(series_start)
+        batch_start = ExifBatchStart(image_file)
+    if batch_start > -1:
+        timediff = date - datetime.fromtimestamp(batch_start)
     else:
-        series_start = time.mktime(date.timetuple())
+        batch_start = time.mktime(date.timetuple())
         timediff = date - date
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
     minutes_since_start.append(minutes)
     print('minutes', locals()['minutes'])
-    # print('series_start', time.ctime(series_start))
-    # print('this image taken at', time.ctime(series_start + minutes * 60))
+    print('batch_start', time.ctime(batch_start))
+    print('this image taken at', time.ctime(batch_start + minutes * 60))
 
     hires = bgr
     bgr,hsv = ResizeBlur(bgr, 0.5, 5)
