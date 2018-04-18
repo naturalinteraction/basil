@@ -34,8 +34,8 @@ def Page():
         batch_name = batch_name + ' (started ' + str(time.ctime(int(globa.batch_start))) + ')'
     return ('group ' + globa.customer + '<br>\n' +
             'sensor ' + hostname + '<br>\n' +
-            'firmware v1.' + globa.git_rev_count_and_branch + '<br>\n' +
-            OpenCVVersion() + '<p>\n' +
+            'firmware v1.' + globa.git_rev_count_and_branch + '<p>\n' +
+            # OpenCVVersion() + '<p>\n' +
             'cpu ' + str(CPUPercent()) + '%<br>\n' +
             'memory ' + str(MemoryPercent()) + '%<br>\n' +
             'disk ' + str(DiskPercent()) + '%<br>\n' +
