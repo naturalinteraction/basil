@@ -90,15 +90,14 @@ Change via script:
 - [x] Series --> batch
 - [x] MQTT only for customer zero
 - [x] Limit spline propagation experimented in branch spline-parts-and-spline-until-break
-- [ ] Get rid of set basil vars script
 - [ ] Hours of operation can be set via text file, per group, and they are shown on web interface
-- [ ] Customer in dip.py
 - [ ] Plant species and customer as dip.py argument
-- [ ] Obfuscation and separate git repo or other delivery method
-- [ ] Hardware check based on MAC addresses and serials (see info.sh)
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Web output of processing (local network and Internet)
+- [ ] Obfuscation and separate git repo or other delivery method
+- [ ] Get rid of set basil vars script
+- [ ] Hardware check based on MAC addresses and serials (see info.sh)
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
