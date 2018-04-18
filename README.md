@@ -89,6 +89,7 @@ Change via script:
 - [x] DrawSmoothChart() and DrawChart() do not draw phantom point at time zero
 - [x] Series --> batch
 - [x] MQTT only for customer zero
+- [ ] Get rid of set basil vars script
 - [ ] Hours of operation can be set via text file, per group, and they are shown on web interface
 - [ ] Customer in dip.py
 - [ ] Plant species and customer as dip.py argument
