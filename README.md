@@ -89,6 +89,7 @@ Change via script:
 - [x] DrawSmoothChart() and DrawChart() do not draw phantom point at time zero
 - [x] Series --> batch
 - [x] MQTT only for customer zero
+- [x] Limit spline propagation experimented in branch spline-parts-and-spline-until-break
 - [ ] Get rid of set basil vars script
 - [ ] Hours of operation can be set via text file, per group, and they are shown on web interface
 - [ ] Customer in dip.py
@@ -97,7 +98,6 @@ Change via script:
 - [ ] Hardware check based on MAC addresses and serials (see info.sh)
 - [ ] Image processing on sensor
 - [ ] Image processing on server
-- [ ] Limit spline propagation
 - [ ] Web output of processing (local network and Internet)
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
