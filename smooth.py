@@ -3,7 +3,7 @@ from scipy.interpolate import UnivariateSpline
 from scipy.signal import wiener, filtfilt, butter, gaussian, freqz
 from scipy.ndimage import filters
 import scipy.optimize as op
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 # import statsmodels.api as sm  # deprecated: used by SmoothLowess() only
 import numpy.polynomial.polynomial as poly
 from utility import LoadTimeSeries
@@ -68,23 +68,22 @@ def SmoothSpline(x, y, s=240):
 	sp = UnivariateSpline(x, y, s=s)
 	return sp(x)
 
-'''
 # SaveTimeSeries(minutes_since_start, topped_sat_mean, 'time-series.pkl')
 
-x,y = LoadTimeSeries('time-series.pkl')
-plt.plot(x, y,'o')
-
-plt.plot(x, SmoothSpline(x, y))
-# (lx,ly) = SmoothLowess(x, y)
-plt.plot(lx, ly)
-plt.plot(x, SmoothPoly(x, y))
-plt.plot(x, SmoothHanning(x, y))
-plt.plot(x, SmoothHamming(x, y))
-plt.plot(x, SmoothBlackman(x, y))
-plt.plot(x, SmoothBartlett(x, y))
-plt.plot(x, SmoothFlat(x, y))
-plt.plot(x, SmoothGauss(x, y))
-plt.plot(x, SmoothWiener(x, y))
-
+x,y = LoadTimeSeries('biomass.pkl')
+xm,ym = LoadTimeSeries('motion.pkl')
+plt.plot(x, SmoothSpline(x, y, s=1240))
+last_break = 0
+print(len(x), len(y))
+for i in range(0, len(x)):
+    if ym[i] > 100 or i == len(x) - 1:
+        print('break at ' + str(i))
+        plt.plot(x[last_break:i], y[last_break:i],'o')
+        try:
+            plt.plot(x[last_break:i], SmoothSpline(x[last_break:i], y[last_break:i], s=1240))
+            print('ok', last_break, i)
+        except:
+            print('sfiga', last_break, i)
+            plt.plot(x[last_break:i], y[last_break:i])
+        last_break = i
 plt.show()
-'''
