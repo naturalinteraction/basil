@@ -11,7 +11,7 @@ substrate = []
 '''
 VISIBLE-CEPPI
 rucola
-il 13/3 alle 15 si vede buco appena sopra gli ultimi punti gialli... si detecta?
+on 13/3 at 15 find hole above the last yellow points
 short, sensor falls
 
 BLUESHIFT-CEPPI
@@ -19,7 +19,7 @@ rucola
 all OK
 
 NOIR-CEPPI
-cavolo rosso (simile al ravanello ma ha una foglia piu' verde, e ha il frutto violetto)
+cavolo rosso (like ravanello but more green, with purple fruits)
 change in brightness at the end due to lamps
 
 REDSHIFT-CEPPI
@@ -27,22 +27,34 @@ ravanello rosso
 short, microgreens cut
 investigate changes in brightness
 
-REDSHIFT-HAWK sara' cavolo rosso
+REDSHIFT-HAWK
 cavolo rosso
 investigate irregularity
 biomass goes down at the end
 
-BLUESHIFT-HAWK sara' ravanello rosso
+BLUESHIFT-HAWK
 crescione
 investigate irregularity
 
-VISIBLE-HAWK sara' senape (simile a rucola)
+VISIBLE-HAWK
 chia
 white overfitting?
 
-NOIR-HAWK sara' chia
+NOIR-HAWK
 crescione
 investigate irregularity
+
+REDSHIFT-APRILE
+cavolo rosso
+
+BLUESHIFT-APRILE
+ravanello rosso
+
+NOIR-APRILE
+chia
+
+VISIBLE-APRILE
+senape (like rucola)
 '''
 
 def RoutineCurves(image_file, bgr, box):

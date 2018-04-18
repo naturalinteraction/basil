@@ -86,12 +86,12 @@ Change via script:
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
 - [x] Store custom customer name
+- [ ] Customer in dip.py
 - [ ] Plant species and customer as dip.py argument
 - [ ] Obfuscation and separate git repo or other delivery method
 - [ ] Hardware check based on MAC addresses and serials (see info.sh)
 - [ ] Image processing on sensor
 - [ ] Image processing on server
-- [ ] Customer in dip.py
 - [ ] Limit spline propagation
 - [ ] Series --> batch
 - [ ] Optionally disable MQTT
