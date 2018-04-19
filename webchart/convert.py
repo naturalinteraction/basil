@@ -14,4 +14,5 @@ def ConvertPickleToCSV(name):
 
 ConvertPickleToCSV('biomass')
 ConvertPickleToCSV('motion')
+ConvertPickleToCSV('spline')
 

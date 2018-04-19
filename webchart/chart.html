@@ -59,7 +59,7 @@ var	svg = d3.select("body")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
  
 // Get the data
-d3.csv("biomass.csv", function(error, data) {
+d3.csv("spline.csv", function(error, data) {
 	data.forEach(function(d) {
 		d.minutes = d.minutes;
 		d.biomass = +d.biomass;
