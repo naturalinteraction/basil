@@ -97,7 +97,24 @@ d3.csv("spline.csv", function(error, data) {
 	svg.append("g")		
 		.attr("class", "y axis")
 		.call(yAxis);
- 
+
+    svg.append("g")		
+    .append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "middle")
+    .attr("x", width/4)
+    .attr("y", height/2 + 50)
+    .text("age (hours)");
+
+    svg.append("g")		
+    .append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "middle")
+    .attr("x", -100)
+    .attr("y", height/4)
+    .text("biomass (%)")
+    .style('fill', 'blue')
+
 });
  
 </script>
