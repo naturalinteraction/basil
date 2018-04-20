@@ -109,20 +109,9 @@ d3.csv("visible-hawk.csv", function(error, data) {
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
     y.domain([0, 255]);
 
-    var colors = ["red", "red", "yellow", "yellow", "blue", "blue", "grey", "grey"];
-    for (var l = 0; l < 8; l++)
-      { if (l % 2 == 1)
-          { svg.append("path")
-		    // .attr("class", "line" + (l + 1))
-            .attr("stroke", colors[l - 1])
-            .attr("stroke-width", 2)
-            .attr("fill", "none")
-		    .attr("d", window['valueline' + (l + 1)](data));
-          }
-      }
+    var colors = ["red", "red", "yellow", "yellow", "blue", "blue", "green", "green"];
 
-
-    for (var l=0; l < 8; l++)
+    for (var l = 1; l < 8; l++)
       { if (l % 2 == 0)
           { svg.selectAll("dot")
             .data(data)
@@ -132,6 +121,17 @@ d3.csv("visible-hawk.csv", function(error, data) {
             .attr("stroke", colors[l])
             .attr("cx", function(d) { return x(d.minutes); })
             .attr("cy", function(d) { return y(d['v' + (l + 1)]); });
+          }
+      }
+
+    for (var l = 0; l < 8; l++)
+      { if (l % 2 == 1)
+          { svg.append("path")
+		    // .attr("class", "line" + (l + 1))
+            .attr("stroke", colors[l - 1])
+            .attr("stroke-width", 2)
+            .attr("fill", "none")
+		    .attr("d", window['valueline' + (l + 1)](data));
           }
       }
 
