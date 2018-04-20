@@ -108,63 +108,15 @@ d3.csv("visible-hawk.csv", function(error, data) {
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
     y.domain([0, 255]);
 
-	// Add the valueline1 path.
-	svg.append("path")
-		.attr("class", "line1")
-        .attr("stroke", "blue")
+    var colors = ["blue", "red", "black", "yellow", "purple", "grey", "steelblue", "orange"];
+    for (var l=0; l<8; l++)
+      { svg.append("path")
+		//.attr("class", "line" + (l+1))
+        .attr("stroke", colors[l])
         .attr("stroke-width", 2)
         .attr("fill", "none")
-		.attr("d", valueline1(data));
-
-	// Add the valueline2 path.
-	svg.append("path")
-		.attr("class", "line2")
-        .attr("stroke", "red")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline2(data));
-
-	svg.append("path")
-		.attr("class", "line3")
-        .attr("stroke", "black")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline3(data));
-
-	svg.append("path")
-		.attr("class", "line4")
-        .attr("stroke", "yellow")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline4(data));
-
-	svg.append("path")
-		.attr("class", "line5")
-        .attr("stroke", "purple")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline5(data));
-
-	svg.append("path")
-		.attr("class", "line6")
-        .attr("stroke", "grey")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline6(data));
-
-	svg.append("path")
-		.attr("class", "line7")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline7(data));
-
-	svg.append("path")
-		.attr("class", "line8")
-        .attr("stroke", "orange")
-        .attr("stroke-width", 2)
-        .attr("fill", "none")
-        .attr("d", valueline8(data));
+		.attr("d", window['valueline' + (l+1)](data));
+      }
 
 	// Add the X Axis
 	svg.append("g")		
