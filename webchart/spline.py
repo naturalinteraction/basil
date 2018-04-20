@@ -17,10 +17,10 @@ def LoadTimeSeries(filename):
     with open(filename, 'rb') as f:
         return pickle.load(f)
 
-x,y = LoadTimeSeries('biomass.pkl')
+x,y = LoadTimeSeries('brightness.pkl')
 plt.plot(x, y,'o')
-spli = SmoothSpline(x, y, s=1240)
-# SaveTimeSeries(x, spli, 'spline.pkl')
+spli = SmoothSpline(x, y)
+SaveTimeSeries(x, spli, 'brightness_spline.pkl')
 plt.plot(x, spli)
 
 plt.show()

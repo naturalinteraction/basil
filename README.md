@@ -90,14 +90,14 @@ Change via script:
 - [x] Series --> batch
 - [x] MQTT only for customer zero
 - [x] Limit spline propagation experimented in branch spline-parts-and-spline-until-break
-- [ ] Hours of operation can be set via text file, per group, and they are shown on web interface
+- [ ] Hours of operation can be set via text file (or web interface?), per group (or per sensor?), and they are shown on web interface
 - [ ] Plant species and customer as dip.py argument
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Web output of processing (local network and Internet)
-- [ ] Obfuscation and separate git repo or other delivery method
-- [ ] Get rid of set basil vars script
-- [ ] Hardware check based on MAC addresses and serials (see info.sh)
+- [ ] ~~Obfuscation and separate git repo or other delivery method~~
+- [ ] ~~Get rid of set basil vars script~~
+- [ ] ~~Hardware check based on MAC addresses and serials (see info.sh)~~
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
@@ -211,7 +211,6 @@ To look for local raspberries:
 ```
 sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```
-Visible sensor failed around February 12th. cap.py not running and camera not detected until reboot.
 
 Resolution set to 1280x720 (16:9)
 

@@ -44,12 +44,12 @@ var	yAxis = d3.svg.axis().scale(y)
 // Define the line
 var	valueline = d3.svg.line()
 	.x(function(d) { return x(d.minutes); })
-	.y(function(d) { return y(d.biomass); });
+	.y(function(d) { return y(d.values); });
 
 // Define the 2nd line
 var	valueline2 = d3.svg.line()
 	.x(function(d) { return x(d.minutes); })
-	.y(function(d) { return y(-d.biomass/3); });
+	.y(function(d) { return y(-d.values/3); });
 
 // Adds the svg canvas
 var	svg = d3.select("body")
@@ -60,10 +60,10 @@ var	svg = d3.select("body")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
  
 // Get the data
-d3.csv("spline.csv", function(error, data) {
+d3.csv("brightness_spline.csv", function(error, data) {
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
-		d.biomass = +d.biomass;
+		d.values = +d.values;
 	});
  
 	// Scale the range of the data
