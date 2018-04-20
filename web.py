@@ -18,6 +18,8 @@ def Page():
     hostname = socket.gethostname()
     if len(globa.last_picture_filename) > 0:
         link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">last picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
+        if len(globa.batch) > 0:
+            link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.customer + '/' + hostname + '-' + globa.batch + '.csv">last chart</a><br>\n'
     else:
         link = ''
     status = 'running...'
@@ -129,7 +131,7 @@ class WebPage(resource.Resource):
             thumb = thumb + '<a href="sensorstatus?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
         else:
             thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
-            # thumb = thumb + 'Restart Sensor (disabled)<br>\n'
+            # thumb = thumb + 'Restart Sensor (disabled)<br
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
             # thumb = thumb + 'Quit Sensor (disabled)<br>\n'
             thumb = thumb + 'Change Batch (disabled)<br>\n'
