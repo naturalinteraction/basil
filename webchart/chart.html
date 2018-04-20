@@ -59,14 +59,8 @@ d3.csv("visible-hawk.csv", function(error, data) {
 
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
-		d.v1 = +d.v1 // +d[valueKey];  // +d.values
-        d.v2 = +d.v2
-        d.v3 = +d.v3
-        d.v4 = +d.v4
-        d.v5 = +d.v5
-        d.v6 = +d.v6
-        d.v7 = +d.v7
-        d.v8 = +d.v8
+        for (var l = 0; l < 8; l++)
+		  { d['v1'] = +d[mappedArray[l].key]; }
 	});
 
 	// Scale the range of the data
