@@ -42,14 +42,39 @@ var	yAxis = d3.svg.axis().scale(y)
 	.orient("left").ticks(15);
  
 // Define the line
-var	valueline = d3.svg.line()
+var	valueline1 = d3.svg.line()
 	.x(function(d) { return x(d.minutes); })
-	.y(function(d) { return y(d.values); });
+	.y(function(d) { return y(d.v1); })
+    .interpolate('step-after');  // 'linear','step-before','step-after','basis','basis-open','basis-closed','bundle','cardinal','cardinal-open','cardinal-closed','monotone'
 
 // Define the 2nd line
 var	valueline2 = d3.svg.line()
 	.x(function(d) { return x(d.minutes); })
-	.y(function(d) { return y(d.bio); });
+	.y(function(d) { return y(d.v2); });
+
+var	valueline3 = d3.svg.line()
+	.x(function(d) { return x(d.minutes); })
+	.y(function(d) { return y(d.v3); });
+
+var	valueline4 = d3.svg.line()
+	.x(function(d) { return x(d.minutes); })
+	.y(function(d) { return y(d.v4); });
+
+var	valueline5 = d3.svg.line()
+	.x(function(d) { return x(d.minutes); })
+	.y(function(d) { return y(d.v5); });
+
+var	valueline6 = d3.svg.line()
+	.x(function(d) { return x(d.minutes); })
+	.y(function(d) { return y(d.v6); });
+
+var	valueline7 = d3.svg.line()
+	.x(function(d) { return x(d.minutes); })
+	.y(function(d) { return y(d.v7); }).interpolate('linear');
+
+var	valueline8 = d3.svg.line()
+	.x(function(d) { return x(d.minutes); })
+	.y(function(d) { return y(d.v8); });
 
 // Adds the svg canvas
 var	svg = d3.select("body")
@@ -60,47 +85,86 @@ var	svg = d3.select("body")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
  
 // Get the data
-d3.csv("brightness_spline.csv", function(error, data) {
-  d3.csv("biomass_spline.csv", function(error, data2) {
-    //data.forEach(function(row) {
-    //            console.log(Object.keys(row));
-    //        });
+d3.csv("visible-hawk.csv", function(error, data) {
 
     var mappedArray = d3.entries(data[0]);
     console.log(mappedArray);
     var valueKey = mappedArray[1].key;
-    console.log(valueKey)
+    // console.log(valueKey)
 
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
-		d.values = +d[valueKey];  // +d.values
+		d.v1 = +d.v1 // +d[valueKey];  // +d.values
+        d.v2 = +d.v2
+        d.v3 = +d.v3
+        d.v4 = +d.v4
+        d.v5 = +d.v5
+        d.v6 = +d.v6
+        d.v7 = +d.v7
+        d.v8 = +d.v8
 	});
- 
-    data2.forEach(function(d) {
- 		d.minutes = +d.minutes / 60;
-		d.bio = +d[valueKey];  // +d.values
-	});
- 
+
 	// Scale the range of the data
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
     y.domain([0, 255]);
 
-	// Add the valueline path.
-	svg.append("path")	
-		.attr("class", "line")
+	// Add the valueline1 path.
+	svg.append("path")
+		.attr("class", "line1")
         .attr("stroke", "blue")
         .attr("stroke-width", 2)
         .attr("fill", "none")
-		.attr("d", valueline(data));
- 
+		.attr("d", valueline1(data));
 
-	// Add the valueline path.
+	// Add the valueline2 path.
 	svg.append("path")
 		.attr("class", "line2")
         .attr("stroke", "red")
         .attr("stroke-width", 2)
         .attr("fill", "none")
-        .attr("d", valueline2(data2));
+        .attr("d", valueline2(data));
+
+	svg.append("path")
+		.attr("class", "line3")
+        .attr("stroke", "black")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", valueline3(data));
+
+	svg.append("path")
+		.attr("class", "line4")
+        .attr("stroke", "yellow")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", valueline4(data));
+
+	svg.append("path")
+		.attr("class", "line5")
+        .attr("stroke", "purple")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", valueline5(data));
+
+	svg.append("path")
+		.attr("class", "line6")
+        .attr("stroke", "grey")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", valueline6(data));
+
+	svg.append("path")
+		.attr("class", "line7")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", valueline7(data));
+
+	svg.append("path")
+		.attr("class", "line8")
+        .attr("stroke", "orange")
+        .attr("stroke-width", 2)
+        .attr("fill", "none")
+        .attr("d", valueline8(data));
 
 	// Add the X Axis
 	svg.append("g")		
@@ -130,7 +194,7 @@ d3.csv("brightness_spline.csv", function(error, data) {
     .text("biomass (%)")
     .style('fill', 'blue')
 
-})});
+});
  
 </script>
 </body>
