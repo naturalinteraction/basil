@@ -107,9 +107,9 @@ d3.csv("visible-hawk.csv", function(error, data) {
 
 	// Scale the range of the data
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
-    y.domain([0, 255]);
+    y.domain([0, 100]);
 
-    var colors = ["red", "red", "yellow", "yellow", "blue", "blue", "green", "green"];
+    var colors = ["red", "red", "yellow", "yellow", "blue", "blue", "limegreen", "limegreen"];
 
     for (var l = 1; l < 8; l++)
       { if (l % 2 == 0)

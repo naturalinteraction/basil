@@ -154,7 +154,7 @@ def RoutineCurves(image_file, bgr, box):
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
 
     try:
-        motion_spline = SmoothSpline(minutes_since_start, motion, s=120)
+        motion_spline = motion
         brightness_spline = SmoothSpline(minutes_since_start, brightness, s=240)
         substrate_spline = SmoothSpline(minutes_since_start, substrate, s=720)
         biomass_spline = SmoothSpline(minutes_since_start, biomass, s=1240)
@@ -164,18 +164,18 @@ def RoutineCurves(image_file, bgr, box):
         substrate_spline = substrate
         biomass_spline = biomass
 
-    csv = open(dt[0] + '-' + dt[1] + '.csv', 'w')
+    csv = open('webchart/' + dt[0] + '-' + dt[1] + '.csv', 'w')
     csv.write('minutes,v1,v2,v3,v4,v5,v6,v7,v8\n')
     for i in range(len(minutes_since_start)):
         csv.write(str(minutes_since_start[i]) + ',' + 
-                  str(motion[i]) + ',' +
-                  str(motion_spline[i]) + ',' +
-                  str(brightness[i]) + ',' +
-                  str(brightness_spline[i]) + ',' +
-                  str(substrate[i]) + ',' +
-                  str(substrate_spline[i]) + ',' +
-                  str(biomass[i]) + ',' +
-                  str(biomass_spline[i]) + '\n')
+                  str(motion[i] * 100.0 / 255.0) + ',' +
+                  str(motion_spline[i] * 100.0 / 255.0) + ',' +
+                  str(brightness[i] * 100.0 / 255.0) + ',' +
+                  str(brightness_spline[i] * 100.0 / 255.0) + ',' +
+                  str(substrate[i] * 100.0 / 255.0) + ',' +
+                  str(substrate_spline[i] * 100.0 / 255.0) + ',' +
+                  str(biomass[i] * 100.0 / 255.0) + ',' +
+                  str(biomass_spline[i] * 100.0 / 255.0) + '\n')
     csv.close()
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
