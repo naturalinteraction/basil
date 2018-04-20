@@ -7,7 +7,7 @@ import boto.s3
 from boto.s3.key import Key
 import glob
 
-def UploadFileToS3(filename, customer):
+def UploadFileToS3(filename, customer_filename):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
     AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
 
@@ -26,7 +26,6 @@ def UploadFileToS3(filename, customer):
             sys.stdout.flush()
 
         k = Key(bucket)
-        customer_filename = filename.replace('cache/', customer + '/')
         k.key = customer_filename
         k.set_contents_from_filename(filename,
                                      cb=percent_cb,

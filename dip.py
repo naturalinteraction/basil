@@ -2,6 +2,7 @@
 
 from S3 import DownloadImagesFromS3
 from S3 import ListLocalImages
+from S3 import UploadFileToS3
 from utility import *
 from vision import *
 from display import *
@@ -45,6 +46,8 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 cv2.destroyAllWindows()
 print('Windows destroyed.')
 RemoveTemporaryFiles()
+
+UploadFileToS3('webchart/' + args.prefix + '.csv', customer + '/' + args.prefix + '.csv')
 
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
