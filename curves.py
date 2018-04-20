@@ -57,11 +57,16 @@ VISIBLE-APRILE
 senape (like rucola)
 '''
 
-def RoutineCurves(image_file, bgr, box):
+def RoutineCurves(image_file, bgr, box, customer):
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
     print(date)
+
+    # todo
+    # print image_file
+    # print customer
+    # print 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/zero/blueshift-aprile_2018_04_20-19_00.jpg'
 
     global batch_start  # not to be confused with globa.batch_start in cap.py
     try:

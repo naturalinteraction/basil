@@ -21,6 +21,10 @@ body { font: 12px Arial;}
  
 <script>
  
+var url_string = window.location.href;
+var url = new URL(url_string);
+var csv_file = url.searchParams.get("csv");
+
 // Set the dimensions of the canvas / graph
 var	margin = {top: 130, right: 20, bottom: 30, left: 150},
 	width = 1200 - margin.left - margin.right,
@@ -50,7 +54,7 @@ var	svg = d3.select("body")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
  
 // Get the data
-d3.csv("visible-hawk.csv", function(error, data) {
+d3.csv(csv_file, function(error, data) {
 
     var mappedArray = d3.entries(data[0]);
     console.log(mappedArray);

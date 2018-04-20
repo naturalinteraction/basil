@@ -36,7 +36,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     before = time.time()
 
-    locals()[args.routine](image_file, bgr, box)
+    locals()[args.routine](image_file, bgr, box, customer)
 
     # print(str(time.time() - before) + 's')
 
