@@ -61,9 +61,19 @@ var	svg = d3.select("body")
  
 // Get the data
 d3.csv("brightness_spline.csv", function(error, data) {
+
+    //data.forEach(function(row) {
+    //            console.log(Object.keys(row));
+    //        });
+
+    var mappedArray = d3.entries(data[0]);
+    console.log(mappedArray);
+    var valueKey = mappedArray[1].key;
+    console.log(valueKey)
+
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
-		d.values = +d.values;
+		d.values = +d[valueKey];  // +d.values
 	});
  
 	// Scale the range of the data
