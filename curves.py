@@ -165,7 +165,7 @@ def RoutineCurves(image_file, bgr, box):
         biomass_spline = biomass
 
     csv = open('webchart/' + dt[0] + '-' + dt[1] + '.csv', 'w')
-    csv.write('minutes,v1,v2,v3,v4,v5,v6,v7,v8\n')
+    csv.write('minutes,motion-dots,motion,brightness-dots,brightness,substrate-dots,substrate,biomass-dots,biomass\n')
     for i in range(len(minutes_since_start)):
         csv.write(str(minutes_since_start[i]) + ',' + 
                   str(motion[i] * 100.0 / 255.0) + ',' +

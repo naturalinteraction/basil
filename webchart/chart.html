@@ -24,7 +24,7 @@ body { font: 12px Arial;}
 // Set the dimensions of the canvas / graph
 var	margin = {top: 130, right: 20, bottom: 30, left: 150},
 	width = 1200 - margin.left - margin.right,
-	height = 1200 - margin.top - margin.bottom;
+	height = 700 - margin.top - margin.bottom;
  
 // Parse the date / time
 var	parseDate = d3.time.format("%d-%b-%y").parse;
@@ -60,14 +60,24 @@ d3.csv("visible-hawk.csv", function(error, data) {
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
         for (var l = 0; l < 8; l++)
-		  { d['v1'] = +d[mappedArray[l].key]; }
+		  { d[mappedArray[l + 1].key] = +d[mappedArray[l + 1].key]; }
 	});
 
 	// Scale the range of the data
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
     y.domain([0, 100]);
 
-    var colors = ["red", "red", "yellow", "yellow", "blue", "blue", "limegreen", "limegreen"];
+    var colors = ["red", "red", "lightblue", "lightblue", "blue", "blue", "limegreen", "limegreen"];
+    var interpolation = ["step-before", "step-before", "linear", "linear", "linear", "linear", "linear", "linear"]
+
+    svg.append("path")
+		    .attr("stroke", colors[0])
+            .attr("stroke-width", 2)
+            .attr("fill", "none")
+		    .attr("d", d3.svg.line()
+	                   .x(function(d) { return x(d.minutes); })
+                       .interpolate(interpolation[0])
+	                   .y(function(d) { return y(d[mappedArray[1].key]); })(data));
 
     for (var l = 1; l < 8; l++)
       { if (l % 2 == 0)
@@ -78,13 +88,12 @@ d3.csv("visible-hawk.csv", function(error, data) {
             .attr("fill", colors[l])
             .attr("stroke", colors[l])
             .attr("cx", function(d) { return x(d.minutes); })
-            .attr("cy", function(d) { return y(d['v' + (l + 1)]); });
+            .attr("cy", function(d) { return y(d[mappedArray[l + 1].key]); });
           }
       }
 
-    var interpolation = ["step-after", "step-before", "linear", "linear", "linear", "linear", "linear", "linear"]
 
-    for (var l = 0; l < 8; l++)
+    for (var l = 2; l < 8; l++)
       { if (l % 2 == 1)
           { svg.append("path")
 		    // .attr("class", "line" + (l + 1))
@@ -94,7 +103,7 @@ d3.csv("visible-hawk.csv", function(error, data) {
 		    .attr("d", d3.svg.line()
 	                   .x(function(d) { return x(d.minutes); })
                        .interpolate(interpolation[l])
-	                   .y(function(d) { return y(d['v' + (l + 1)]); })(data));
+	                   .y(function(d) { return y(d[mappedArray[l + 1].key]); })(data));
           }
       }
 
@@ -117,15 +126,17 @@ d3.csv("visible-hawk.csv", function(error, data) {
     .attr("y", height/2 + 50)
     .text("age (hours)");
 
-    svg.append("g")		
-    .append("text")
-    .attr("class", "y label")
-    .attr("text-anchor", "middle")
-    .attr("x", -100)
-    .attr("y", height/4)
-    .text("biomass (%)")
-    .style('fill', 'blue')
-
+    for (var l = 1; l < 9; l+=2)
+    {
+        svg.append("g")
+        .append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "middle")
+        .attr("x", -100)
+        .attr("y", height/4 + 10 * l)
+        .text(mappedArray[l + 1].key + " (%)")
+        .style('fill', colors[l])
+    }
 });
  
 </script>
