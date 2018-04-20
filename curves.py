@@ -148,9 +148,34 @@ def RoutineCurves(image_file, bgr, box):
     # UpdateWindow('background', cv2.multiply(GrayToBGR(255 - saturation), bgr, scale=1.0/255.0))
 
     DrawChart(foreground, minutes_since_start, motion, color=(0, 0, 255), bars=True)
-    DrawSmoothChart(foreground, minutes_since_start, brightness, color=(0, 255, 255))
+    DrawSmoothChart(foreground, minutes_since_start, brightness, color=(0, 255, 255), spline_value=240)
     DrawSmoothChart(foreground, minutes_since_start, substrate, color=(255, 0, 0), spline_value=720)  # 480
     DrawSmoothChart(foreground, minutes_since_start, biomass, color=(255, 255, 255), spline_value=1240)
     Echo(foreground, dt[0] + ' ' + dt[1] + ' ' + str(date).replace(':00:00', '.00'))
+
+    try:
+        motion_spline = SmoothSpline(minutes_since_start, motion, s=120)
+        brightness_spline = SmoothSpline(minutes_since_start, brightness, s=240)
+        substrate_spline = SmoothSpline(minutes_since_start, substrate, s=720)
+        biomass_spline = SmoothSpline(minutes_since_start, biomass, s=1240)
+    except:
+        motion_spline = motion
+        brightness_spline = brightness
+        substrate_spline = substrate
+        biomass_spline = biomass
+
+    csv = open(dt[0] + '-' + dt[1] + '.csv', 'w')
+    csv.write('minutes,v1,v2,v3,v4,v5,v6,v7,v8\n')
+    for i in range(len(minutes_since_start)):
+        csv.write(str(minutes_since_start[i]) + ',' + 
+                  str(motion[i]) + ',' +
+                  str(motion_spline[i]) + ',' +
+                  str(brightness[i]) + ',' +
+                  str(brightness_spline[i]) + ',' +
+                  str(substrate[i]) + ',' +
+                  str(substrate_spline[i]) + ',' +
+                  str(biomass[i]) + ',' +
+                  str(biomass_spline[i]) + '\n')
+    csv.close()
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
