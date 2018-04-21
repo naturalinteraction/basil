@@ -71,13 +71,13 @@ d3.csv(csv_file, function(error, data) {
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
     y.domain([0, 100]);
 
-    var colors = ["red", "red", "lightblue", "lightblue", "blue", "blue", "limegreen", "limegreen"];
-    var interpolation = ["step-before", "step-before", "linear", "linear", "linear", "linear", "linear", "linear"]
+    var colors = ["orange", "orange", "lightblue", "lightblue", "blue", "blue", "limegreen", "limegreen"];
+    var interpolation = ["step-after", "step-after", "linear", "linear", "linear", "linear", "linear", "linear"]
 
     svg.append("path")
 		    .attr("stroke", colors[0])
             .attr("stroke-width", 2)
-            .attr("fill", "none")
+            .attr("fill", colors[0])
 		    .attr("d", d3.svg.line()
 	                   .x(function(d) { return x(d.minutes); })
                        .interpolate(interpolation[0])
@@ -141,6 +141,8 @@ d3.csv(csv_file, function(error, data) {
         .text(mappedArray[l + 1].key + " (%)")
         .style('fill', colors[l])
     }
+
+  //images_in_cache[0]xxx
 });
  
 </script>
