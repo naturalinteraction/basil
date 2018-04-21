@@ -10,30 +10,30 @@ substrate = []
 
 '''
 VISIBLE-CEPPI
-rucola
+arugula
 on 13/3 at 15 find hole above the last yellow points
 short, sensor falls
 
 BLUESHIFT-CEPPI
-rucola
+arugula
 all OK
 
 NOIR-CEPPI
-cavolo rosso (like ravanello but more green, with purple fruits)
+red cabbage (like red radish but more green, with purple fruits)
 change in brightness at the end due to lamps
 
 REDSHIFT-CEPPI
-ravanello rosso
+red radish
 short, microgreens cut
 investigate changes in brightness
 
 REDSHIFT-HAWK
-cavolo rosso
+red cabbage
 investigate irregularity
 biomass goes down at the end
 
 BLUESHIFT-HAWK
-crescione
+watercress
 investigate irregularity
 
 VISIBLE-HAWK
@@ -41,20 +41,20 @@ chia
 white overfitting?
 
 NOIR-HAWK
-crescione
+watercress
 investigate irregularity
 
 REDSHIFT-APRILE
-cavolo rosso
+red cabbage
 
 BLUESHIFT-APRILE
-ravanello rosso
+redradish
 
 NOIR-APRILE
 chia
 
 VISIBLE-APRILE
-senape (like rucola)
+mustard (similar to arugula)
 '''
 
 def RoutineCurves(image_file, bgr, box, customer):
@@ -129,12 +129,12 @@ def RoutineCurves(image_file, bgr, box, customer):
         UpdateWindow('bluish', bluish)
         saturation = cv2.addWeighted(saturation, 1.0, reddish, 0.5, 0.0) 
         saturation = cv2.addWeighted(saturation, 1.0, bluish, 0.5, 0.0)
-    if 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:  # algae
+    if 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:
         print('removing algae')
         algae = DistanceFromToneBlurTopBottom(hsv, "colors/algae.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
         saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)  # or -1.0?
-    if '-hawk' in image_file:  # stripe
+    if '-hawk' in image_file:
         print('removing stripe')
         stripe = DistanceFromToneBlurTopBottom(hsv, "colors/stripe.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('stripe', stripe)
@@ -165,7 +165,7 @@ def RoutineCurves(image_file, bgr, box, customer):
         biomass_spline = biomass
 
     csv = open('website/' + dt[0] + '-' + dt[1] + '.csv', 'w')
-    csv.write('minutes,motion-dots,motion,brightness-dots,brightness,substrate-dots,substrate,biomass-dots,biomass,datetime,image\n')
+    csv.write('minutes,motion-dots,motion,brightness-dots,brightness,substrate-dots,substrate,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + customer + ',' + dt[0] + ',' + dt[1] + '\n')
     for i in range(len(minutes_since_start)):
         csv.write(str(minutes_since_start[i]) + ',' + 
                   str(motion[i] * 100.0 / 255.0) + ',' +

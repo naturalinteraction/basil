@@ -143,7 +143,15 @@ d3.csv(csv_file, function(error, data) {
 		.attr("class", "y axis")
 		.call(yAxis);
 
-    svg.append("g")		
+    svg.append("g")
+    .append("text")
+    .attr("class", "chart title")
+    .attr("text-anchor", "middle")
+    .attr("x", width/4)
+    .attr("y", 0)
+    .text(mappedArray[12].key + '/' + mappedArray[13].key + '-' + mappedArray[14].key + ' (started ' + mappedArray[11].key + ')');
+
+    svg.append("g")
     .append("text")
     .attr("class", "x label")
     .attr("text-anchor", "middle")
