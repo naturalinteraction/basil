@@ -1,7 +1,5 @@
 from vision import *
 
-from datetime import datetime
-
 minutes_since_start = []
 biomass = []
 brightness = []
