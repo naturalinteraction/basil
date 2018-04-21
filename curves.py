@@ -169,7 +169,7 @@ def RoutineCurves(image_file, bgr, box, customer):
         substrate_spline = substrate
         biomass_spline = biomass
 
-    csv = open('webchart/' + dt[0] + '-' + dt[1] + '.csv', 'w')
+    csv = open('website/' + dt[0] + '-' + dt[1] + '.csv', 'w')
     csv.write('minutes,motion-dots,motion,brightness-dots,brightness,substrate-dots,substrate,biomass-dots,biomass\n')
     for i in range(len(minutes_since_start)):
         csv.write(str(minutes_since_start[i]) + ',' + 

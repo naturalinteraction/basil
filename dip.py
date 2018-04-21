@@ -47,7 +47,7 @@ cv2.destroyAllWindows()
 print('Windows destroyed.')
 RemoveTemporaryFiles()
 
-UploadFileToS3('webchart/' + args.prefix + '.csv', customer + '/' + args.prefix + '.csv')
+UploadFileToS3('website/' + args.prefix + '.csv', customer + '/' + args.prefix + '.csv')
 
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
