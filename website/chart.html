@@ -12,7 +12,16 @@ body { font: 12px Arial;}
 	stroke-width: 1;  /* axes */
 	shape-rendering: crispEdges;
 }
- 
+
+.tooltip {
+            position: absolute;
+            font-size: 12px;
+            width:  auto;
+            height: auto;
+            pointer-events: none;
+            background-color: white;
+        }
+
 </style>
 <body>
  
@@ -57,9 +66,7 @@ var	svg = d3.select("body")
 d3.csv(csv_file, function(error, data) {
 
     var mappedArray = d3.entries(data[0]);
-    console.log(mappedArray);
-    var valueKey = mappedArray[1].key;
-    // console.log(valueKey)
+    // console.log(mappedArray);
 
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
@@ -88,9 +95,21 @@ d3.csv(csv_file, function(error, data) {
           { svg.selectAll("dot")
             .data(data)
             .enter().append("circle")
-            .attr("r", 2)
+            .attr("r", 3)
             .attr("fill", colors[l])
             .attr("stroke", colors[l])
+            .on("mouseover", function(d) {
+              div.transition()
+                .duration(200)
+                .style("opacity", .9);
+              div.html(d.minutes + "<br/>" + d.biomass + "<br/>" + d.motion + "<br/>" + d.brightness + "<br/>" + d.substrate)
+                .style("left", (d3.event.pageX + 15) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+              })
+            .on("mouseout", function(d) {
+              div.transition()
+                .duration(500)
+                .style("opacity", 0)})
             .attr("cx", function(d) { return x(d.minutes); })
             .attr("cy", function(d) { return y(d[mappedArray[l + 1].key]); });
           }
@@ -142,7 +161,10 @@ d3.csv(csv_file, function(error, data) {
         .style('fill', colors[l])
     }
 
-  //images_in_cache[0]xxx
+    // Define the div for the tooltip
+    var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
 });
  
 </script>
