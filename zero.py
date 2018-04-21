@@ -55,7 +55,7 @@ VISIBLE-APRILE
 mustard (similar to arugula)
 '''
 
-def RoutineCurves(image_file, bgr, box, customer):
+def RoutineZero(image_file, bgr, box, customer):
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))

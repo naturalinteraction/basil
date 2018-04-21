@@ -6,7 +6,7 @@ from S3 import UploadFileToS3
 from utility import *
 from vision import *
 from display import *
-from curves import *
+from zero import *
 
 customer = 'zero'  # todo
 
