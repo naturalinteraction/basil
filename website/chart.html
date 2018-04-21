@@ -70,8 +70,10 @@ d3.csv(csv_file, function(error, data) {
 
 	data.forEach(function(d) {
 		d.minutes = +d.minutes / 60;
-        for (var l = 0; l < 8; l++)
-		  { d[mappedArray[l + 1].key] = +d[mappedArray[l + 1].key]; }
+        for (var l = 0; l < 10; l++)
+		  { d[mappedArray[l + 1].key] = d[mappedArray[l + 1].key]; 
+            // console.log(d[mappedArray[l + 1].key])
+          }
 	});
 
 	// Scale the range of the data
@@ -102,7 +104,7 @@ d3.csv(csv_file, function(error, data) {
               div.transition()
                 .duration(200)
                 .style("opacity", .9);
-              div.html(d.minutes + "<br/>" + d.biomass + "<br/>" + d.motion + "<br/>" + d.brightness + "<br/>" + d.substrate)
+              div.html(d.datetime + "<br/>" + d.image + "<br/>" + parseInt(d.minutes) + " mins<br/>" + parseInt(d.biomass) + "%<br/>" + parseInt(d.motion) + "%<br/>" + parseInt(d.brightness) + "%<br/>" + parseInt(d.substrate) + "%")
                 .style("left", (d3.event.pageX + 15) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
               })

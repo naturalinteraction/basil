@@ -63,11 +63,6 @@ def RoutineCurves(image_file, bgr, box, customer):
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
     print(date)
 
-    # todo
-    # print image_file
-    # print customer
-    # print 'http://natural-interaction.s3-website-eu-west-1.amazonaws.com/zero/blueshift-aprile_2018_04_20-19_00.jpg'
-
     global batch_start  # not to be confused with globa.batch_start in cap.py
     try:
         batch_start
@@ -170,7 +165,7 @@ def RoutineCurves(image_file, bgr, box, customer):
         biomass_spline = biomass
 
     csv = open('website/' + dt[0] + '-' + dt[1] + '.csv', 'w')
-    csv.write('minutes,motion-dots,motion,brightness-dots,brightness,substrate-dots,substrate,biomass-dots,biomass\n')
+    csv.write('minutes,motion-dots,motion,brightness-dots,brightness,substrate-dots,substrate,biomass-dots,biomass,datetime,image\n')
     for i in range(len(minutes_since_start)):
         csv.write(str(minutes_since_start[i]) + ',' + 
                   str(motion[i] * 100.0 / 255.0) + ',' +
@@ -180,7 +175,10 @@ def RoutineCurves(image_file, bgr, box, customer):
                   str(substrate[i] * 100.0 / 255.0) + ',' +
                   str(substrate_spline[i] * 100.0 / 255.0) + ',' +
                   str(biomass[i] * 100.0 / 255.0) + ',' +
-                  str(biomass_spline[i] * 100.0 / 255.0) + '\n')
+                  str(biomass_spline[i] * 100.0 / 255.0) + ',' +
+                  str(date).replace(':00:00', '.00') + ',' +
+                  image_file.replace('downloaded/', customer + '/') + '\n')
+                  # http://natural-interaction.s3-website-eu-west-1.amazonaws.com/zero/blueshift-aprile_2018_04_20-19_00.jpg
     csv.close()
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
