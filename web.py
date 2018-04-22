@@ -47,6 +47,7 @@ def Page():
             prop + '\n' +
             'Sensor OK? ' + str(SensorFunctioningOK()) + '<p>\n'
             'Batch ' + batch_name + '<br>\n' +
+            'Hours ' + str(globa.hour_start) + ' - ' + str(globa.hour_end) + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
             'started ' + globa.time_process_started_string + '<br>\n' +
@@ -106,6 +107,16 @@ class WebPage(resource.Resource):
                         globa.batch_start = time.time()
                         with open('batch.pkl', 'w') as f:
                             pickle.dump((globa.batch, globa.batch_start), f, 0)
+        if 'change-hours' in str(request):
+            parts = str(request).replace(' ', '=').split('=')
+            print(parts)
+            for i,p in enumerate(parts):
+                if 'change-hours' in p:
+                        globa.hour_start = parts[i + 1].replace('clientproto', '')
+                        print('saving globa.hour_start = %d' % globa.hour_start)
+                        # globa.hour_end = 
+                        # with open('hourly.pkl', 'w') as f:
+                        #     pickle.dump((globa.hour_start, globa.hour_end), f, 0)
         macduff = ''
         if 'find-colorchecker' in str(request):
             print('finding colorchecker')

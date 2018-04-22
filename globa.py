@@ -40,6 +40,15 @@ except:
     batch = ''
     batch_start = 0
 
+global hour_start
+global hour_end
+try:
+    with open('hourly.pkl', 'r') as f:
+        (hour_start, hour_end) = pickle.load(f)
+except:
+    hour_start = 8
+    hour_end = 20
+
 global cameraproperties
 cameraproperties = None
 
