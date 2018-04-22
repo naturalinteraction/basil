@@ -5,6 +5,8 @@ biomass = []
 brightness = []
 motion = []
 substrate = []
+image_files = []
+dates = []
 
 not_so_green_species = ['redcabbage', 'redradish']
 
@@ -70,7 +72,9 @@ def RoutineZero(image_file, bgr, box, customer):
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
-    # print(date)
+
+    dates.append(str(date).replace(':00:00', '.00'))
+    image_files.append(image_file.replace('downloaded/', customer + '/'))
 
     global batch_start  # not to be confused with globa.batch_start in cap.py
     try:
@@ -192,8 +196,8 @@ def RoutineZero(image_file, bgr, box, customer):
                   str(substrate_spline[i] * 100.0 / 255.0) + ',' +
                   str(biomass[i] * 100.0 / 255.0) + ',' +
                   str(biomass_spline[i] * 100.0 / 255.0) + ',' +
-                  str(date).replace(':00:00', '.00') + ',' +
-                  image_file.replace('downloaded/', customer + '/') + '\n')
+                  dates[i] + ',' +
+                  image_files[i] + '\n')
                   # http://natural-interaction.s3-website-eu-west-1.amazonaws.com/zero/blueshift-aprile_2018_04_20-19_00.jpg
     csv.close()
 
