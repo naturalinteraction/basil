@@ -18,7 +18,6 @@ body { font: 12px Arial;}
             font-size: 12px;
             width:  auto;
             height: auto;
-            pointer-events: none;
             background-color: white;
         }
 
@@ -96,18 +95,18 @@ d3.csv(csv_file, function(error, data) {
           { svg.selectAll("dot")
             .data(data)
             .enter().append("circle")
-            .attr("r", 3)
+            .attr("r", 2.5)
             .attr("fill", colors[l])
             .attr("stroke", colors[l])
             .on("mouseover", function(d) {
               div.transition()
                 .duration(200)
-                .style("opacity", .9);
-              div.html(d.datetime + "<br/>" + d.image + "<br/>" + parseInt(d.minutes) + " mins<br/><font color=" + colors[6] + ">" + mappedArray[6 + 2].key + " " + parseInt(d[mappedArray[6 + 1].key]) + "%<br/><font color=" + colors[4] + ">" + mappedArray[4 + 2].key + " " + parseInt(d[mappedArray[4 + 1].key]) + "%<br/><font color=" + colors[2] + ">" + mappedArray[2 + 2].key + " " + parseInt(d[mappedArray[2 + 1].key]) + "%<br/><font color=" + colors[0] + ">" + mappedArray[0 + 2].key + " " + parseInt(d[mappedArray[0 + 1].key]) + "%")
-                .style("left", (d3.event.pageX + 15) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
+                .style("opacity", 1);
+              div.html(d.datetime + "<br/><a target=_blank href=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/" + d.image + ">hires image</a><br/>" + parseInt(d.minutes) + " mins<br/><font color=" + colors[6] + ">" + mappedArray[6 + 2].key + " " + parseInt(d[mappedArray[6 + 1].key]) + "%<br/><font color=" + colors[4] + ">" + mappedArray[4 + 2].key + " " + parseInt(d[mappedArray[4 + 1].key]) + "%<br/><font color=" + colors[2] + ">" + mappedArray[2 + 2].key + " " + parseInt(d[mappedArray[2 + 1].key]) + "%<br/><font color=" + colors[0] + ">" + mappedArray[0 + 2].key + " " + parseInt(d[mappedArray[0 + 1].key]) + "%")
+                .style("left", (d3.event.pageX + 1) + "px")
+                .style("top", (d3.event.pageY + 1) + "px");
               })
-            .on("mouseout", function(d) {
+            .on("DISABLEDmouseout", function(d) {
               div.transition()
                 .duration(500)
                 .style("opacity", 0)})
