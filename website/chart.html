@@ -103,7 +103,7 @@ d3.csv(csv_file, function(error, data) {
               div.transition()
                 .duration(200)
                 .style("opacity", .9);
-              div.html(d.datetime + "<br/>" + d.image + "<br/>" + parseInt(d.minutes) + " mins<br/>" + parseInt(d.biomass) + "%<br/>" + parseInt(d.motion) + "%<br/>" + parseInt(d.brightness) + "%<br/>" + parseInt(d.substrate) + "%")
+              div.html(d.datetime + "<br/>" + d.image + "<br/>" + parseInt(d.minutes) + " mins<br/><font color=" + colors[6] + ">" + mappedArray[6 + 2].key + " " + parseInt(d[mappedArray[6 + 1].key]) + "%<br/><font color=" + colors[4] + ">" + mappedArray[4 + 2].key + " " + parseInt(d[mappedArray[4 + 1].key]) + "%<br/><font color=" + colors[2] + ">" + mappedArray[2 + 2].key + " " + parseInt(d[mappedArray[2 + 1].key]) + "%<br/><font color=" + colors[0] + ">" + mappedArray[0 + 2].key + " " + parseInt(d[mappedArray[0 + 1].key]) + "%")
                 .style("left", (d3.event.pageX + 15) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
               })
@@ -165,7 +165,7 @@ d3.csv(csv_file, function(error, data) {
         .attr("class", "y label")
         .attr("text-anchor", "middle")
         .attr("x", -100)
-        .attr("y", height/4 + 10 * l)
+        .attr("y", height/4 - 10 * l)
         .text(mappedArray[l + 1].key + " (%)")
         .style('fill', colors[l])
     }
