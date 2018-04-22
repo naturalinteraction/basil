@@ -214,15 +214,17 @@ parsing command line arguments
 '''
 def ParseArguments():
     parser = argparse.ArgumentParser(description='process images from the sensors')
-    parser.add_argument('-p', '--prefix', default = 'redshift-callalta', help='the prefix for the images')
+    parser.add_argument('-p', '--prefix', default = 'redshift-callalta', help='the prefix for the images (sensor-batch^species)')
+    parser.add_argument('-g', '--group', default = 'zero', help='the group the sensor belongs to')
     parser.add_argument('-s', '--substring', default='', help='the substring to filter the images')
-    parser.add_argument('-r', '--routine', default='RoutineDisplay', help='the routine to process the images')
+    parser.add_argument('-r', '--routine', default='RoutineZero', help='the routine to process the images')
     parser.add_argument('-d', '--download', dest='download', action='store_const',
                         const=True, default=False,
                         help='download images from S3')
     args = parser.parse_args()
     print('prefix = ' + args.prefix)
-    print('substring = ' + args.substring)  # '2017_12_31', ''  # background change on the 12th, between 15.00 and 15.31
+    print('group = ' + args.group)
+    print('substring = ' + args.substring)
     print('routine = ' + args.routine)
     print('download = ' + str(args.download))
     return args

@@ -120,6 +120,13 @@ def RoutineZero(image_file, bgr, box, customer):
     ret,saturation = cv2.threshold(saturation, 170, 170, cv2.THRESH_TRUNC)
     Normalize(saturation)
 
+    batch_species = dt[1].split('^')
+    if len(batch_species) == 2:
+        batch_species = batch_species[-1]
+    else:
+        batch_species = 'unknown'
+    print('batch_species = %s' % batch_species)
+
     if 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:
         reddish = DistanceFromToneBlurTopBottom(hsv, "colors/reddish.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('reddish', reddish)

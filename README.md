@@ -90,9 +90,10 @@ Change via script:
 - [x] Series --> batch
 - [x] MQTT only for customer zero
 - [x] Limit spline propagation experimented in branch spline-parts-and-spline-until-break
-- [ ] Hours of operation shown and set via web interface, per sensor
+- [x] Hours of operation shown and set on web interface, per sensor
+- [x] Plant species and customer as dip.py argument (in batch name)
+- [ ] Use batch_species and batch (legacy) to select special algorithms
 - [ ] List and link all available batches (including previous) *.csv for one customer (page accessible to customer)
-- [ ] Plant species and customer as dip.py argument (in batch name?) + legacy function
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Web output of processing (local network and Internet)

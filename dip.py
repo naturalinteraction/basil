@@ -8,8 +8,6 @@ from vision import *
 from display import *
 from zero import *
 
-customer = 'zero'  # TODO: command line argument?
-
 def RemoveTemporaryFiles(also_temp_subdir=False):
     files = os.listdir('.')
     for file in files:
@@ -24,7 +22,7 @@ def RemoveTemporaryFiles(also_temp_subdir=False):
 args = ParseArguments()
 
 if args.download:
-    DownloadImagesFromS3(customer + '/' + args.prefix, args.substring, customer)
+    DownloadImagesFromS3(args.group + '/' + args.prefix, args.substring, args.group)
     quit()
 
 box = BoundingBox()
@@ -37,7 +35,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
     before = time.time()
 
-    locals()[args.routine](image_file, bgr, box, customer)
+    locals()[args.routine](image_file, bgr, box, args.group)
 
     # print(str(time.time() - before) + 's')
 
@@ -47,7 +45,7 @@ cv2.destroyAllWindows()
 print('Windows destroyed.')
 RemoveTemporaryFiles()
 
-UploadFileToS3('website/' + args.prefix + '.csv', customer + '/' + args.prefix + '.csv')
+UploadFileToS3('website/' + args.prefix + '.csv', args.group + '/' + args.prefix + '.csv')
 
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
