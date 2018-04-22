@@ -91,11 +91,12 @@ Change via script:
 - [x] MQTT only for customer zero
 - [x] Limit spline propagation experimented in branch spline-parts-and-spline-until-break
 - [ ] Hours of operation shown and set via web interface, per sensor
-- [ ] List and link all available batches (including previous) *.csv for one customer
+- [ ] List and link all available batches (including previous) *.csv for one customer (page accessible to customer)
 - [ ] Plant species and customer as dip.py argument (in batch name?) + legacy function
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Web output of processing (local network and Internet)
+- [ ] Web chart: add URL parameter to highlight a specific moment
 - [ ] ~~Obfuscation and separate git repo or other delivery method~~
 - [ ] ~~Get rid of set basil vars script~~
 - [ ] ~~Hardware check based on MAC addresses and serials (see info.sh)~~

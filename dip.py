@@ -8,7 +8,7 @@ from vision import *
 from display import *
 from zero import *
 
-customer = 'zero'  # todo
+customer = 'zero'  # TODO: command line argument?
 
 def RemoveTemporaryFiles(also_temp_subdir=False):
     files = os.listdir('.')
