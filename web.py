@@ -112,11 +112,16 @@ class WebPage(resource.Resource):
             print(parts)
             for i,p in enumerate(parts):
                 if 'change-hours' in p:
-                        globa.hour_start = parts[i + 1].replace('clientproto', '')
-                        print('saving globa.hour_start = %d' % globa.hour_start)
-                        # globa.hour_end = 
-                        # with open('hourly.pkl', 'w') as f:
-                        #     pickle.dump((globa.hour_start, globa.hour_end), f, 0)
+                        hours = parts[i + 1].replace('clientproto', '').split('-')
+                        print('hours', hours)
+                        if len(hours) == 2:
+                            try:
+                                globa.hour_start = int(hours[0])
+                                globa.hour_end = int(hours[1])
+                                with open('hourly.pkl', 'w') as f:
+                                    pickle.dump((globa.hour_start, globa.hour_end), f, 0)
+                            except:
+                                print('setting new hours has failed')
         macduff = ''
         if 'find-colorchecker' in str(request):
             print('finding colorchecker')

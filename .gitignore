@@ -120,7 +120,8 @@ colorcalibration/macduff
 colorcalibration/*.csv
 colorcalibration/*.jpg
 
-series.pkl
+batch.pkl
+hourly.pkl
 
 MqttImageUploader/*.jpg
 MqttImageUploader/*.png
