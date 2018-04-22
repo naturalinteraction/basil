@@ -93,12 +93,12 @@ Change via script:
 - [x] Hours of operation shown and set on web interface, per sensor
 - [x] Plant species and customer as dip.py argument (in batch name)
 - [x] Use batch_species and legacy functions to select special algorithms
+- [x] Web chart: variable ticks
 - [ ] List and link all available batches (including previous) *.csv for one customer (page accessible to customer)
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Web output of processing (local network and Internet)
 - [ ] Web chart: add URL parameter to highlight a specific moment
-- [ ] Web chart: variable chart width
 - [ ] ~~Obfuscation and separate git repo or other delivery method~~
 - [ ] ~~Get rid of set basil vars script~~
 - [ ] ~~Hardware check based on MAC addresses and serials (see info.sh)~~

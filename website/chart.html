@@ -24,12 +24,12 @@ body { font: 12px Arial;}
 
 </style>
 <body>
- 
+
 <!-- load the d3.js library -->	
 <script src="http://d3js.org/d3.v3.min.js"></script>
- 
+
 <script>
- 
+
 var url_string = window.location.href;
 var url = new URL(url_string);
 var csv_file = url.searchParams.get("csv");
@@ -38,22 +38,18 @@ var csv_file = url.searchParams.get("csv");
 var	margin = {top: 130, right: 20, bottom: 30, left: 150},
 	width = 1200 - margin.left - margin.right,
 	height = 700 - margin.top - margin.bottom;
- 
-// Parse the date / time
-var	parseDate = d3.time.format("%d-%b-%y").parse;
- 
+
 // Set the ranges
-// var	x = d3.time.scale().range([0, width/2]);
 var	x = d3.scale.linear().range([0, width/2]);
 var	y = d3.scale.linear().range([height/2, 0]);
- 
+
 // Define the axes
 var	xAxis = d3.svg.axis().scale(x)
 	.orient("bottom").ticks(15);
- 
+
 var	yAxis = d3.svg.axis().scale(y)
 	.orient("left").ticks(15);
- 
+
 // Adds the svg canvas
 var	svg = d3.select("body")
 	.append("svg")
@@ -61,7 +57,7 @@ var	svg = d3.select("body")
 		.attr("height", height + margin.top + margin.bottom)
 	.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
- 
+
 // Get the data
 d3.csv(csv_file, function(error, data) {
 
@@ -79,6 +75,9 @@ d3.csv(csv_file, function(error, data) {
 	// Scale the range of the data
 	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
     y.domain([0, 100]);
+
+    tic = +d3.max(data, function(d) { return d.minutes; })/24 + 1
+    xAxis.ticks(tic);
 
     var colors = ["orange", "orange", "lightblue", "lightblue", "blue", "blue", "limegreen", "limegreen"];
     var interpolation = ["step-after", "step-after", "linear", "linear", "linear", "linear", "linear", "linear"]
