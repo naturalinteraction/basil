@@ -6,6 +6,8 @@ brightness = []
 motion = []
 substrate = []
 
+not_so_green_species = ['redcabbage', 'redradish']
+
 '''
 VISIBLE-CEPPI
 arugula
@@ -55,11 +57,20 @@ VISIBLE-APRILE
 mustard (similar to arugula)
 '''
 
+def LegacyStripe(image_file):
+    return '-hawk' in image_file or '-aprile' in image_file or '^' in image_file
+
+def LegacyReddishBluish(image_file):
+    return 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file
+
+def LegacyAlgae(image_file):
+    return 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file
+
 def RoutineZero(image_file, bgr, box, customer):
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').split('-')
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
-    print(date)
+    # print(date)
 
     global batch_start  # not to be confused with globa.batch_start in cap.py
     try:
@@ -113,7 +124,6 @@ def RoutineZero(image_file, bgr, box, customer):
     substrate_mask = cv2.addWeighted(substrate_mask, 1.0, colorful_mask, -1.0, 0.0)
     UpdateWindow('substrate_mask', substrate_mask)
     substrate_value = cv2.mean(substrate_mask)[0]
-    print(substrate_value)
     substrate.append(substrate_value)
 
     Normalize(saturation)  # normalization tested: stable ratio of 1.5
@@ -127,23 +137,24 @@ def RoutineZero(image_file, bgr, box, customer):
         batch_species = 'unknown'
     print('batch_species = %s' % batch_species)
 
-    if 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file:
+    if batch_species in not_so_green_species or LegacyReddishBluish(image_file):
         reddish = DistanceFromToneBlurTopBottom(hsv, "colors/reddish.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('reddish', reddish)
         bluish = DistanceFromToneBlurTopBottom(hsv, "colors/bluish.pkl", 1, 1, 1, 240, 10.0)
         UpdateWindow('bluish', bluish)
         saturation = cv2.addWeighted(saturation, 1.0, reddish, 0.5, 0.0) 
         saturation = cv2.addWeighted(saturation, 1.0, bluish, 0.5, 0.0)
-    if 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file:
-        print('removing algae')
+
+    if LegacyAlgae(image_file):
         algae = DistanceFromToneBlurTopBottom(hsv, "colors/algae.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('algae', algae)
-        saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)  # or -1.0?
-    if '-hawk' in image_file:
-        print('removing stripe')
+        saturation = cv2.addWeighted(saturation, 1.0, algae, -0.5, 0.0)
+
+    if LegacyStripe(image_file):
         stripe = DistanceFromToneBlurTopBottom(hsv, "colors/stripe.pkl", 1, 1, 1, 255, 10.0)
         UpdateWindow('stripe', stripe)
         saturation = cv2.addWeighted(saturation, 1.0, stripe, -1.0, 0.0)
+
     Normalize(saturation)
     UpdateWindow('biomass', saturation)
     biomass.append(cv2.mean(saturation)[0])

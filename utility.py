@@ -122,11 +122,15 @@ def GitCommitMessagePretty():
 def ExifKeywords(file):
     return subprocess.check_output(["exiftool", "-Keywords", file]).strip()
 
+def LegacySeriesStart(e):
+    """for backward compatibility in batch aprile"""
+    return ('series_start' in e)
+
 def ExifBatchStart(file):
     batch_start = -1
     exif = ExifKeywords(file).split(',')
     for e in exif:
-        if 'batch_start' in e or 'series_start' in e:  # for backward compatibility in batch 'aprile'
+        if 'batch_start' in e or LegacySeriesStart(e):
             e = e.split('=')
             batch_start = int(e[-1])
     return batch_start
