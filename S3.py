@@ -90,6 +90,8 @@ def DownloadImagesFromS3(prefix, substring, customer):
     # filter out based on substring
     if len(substring) > 0:
         files = list(filter(lambda x: substring in x, files))
+    # filter out based on extension
+    files = list(filter(lambda x: '.jpg' in x, files))
     for f in files:
         replaced = f.replace(customer + '/', 'downloaded/')
         if os.path.isfile(replaced):
