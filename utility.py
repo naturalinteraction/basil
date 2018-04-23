@@ -221,7 +221,7 @@ def ParseArguments():
     parser.add_argument('-p', '--prefix', default = 'redshift-callalta', help='the prefix for the images (sensor-batch^species)')
     parser.add_argument('-g', '--group', default = 'zero', help='the group the sensor belongs to')
     parser.add_argument('-s', '--substring', default='', help='the substring to filter the images')
-    parser.add_argument('-r', '--routine', default='RoutineZero', help='the routine to process the images')
+    parser.add_argument('-r', '--routine', default='RoutineDisplay', help='the routine to process the images')
     parser.add_argument('-d', '--download', dest='download', action='store_const',
                         const=True, default=False,
                         help='download images from S3')
