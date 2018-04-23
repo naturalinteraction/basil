@@ -95,6 +95,8 @@ Change via script:
 - [x] Use batch_species and legacy functions to select special algorithms
 - [x] Web chart: variable ticks
 - [ ] List and link all available batches (including previous) *.csv for one customer (page accessible to customer)
+- [ ] Download from S3 error 'The read operation timed out'
+- [ ] Download downloads also .csv files
 - [ ] Image processing on sensor
 - [ ] Image processing on server
 - [ ] Web output of processing (local network and Internet)

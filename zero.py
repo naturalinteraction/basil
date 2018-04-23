@@ -10,6 +10,7 @@ dates = []
 
 not_so_green_species = ['redcabbage', 'redradish']
 greenish_species = ['arugula', 'chia', 'mustard', 'cress']
+untested_species = ['sunflower', 'fenugreek', 'wheat']
 
 '''
 VISIBLE-CEPPI
