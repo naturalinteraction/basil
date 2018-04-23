@@ -5,5 +5,9 @@ do
     echo "$i"
     ssh pi@80.86.151.47 -p $i $COMMAND
 done
+
+echo 'orto'
+sshpass -p $BOTANY_PASSWORD ssh pi@orto.ddns.net $COMMAND
+
 echo 'all done'
 
