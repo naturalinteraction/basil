@@ -96,6 +96,7 @@ Change via script:
 - [x] Web chart: variable ticks, fixed 15 days period
 - [x] Download no longer downloads also .csv files
 - [ ] Web output of processing (local network and Internet)
+- [ ] Make upload of csv optional
 - [ ] Issue: browser caches local csv file and does not update it even when refreshing
 - [ ] Web chart: add URL parameter to highlight a specific moment
 - [ ] List and link all available batches (including previous) *.csv for one customer (page accessible to customer)

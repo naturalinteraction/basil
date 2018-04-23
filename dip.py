@@ -45,7 +45,9 @@ cv2.destroyAllWindows()
 print('Windows destroyed.')
 RemoveTemporaryFiles()
 
-UploadFileToS3('website/' + args.prefix + '.csv', args.group + '/' + args.prefix + '.csv')
+# TODO: make this optional (and the ffmpeg thing, too)
+sensor_hostname = args.prefix.split('-')[0]
+UploadFileToS3('website/' + args.prefix + '.csv', args.group + '/' + sensor_hostname + '.csv')
 
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
