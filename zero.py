@@ -65,7 +65,7 @@ def LegacyStripe(image_file):
     return '-hawk' in image_file or '-aprile' in image_file or '^' in image_file
 
 def LegacyReddishBluish(image_file):
-    return 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file
+    return 'noir-ceppi' in image_file or 'redshift-ceppi' in image_file or 'redshift-hawk' in image_file or 'visible-callalta' in image_file or 'blueshift-callalta' in image_file or 'redshift-aprile' in image_file or 'blueshift-aprile' in image_file
 
 def LegacyAlgae(image_file):
     return 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file

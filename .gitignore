@@ -127,3 +127,6 @@ MqttImageUploader/*.jpg
 MqttImageUploader/*.png
 
 time-series.pkl
+
+website/*.csv
+

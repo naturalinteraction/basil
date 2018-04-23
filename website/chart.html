@@ -72,10 +72,12 @@ d3.csv(csv_file, function(error, data) {
 	});
 
 	// Scale the range of the data
-	x.domain([0, d3.max(data, function(d) { return d.minutes; })]);
+    maxx = +d3.max(data, function(d) { return d.minutes; })
+    maxx = 250
+	x.domain([0, maxx]);
     y.domain([0, 100]);
 
-    tic = +d3.max(data, function(d) { return d.minutes; })/24 + 1
+    tic = maxx/24 + 1
     xAxis.ticks(tic);
 
     var colors = ["orange", "orange", "lightblue", "lightblue", "blue", "blue", "limegreen", "limegreen"];
