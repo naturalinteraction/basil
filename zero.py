@@ -9,6 +9,7 @@ image_files = []
 dates = []
 
 not_so_green_species = ['redcabbage', 'redradish']
+greenish_species = ['arugula', 'chia', 'mustard', 'cress']
 
 '''
 VISIBLE-CEPPI
@@ -35,7 +36,7 @@ investigate irregularity
 biomass goes down at the end
 
 BLUESHIFT-HAWK
-watercress
+cress
 investigate irregularity
 
 VISIBLE-HAWK
@@ -43,7 +44,7 @@ chia
 white overfitting?
 
 NOIR-HAWK
-watercress
+cress
 investigate irregularity
 
 REDSHIFT-APRILE
