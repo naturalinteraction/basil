@@ -18,8 +18,7 @@ def Page():
     hostname = socket.gethostname()
     if len(globa.last_picture_filename) > 0:
         link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">latest picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
-        if len(globa.batch) > 0:
-            link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.customer + '/' + hostname + '-' + globa.batch + '.csv">latest chart</a><br>\n'
+        link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.customer + '/' + hostname + '.csv">latest chart</a><br>\n'
     else:
         link = ''
     status = 'running...'
