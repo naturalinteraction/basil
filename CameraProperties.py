@@ -182,48 +182,45 @@ class CameraProperties(object):
                     result = result + "%s  %s" % (name, str(self.PropertyOnCamera(name))) + '<br>\n'
         result = result + 'Analog Gain %.2f' % float(self.cam.analog_gain) + '<br>\n'
         result = result + 'Digital Gain %.2f' % float(self.cam.digital_gain) + '<br>\n'
-        zoo = self.cam.zoom
-        zoomed = (zoo[2] < 1.0)
-        result = result + 'Zoomed ' + str(zoomed) + '<br>\n'
         return str(result)
 
     def AllPropertiesOK(self):
         if float(self.PropertyOnCamera('AWB Blue Gain')) < 0.5:
-            return False
+            return 'Low Blue Gain'
         if float(self.PropertyOnCamera('AWB Red Gain')) < 0.5:
-            return False
+            return 'Low Blue Gain'
         if self.PropertyOnCamera('AWB Mode') != 'off':
-            return False
+            return 'AWB Mode Not Off'
         if self.PropertyOnCamera('DRC Strength') != 'off':
-            return False
+            return 'Wrong DRC Strength'
         if self.PropertyOnCamera('Exposure Mode') != 'off':
-            return False
+            return 'Wrong Exposure Mode'
         if self.PropertyOnCamera('Exp Meter Mode') != 'average':
-            return False
+            return 'Wrong Exp Meter Mode'
         if self.PropertyOnCamera('Exp Compensation') != 0:
-            return False
+            return 'Wrong Exp Compensation'
         if self.PropertyOnCamera('ISO') != 100:
-            return False
+            return 'Wrong ISO'
         if self.PropertyOnCamera('Brightness') != 50:
-            return False
+            return 'Wrong Brightness'
         if self.PropertyOnCamera('Contrast') != 0:
-            return False
+            return 'Wrong Contrast'
         if self.PropertyOnCamera('Saturation') != 0:
-            return False
+            return 'Wrong Saturation'
         if self.PropertyOnCamera('Sharpness') != 100:
-            return False
+            return 'Wrong Sharpness'
         shutter_speed = self.PropertyOnCamera('Shutter Speed')
-        if shutter_speed < 1500:
-            return False
+        if shutter_speed < 1000:
+            return 'Low Shutter Speed'
         if abs(int(self.cam.exposure_speed) - shutter_speed) > 200:
-            return False
+            return 'Exposure Speed Differs'
         if abs(1.0 - float(self.cam.analog_gain)) > 0.07:
-            return False
+            return 'Wrong Analog Gain'
         if abs(1.0 - float(self.cam.digital_gain)) > 0.07:
-            return False
+            return 'Wrong Digital Gain'
         if self.cam.zoom[2] != 1.0:
-            return False
-        return True
+            return 'Zoomed'
+        return 'OK'
 
     def PrintCurrentProperty(self):
         print(("%s   %s <%s>" % (self.CurrentPropertyName(), self.CurrentPropertyValue(), self.PropertyOnCamera(self.CurrentPropertyName()))))

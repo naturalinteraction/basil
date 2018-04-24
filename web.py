@@ -12,7 +12,7 @@ globa.git_rev_count_and_branch = GitRevCount() + ' ' + GitBranch()
 def Page():
     try:
         prop = globa.cameraproperties.SomePropertiesString()
-        prop = prop + '<p>\nProperties OK? ' + str(globa.cameraproperties.AllPropertiesOK()) + '<br>\n'
+        prop = prop + '<p>Optical ' + str(globa.cameraproperties.AllPropertiesOK()) + '<br>\n'
     except:
         prop = 'No camera properties.'
     hostname = socket.gethostname()
@@ -23,11 +23,11 @@ def Page():
         link = ''
     status = 'Running...'
     if globa.initial_calibrate:
-        status = 'Initial calibration... (' + globa.calib_error + ')'
+        status = 'Initial calibration... (' + "{0:.3f}".format(float(globa.calib_error)) + ')'
     if globa.cameraproperties.auto_calibrate:
-        status = 'Auto calibration... (' + globa.calib_error + ')'
+        status = 'Auto calibration... (' + "{0:.3f}".format(float(globa.calib_error)) + ')'
     if globa.color_calibrate:
-        status = 'Color calibration... (' + globa.calib_error + ')'
+        status = 'Color calibration... (' + "{0:.3f}".format(float(globa.calib_error)) + ')'
     batch_name = globa.batch
     if len(batch_name) == 0:
         batch_name = '[empty, which means the sensor is paused]'
@@ -43,7 +43,7 @@ def Page():
             'temperature ' + str(PiTemperature()) + '<p>\n' +
             # 'locations ' + str(len(globa.locations) == 24) + '<p>\n' +
             prop + '\n' +
-            'Sensor OK? ' + str(SensorFunctioningOK()) + '<p>\n'
+            'Hardware ' + str(SensorFunctioningOK()) + '<p>\n' +
             status + '<p>\n' +
             'Batch ' + batch_name + '<br>\n' +
             'Hours ' + str(globa.hour_start) + ' - ' + str(globa.hour_end) + '<br>\n' +

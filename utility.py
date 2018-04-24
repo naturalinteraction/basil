@@ -179,26 +179,26 @@ def MemoryPercent():
     return mem.percent
 
 def CPUPercent():
-    return psutil.cpu_percent()
+    return psutil.cpu_percent(interval=1)
 
 def DiskPercent():
     disk = os.statvfs('/')
     return 100 - 100 * disk.f_bavail / disk.f_blocks
 
 def SensorFunctioningOK():
-    if CPUPercent() > 80:
-        return False
-    if MemoryPercent() > 80:
-        return False
-    if DiskPercent() > 80:
-        return False
-    if float(PiTemperature().replace('C', '')) > 75:
-        return False
-    if int(NumberOfUploadsInQueue()) > 1:
-        return False
     if globa.initial_calibrate or globa.cameraproperties.auto_calibrate or globa.color_calibrate:  # mode
-        return False
-    return True
+        return 'Calibrating'
+    if CPUPercent() > 90:
+        return 'High CPU'
+    if MemoryPercent() > 90:
+        return 'High Memory'
+    if DiskPercent() > 90:
+        return 'High Disk'
+    if float(PiTemperature().replace('C', '')) > 75:
+        return 'High Temperature'
+    if int(NumberOfUploadsInQueue()) > 1:
+        return 'Long Queue'
+    return 'OK'
 
 def UpdateFirmware():
     print('attempting to update firmware...')
