@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.button {
+    /*background-color: #4CAF50;*/
+    border: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    font-size: 16px;
+    /*margin: 4px 2px;*/
+}
+
+.button1 {border-radius: 2px;}
+.button2 {border-radius: 4px;}
+.button3 {border-radius: 8px;}
+.button4 {border-radius: 12px;}
+.button5 {border-radius: 50%;}
+
+.btn {
+    border: 1px solid #000000;
+    background-color: inherit;
+    border-radius: 8px;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    /*display: inline-block;*/
+}
+
+.btn:hover {background: #eee;}
+
+.success {color: green;}
+.info {color: dodgerblue;}
+.warning {color: orange;}
+.danger {color: red;}
+.default {color: black;}
+</style>
+</head>
+
+<body>
+
+<button onclick="myFunctionSuccess()" class="btn success">Success</button>
+<button class="button4">Rounded</button>
+<button class="btn warning">Warning</button>
+<button class="btn danger">Danger</button>
+<button class="btn default">Default</button>
+
+<button onclick="myFunction()">Click me</button>
+
+<p id="demo"></p>
+
+<script>
+
+
+
+function myFunction() {
+    document.getElementById("demo").innerHTML = "Hello World";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "foo.txt", true);
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          document.getElementById("demo").innerHTML = (xhr.responseText);
+        } else {
+          document.getElementById("demo").innerHTML = (xhr.statusText);
+        }
+      }
+    };
+    xhr.onerror = function (e) {
+      document.getElementById("demo").innerHTML = (xhr.statusText);
+    };
+    xhr.send(null);
+
+}
+
+function myFunctionSuccess() {
+  document.getElementById("demo").innerHTML = "Success!";
+}
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
