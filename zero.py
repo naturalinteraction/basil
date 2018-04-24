@@ -8,8 +8,8 @@ substrate = []
 image_files = []
 dates = []
 
-not_so_green_species = ['redcabbage', 'redradish']
-greenish_species = ['arugula', 'chia', 'mustard', 'cress']
+not_so_green_species = ['redcabbage', 'redradish', 'redbasil']
+greenish_species = ['arugula', 'chia', 'mustard', 'cress', 'basil']
 untested_species = ['sunflower', 'fenugreek', 'wheat']
 
 '''
