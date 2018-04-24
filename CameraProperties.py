@@ -172,6 +172,21 @@ class CameraProperties(object):
         result = result + 'Zoomed ' + str(zoomed) + '<br>\n'
         return str(result)
 
+    def SomePropertiesString(self):
+        result = ''
+        for name in sorted(list(self.properties.keys())):
+            if name not in ['AWB Mode', 'DRC Strength', 'Exposure Mode', 'Exp Meter Mode', 'Exp Compensation', 'ISO', 'Brightness', 'Contrast', 'Saturation', 'Sharpness']:
+                if 'Gain' in name:
+                    result = result + "%s  %.2f" % (name.replace('AWB ', ''), float(self.PropertyOnCamera(name))) + '<br>\n'
+                else:
+                    result = result + "%s  %s" % (name, str(self.PropertyOnCamera(name))) + '<br>\n'
+        result = result + 'Analog Gain %.2f' % float(self.cam.analog_gain) + '<br>\n'
+        result = result + 'Digital Gain %.2f' % float(self.cam.digital_gain) + '<br>\n'
+        zoo = self.cam.zoom
+        zoomed = (zoo[2] < 1.0)
+        result = result + 'Zoomed ' + str(zoomed) + '<br>\n'
+        return str(result)
+
     def AllPropertiesOK(self):
         if float(self.PropertyOnCamera('AWB Blue Gain')) < 0.5:
             return False
