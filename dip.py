@@ -45,8 +45,11 @@ cv2.destroyAllWindows()
 print('Windows destroyed.')
 RemoveTemporaryFiles()
 
-sensor_hostname = args.prefix.split('-')[0]
-UploadFileToS3('website/CSV/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + sensor_hostname + '.csv')   # just the sensor hostname --> latest chart
+if args.upload:
+    sensor_hostname = args.prefix.split('-')[0]
+    if not UploadFileToS3('website/CSV/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + sensor_hostname + '.csv'):  # just the sensor hostname --> latest chart
+        print ("now, this is a big problem. could not upload CSV results.")
+        quit()
 
 try:
     print("ffmpeg -r 7 -pattern_type glob -i 'timelapse/*.jpg' -s hd1080 -vcodec libx264 -filter:v 'crop="

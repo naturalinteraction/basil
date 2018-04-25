@@ -225,12 +225,16 @@ def ParseArguments():
     parser.add_argument('-d', '--download', dest='download', action='store_const',
                         const=True, default=False,
                         help='download images from S3')
+    parser.add_argument('-u', '--upload', dest='upload', action='store_const',
+                        const=True, default=False,
+                        help='upload results to S3')
     args = parser.parse_args()
     print('prefix = ' + args.prefix)
     print('group = ' + args.group)
     print('substring = ' + args.substring)
     print('routine = ' + args.routine)
     print('download = ' + str(args.download))
+    print('upload = ' + str(args.upload))
     return args
 
 

@@ -95,9 +95,9 @@ Change via script:
 - [x] Use batch_species and legacy functions to select special algorithms
 - [x] Web chart: variable ticks, fixed 15 days period
 - [x] Download no longer downloads also .csv files
-- [ ] Web output of processing (local network and Internet)
+- [x] Make upload of csv optional
+- [x] Web output of processing (local network and Internet)
 - [ ] Cloud infrastructure must know all the URLs of the sensors, so that the chart can be linked to the control panel
-- [ ] Make upload of csv optional
 - [ ] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
 - [ ] Image processing on server
 - [ ] ~~Possible issue: Download from S3 error 'The read operation timed out'~~
