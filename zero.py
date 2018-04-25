@@ -186,7 +186,7 @@ def RoutineZero(image_file, bgr, box, customer):
         substrate_spline = substrate
         biomass_spline = biomass
 
-    csv = open('website/' + dt[0] + '-' + dt[1] + '.csv', 'w')
+    csv = open('website/CSV/' + dt[0] + '-' + dt[1] + '.csv', 'w')
     csv.write('minutes,motion-dots,motion,brightness-dots,brightness,disuniformity-dots,disuniformity,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + customer + ',' + dt[0] + ',' + dt[1] + '\n')
     for i in range(len(minutes_since_start)):
         csv.write(str(minutes_since_start[i]) + ',' + 
@@ -200,7 +200,6 @@ def RoutineZero(image_file, bgr, box, customer):
                   str(biomass_spline[i] * 100.0 / 255.0) + ',' +
                   dates[i] + ',' +
                   image_files[i] + '\n')
-                  # http://natural-interaction.s3-website-eu-west-1.amazonaws.com/zero/blueshift-aprile_2018_04_20-19_00.jpg
     csv.close()
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'timelapse/'))

@@ -1,0 +1,1 @@
+This directory contains the output CSV files on the local machine/sensor.

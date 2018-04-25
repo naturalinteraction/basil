@@ -99,8 +99,8 @@ Change via script:
 - [ ] Cloud infrastructure must know all the URLs of the sensors, so that the chart can be linked to the control panel
 - [ ] Make upload of csv optional
 - [ ] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
-- [ ] Download from S3 error 'The read operation timed out'
 - [ ] Image processing on server
+- [ ] ~~Possible issue: Download from S3 error 'The read operation timed out'~~
 - [ ] ~~Possible issue: browser caches local csv file and does not update it even when refreshing~~
 - [ ] ~~Web chart: add URL parameter to highlight a specific moment~~
 - [ ] ~~Thumbnail size can be specified in URL (useful on local network)~~
