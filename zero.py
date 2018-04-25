@@ -138,7 +138,7 @@ def RoutineZero(image_file, bgr, box, customer):
 
     batch_species = dt[1].split('^')
     if len(batch_species) == 2:
-        batch_species = batch_species[-1]
+        batch_species = batch_species[0]  # species first, then specific batch name, e.g. basil^june1
     else:
         batch_species = 'unknown'
     print('batch_species = %s' % batch_species)
