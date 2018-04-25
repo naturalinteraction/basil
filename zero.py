@@ -203,4 +203,4 @@ def RoutineZero(image_file, bgr, box, customer):
                   # http://natural-interaction.s3-website-eu-west-1.amazonaws.com/zero/blueshift-aprile_2018_04_20-19_00.jpg
     csv.close()
 
-    UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'temp/') + '.jpeg')
+    UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'timelapse/'))

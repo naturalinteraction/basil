@@ -8,16 +8,16 @@ from vision import *
 from display import *
 from zero import *
 
-def RemoveTemporaryFiles(also_temp_subdir=False):
+def RemoveTemporaryFiles(also_timelapse_subdir=False):
     files = os.listdir('.')
     for file in files:
         if file.endswith(".temp"):
             os.remove(os.path.join('.', file))
-    if also_temp_subdir:
-        files = os.listdir('temp')
+    if also_timelapse_subdir:
+        files = os.listdir('timelapse')
         for file in files:
-            if file.endswith(".jpeg"):
-                os.remove(os.path.join('temp', file))
+            if file.endswith(".jpg"):
+                os.remove(os.path.join('timelapse', file))
 
 args = ParseArguments()
 
@@ -50,12 +50,12 @@ sensor_hostname = args.prefix.split('-')[0]
 UploadFileToS3('website/' + args.prefix + '.csv', args.group + '/' + sensor_hostname + '.csv')
 
 try:
-    print("ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 -filter:v 'crop="
+    print("ffmpeg -r 7 -pattern_type glob -i 'timelapse/*.jpg' -s hd1080 -vcodec libx264 -filter:v 'crop="
           + str(int(box.rect.xmax - box.rect.xmin)) + \
           ':' + str(int(box.rect.ymax - box.rect.ymin)) + ':' + \
           str(int(box.rect.xmin)) + ':' + str(int(box.rect.ymin))) + \
           "' timelapse.mp4"
 except:
-    command = "ffmpeg -r 7 -pattern_type glob -i 'temp/*.jpeg' -s hd1080 -vcodec libx264 ~/Desktop/timelapse-" + args.prefix + "-" + args.routine + ".mp4"
+    command = "ffmpeg -r 7 -pattern_type glob -i 'timelapse/*.jpg' -s hd1080 -vcodec libx264 ~/Desktop/timelapse-" + args.prefix + "-" + args.routine + ".mp4"
     print(command)
     os.popen(command)

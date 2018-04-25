@@ -104,7 +104,7 @@ ENV/
 # mypy
 .mypy_cache/
 
-temp/*.jpeg
+timelapse/*.jpg
 
 downloaded/test.txt
 calibration-locations.pkl
