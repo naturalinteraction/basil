@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Batches</title>
+</head>
+<body>
+<script type="text/javascript">
+ohwell = 'AKIAJ6J6L';
+letstrythis = 'NH7OLM4RHAQ';
+ohboy = 'iKDFuUxBmwHx5oqw1ws2yA';
+thisisapain = 'XgcgcR/GC1GgN4CF9f';
+</script>
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.18.min.js"></script>
+
+<script type="text/javascript">
+  // read-only access
+  AWS.config.credentials = new AWS.Credentials(ohwell + letstrythis, ohboy + thisisapain);
+  // Configure your region
+  AWS.config.region = 'eu-west-1';
+</script>
+
+<h1>Batches</h1>
+<div id="status"></div>
+<ul id="objects"></ul>
+
+<script type="text/javascript">
+  var url = new URL(window.location.href);
+  var group = url.searchParams.get("group");
+  var bucket = new AWS.S3({params: {Bucket: 'natural-interaction'}});
+  bucket.listObjects({Prefix: 'CSV/' + group + '/'}, function (err, data) {
+    if (err) {
+      document.getElementById('status').innerHTML =
+        'Could not load objects from S3 bucket!';
+    } else {
+      // document.getElementById('status').innerHTML = 'Loaded ' + data.Contents.length + ' items from S3 bucket';
+      for (var i = 0; i < data.Contents.length; i++) {
+        var cleaned = data.Contents[i].Key.replace("CSV/" + group + "/", "")
+        if (cleaned.length > 0)
+          {
+            cleaned = cleaned.replace('/', '');
+            document.getElementById('objects').innerHTML += '<li><a href=http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/CSV/' + group + '/' + cleaned + '>' + cleaned.replace('.csv', '') + '</a></li>';
+          }
+      }
+    }
+  });
+</script>
+
+
+
+</body>
+</html>
