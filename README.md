@@ -98,12 +98,23 @@ Change via script:
 - [ ] Web output of processing (local network and Internet)
 - [ ] Cloud infrastructure must know all the URLs of the sensors, so that the chart can be linked to the control panel
 - [ ] Make upload of csv optional
-- [ ] Issue: browser caches local csv file and does not update it even when refreshing
-- [ ] Web chart: add URL parameter to highlight a specific moment
-- [ ] List and link all available batches (including previous) *.csv for one customer (page accessible to customer)
+- [ ] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
 - [ ] Download from S3 error 'The read operation timed out'
-- [ ] Image processing on sensor
 - [ ] Image processing on server
+- [ ] ~~Possible issue: browser caches local csv file and does not update it even when refreshing~~
+- [ ] ~~Web chart: add URL parameter to highlight a specific moment~~
+- [ ] ~~Thumbnail size can be specified in URL (useful on local network)~~
+- [ ] ~~Comparison with average species curves~~
+- [ ] ~~Store all frames on sensor until end of batch (useful for processing on sensor)~~
+- [ ] ~~Create summary timeline with thumbnails~~
+- [ ] ~~Control panel and chart in same web page~~
+- [ ] ~~'Ping' via HTTP request~~
+- [ ] ~~Buttons~~
+- [ ] ~~Check valid hours; always on mode if scene is lit~~
+- [ ] ~~Avoid full csv URL in chart URL~~
+- [ ] ~~Image processing on sensor~~
+- [ ] ~~Upload timelapse with or without superimposed graphics~~
+- [ ] ~~Windowless cap and dip (windowed is a command line option)~~
 - [ ] ~~Obfuscation and separate git repo or other delivery method~~
 - [ ] ~~Get rid of set basil vars script~~
 - [ ] ~~Hardware check based on MAC addresses and serials (see info.sh)~~
