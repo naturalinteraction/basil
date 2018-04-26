@@ -27,7 +27,7 @@ if args.download:
 
 box = BoundingBox()
 
-RemoveTemporaryFiles(True)
+# RemoveTemporaryFiles(True)
 
 # attempt to load existing csv file for this analysis
 processed_files = []
@@ -46,7 +46,7 @@ except:
 
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
     # print(image_file)
-    if True:  # if not (image_file.replace('downloaded/', args.group + '/') in processed_files):  # has not been analyzed yet
+    if not (image_file.replace('downloaded/', args.group + '/') in processed_files):  # has not been analyzed yet
         print('processing ' + image_file)
         locals()[args.routine](image_file, cv2.imread(image_file), box, args.group)
     else:
@@ -55,7 +55,7 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
-RemoveTemporaryFiles()
+# RemoveTemporaryFiles()
 
 if args.upload:
     sensor_hostname = args.prefix.split('-')[0]
