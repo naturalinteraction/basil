@@ -37,18 +37,18 @@ global batch_start
 try:
     with open('batch.pkl', 'r') as f:
         (batch, batch_start, last_batch) = pickle.load(f)
-        print('read batch 3', batch, batch_start, last_batch)
+        # print('read batch 3', batch, batch_start, last_batch)
 except:
     try:
         with open('batch.pkl', 'r') as f:
             (batch, batch_start) = pickle.load(f)
             last_batch = batch
-            print('read batch 2', batch, batch_start, last_batch)
+            # print('read batch 2', batch, batch_start, last_batch)
     except:
         batch = ''
         last_batch = ''
         batch_start = 0
-        print('read batch 0', batch, batch_start, last_batch)
+        # print('read batch 0', batch, batch_start, last_batch)
 
 global hour_start
 global hour_end

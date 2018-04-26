@@ -33,6 +33,8 @@ def Page():
         batch_name = '[empty, which means the sensor is paused]'
     else:
         batch_name = batch_name + ' (started ' + str(time.ctime(int(globa.batch_start))) + ')'
+    if len(globa.last_batch) > 0:
+        batch_name = batch_name + ' (' + globa.last_batch + ')'
     return ('group ' + globa.customer + '<br>\n' +
             'sensor ' + hostname + '<br>\n' +
             'firmware v1.' + globa.git_rev_count_and_branch + '<p>\n' +
@@ -45,7 +47,7 @@ def Page():
             prop + '\n' +
             'Hardware ' + str(SensorFunctioningOK()) + '<p>\n' +
             status + '<p>\n' +
-            'Batch ' + batch_name + '(' + globa.last_batch + ')<br>\n' +
+            'Batch ' + batch_name + '<br>\n' +
             'Hours ' + str(globa.hour_start) + ' - ' + str(globa.hour_end) + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
