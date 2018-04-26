@@ -27,8 +27,6 @@ if args.download:
 
 box = BoundingBox()
 
-# RemoveTemporaryFiles(True)
-
 # attempt to load existing csv file for this analysis
 processed_files = []
 try:
@@ -45,7 +43,6 @@ except:
     print('dip: csv file does not exist')
 
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
-    # print(image_file)
     if not (image_file.replace('downloaded/', args.group + '/') in processed_files):  # has not been analyzed yet
         print('processing ' + image_file)
         locals()[args.routine](image_file, cv2.imread(image_file), box, args.group)
@@ -55,7 +52,6 @@ for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
 
 cv2.destroyAllWindows()
 print('Windows destroyed.')
-# RemoveTemporaryFiles()
 
 if args.upload:
     sensor_hostname = args.prefix.split('-')[0]
@@ -64,12 +60,12 @@ if args.upload:
         quit()
 
 try:
-    print("ffmpeg -r 15 -pattern_type glob -i 'timelapse/*.jpg' -s hd1080 -vcodec libx264 -filter:v 'crop="
+    print("ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.prefix + "*.jpg' -s hd1080 -vcodec libx264 -filter:v 'crop="
           + str(int(box.rect.xmax - box.rect.xmin)) + \
           ':' + str(int(box.rect.ymax - box.rect.ymin)) + ':' + \
           str(int(box.rect.xmin)) + ':' + str(int(box.rect.ymin))) + \
           "' timelapse.mp4"
 except:
-    command = "ffmpeg -r 15 -pattern_type glob -i 'timelapse/*.jpg' -s hd1080 -vcodec libx264 ~/Desktop/timelapse-" + args.prefix + "-" + args.routine + ".mp4"
+    command = "ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.prefix + "*.jpg' -s hd1080 -vcodec libx264 ~/Desktop/timelapse-" + args.prefix + "-" + args.routine + ".mp4"
     print(command)
     os.popen(command)

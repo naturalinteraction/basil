@@ -93,11 +93,8 @@ def RoutineZero(image_file, bgr, box, customer):
                         image_files.append(row[10])
                         dates.append(row[9])
                     first = False
-            print("length of lists", len(minutes_since_start))
         except:
             print('zero: csv file does not exist ')
-
-    print(biomass)
 
     dates.append(str(date).replace(':00:00', '.00'))
     image_files.append(image_file.replace('downloaded/', customer + '/'))
@@ -105,22 +102,21 @@ def RoutineZero(image_file, bgr, box, customer):
     global batch_start  # not to be confused with globa.batch_start in cap.py
     try:
         batch_start
-        print('batch start from global', batch_start)
     except:
         batch_start = ExifBatchStart(image_file)
-        print('batch start from exif', batch_start)
     if batch_start <= -1:
         try:
+            # load from prior/
             with open('prior/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'rb') as f:
                 batch_start = pickle.load(f)
         except:
             pass
-    print('batch start after all', batch_start)
     if batch_start > -1:
         timediff = date - datetime.fromtimestamp(batch_start)
     else:
         batch_start = time.mktime(date.timetuple())
         timediff = date - date
+    # save to prior/
     with open('prior/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'wb') as f:
         pickle.dump(batch_start, f, 0)
 
