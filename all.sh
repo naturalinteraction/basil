@@ -22,10 +22,12 @@
 ./go.sh -r RoutineZero -p noir-hawk
 ./go.sh -r RoutineZero -p visible-hawk
 ./go.sh -r RoutineZero -p blueshift-hawk
-'
 
 ./go.sh -r RoutineZero -p blueshift-aprile
 ./go.sh -r RoutineZero -p redshift-aprile
 ./go.sh -r RoutineZero -p noir-aprile
 ./go.sh -r RoutineZero -p visible-aprile
+'
+
+./go.sh -r RoutineZero -p noir-hawk
 
