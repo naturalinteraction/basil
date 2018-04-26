@@ -109,6 +109,7 @@ Change via script:
 - [ ] ~~Control panel and chart in same web page~~
 - [ ] ~~'Ping' via HTTP request~~
 - [ ] ~~Buttons~~
+- [ ] ~~Make console log available on the web~~
 - [ ] ~~Check valid hours; always on mode if scene is lit~~
 - [ ] ~~Avoid full csv URL in chart URL~~
 - [ ] ~~Image processing on sensor~~

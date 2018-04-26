@@ -45,7 +45,7 @@ def Page():
             prop + '\n' +
             'Hardware ' + str(SensorFunctioningOK()) + '<p>\n' +
             status + '<p>\n' +
-            'Batch ' + batch_name + '<br>\n' +
+            'Batch ' + batch_name + '(' + globa.last_batch + ')<br>\n' +
             'Hours ' + str(globa.hour_start) + ' - ' + str(globa.hour_end) + '<br>\n' +
              link +
             '' + NumberOfUploadsInQueue() + ' uploads in queue<br>\n' +
@@ -104,11 +104,16 @@ class WebPage(resource.Resource):
                         candidate_name = parts[i + 1].replace('clientproto', '')
                         if IsWordOrCaret(candidate_name):  # could be stricter using a combination of IsWord() and IsWordCaretWord()
                             # at the moment, we do not check if that batch name already existed (locally), so it is possible to append to a previous batch
+                            if candidate_name == '':
+                                if globa.batch != '':
+                                    globa.last_batch = globa.batch
+                            else:
+                                globa.last_batch = candidate_name
                             globa.batch = candidate_name
-                            print('saving globa.batch = %s' % globa.batch)
+                            print('saving globa.batch = %s globa.last_batch = %s' % (globa.batch, globa.last_batch))
                             globa.batch_start = time.time()
                             with open('batch.pkl', 'w') as f:
-                                pickle.dump((globa.batch, globa.batch_start), f, 0)
+                                pickle.dump((globa.batch, globa.batch_start, globa.last_batch), f, 0)
                         else:
                             print("ignoring new batch name as invalid")
         if 'change-hours' in str(request):
@@ -145,7 +150,7 @@ class WebPage(resource.Resource):
             thumb = thumb + '<p><a href="sensorstatus?admin-admin&update-firmware">Update Firmware</a><br>\n'
             # thumb = thumb + '<a href="sensorstatus?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
             # thumb = thumb + '<a href="sensorstatus?admin-admin&quit-quit">Quit Sensor</a><br>\n'
-            thumb = thumb + '<a href="sensorstatus?admin-admin&change-batch=new-batch-name">Change Batch</a><br>\n'
+            thumb = thumb + '<a href="sensorstatus?admin-admin&change-batch=">Change Batch</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&change-hours=9-19">Change Hours</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&reboot-sensor">Reboot Sensor</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
