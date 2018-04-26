@@ -16,6 +16,7 @@ import numpy as np
 import math
 import globa
 from utility import Macduff
+from utility import LoadCustomer
 from web import *
 from MqttImageUploader import *
 
