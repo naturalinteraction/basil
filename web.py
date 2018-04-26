@@ -18,7 +18,8 @@ def Page():
     hostname = socket.gethostname()
     if len(globa.last_picture_filename) > 0:
         link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.last_picture_filename + '">latest picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
-        link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/CSV/' + globa.customer + '/' + hostname + '.csv">latest chart</a><br>\n'
+        if len(globa.last_batch) > 0:
+            link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/CSV/' + globa.customer + '/' + hostname + '-' + globa.last_batch + '.csv">latest chart</a><br>\n'
     else:
         link = ''
     status = 'Running...'
@@ -30,7 +31,7 @@ def Page():
         status = 'Color calibration... (' + "{0:.3f}".format(float(globa.calib_error)) + ')'
     batch_name = globa.batch
     if len(batch_name) == 0:
-        batch_name = '[empty, which means the sensor is paused]'
+        batch_name = '(empty, sensor is paused)'
     else:
         batch_name = batch_name + ' (started ' + str(time.ctime(int(globa.batch_start))) + ')'
     if len(globa.last_batch) > 0:
