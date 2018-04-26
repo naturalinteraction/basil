@@ -101,11 +101,16 @@ class WebPage(resource.Resource):
             print(parts)
             for i,p in enumerate(parts):
                 if 'change-batch' in p:
-                        globa.batch = parts[i + 1].replace('clientproto', '')
-                        print('saving globa.batch = %s' % globa.batch)
-                        globa.batch_start = time.time()
-                        with open('batch.pkl', 'w') as f:
-                            pickle.dump((globa.batch, globa.batch_start), f, 0)
+                        candidate_name = parts[i + 1].replace('clientproto', '')
+                        if IsWordOrCaret(candidate_name):  # could be stricter using a combination of IsWord() and IsWordCaretWord()
+                            # at the moment, we do not check if that batch name already existed, so it is possible to append to a previous batch
+                            globa.batch = candidate_name
+                            print('saving globa.batch = %s' % globa.batch)
+                            globa.batch_start = time.time()
+                            with open('batch.pkl', 'w') as f:
+                                pickle.dump((globa.batch, globa.batch_start), f, 0)
+                        else:
+                            print("ignoring new batch name as invalid")
         if 'change-hours' in str(request):
             parts = str(request).replace(' ', '=').split('=')
             print(parts)
