@@ -7,7 +7,6 @@ from utility import *
 from vision import *
 from display import *
 from zero import *
-import csv
 
 def RemoveTemporaryFiles(also_timelapse_subdir=False):
     files = os.listdir('.')
