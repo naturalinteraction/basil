@@ -103,7 +103,7 @@ class WebPage(resource.Resource):
                 if 'change-batch' in p:
                         candidate_name = parts[i + 1].replace('clientproto', '')
                         if IsWordOrCaret(candidate_name):  # could be stricter using a combination of IsWord() and IsWordCaretWord()
-                            # at the moment, we do not check if that batch name already existed, so it is possible to append to a previous batch
+                            # at the moment, we do not check if that batch name already existed (locally), so it is possible to append to a previous batch
                             globa.batch = candidate_name
                             print('saving globa.batch = %s' % globa.batch)
                             globa.batch_start = time.time()
