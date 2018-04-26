@@ -45,8 +45,6 @@ def LoadCustomer():
         quit()
     return customer_name
 
-globa.customer = LoadCustomer()
-
 def interrogate(item):
     if hasattr(item, "__name__"):
         print("name: ", item.__name__)

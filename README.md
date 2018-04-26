@@ -98,6 +98,7 @@ Change via script:
 - [x] Make upload of csv optional
 - [x] Web output of processing (local network and Internet)
 - [x] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
+- [ ] prior/, downloaded/, timelapse, website/CSV/ and possibly other dirs need customer string
 - [ ] Cloud infrastructure must know all the URLs of the sensors, so that the chart can be linked to the control panel
 - [ ] ~~Possible issue: Download from S3 error 'The read operation timed out'~~
 - [ ] ~~Possible issue: browser caches local csv file and does not update it even when refreshing~~
