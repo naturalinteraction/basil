@@ -1,13 +1,5 @@
 from vision import *
 
-minutes_since_start = []
-biomass = []
-brightness = []
-motion = []
-substrate = []
-image_files = []
-dates = []
-
 not_so_green_species = ['redcabbage', 'redradish', 'redbasil']
 greenish_species = ['arugula', 'chia', 'mustard', 'cress', 'basil']
 untested_species = ['sunflower', 'fenugreek', 'wheat']
@@ -75,19 +67,63 @@ def RoutineZero(image_file, bgr, box, customer):
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
 
+    try:
+        minutes_since_start
+    except:
+        # create lists
+        minutes_since_start = []
+        biomass = []
+        brightness = []
+        motion = []
+        substrate = []
+        image_files = []
+        dates = []
+        # and attempt to load csv file
+        try:
+            with open('website/CSV/' + dt[0] + '-' + dt[1] + '.csv', 'rb') as csvfile:
+                csv_data = csv.reader(csvfile)
+                first = True
+                for row in csv_data:
+                    if not first:
+                        minutes_since_start.append(int(row[0]))
+                        biomass.append(float(row[7]) * 255.0 / 100.0)
+                        brightness.append(float(row[3]) * 255.0 / 100.0)
+                        motion.append(float(row[1]) * 255.0 / 100.0)
+                        substrate.append(float(row[5]) * 255.0 / 100.0)
+                        image_files.append(row[10])
+                        dates.append(row[9])
+                    first = False
+            print("length of lists", len(minutes_since_start))
+        except:
+            print('zero: csv file does not exist ')
+
+    print(biomass)
+
     dates.append(str(date).replace(':00:00', '.00'))
     image_files.append(image_file.replace('downloaded/', customer + '/'))
 
     global batch_start  # not to be confused with globa.batch_start in cap.py
     try:
         batch_start
+        print('batch start from global', batch_start)
     except:
         batch_start = ExifBatchStart(image_file)
+        print('batch start from exif', batch_start)
+    if batch_start <= -1:
+        try:
+            with open('prior/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'rb') as f:
+                batch_start = pickle.load(f)
+        except:
+            pass
+    print('batch start after all', batch_start)
     if batch_start > -1:
         timediff = date - datetime.fromtimestamp(batch_start)
     else:
         batch_start = time.mktime(date.timetuple())
         timediff = date - date
+    with open('prior/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'wb') as f:
+        pickle.dump(batch_start, f, 0)
+
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
     minutes_since_start.append(minutes)
     # print('minutes', locals()['minutes'])
@@ -104,7 +140,10 @@ def RoutineZero(image_file, bgr, box, customer):
     try:
         previous
     except:
-        previous = motion_bgr
+        previous = cv2.imread('prior/motion-' + dt[0] + '-' + dt[1] + '.png')
+        if previous is None:
+            previous = motion_bgr
+
     motion_diff = cv2.absdiff(motion_bgr, previous)
     motion_diff = BGRToGray(motion_diff)
     ret,motion_diff = cv2.threshold(motion_diff, 6, 6, cv2.THRESH_TOZERO)
@@ -114,6 +153,7 @@ def RoutineZero(image_file, bgr, box, customer):
         motion_value = 255
     motion.append(motion_value)
     previous = motion_bgr
+    cv2.imwrite('prior/motion-' + dt[0] + '-' + dt[1] + '.png', previous)  # this would be needed only at the end
     # end of motion detection
 
     brightness.append(FrameBrightness(bgr))
@@ -141,7 +181,7 @@ def RoutineZero(image_file, bgr, box, customer):
         batch_species = batch_species[0]  # species first, then specific batch name, e.g. basil^june1
     else:
         batch_species = 'unknown'
-    print('batch_species = %s' % batch_species)
+    # print('batch_species = %s' % batch_species)
 
     if batch_species in not_so_green_species or LegacyReddishBluish(image_file):
         reddish = DistanceFromToneBlurTopBottom(hsv, "colors/reddish.pkl", 1, 1, 1, 240, 10.0)
@@ -186,10 +226,10 @@ def RoutineZero(image_file, bgr, box, customer):
         substrate_spline = substrate
         biomass_spline = biomass
 
-    csv = open('website/CSV/' + dt[0] + '-' + dt[1] + '.csv', 'w')
-    csv.write('minutes,motion-dots,motion,brightness-dots,brightness,disuniformity-dots,disuniformity,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + customer + ',' + dt[0] + ',' + dt[1] + '\n')
+    csvfile = open('website/CSV/' + dt[0] + '-' + dt[1] + '.csv', 'w')
+    csvfile.write('minutes,motion-dots,motion,brightness-dots,brightness,disuniformity-dots,disuniformity,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + customer + ',' + dt[0] + ',' + dt[1] + '\n')
     for i in range(len(minutes_since_start)):
-        csv.write(str(minutes_since_start[i]) + ',' + 
+        csvfile.write(str(minutes_since_start[i]) + ',' +
                   str(motion[i] * 100.0 / 255.0) + ',' +
                   str(motion_spline[i] * 100.0 / 255.0) + ',' +
                   str(brightness[i] * 100.0 / 255.0) + ',' +
@@ -200,6 +240,6 @@ def RoutineZero(image_file, bgr, box, customer):
                   str(biomass_spline[i] * 100.0 / 255.0) + ',' +
                   dates[i] + ',' +
                   image_files[i] + '\n')
-    csv.close()
+    csvfile.close()
 
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'timelapse/'))

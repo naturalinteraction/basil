@@ -110,11 +110,8 @@ downloaded/test.txt
 calibration-locations.pkl
 camera-properties.pkl
 
-*.temp
-
-prior/*.jpg
-prior/*.jpeg
 prior/*.png
+prior/*.pkl
 
 colorcalibration/macduff
 colorcalibration/*.csv
