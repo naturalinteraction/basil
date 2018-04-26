@@ -7,11 +7,12 @@ from utility import *
 from vision import *
 from display import *
 from zero import *
+import csv
 
 def RemoveTemporaryFiles(also_timelapse_subdir=False):
     files = os.listdir('.')
     for file in files:
-        if file.endswith(".temp"):
+        if file.endswith(".extension"):  # currently this does not delete any files
             os.remove(os.path.join('.', file))
     if also_timelapse_subdir:
         files = os.listdir('timelapse')
@@ -29,16 +30,28 @@ box = BoundingBox()
 
 RemoveTemporaryFiles(True)
 
+# attempt to load existing csv file for this analysis
+processed_files = []
+try:
+    with open('website/CSV/' + args.prefix + '.csv', 'rb') as csvfile:
+        csv_data = csv.reader(csvfile)
+        first = True
+        for row in csv_data:
+            if not first:
+                processed_files.append(row[10])
+            first = False
+    print(processed_files)
+    print(len(processed_files))
+except:
+    print('dip: csv file does not exist')
+
 for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
-
-    bgr = cv2.imread(image_file)
-
-    before = time.time()
-
-    locals()[args.routine](image_file, bgr, box, args.group)
-
-    # print(str(time.time() - before) + 's')
-
+    # print(image_file)
+    if True:  # if not (image_file.replace('downloaded/', args.group + '/') in processed_files):  # has not been analyzed yet
+        print('processing ' + image_file)
+        locals()[args.routine](image_file, cv2.imread(image_file), box, args.group)
+    else:
+        print('skipping ' + image_file)
     ProcessKeystrokes()
 
 cv2.destroyAllWindows()
