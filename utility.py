@@ -15,6 +15,25 @@ import globa
 # to deal with timezones and tzinfo:
 # from tzlocal import get_localzone
 # import pytz
+import re
+
+def IsWordCaretWord(name):  # one caret separating two non-empty strings
+    pieces = name.split('^')
+    if len(pieces) != 2:
+        return False
+    if len(pieces[0]) == 0:
+        return False
+    if len(pieces[1]) == 0:
+        return False
+    if not IsWord(pieces[0]):
+        return False
+    return IsWord(pieces[1])
+
+def IsWord(name):  # just letters and digits, like for the sensor hostname...
+    return (re.match("^[A-Za-z0-9]*$", name) != None)
+
+def IsWordOrCaret(name):  # just letters and digits plus the ^ sign, like for the sensor hostname...
+    return (re.match("^[A-Za-z0-9^]*$", name) != None)
 
 def LoadCustomer():
     file = open('customer.txt')
