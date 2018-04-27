@@ -110,8 +110,7 @@ downloaded/test.txt
 calibration-locations.pkl
 camera-properties.pkl
 
-prior/*.png
-prior/*.pkl
+prior/
 
 colorcalibration/macduff
 colorcalibration/*.csv
@@ -125,5 +124,5 @@ MqttImageUploader/*.png
 
 time-series.pkl
 
-website/CSV/*.csv
+website/CSV/
 

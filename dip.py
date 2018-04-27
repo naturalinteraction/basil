@@ -30,20 +30,20 @@ box = BoundingBox()
 # attempt to load existing csv file for this analysis
 processed_files = []
 try:
-    with open('website/CSV/' + args.prefix + '.csv', 'rb') as csvfile:
+    with open('website/CSV/' + args.group + '/' + args.prefix + '.csv', 'rb') as csvfile:
         csv_data = csv.reader(csvfile)
         first = True
         for row in csv_data:
             if not first:
                 processed_files.append(row[10])
             first = False
-    print(processed_files)
-    print(len(processed_files))
+    # print(processed_files)
+    # print(len(processed_files))
 except:
     print('dip: csv file does not exist')
 
-for image_file in ListLocalImages('downloaded/' + args.prefix, args.substring):
-    if not (image_file.replace('downloaded/', args.group + '/') in processed_files):  # has not been analyzed yet
+for image_file in ListLocalImages('downloaded/' + args.group + '/' + args.prefix, args.substring):
+    if not (image_file.replace('downloaded/', '') in processed_files):  # has not been analyzed yet
         print('processing ' + image_file)
         locals()[args.routine](image_file, cv2.imread(image_file), box, args.group)
     else:
@@ -58,6 +58,8 @@ if args.upload:
     if not UploadFileToS3('website/CSV/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + args.prefix + '.csv'):
         print ("now, this is a big problem. could not upload CSV results.")
         quit()
+
+quit()
 
 try:
     print("ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.prefix + "*.jpg' -s hd1080 -vcodec libx264 -filter:v 'crop="
