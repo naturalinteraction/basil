@@ -7,6 +7,32 @@ import boto.s3
 from boto.s3.key import Key
 import glob
 
+def DeleteFilesOnS3(file_prefix, substring, actually_delete=False):
+    AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
+
+    bucket_name = 'natural-interaction'
+
+    result = []
+
+    try:
+        conn = boto.connect_s3(AWS_ACCESS_KEY_ID,
+                               AWS_SECRET_ACCESS_KEY)
+        location='EU'
+        bucket = conn.get_bucket(bucket_name, validate=False)
+        files = bucket.list(prefix=file_prefix)
+        for key in files:
+            result.append(key.key)
+        for k in result:
+            if substring in k:
+                print(k)
+                if actually_delete:
+                    print('deleting')
+                    bucket.delete_key(k)
+    except:
+        print ("delete files on S3 error")
+        print((sys.exc_info()))
+
 def UploadFileToS3(filename, customer_filename):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
     AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
