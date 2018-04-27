@@ -60,12 +60,12 @@ if args.upload:
         quit()
 
 try:
-    print("ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.group + '/' + args.prefix + "*.jpg' -s hd1080 -vcodec libx264 -filter:v 'crop="
+    print("ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.group + '/' + args.prefix + "*.jpg' -s 1440:1080 -vcodec libx264 -filter:v 'crop="
           + str(int(box.rect.xmax - box.rect.xmin)) + \
           ':' + str(int(box.rect.ymax - box.rect.ymin)) + ':' + \
           str(int(box.rect.xmin)) + ':' + str(int(box.rect.ymin))) + \
           "' timelapse.mp4"
 except:
-    command = "ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.group + '/' + args.prefix + "*.jpg' -s hd1080 -vcodec libx264 ~/Desktop/timelapse-" + args.prefix + "-" + args.routine + ".mp4"
+    command = "ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.group + '/' + args.prefix + "*.jpg' -s 1440:1080 -vcodec libx264 ~/Desktop/timelapse-" + args.prefix + "-" + args.routine + ".mp4"
     print(command)
     os.popen(command)
