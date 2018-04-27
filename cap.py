@@ -78,9 +78,7 @@ def TakePicture(img, cam):
 
     print('Saving picture.')
     res = cam.resolution
-    note = socket.gethostname()  # os.environ['BASIL_NOTE']
-    print('note', note)
-    filename = 'cache/' + note + '-' + globa.batch + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
+    filename = 'cache/' + socket.gethostname() + '-' + globa.batch + '_' + time.strftime("%Y_%m_%d-%H_%M.jpg")
     print(filename)
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)
