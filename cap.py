@@ -125,7 +125,7 @@ def AttemptUpload():
         # print('No images in cache. Nothing to do.')
         return
     print('Attempting upload.')
-    uploaded = UploadFileToS3(images_in_cache[0], images_in_cache[0].replace('cache/', globa.customer + '/'))
+    uploaded = UploadFileToS3(images_in_cache[0], images_in_cache[0].replace('cache/', 'images/' + globa.customer + '/'))
     if uploaded and globa.customer == 'zero':
         d = dict()
         d['timestamp'] = 666666
