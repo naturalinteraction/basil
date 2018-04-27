@@ -98,8 +98,16 @@ Change via script:
 - [x] Make upload of csv optional
 - [x] Web output of processing (local network and Internet)
 - [x] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
-- [ ] prior/, downloaded/, timelapse, website/CSV/ and possibly other dirs need customer string
-- [ ] Cloud infrastructure must know all the URLs of the sensors, so that the chart can be linked to the control panel
+- [ ] Set focus and set view: how?
+- [ ] Directories prior/, downloaded/, timelapse/, website/CSV/ and possibly other dirs need customer string
+- [ ] Make sure URLs cannot be inferred
+- [ ] Generalize scripts (pull4, etc.)
+- [ ] Create image of generic sensor and script(s) to customize it
+- [ ] Accounts and sensors in CSVs on S3 (add, remove, list scripts): they include hostname and URLs
+- [ ] ~~Link chart back to control panel~~
+- [ ] ~~A big chunk of zero.py (batch_start, minutes...) is general and should be taken out~~
+- [ ] ~~Send mail notifications~~
+- [ ] ~~Default, generic routine with just motion and brightness (to replace RoutineDisplay as default)~~
 - [ ] ~~Possible issue: Download from S3 error 'The read operation timed out'~~
 - [ ] ~~Possible issue: browser caches local csv file and does not update it even when refreshing~~
 - [ ] ~~Web chart: add URL parameter to highlight a specific moment~~
@@ -114,7 +122,7 @@ Change via script:
 - [ ] ~~Check valid hours; always on mode if scene is lit~~
 - [ ] ~~Avoid full csv URL in chart URL~~
 - [ ] ~~Image processing on sensor~~
-- [ ] ~~Upload timelapse with or without superimposed graphics~~
+- [ ] ~~Optionally create and upload timelapse with or without superimposed graphics, but only if there is at least one more frame processed~~
 - [ ] ~~Windowless cap and dip (windowed is a command line option)~~
 - [ ] ~~Obfuscation and separate git repo or other delivery method~~
 - [ ] ~~Get rid of set basil vars script~~
