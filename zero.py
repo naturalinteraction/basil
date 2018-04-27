@@ -65,7 +65,6 @@ def LegacyAlgae(image_file):
 def RoutineZero(image_file, bgr, box, customer):
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').replace('/', '-').split('-')
     dt.remove(customer)
-    print dt
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
 
@@ -138,7 +137,7 @@ def RoutineZero(image_file, bgr, box, customer):
     try:
         previous
     except:
-        previous = cv2.imread('prior/' + customer + '/motion-' + dt[0] + '-' + dt[1] + '.png')
+        previous = cv2.imread('prior/' + customer + '/' + dt[0] + '-' + dt[1] + '_motion.png')
         if previous is None:
             previous = motion_bgr
 
@@ -151,7 +150,7 @@ def RoutineZero(image_file, bgr, box, customer):
         motion_value = 255
     motion.append(motion_value)
     previous = motion_bgr
-    cv2.imwrite('prior/' + customer + '/motion-' + dt[0] + '-' + dt[1] + '.png', previous)  # this would be needed only at the end
+    cv2.imwrite('prior/' + customer + '/' + dt[0] + '-' + dt[1] + '_motion.png', previous)  # this would be needed only at the end
     # end of motion detection
 
     brightness.append(FrameBrightness(bgr))
@@ -239,5 +238,4 @@ def RoutineZero(image_file, bgr, box, customer):
                   dates[i] + ',' +
                   image_files[i] + '\n')
     csvfile.close()
-
     UpdateWindow('foreground', foreground, image_file.replace('downloaded/', 'timelapse/'))

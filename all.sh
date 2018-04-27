@@ -15,5 +15,6 @@ echo '
 ./go.sh -r RoutineZero -p visible-aprile
 ' > /dev/null
 
-./go.sh -r RoutineZero -p botany-species^test -g alessandrovalli
+# ./go.sh -r RoutineZero -p botany-species^test -g alessandrovalli
+./go.sh -r RoutineZero -p visible-hawk
 
