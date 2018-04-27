@@ -55,7 +55,7 @@ print('Windows destroyed.')
 
 if args.upload:
     sensor_hostname = args.prefix.split('-')[0]
-    if not UploadFileToS3('website/CSV/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + args.prefix + '.csv'):
+    if not UploadFileToS3('website/CSV/' + args.group + '/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + args.prefix + '.csv'):
         print ("now, this is a big problem. could not upload CSV results.")
         quit()
 
