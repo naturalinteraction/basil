@@ -17,7 +17,7 @@ def Page():
         prop = 'No camera properties.'
     hostname = socket.gethostname()
     if len(globa.last_picture_filename) > 0:
-        link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/' + globa.customer + '/' + globa.last_picture_filename + '">latest picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
+        link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/images/' + globa.last_picture_filename + '">latest picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
         if len(globa.last_batch) > 0:
             link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/CSV/' + globa.customer + '/' + hostname + '-' + globa.last_batch + '.csv">latest chart</a><br>\n'
     else:
