@@ -99,6 +99,7 @@ Change via script:
 - [x] Web output of processing (local network and Internet)
 - [x] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
 - [ ] Set focus and set view: how?
+- [ ] Need to create group subdir under downloaded/
 - [ ] Directories prior/, downloaded/, timelapse/, website/CSV/ and possibly other dirs need customer string
 - [ ] Make sure URLs cannot be inferred
 - [ ] Generalize scripts (pull4, etc.)

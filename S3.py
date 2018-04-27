@@ -109,7 +109,7 @@ def DownloadFileFromS3(key, filename):
     return True
 
 def DownloadImagesFromS3(prefix, substring, customer):
-    files = ListFilesOnS3(prefix)
+    files = ListFilesOnS3('images/' + prefix)
     downloaded = 0
     skipped = 0
     failed = 0
@@ -119,13 +119,13 @@ def DownloadImagesFromS3(prefix, substring, customer):
     # filter out based on extension
     files = list(filter(lambda x: '.jpg' in x, files))
     for f in files:
-        replaced = f.replace(customer + '/', 'downloaded/')
+        replaced = f.replace('images/', 'downloaded/')
         if os.path.isfile(replaced):
-            # print(('skipping download of %s' % f))
-            print('.', end='')
+            # print('skipping download of %s' % f)
+            # print('.', end='')
             skipped += 1
         else:
-            print(('attempting download of %s' % f))
+            print('attempting download of %s to %s' % (f, replaced))
             if DownloadFileFromS3(f, replaced):
                 downloaded += 1
             else:

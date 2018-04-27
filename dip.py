@@ -22,7 +22,7 @@ def RemoveTemporaryFiles(also_timelapse_subdir=False):
 args = ParseArguments()
 
 if args.download:
-    DownloadImagesFromS3(args.group + '/' + args.prefix, args.substring, args.group)
+    print('skipped=%d downloaded=%d failed=%d' % DownloadImagesFromS3(args.group + '/' + args.prefix, args.substring, args.group))
     quit()
 
 box = BoundingBox()
