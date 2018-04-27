@@ -209,7 +209,7 @@ sudo kill -USR1 $(pgrep ^dd)
 
 #### Mount Pi:
 ```
-sshfs pi@or**.ddns.net:basil pi
+sshfs pi@****.ddns.net:basil pi
 ```
 
 
@@ -221,8 +221,8 @@ fusermount -u pi
 
 #### Password
 ```
-sshpass -p ********* ssh pi@or**.ddns.net 'bash -s' < do.sh
-sshpass -p ********* ssh pi@192.168.1.10 'cd /home/pi/basil ; git pull ; sudo /sbin/shutdown now'
+sshpass -p **** ssh pi@****.ddns.net 'bash -s' < do.sh
+sshpass -p **** ssh pi@192.168.1.*** 'cd /home/pi/basil ; git pull ; sudo /sbin/shutdown now'
 ```
 
 
