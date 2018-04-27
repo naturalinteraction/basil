@@ -30,7 +30,7 @@ box = BoundingBox()
 # attempt to load existing csv file for this analysis
 processed_files = []
 try:
-    with open('website/CSV/' + args.group + '/' + args.prefix + '.csv', 'rb') as csvfile:
+    with open('CSV/' + args.group + '/' + args.prefix + '.csv', 'rb') as csvfile:
         csv_data = csv.reader(csvfile)
         first = True
         for row in csv_data:
@@ -55,7 +55,7 @@ print('Windows destroyed.')
 
 if args.upload:
     sensor_hostname = args.prefix.split('-')[0]
-    if not UploadFileToS3('website/CSV/' + args.group + '/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + args.prefix + '.csv'):
+    if not UploadFileToS3('CSV/' + args.group + '/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + args.prefix + '.csv'):
         print ("now, this is a big problem. could not upload CSV results.")
         quit()
 

@@ -62,7 +62,7 @@ function myFunction() {
     document.getElementById("demo").innerHTML = "Hello World";
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "foo.txt", true);
+    xhr.open("GET", "robots.txt", true);
     xhr.onload = function (e) {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {

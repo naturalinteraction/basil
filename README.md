@@ -1,7 +1,5 @@
 # basil
 
-![basil logo](website/logo.png)
-
 Software for sensor devices.
 
 #### Requirements
@@ -98,9 +96,9 @@ Change via script:
 - [x] Make upload of csv optional
 - [x] Web output of processing (local network and Internet)
 - [x] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
-- [x] Directories prior/, downloaded/, timelapse/, website/CSV/ and possibly other dirs need customer string
+- [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need customer string
 - [ ] Set focus and set view: how?
-- [ ] Need to create group subdir under downloaded/, prior/, website/CSV/, timelapse/
+- [ ] Need to create group subdir under downloaded/, prior/, CSV/, timelapse/
 - [ ] Make sure URLs cannot be inferred
 - [ ] Generalize scripts (pull4, etc.)
 - [ ] Create image of generic sensor and script(s) to customize it

@@ -81,7 +81,7 @@ def RoutineZero(image_file, bgr, box, customer):
         dates = []
         # and attempt to load csv file
         try:
-            with open('website/CSV/' + customer + '/' + dt[0] + '-' + dt[1] + '.csv', 'rb') as csvfile:
+            with open('CSV/' + customer + '/' + dt[0] + '-' + dt[1] + '.csv', 'rb') as csvfile:
                 csv_data = csv.reader(csvfile)
                 first = True
                 for row in csv_data:
@@ -223,7 +223,7 @@ def RoutineZero(image_file, bgr, box, customer):
         substrate_spline = substrate
         biomass_spline = biomass
 
-    csvfile = open('website/CSV/' + customer + '/' + dt[0] + '-' + dt[1] + '.csv', 'w')
+    csvfile = open('CSV/' + customer + '/' + dt[0] + '-' + dt[1] + '.csv', 'w')
     csvfile.write('minutes,motion-dots,motion,brightness-dots,brightness,disuniformity-dots,disuniformity,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + customer + ',' + dt[0] + ',' + dt[1] + '\n')
     for i in range(len(minutes_since_start)):
         csvfile.write(str(minutes_since_start[i]) + ',' +
