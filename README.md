@@ -24,8 +24,8 @@ Software for sensor devices.
 - [x] Hardware specification document
 - [x] Design and implement controls on web interface
 - [x] Algorithms: segmentation, analysis, calibration
-- [ ] Commented source code
-- [ ] Operation guide
+- [ ] ~~Commented source code~~
+- [ ] ~~Operation guide~~
 
 #### Customizing each SD image
 
@@ -86,12 +86,8 @@ Change via script:
 - [x] List and link all available sensors and batches (including previous) *.csv for one group
 - [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need group string
 - [x] Create group subdir under downloaded/, prior/, CSV/, timelapse/
-- [ ] Preview to set focus and set view
-- [ ] Make sure URLs cannot be inferred
-- [ ] Generalize scripts (pull4, etc.)
-- [ ] Create image of generic sensor and script(s) to customize it
-- [ ] Accounts and sensors in CSVs on S3 (add, remove, list scripts): they include hostname and URLs
-- [ ] Launch dip.py on server with cron
+- [ ] ~~Preview to set focus and set view~~
+- [ ] ~~Launch dip.py on server with cron~~
 - [ ] ~~Link chart back to control panel~~
 - [ ] ~~A big chunk of zero.py (batch_start, minutes...) is general and should be taken out~~
 - [ ] ~~Send mail notifications~~

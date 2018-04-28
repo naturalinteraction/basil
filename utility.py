@@ -134,9 +134,6 @@ def GitCommitMessage():
 def GitCommitMessagePretty():
     return subprocess.check_output(["git", "log", "-1", "--pretty=%B"]).strip()
 
-# print out debug information about current source code version
-# print(GitCommitMessage())
-
 def ExifKeywords(file):
     return subprocess.check_output(["exiftool", "-Keywords", file]).strip()
 
