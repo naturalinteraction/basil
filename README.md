@@ -71,20 +71,20 @@ Change via script:
 - [x] Upload MQTT
 - [x] Detect if scene is not static (motion detection)
 - [x] Substrate-based uniformity algorithm
-- [x] Store custom customer name
+- [x] Store custom group name
 - [x] DrawSmoothChart() and DrawChart() do not draw phantom point at time zero
 - [x] Series --> batch
-- [x] MQTT only for customer zero
+- [x] MQTT only for group zero
 - [x] Limit spline propagation experimented in branch spline-parts-and-spline-until-break
 - [x] Hours of operation shown and set on web interface, per sensor
-- [x] Plant species and customer as dip.py argument (in batch name)
+- [x] Plant species and group as dip.py argument (in batch name)
 - [x] Use batch_species and legacy functions to select special algorithms
 - [x] Web chart: variable ticks, fixed 15 days period
 - [x] Download no longer downloads also .csv files
 - [x] Make upload of csv optional
 - [x] Web output of processing (local network and Internet)
-- [x] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
-- [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need customer string
+- [x] List and link all available sensors and batches (including previous) *.csv for one group
+- [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need group string
 - [x] Create group subdir under downloaded/, prior/, CSV/, timelapse/
 - [ ] Set focus and set view
 - [ ] Make sure URLs cannot be inferred

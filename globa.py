@@ -1,8 +1,8 @@
 import time
 import pickle
 
-global customer
-customer = 'not-set-yet'
+global group
+group = 'not-set-yet'
 
 global git_rev_count_and_branch
 git_rev_count_and_branch = 'none'

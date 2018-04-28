@@ -16,11 +16,11 @@ import numpy as np
 import math
 import globa
 from utility import Macduff
-from utility import LoadCustomer
+from utility import LoadGroupName
 from web import *
 from MqttImageUploader import *
 
-globa.customer = LoadCustomer()
+globa.group = LoadGroupName()
 
 def SaveLastPictureTicks(ticks, filename):
     with open('last-picture-taken-ticks.pkl', 'wb') as f:
@@ -83,7 +83,7 @@ def TakePicture(img, cam):
     cv2.imwrite(filename, img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])  # up to 100, default 95
     # cv2.imwrite(filename + '.png', img)
     ticks = time.time()
-    globa.last_picture_filename = filename.replace('cache/', globa.customer + '/')
+    globa.last_picture_filename = filename.replace('cache/', globa.group + '/')
     SaveLastPictureTicks(ticks, globa.last_picture_filename)
     # add EXIF keywords
     exif = ExifEditor(filename)
@@ -123,8 +123,8 @@ def AttemptUpload():
         # print('No images in cache. Nothing to do.')
         return
     print('Attempting upload.')
-    uploaded = UploadFileToS3(images_in_cache[0], images_in_cache[0].replace('cache/', 'images/' + globa.customer + '/'))
-    if uploaded and globa.customer == 'zero':
+    uploaded = UploadFileToS3(images_in_cache[0], images_in_cache[0].replace('cache/', 'images/' + globa.group + '/'))
+    if uploaded and globa.group == 'zero':
         d = dict()
         d['timestamp'] = 666666
         d['farmId'] = socket.gethostname()
@@ -134,7 +134,7 @@ def AttemptUpload():
         d['biomass'] = 969
         d['type'] = "image"
         print(d)
-        code = UploadMQTT(globa.customer + "/test/images", images_in_cache[0], d)
+        code = UploadMQTT(globa.group + "/test/images", images_in_cache[0], d)
         print('code ' + str(code))
         if not (code == 1):
             print('MQTT upload failed!')

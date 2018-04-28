@@ -33,7 +33,7 @@ def DeleteFilesOnS3(file_prefix, substring, actually_delete=False):
         print ("delete files on S3 error")
         print((sys.exc_info()))
 
-def UploadFileToS3(filename, customer_filename):
+def UploadFileToS3(filename, group_filename):
     AWS_ACCESS_KEY_ID     = os.environ['AWSAccessKeyId']
     AWS_SECRET_ACCESS_KEY = os.environ['AWSSecretKey']
 
@@ -52,7 +52,7 @@ def UploadFileToS3(filename, customer_filename):
             sys.stdout.flush()
 
         k = Key(bucket)
-        k.key = customer_filename
+        k.key = group_filename
         k.set_contents_from_filename(filename,
                                      cb=percent_cb,
                                      num_cb=10)
@@ -108,7 +108,7 @@ def DownloadFileFromS3(key, filename):
 
     return True
 
-def DownloadImagesFromS3(prefix, substring, customer):
+def DownloadImagesFromS3(prefix, substring, group):
     files = ListFilesOnS3('images/' + prefix)
     downloaded = 0
     skipped = 0

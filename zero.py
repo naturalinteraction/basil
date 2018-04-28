@@ -62,9 +62,9 @@ def LegacyReddishBluish(image_file):
 def LegacyAlgae(image_file):
     return 'noir-doublecalib' in image_file or'visible-doublecalib' in image_file or 'blueshift-doublecalib' in image_file or 'redshift-sanbiagio1' in image_file or 'noir-sanbiagio1' in image_file
 
-def RoutineZero(image_file, bgr, box, customer):
+def RoutineZero(image_file, bgr, box, group):
     dt = image_file.replace('.jpg', '').replace('downloaded/', '').replace('_', '-').replace('/', '-').split('-')
-    dt.remove(customer)
+    dt.remove(group)
     date = datetime.now()
     date = date.replace(microsecond=0, minute=int(dt[-1]), hour=int(dt[-2]), second=0, year=int(dt[-5]), month=int(dt[-4]), day=int(dt[-3]))
 
@@ -81,7 +81,7 @@ def RoutineZero(image_file, bgr, box, customer):
         dates = []
         # and attempt to load csv file
         try:
-            with open('CSV/' + customer + '/' + dt[0] + '-' + dt[1] + '.csv', 'rb') as csvfile:
+            with open('CSV/' + group + '/' + dt[0] + '-' + dt[1] + '.csv', 'rb') as csvfile:
                 csv_data = csv.reader(csvfile)
                 first = True
                 for row in csv_data:
@@ -108,7 +108,7 @@ def RoutineZero(image_file, bgr, box, customer):
     if batch_start <= -1:
         try:
             # load from prior/
-            with open('prior/' + customer + '/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'rb') as f:
+            with open('prior/' + group + '/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'rb') as f:
                 batch_start = pickle.load(f)
         except:
             pass
@@ -118,7 +118,7 @@ def RoutineZero(image_file, bgr, box, customer):
         batch_start = time.mktime(date.timetuple())
         timediff = date - date
     # save to prior/
-    with open('prior/' + customer + '/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'wb') as f:
+    with open('prior/' + group + '/' + dt[0] + '-' + dt[1] + '_batch_start.pkl', 'wb') as f:
         pickle.dump(batch_start, f, 0)
 
     minutes = timediff.days * 86400 / 60 + timediff.seconds / 60
@@ -137,7 +137,7 @@ def RoutineZero(image_file, bgr, box, customer):
     try:
         previous
     except:
-        previous = cv2.imread('prior/' + customer + '/' + dt[0] + '-' + dt[1] + '_motion.png')
+        previous = cv2.imread('prior/' + group + '/' + dt[0] + '-' + dt[1] + '_motion.png')
         if previous is None:
             previous = motion_bgr
 
@@ -150,7 +150,7 @@ def RoutineZero(image_file, bgr, box, customer):
         motion_value = 255
     motion.append(motion_value)
     previous = motion_bgr
-    cv2.imwrite('prior/' + customer + '/' + dt[0] + '-' + dt[1] + '_motion.png', previous)  # this would be needed only at the end
+    cv2.imwrite('prior/' + group + '/' + dt[0] + '-' + dt[1] + '_motion.png', previous)  # this would be needed only at the end
     # end of motion detection
 
     brightness.append(FrameBrightness(bgr))
@@ -223,8 +223,8 @@ def RoutineZero(image_file, bgr, box, customer):
         substrate_spline = substrate
         biomass_spline = biomass
 
-    csvfile = open('CSV/' + customer + '/' + dt[0] + '-' + dt[1] + '.csv', 'w')
-    csvfile.write('minutes,motion-dots,motion,brightness-dots,brightness,disuniformity-dots,disuniformity,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + customer + ',' + dt[0] + ',' + dt[1] + '\n')
+    csvfile = open('CSV/' + group + '/' + dt[0] + '-' + dt[1] + '.csv', 'w')
+    csvfile.write('minutes,motion-dots,motion,brightness-dots,brightness,disuniformity-dots,disuniformity,biomass-dots,biomass,datetime,image,' + time.ctime(batch_start) + ',' + group + ',' + dt[0] + ',' + dt[1] + '\n')
     for i in range(len(minutes_since_start)):
         csvfile.write(str(minutes_since_start[i]) + ',' +
                   str(motion[i] * 100.0 / 255.0) + ',' +

@@ -19,7 +19,7 @@ def Page():
     if len(globa.last_picture_filename) > 0:
         link = '<a href="http://natural-interaction.s3-website-eu-west-1.amazonaws.com/images/' + globa.last_picture_filename + '">latest picture</a> taken ' + time.ctime(int(globa.last_picture_taken_ticks)) + '<br>\n'
         if len(globa.last_batch) > 0:
-            link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/CSV/' + globa.customer + '/' + hostname + '-' + globa.last_batch + '.csv">latest chart</a><br>\n'
+            link = link + '<a href="http://naturalinteraction.org/chart.html?csv=http://natural-interaction.s3-website-eu-west-1.amazonaws.com/CSV/' + globa.group + '/' + hostname + '-' + globa.last_batch + '.csv">latest chart</a><br>\n'
     else:
         link = ''
     status = 'Running...'
@@ -36,7 +36,7 @@ def Page():
         batch_name = batch_name + ' (started ' + str(time.ctime(int(globa.batch_start))) + ')'
     if len(globa.last_batch) > 0:
         batch_name = batch_name + ' (' + globa.last_batch + ')'
-    return ('group ' + globa.customer + '<br>\n' +
+    return ('group ' + globa.group + '<br>\n' +
             'sensor ' + hostname + '<br>\n' +
             'firmware v1.' + globa.git_rev_count_and_branch + '<p>\n' +
             # OpenCVVersion() + '<p>\n' +

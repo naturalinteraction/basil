@@ -36,14 +36,14 @@ def IsWord(name):  # just letters and digits, like for the sensor hostname...
 def IsWordOrCaret(name):  # just letters and digits plus the ^ sign, like for the sensor hostname...
     return (re.match("^[A-Za-z0-9^]*$", name) != None)
 
-def LoadCustomer():
-    file = open('customer.txt')
-    customer_name = file.read().strip()
-    print('customer: ' + customer_name)
-    if customer_name == 'none':
-        print('customer has not been initialized. exiting.')
+def LoadGroupName():
+    file = open('group.txt')
+    group_name = file.read().strip()
+    print('group: ' + group_name)
+    if group_name == 'none':
+        print('group has not been initialized. exiting.')
         quit()
-    return customer_name
+    return group_name
 
 def interrogate(item):
     if hasattr(item, "__name__"):
