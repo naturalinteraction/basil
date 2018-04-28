@@ -43,7 +43,6 @@ class MqttImageUploader:
         client.publish(self.topic, json.dumps(j), qos=0)
         client.loop_stop()
 
-
 mqtt_url = os.environ['MQTT_IP']
 mqtt_port = 8883
 

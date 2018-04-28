@@ -4,7 +4,7 @@ def AudioLevel(format):
     try:
         # Open the device in nonblocking capture mode. The last argument could
         # just as well have been zero for blocking mode. Then we could have
-	# left out the sleep call in the bottom of the loop
+        # left out the sleep call in the bottom of the loop
         # print(alsaaudio.pcms())
         # print(alsaaudio.cards())
         if format == alsaaudio.PCM_FORMAT_S16_LE:  # select sound card automatically
