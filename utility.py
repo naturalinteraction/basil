@@ -237,19 +237,12 @@ def ParseArguments():
     parser.add_argument('-g', '--group', default = 'zero', help='the group the sensor belongs to')
     parser.add_argument('-s', '--substring', default='', help='the substring to filter the images')
     parser.add_argument('-r', '--routine', default='RoutineDisplay', help='the routine to process the images')
-    parser.add_argument('-d', '--download', dest='download', action='store_const',
-                        const=True, default=False,
-                        help='download images from S3')
-    parser.add_argument('-u', '--upload', dest='upload', action='store_const',
-                        const=True, default=False,
-                        help='upload results to S3')
+    parser.add_argument('-d', '--download', dest='download', action='store_const', const=True, default=False, help='download images from S3')
+    parser.add_argument('-u', '--upload', dest='upload', action='store_const', const=True, default=False, help='upload results to S3')
+    parser.add_argument('-c', '--clean', dest='clean', action='store_const', const=True, default=False, help='clean previous history for this batch')
+    parser.add_argument('-t', '--timelapse', dest='timelapse', action='store_const', const=True, default=False, help='generate timelapse')
     args = parser.parse_args()
-    print('prefix = ' + args.prefix)
-    print('group = ' + args.group)
-    print('substring = ' + args.substring)
-    print('routine = ' + args.routine)
-    print('download = ' + str(args.download))
-    print('upload = ' + str(args.upload))
+    print(args)
     return args
 
 

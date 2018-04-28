@@ -7,25 +7,32 @@ from utility import *
 from vision import *
 from display import *
 import imp
-zero = imp.load_source('zero', './zero.py')
+zero = imp.load_source('zero', '../basil-zero/zero.py')
 from zero import *
 
-def RemoveTemporaryFiles(also_timelapse_subdir=False):
-    files = os.listdir('.')
+def RemoveFiles(path, beginning):
+    files = os.listdir(path)
     for file in files:
-        if file.endswith(".extension"):  # currently this does not delete any files
-            os.remove(os.path.join('.', file))
-    if also_timelapse_subdir:
-        files = os.listdir('timelapse')
-        for file in files:
-            if file.endswith(".jpg"):
-                os.remove(os.path.join('timelapse', file))
+        if file.startswith(beginning):
+            print('deleting %s' % os.path.join(path, file))
+            os.remove(os.path.join(path, file))
 
 args = ParseArguments()
 
 if args.download:
     print('skipped=%d downloaded=%d failed=%d' % DownloadImagesFromS3(args.group + '/' + args.prefix, args.substring, args.group))
     quit()
+
+if len(args.prefix.split('-')) != 2:
+    print('prefix must be in the form sensorname-batchname (batchname can contain ^ (carets)')
+    quit()
+
+if args.clean:
+    print(args.prefix.split('-'))
+    if len(args.prefix.split('-')) == 2:
+        print('cleaning')
+        RemoveFiles('prior/' + args.group, args.prefix)
+        RemoveFiles('CSV/' + args.group, args.prefix)
 
 box = BoundingBox()
 
@@ -60,6 +67,9 @@ if args.upload:
     if not UploadFileToS3('CSV/' + args.group + '/' + args.prefix + '.csv', 'CSV/' + args.group + '/' + args.prefix + '.csv'):
         print ("now, this is a big problem. could not upload CSV results.")
         quit()
+
+if not args.timelapse:
+    quit()
 
 try:
     print("ffmpeg -r 15 -pattern_type glob -i 'timelapse/" + args.group + '/' + args.prefix + "*.jpg' -s 1440:1080 -vcodec libx264 -filter:v 'crop="
