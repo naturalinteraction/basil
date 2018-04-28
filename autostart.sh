@@ -3,7 +3,7 @@ echo 'raspistill...'
 raspistill -o ~/autostart.jpg
 echo 'waiting...'
 sleep 30
-echo $BASIL_NOTE
+hostname
 cd /home/pi/basil
 cd colorcalibration
 make

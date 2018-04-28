@@ -27,18 +27,6 @@ Software for sensor devices.
 - [ ] Commented source code
 - [ ] Operation guide
 
-#### Architectural specs
-
-Algorithms need to know (HTTP GET):
-- (a) Unique identifier for the specific crop/tray (to link current processing with previous history)
-- (b) Day of growth (0, 1, 2...) - can be calculated since a new (a) is provided
-- (c) The recipe or plant kind (can be provided when a new (a) is provided, and it is bound to it)
-
-Single Python 2.7 function for both uploads:
-```
-def UploadData(image_filename, json_string)  -->  True|False (whether both succeeded)
-```
-
 #### Customizing each SD image
 
 Keep record of these (info.sh):
@@ -49,7 +37,7 @@ Keep record of these (info.sh):
 - usb0 MAC address
 - wlan0 MAC address
 
-Username is the default. Password is the same everywhere. DHCP on usb0, eth0 and wlan0.
+DHCP on usb0, eth0 and wlan0.
 
 Change via script:
 - Hostname / hosts file (change_hostname.sh)
@@ -62,7 +50,7 @@ Change via script:
 - [x] Download pictures that are not here yet
 - [x] Group images with the same hostname and batch identifier
 - [x] Open downloaded images
-- [x] Cython threshold function
+- [x] Cython segmentation function
 - [x] Optionally download images from S3
 - [x] Display multiple images with the discarded areas, for debugging purposes
 - [x] Stable biomass bounding box (also useful for cropping)
@@ -98,7 +86,7 @@ Change via script:
 - [x] List and link all available sensors and batches (including previous) *.csv for one customer (page accessible to customer)
 - [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need customer string
 - [x] Create group subdir under downloaded/, prior/, CSV/, timelapse/
-- [ ] Set focus and set view: how?
+- [ ] Set focus and set view
 - [ ] Make sure URLs cannot be inferred
 - [ ] Generalize scripts (pull4, etc.)
 - [ ] Create image of generic sensor and script(s) to customize it
@@ -147,8 +135,7 @@ Change via script:
 - [x] Set optimal camera properties programmatically
 - [x] Preview on/off
 - [x] Save image locally, timely
-- [x] Include resolution and notes in filenames
-- [x] Alternatively show a full resolution image (useful for focusing) or just a convenient thumbnail
+- [x] Alternatively show a zoomed full resolution image (useful for focusing) or just a convenient thumbnail
 - [x] Add uptime to EXIF
 - [x] Add source code version to EXIF
 - [x] Print source code version when TAB is pressed
@@ -160,7 +147,6 @@ Change via script:
 - [x] Decide whether to use same resolution for both models
 - [x] Detect camera hardware version
 - [x] Detect camera presence
-- [x] Remove all uses of 'global'
 - [x] Unzoom when taking picture
 - [x] Disable preview automatically (when taking picture)
 - [x] Start cap.py at boot
@@ -173,7 +159,7 @@ Change via script:
 - [x] Click 4 times instead of 24, perspective grid
 - [x] Store date and time of crop start
 - [ ] ~~Send sensor health warning (if something is wrong among cpu, memory, disk, temperature, camera properties, calibration...)~~
-- [ ] ~~Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. Which BF? It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.~~
+- [ ] ~~Compare camera properties that are a result of color calibration and auto calibration across multiple sensors. It seems like shutter speed should be at least 5000. Probably find some custom target RGB values with new colorcheckers.~~
 - [ ] ~~Search brightness and contrast values (after the gains are good). Or make sure brightness is 50 and contrast is 10 and so on.~~
 - [ ] ~~Further test the exposure metering modes~~
 - [ ] ~~Possibly freeze awb but not iso, expo, shutter~~
@@ -233,7 +219,7 @@ redshift	eth: 192.168.0.7	wifi: DHCP	Pi NoIR Camera V2
 noir		eth: 192.168.0.8	wifi: DHCP	Pi NoIR Camera V2
 visible		eth: 192.168.0.9	wifi: DHCP	Pi Camera Module V2
 ```
-Focus set at 350mm. Ended tests on optical filters on Dec 17th. Since that date, despite the hostname, the difference is just the camera sensor.
+Focus set at 350mm.
 
 To look for local raspberries:
 ```

@@ -6,6 +6,8 @@ from S3 import UploadFileToS3
 from utility import *
 from vision import *
 from display import *
+import imp
+zero = imp.load_source('zero', './zero.py')
 from zero import *
 
 def RemoveTemporaryFiles(also_timelapse_subdir=False):
