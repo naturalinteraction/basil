@@ -86,7 +86,7 @@ Change via script:
 - [x] List and link all available sensors and batches (including previous) *.csv for one group
 - [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need group string
 - [x] Create group subdir under downloaded/, prior/, CSV/, timelapse/
-- [ ] Set focus and set view
+- [ ] Preview to set focus and set view
 - [ ] Make sure URLs cannot be inferred
 - [ ] Generalize scripts (pull4, etc.)
 - [ ] Create image of generic sensor and script(s) to customize it
@@ -221,14 +221,13 @@ visible		eth: 192.168.0.9	wifi: DHCP	Pi Camera Module V2
 ```
 Focus set at 350mm.
 
-To look for local raspberries:
+To look for local sensors:
 ```
 sudo nmap -sP 192.168.1.0/24 | awk '/^Nmap/{ip=$NF}/B8:27:EB/{print ip}'
 ```
 
 Resolution set to 1280x720 (16:9)
 
-There is no way we can use the Raspberry Pi Zero because sourcing is unreliable.
 
 #### Autostart
 Append `@/home/pi/basil/autostart.sh` to `/home/pi/.config/lxsession/LXDE-pi/autostart`
