@@ -86,6 +86,7 @@ Change via script:
 - [x] List and link all available sensors and batches (including previous) *.csv for one group
 - [x] Directories prior/, downloaded/, timelapse/, CSV/ and possibly other dirs need group string
 - [x] Create group subdir under downloaded/, prior/, CSV/, timelapse/
+- [x] Prior knowledge is stored
 - [ ] ~~Preview to set focus and set view~~
 - [ ] ~~Launch dip.py on server with cron~~
 - [ ] ~~Link chart back to control panel~~
@@ -105,15 +106,12 @@ Change via script:
 - [ ] ~~Make console log available on the web~~
 - [ ] ~~Check valid hours; always on mode if scene is lit~~
 - [ ] ~~Image processing on sensor~~
-- [ ] ~~Optionally create and upload timelapse with or without superimposed graphics, but only if there is at least one more frame processed~~
+- [ ] ~~Timelapse with and without superimposed graphics, but only if there is at least one more frame processed~~
 - [ ] ~~Windowless cap and dip (windowed is a command line option)~~
-- [ ] ~~Obfuscation and separate git repo or other delivery method~~
-- [ ] ~~Get rid of set basil vars script~~
 - [ ] ~~Hardware check based on MAC addresses and serials (see info.sh)~~
 - [ ] ~~Background subtraction~~
 - [ ] ~~Perspective warping for perspective invariant areas~~
 - [ ] ~~Servers list in git: an http request containing image name is done by cap.py until a server responds positively (web server in dip.py, or calling dip.py)~~
-- [ ] ~~Prior knowledge is stored somewhere~~
 - [ ] ~~Mask~~
 - [ ] ~~Textural information: spatial frequency function pixel by pixel, textons and their neighborhood histograms; Sobel, Scharr and Laplacian on these channels separately: saturation, brightness, luminance + Canny (blurred)~~
 - [ ] ~~Retain pixel probability from previous frames (running average)~~
