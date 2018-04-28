@@ -5,6 +5,7 @@ import ssl
 import base64
 import json
 from io import BytesIO
+import os
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code " + str(rc))
@@ -43,7 +44,7 @@ class MqttImageUploader:
         client.loop_stop()
 
 
-mqtt_url = "159.100.249.153"
+mqtt_url = os.environ['MQTT_IP']
 mqtt_port = 8883
 
 def mqtt_publish_callback(client, userdata, result):

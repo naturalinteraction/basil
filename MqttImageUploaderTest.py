@@ -9,4 +9,4 @@ d['type'] = "image"
 d['farmId'] = "somehost"
 d['batchId'] = "somebatch"
 d['type'] = "image"
-print(UploadMQTT("zero/test/images", 'downloaded/image.jpg', d))
+print(UploadMQTT("zero/test/images", 'timelapse/timelapse.txt', d))
