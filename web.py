@@ -87,10 +87,12 @@ class WebPage(resource.Resource):
             thumb = '<p><a href="sensorstatus?admin-admin&refresh-thumbnail">Thumbnail Refresh</a><br>\n'
         if 'refresh-thumbnail' in str(request):
             thumb = thumb + '<p><img src="uploaded/sensorstatusthumbnail.jpg">'
+        '''
         if 'update-firmware' in str(request):
             firmware_result = UpdateFirmware()
             print(firmware_result)
             thumb = thumb + '<p><pre><code>' + firmware_result + '</pre></code>'
+        '''
         if 'restart-sensor' in str(request):
             globa.should_restart = True
             return '<head><link rel="icon" href="http://naturalinteraction.org/favicon.ico"><meta http-equiv="refresh" content="0; URL=http://www.naturalinteraction.org/" /></head><body>Restarting...</body>'
@@ -150,7 +152,7 @@ class WebPage(resource.Resource):
             if 'admin-admin' in str(request):
                 refresh = '<meta http-equiv="refresh" content="3; URL=sensorstatus?admin-admin" />'
         if 'admin-admin' in str(request):
-            thumb = thumb + '<p><a href="sensorstatus?admin-admin&update-firmware">Update Firmware</a><br>\n'
+            # thumb = thumb + '<p><a href="sensorstatus?admin-admin&update-firmware">Update Firmware</a><br>\n'
             # thumb = thumb + '<a href="sensorstatus?admin-admin&restart-sensor">Restart Sensor</a><br>\n'
             # thumb = thumb + '<a href="sensorstatus?admin-admin&quit-quit">Quit Sensor</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&change-batch=">Change Batch</a><br>\n'
@@ -159,7 +161,7 @@ class WebPage(resource.Resource):
             thumb = thumb + '<a href="sensorstatus?admin-admin&find-colorchecker">Find Colorchecker</a><br>\n'
             thumb = thumb + '<a href="sensorstatus?admin-admin&start-color-calibration">Start Color Calibration</a><br>\n'
         else:
-            thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
+            # thumb = thumb + '<p>Update Firmware (disabled)<br>\n'
             # thumb = thumb + 'Restart Sensor (disabled)<br
             thumb = thumb + 'Reboot Sensor (disabled)<br>\n'
             # thumb = thumb + 'Quit Sensor (disabled)<br>\n'
